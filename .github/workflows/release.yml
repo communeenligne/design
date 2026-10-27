@@ -1,6 +1,6 @@
-# Publication d'une version : à l'étiquette vX.Y.Z, vérifie qu'elle correspond à packages/design/package.json, lance les
-# tests, construit l'archive du paquet (npm pack) et la joint à une publication GitHub du même nom.
-name: Publication
+# Release: on a vX.Y.Z tag, checks that it matches packages/design/package.json, runs the tests, builds the package
+# archive (npm pack) and attaches it to a GitHub release of the same name.
+name: Release
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  publier:
+  release:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -19,12 +19,12 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - name: L'étiquette correspond à la version du paquet
+      - name: Tag matches the package version
         run: test "v$(node -p "require('./packages/design/package.json').version")" = "$GITHUB_REF_NAME"
       - run: npm test
-      - name: Archive
+      - name: Package archive
         run: npm pack -w @communeenligne/design
-      - name: Publication GitHub
+      - name: GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" communeenligne-design-*.tgz --title "$GITHUB_REF_NAME" --notes "Voir CHANGELOG.md. Installation : \"@communeenligne/design\": \"https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/communeenligne-design-${GITHUB_REF_NAME#v}.tgz\""
+        run: gh release create "$GITHUB_REF_NAME" communeenligne-design-*.tgz --title "$GITHUB_REF_NAME" --notes "See CHANGELOG.md. Install: \"@communeenligne/design\": \"https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/communeenligne-design-${GITHUB_REF_NAME#v}.tgz\""

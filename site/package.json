@@ -6,7 +6,7 @@
         "predev": "node scripts/copy-package.mjs && node scripts/token-classes.mjs",
         "dev": "astro dev",
         "prebuild": "node scripts/copy-package.mjs && node scripts/token-classes.mjs",
-        "build": "astro build && node scripts/search-index.mjs",
+        "build": "astro build",
         "preview": "astro preview",
         "links": "node scripts/links.mjs"
     },
@@ -15,6 +15,7 @@
         "@communeenligne/design": "*",
         "@tailwindcss/vite": "4.3.3",
         "astro": "7.4.2",
+        "github-slugger": "2.0.0",
         "marked": "18.1.2",
         "tailwindcss": "4.3.3"
     }

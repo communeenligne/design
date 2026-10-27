@@ -16,7 +16,7 @@ Avec Docker (rien d'autre à installer) :
 ```bash
 docker compose up            # http://localhost:4321, rechargé à chaque modification
 docker compose run --rm node npm test          # tests du paquet (contrastes, exports)
-docker compose run --rm node npm run verifier  # tests, construction du site, liens
+docker compose run --rm node npm run check  # tests, construction du site, liens
 docker compose --profile preview up --build preview   # site construit, servi par nginx sur http://localhost:8081
 ```
 
@@ -73,16 +73,16 @@ Numérotation sémantique, consignée dans `CHANGELOG.md` :
 ## Publier une version
 
 1. Mettre à jour `version` dans `packages/design/package.json` et le titre de la version dans `CHANGELOG.md` (date).
-2. `docker compose run --rm node npm run verifier`.
+2. `docker compose run --rm node npm run check`.
 3. Commit, puis étiquette : `git tag v1.0.0 && git push origin main v1.0.0`.
-4. L'action « Publication » vérifie que l'étiquette correspond à la version, lance les tests, construit l'archive
+4. L'action « Release » vérifie que l'étiquette correspond à la version, lance les tests, construit l'archive
    (`npm pack -w @communeenligne/design`) et crée la publication GitHub avec l'archive jointe.
 
 ## Modifier le paquet
 
 - Les valeurs ne s'écrivent que dans `packages/design/tokens.css` (format des titres de groupe et des commentaires à
   respecter : le site et les tests le lisent).
-- Après une modification des jetons ou des icônes : `npm run generer` (régénère `tailwind.css` et `icons/sprite.svg`).
+- Après une modification des jetons ou des icônes : `npm run generate` (régénère `tailwind.css` et `icons/sprite.svg`).
 - `components.css` n'écrit aucune couleur : seulement des variables (vérifié par les tests).
 
 ## Licences

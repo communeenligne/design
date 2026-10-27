@@ -37,7 +37,7 @@
         "./package.json": "./package.json"
     },
     "scripts": {
-        "generer": "node scripts/tailwind.mjs && node scripts/sprite.mjs",
+        "generate": "node scripts/tailwind.mjs && node scripts/sprite.mjs",
         "test": "node --test scripts/*.test.mjs"
     },
     "engines": {

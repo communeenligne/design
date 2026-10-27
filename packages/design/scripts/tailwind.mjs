@@ -1,5 +1,5 @@
 // Génère tailwind.css (bloc @theme de Tailwind 4) depuis tokens.css : chaque utilitaire pointe vers la variable du
-// paquet, jamais vers une valeur. « node scripts/tailwind.mjs --verifier » échoue si le fichier n'est pas à jour.
+// paquet, jamais vers une valeur. « node scripts/tailwind.mjs --check » échoue si le fichier n'est pas à jour.
 
 import { readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
@@ -41,7 +41,7 @@ export const generer = () => {
 
     return `/*
  * @communeenligne/design : thème Tailwind 4. Fichier généré par scripts/tailwind.mjs depuis tokens.css : ne pas le
- * modifier à la main (npm run generer).
+ * modifier à la main (npm run generate).
  *
  * @theme inline : chaque utilitaire écrit var(--cel-…) dans la page ; le thème sombre (.cel-sombre) s'applique donc sans
  * variante dark:. Exemples : bg-fond-page, text-texte-marine, border-filet, rounded-moyen, shadow-bouton, text-15,
@@ -61,9 +61,9 @@ ${lignes.join('\n')}
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const contenu = generer()
 
-    if (process.argv.includes('--verifier')) {
+    if (process.argv.includes('--check')) {
         if (readFileSync(CIBLE, 'utf8') !== contenu) {
-            console.error('tailwind.css n\'est pas à jour : lancer « npm run generer ».')
+            console.error('tailwind.css n\'est pas à jour : lancer « npm run generate ».')
             process.exit(1)
         }
         console.log('tailwind.css est à jour.')

@@ -1,5 +1,5 @@
 // Génère icons/sprite.svg (une planche de <symbol>) depuis les fichiers icons/*.svg, tous en 24 × 24, trait 1,5 et
-// couleur héritée (currentColor). « node scripts/sprite.mjs --verifier » échoue si la planche n'est pas à jour, ou si
+// couleur héritée (currentColor). « node scripts/sprite.mjs --check » échoue si la planche n'est pas à jour, ou si
 // une icône ne suit pas le format commun.
 
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
@@ -28,15 +28,15 @@ export const generer = () => {
         return `<symbol id="${fichier.slice(0, -4)}" viewBox="0 0 24 24">${corps}</symbol>`
     })
 
-    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">\n<!-- @communeenligne/design : planche générée par scripts/sprite.mjs (npm run generer), ne pas modifier. Licences : icons/LICENSES.md. -->\n${symboles.join('\n')}\n</svg>\n`
+    return `<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">\n<!-- @communeenligne/design : planche générée par scripts/sprite.mjs (npm run generate), ne pas modifier. Licences : icons/LICENSES.md. -->\n${symboles.join('\n')}\n</svg>\n`
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const contenu = generer()
 
-    if (process.argv.includes('--verifier')) {
+    if (process.argv.includes('--check')) {
         if (readFileSync(CIBLE, 'utf8') !== contenu) {
-            console.error('icons/sprite.svg n\'est pas à jour : lancer « npm run generer ».')
+            console.error('icons/sprite.svg n\'est pas à jour : lancer « npm run generate ».')
             process.exit(1)
         }
         console.log(`icons/sprite.svg est à jour (${icones().length} icônes).`)

@@ -1,9 +1,10 @@
 ---
-// Gabarit de toutes les pages : en-tête (logo, « Design system », recherche, rubriques), navigation latérale de la
-// rubrique, fil d'Ariane, contenu, sommaire de la page à droite, pied de page avec le choix du thème. Non référencé.
+// Gabarit de toutes les pages : en-tête (icône et mot-symbole « communeenligne », recherche en direct par Ctrl+K ou
+// ⌘K, rubriques), navigation latérale de la rubrique, fil d'Ariane, contenu, sommaire de la page à droite, bandeau des
+// licences, pied de page avec le choix du thème. Non référencé.
 import '../styles/main.css'
 import Icon from '../components/Icon.astro'
-import { RUBRIQUES, filDAriane, rubriqueDe, voisines } from '../lib/navigation.js'
+import { NOM, RUBRIQUES, filDAriane, rubriqueDe, voisines } from '../lib/navigation.js'
 import { VERSION } from '../lib/version.js'
 
 const props = Astro.props.frontmatter ?? Astro.props
@@ -14,7 +15,7 @@ const rubrique = rubriqueDe(chemin)
 const etapes = filDAriane(chemin, title)
 const { precedente, suivante } = voisines(chemin)
 const sommaire = headings.filter((titre) => titre.depth === 2)
-const titrePage = chemin === '/' ? 'Design system de Commune en ligne' : `${title} · Design system de Commune en ligne`
+const titrePage = chemin === '/' ? NOM : `${title} · ${NOM}`
 const lateral = rubrique && rubrique.pages.length > 0
 ---
 <!doctype html>
@@ -38,17 +39,15 @@ const lateral = rubrique && rubrique.pages.length > 0
     <header class="doc-entete">
         <div class="cel-conteneur doc-entete__haut">
             <a href="/" class="doc-marque">
-                <img class="cel-logo-clair" src="/design/brand/logo.svg" alt="Commune en ligne" width="154" height="32">
-                <img class="cel-logo-sombre" src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne" width="154" height="32">
-                <span class="doc-marque__titre">Design system</span>
+                <img class="cel-logo-clair" src="/design/brand/icone.svg" alt="" width="36" height="36">
+                <img class="cel-logo-sombre" src="/design/brand/icone-fond-sombre.svg" alt="" width="36" height="36">
+                <span class="doc-marque__titre doc-mot-symbole"><strong>commune</strong>enligne</span>
             </a>
-            <form class="doc-recherche" role="search" action="/search/" method="get">
-                <label class="cel-masque" for="recherche-entete">Rechercher dans la documentation</label>
-                <span class="cel-champ doc-recherche__champ">
-                    <input id="recherche-entete" type="search" name="q" placeholder="Rechercher" autocomplete="off">
-                </span>
-                <button type="submit" class="cel-bouton cel-bouton--icone doc-recherche__bouton"><Icon nom="magnifying-glass" taille="20" appuyee /><span class="cel-masque">Rechercher</span></button>
-            </form>
+            <button type="button" class="doc-recherche" data-recherche-ouvrir hidden aria-haspopup="dialog">
+                <Icon nom="magnifying-glass" taille="18" appuyee />
+                <span class="doc-recherche__texte">Rechercher</span>
+                <kbd class="doc-recherche__raccourci" data-raccourci>Ctrl K</kbd>
+            </button>
         </div>
         <nav class="cel-conteneur cel-navigation doc-rubriques" aria-label="Rubriques">
             <ul class="cel-navigation__liens">
@@ -88,7 +87,9 @@ const lateral = rubrique && rubrique.pages.length > 0
                     </ol>
                 </nav>
             )}
-            <h1 class="doc-titre" data-cel-apparition="titre">{title}</h1>
+            {chemin === '/'
+                ? <h1 class="doc-titre doc-titre--accueil" data-cel-apparition="titre">Système de Design de <span class="doc-mot-symbole"><strong>commune</strong>enligne</span></h1>
+                : <h1 class="doc-titre" data-cel-apparition="titre">{title}</h1>}
             {description && <p class="cel-chapo doc-chapo">{description}</p>}
 
             <div class="doc-contenu">
@@ -115,12 +116,14 @@ const lateral = rubrique && rubrique.pages.length > 0
         )}
     </div>
 
+    <p class="doc-licences">Code sous licence MIT · police Manrope sous licence OFL</p>
+
     <footer class="cel-pied">
         <div class="cel-conteneur">
             <div class="cel-pied__liens">
                 <div class="cel-pied__identite">
-                    <a href="/" class="cel-pied__marque"><img src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne, design system" width="154" height="32" loading="lazy"></a>
-                    <p>Le design system de Commune en ligne : landing, panel et aide en ligne. Version {VERSION}.</p>
+                    <a href="/" class="cel-pied__marque"><img src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne, accueil du Système de Design" width="154" height="32" loading="lazy"></a>
+                    <p>Le Système de Design de communeenligne : landing, panel et aide en ligne. Version {VERSION}.</p>
                 </div>
                 {RUBRIQUES.filter((r) => r.pages.length > 0).slice(0, 2).map((r, rang) => (
                     <nav class="cel-pied__colonne" aria-labelledby={`pied-${rang}`}>
@@ -141,8 +144,7 @@ const lateral = rubrique && rubrique.pages.length > 0
             </div>
             <div class="cel-pied__bas">
                 <div class="cel-pied__meta">
-                    <p>© 2026 · <span class="cel-pied__mot-symbole"><strong>commune</strong>enligne</span> · Design system {VERSION}</p>
-                    <p>Code sous licence MIT · police Manrope sous licence OFL</p>
+                    <p>© 2026 · <span class="cel-pied__mot-symbole"><strong>commune</strong>enligne</span></p>
                 </div>
                 <div class="cel-theme" role="group" aria-labelledby="pied-theme" data-cel-theme hidden>
                     <span id="pied-theme">Thème :</span>
@@ -154,5 +156,18 @@ const lateral = rubrique && rubrique.pages.length > 0
             </div>
         </div>
     </footer>
+    <dialog class="doc-dialogue" aria-labelledby="titre-recherche" data-recherche>
+        <div class="doc-dialogue__entete">
+            <h2 class="cel-masque" id="titre-recherche">Rechercher dans le Système de Design</h2>
+            <Icon nom="magnifying-glass" taille="20" appuyee class="doc-dialogue__loupe" />
+            <label class="cel-masque" for="recherche-champ">Mots recherchés</label>
+            <input id="recherche-champ" class="doc-dialogue__champ" type="search" placeholder="Composant, variable, classe…" autocomplete="off" spellcheck="false"
+                   role="combobox" aria-expanded="false" aria-controls="recherche-resultats" aria-autocomplete="list" aria-describedby="recherche-etat">
+            <button type="button" class="doc-dialogue__fermer" data-recherche-fermer><kbd>Échap</kbd><span class="cel-masque">Fermer la recherche</span></button>
+        </div>
+        <p class="doc-dialogue__etat" id="recherche-etat" role="status" data-recherche-etat></p>
+        <ul class="doc-dialogue__resultats" id="recherche-resultats" role="listbox" aria-label="Résultats" data-recherche-resultats></ul>
+        <p class="doc-dialogue__aide"><kbd>↑</kbd> <kbd>↓</kbd> pour choisir, <kbd>Entrée</kbd> pour ouvrir, <kbd>Échap</kbd> pour fermer</p>
+    </dialog>
 </body>
 </html>

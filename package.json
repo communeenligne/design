@@ -7,12 +7,12 @@
         "site"
     ],
     "scripts": {
-        "generer": "npm run generer -w @communeenligne/design",
+        "generate": "npm run generate -w @communeenligne/design",
         "test": "npm test -w @communeenligne/design",
         "dev": "npm run dev -w site",
         "build": "npm run build -w site",
         "links": "npm run links -w site",
-        "verifier": "npm test && npm run build && npm run links"
+        "check": "npm test && npm run build && npm run links"
     },
     "engines": {
         "node": ">=22.23.4"

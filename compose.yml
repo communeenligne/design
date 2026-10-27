@@ -1,9 +1,9 @@
-# docker compose up                                  site de documentation en développement : http://localhost:4321
-# docker compose run --rm node npm test              tests du paquet
-# docker compose run --rm node npm run verifier      tests, construction, liens
-# docker compose --profile preview up --build preview   site construit, servi par nginx : http://localhost:8081
+# docker compose up                                  documentation site in development: http://localhost:4321
+# docker compose run --rm node npm test              package tests
+# docker compose run --rm node npm run check      tests, build, links
+# docker compose --profile preview up --build preview   built site, served by nginx: http://localhost:8081
 #
-# Après un changement de package-lock.json : docker compose build && docker compose down -v (dépendances de l'image).
+# After a package-lock.json change: docker compose build && docker compose down -v (image dependencies).
 
 name: communeenligne-design
 
@@ -27,7 +27,7 @@ services:
     volumes:
       - .:/app
       - node_modules:/app/node_modules
-    command: ["npm", "run", "verifier"]
+    command: ["npm", "run", "check"]
 
   preview:
     build:

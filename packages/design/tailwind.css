@@ -1,6 +1,6 @@
 /*
  * @communeenligne/design : thème Tailwind 4. Fichier généré par scripts/tailwind.mjs depuis tokens.css : ne pas le
- * modifier à la main (npm run generer).
+ * modifier à la main (npm run generate).
  *
  * @theme inline : chaque utilitaire écrit var(--cel-…) dans la page ; le thème sombre (.cel-sombre) s'applique donc sans
  * variante dark:. Exemples : bg-fond-page, text-texte-marine, border-filet, rounded-moyen, shadow-bouton, text-15,

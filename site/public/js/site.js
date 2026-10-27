@@ -1,4 +1,4 @@
-// Script du site de documentation : thème, onglets et animations du paquet, boutons « Copier », recherche.
+// Script du site de documentation : thème, onglets et animations du paquet, boutons de copie, recherche en direct.
 
 import { initTheme } from '/design/js/theme.js'
 import { initOnglets } from '/design/js/tabs.js'
@@ -21,88 +21,180 @@ document.querySelectorAll('.doc-code').forEach((bloc) => {
     const bouton = document.createElement('button')
     bouton.type = 'button'
     bouton.className = 'doc-code__copier'
-    bouton.textContent = 'Copier'
+    bouton.innerHTML = '<svg class="cel-icone cel-icone--18" aria-hidden="true" focusable="false"><use></use></svg>'
+    const icone = bouton.querySelector('use')
+    // Icône « dupliquer » au repos, coche pendant deux secondes après la copie ; le nom accessible suit.
+    const etat = (copie) => {
+        const libelle = copie ? 'Code copié' : 'Copier le code'
+        icone.setAttribute('href', `/design/icons/sprite.svg#${copie ? 'check' : 'document-duplicate'}`)
+        bouton.setAttribute('aria-label', libelle)
+        bouton.title = libelle
+    }
+    etat(false)
     bouton.addEventListener('click', async () => {
         await navigator.clipboard.writeText(bloc.querySelector('code').textContent)
-        bouton.textContent = 'Copié'
-        setTimeout(() => (bouton.textContent = 'Copier'), 2000)
+        etat(true)
+        setTimeout(() => etat(false), 2000)
     })
     bloc.append(bouton)
 })
 
-// ---------- Recherche (/search/?q=…) ----------
-// Sans script, la page liste toutes les pages. Avec, elle cherche chaque mot dans le titre, les intertitres et le texte
-// de l'index construit après la construction du site (search-index.json).
+// ---------- Recherche en direct : Ctrl+K (⌘K sur Mac), ou le bouton de l'en-tête ----------
+// Fenêtre modale (<dialog>) : champ en combobox, résultats en listbox (aria-activedescendant) ; flèches pour choisir,
+// Entrée pour ouvrir, Échap pour fermer. L'index (/search-index.json) est chargé à la première ouverture. Sans script,
+// le bouton reste masqué : la navigation et le fil d'Ariane suffisent.
 
-const zone = document.querySelector('[data-recherche]')
+const dialogue = document.querySelector('[data-recherche]')
+const ouvrir = document.querySelector('[data-recherche-ouvrir]')
 
-if (zone) {
-    const champ = zone.querySelector('input[name="q"]')
-    const liste = zone.querySelector('[data-resultats]')
-    const etat = zone.querySelector('[data-etat]')
-    const toutes = document.querySelector('[data-toutes-les-pages]')
-    const sansAccents = (texte) => texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-    const index = await fetch('/search-index.json').then((reponse) => reponse.json()).catch(() => [])
+if (dialogue && ouvrir && typeof dialogue.showModal === 'function') {
+    const champ = dialogue.querySelector('input')
+    const liste = dialogue.querySelector('[data-recherche-resultats]')
+    const etat = dialogue.querySelector('[data-recherche-etat]')
+    const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
+    const MAX = 12
+    let index = null
+    let resultats = []
+    let actif = -1
 
-    const extrait = (texte, mot) => {
-        const position = sansAccents(texte).indexOf(mot)
+    ouvrir.querySelector('[data-raccourci]').textContent = mac ? '⌘ K' : 'Ctrl K'
+    ouvrir.setAttribute('aria-keyshortcuts', mac ? 'Meta+K' : 'Control+K')
+    ouvrir.hidden = false
 
-        return position === -1 ? texte.slice(0, 160) : `${position > 60 ? '…' : ''}${texte.slice(Math.max(0, position - 60), position + 100)}…`
+    const normaliser = (texte) => texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+
+    const charger = async () => {
+        if (index === null) {
+            index = fetch('/search-index.json')
+                .then((reponse) => reponse.json())
+                .then(({ entrees }) => entrees.map((entree) => ({ ...entree, _titre: normaliser(entree.titre), _texte: normaliser(`${entree.page ?? ''} ${entree.resume} ${entree.mots}`) })))
+                .catch(() => [])
+        }
+
+        return index
     }
 
-    const chercher = () => {
-        const mots = sansAccents(champ.value).split(/\s+/).filter((mot) => mot.length > 1)
-        liste.replaceChildren()
+    const extrait = (entree, mot) => {
+        if (entree.resume) {
+            return entree.resume
+        }
 
-        if (mots.length === 0) {
-            etat.textContent = ''
-            toutes.hidden = false
+        const position = normaliser(entree.mots).indexOf(mot)
 
+        return position === -1 ? '' : `…${entree.mots.slice(Math.max(0, position - 50), position + 90)}…`
+    }
+
+    const choisir = (rang) => {
+        actif = rang
+        ;[...liste.children].forEach((element, i) => element.setAttribute('aria-selected', String(i === rang)))
+
+        if (rang >= 0) {
+            champ.setAttribute('aria-activedescendant', `resultat-${rang}`)
+            liste.children[rang].scrollIntoView({ block: 'nearest' })
+        } else {
+            champ.removeAttribute('aria-activedescendant')
+        }
+    }
+
+    const chercher = async () => {
+        const entrees = await charger()
+        const requete = champ.value.trim()
+        const mots = normaliser(requete).split(/\s+/).filter(Boolean)
+
+        resultats = mots.length === 0 ? [] : entrees
+            .map((entree) => {
+                let score = 0
+
+                for (const mot of mots) {
+                    const dansTitre = entree._titre.includes(mot)
+
+                    if (!dansTitre && !entree._texte.includes(mot)) {
+                        return null
+                    }
+
+                    score += (entree._titre.startsWith(mot) ? 30 : dansTitre ? 20 : 2) + (entree.page ? 0 : 5)
+                }
+
+                return { entree, score }
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.score - a.score)
+            .slice(0, MAX)
+            .map(({ entree }) => entree)
+
+        liste.replaceChildren(...resultats.map((entree, rang) => {
+            const element = document.createElement('li')
+            element.id = `resultat-${rang}`
+            element.setAttribute('role', 'option')
+            element.setAttribute('aria-selected', 'false')
+            element.className = 'doc-dialogue__resultat'
+
+            const lien = document.createElement('a')
+            lien.href = entree.url
+            lien.tabIndex = -1
+            const chemin = document.createElement('span')
+            chemin.className = 'doc-dialogue__chemin'
+            chemin.textContent = [entree.rubrique, entree.page].filter(Boolean).join(' › ') || 'Accueil'
+            const titre = document.createElement('span')
+            titre.className = 'doc-dialogue__titre'
+            titre.textContent = entree.titre
+            lien.append(chemin, titre)
+
+            const resume = extrait(entree, mots[0])
+            if (resume) {
+                const texte = document.createElement('span')
+                texte.className = 'doc-dialogue__extrait'
+                texte.textContent = resume
+                lien.append(texte)
+            }
+
+            element.append(lien)
+            element.addEventListener('mousemove', () => actif !== rang && choisir(rang))
+
+            return element
+        }))
+
+        champ.setAttribute('aria-expanded', String(resultats.length > 0))
+        etat.textContent = mots.length === 0 ? '' : resultats.length === 0 ? `Aucun résultat pour « ${requete} ».` : `${resultats.length} résultat${resultats.length > 1 ? 's' : ''}`
+        choisir(resultats.length > 0 ? 0 : -1)
+    }
+
+    const afficher = () => {
+        if (dialogue.open) {
             return
         }
 
-        const resultats = index
-            .map((page) => {
-                const titre = sansAccents(page.titre)
-                const intertitres = sansAccents(page.intertitres.join(' '))
-                const texte = sansAccents(page.texte)
-                const score = mots.reduce((total, mot) => (total === null || !(titre + intertitres + texte).includes(mot) ? null : total + (titre.includes(mot) ? 10 : 0) + (intertitres.includes(mot) ? 4 : 0) + (texte.includes(mot) ? 1 : 0)), 0)
-
-                return { page, score }
-            })
-            .filter((resultat) => resultat.score !== null)
-            .sort((a, b) => b.score - a.score)
-
-        toutes.hidden = true
-        etat.textContent = resultats.length === 0 ? `Aucune page ne contient « ${champ.value} ».` : `${resultats.length} page${resultats.length > 1 ? 's' : ''} pour « ${champ.value} ».`
-
-        for (const { page } of resultats.slice(0, 30)) {
-            const element = document.createElement('li')
-            element.className = 'cel-carte'
-            const titre = document.createElement('p')
-            titre.className = 'cel-carte__titre'
-            const lien = document.createElement('a')
-            lien.className = 'cel-carte__lien'
-            lien.href = page.url
-            lien.textContent = page.titre
-            titre.append(lien)
-            const resume = document.createElement('p')
-            resume.className = 'cel-carte__resume doc-resultats__extrait'
-            resume.textContent = extrait(page.texte, mots[0])
-            const rubrique = document.createElement('p')
-            rubrique.className = 'cel-carte__meta'
-            rubrique.textContent = page.rubrique || 'Accueil'
-            element.append(titre, resume, rubrique)
-            liste.append(element)
-        }
+        dialogue.showModal()
+        champ.select()
+        charger()
     }
 
-    champ.value = new URLSearchParams(window.location.search).get('q') ?? ''
-    document.getElementById('recherche-entete').value = champ.value
-    champ.addEventListener('input', () => {
-        chercher()
-        history.replaceState(null, '', champ.value ? `?q=${encodeURIComponent(champ.value)}` : window.location.pathname)
+    ouvrir.addEventListener('click', afficher)
+    dialogue.querySelector('[data-recherche-fermer]').addEventListener('click', () => dialogue.close())
+    // Un clic sur le fond (hors du cadre) ferme la fenêtre.
+    dialogue.addEventListener('click', (evenement) => evenement.target === dialogue && dialogue.close())
+    dialogue.addEventListener('close', () => ouvrir.focus())
+
+    document.addEventListener('keydown', (evenement) => {
+        if ((evenement.ctrlKey || evenement.metaKey) && !evenement.altKey && evenement.key.toLowerCase() === 'k') {
+            evenement.preventDefault()
+            dialogue.open ? dialogue.close() : afficher()
+        }
     })
-    zone.querySelector('form').addEventListener('submit', (evenement) => evenement.preventDefault())
-    chercher()
+
+    champ.addEventListener('input', chercher)
+    champ.addEventListener('keydown', (evenement) => {
+        if (evenement.key === 'ArrowDown' || evenement.key === 'ArrowUp') {
+            evenement.preventDefault()
+
+            if (resultats.length > 0) {
+                const pas = evenement.key === 'ArrowDown' ? 1 : -1
+                choisir((actif + pas + resultats.length) % resultats.length)
+            }
+        } else if (evenement.key === 'Enter' && actif >= 0) {
+            evenement.preventDefault()
+            window.location.href = resultats[actif].url
+            dialogue.close()
+        }
+    })
 }

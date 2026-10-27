@@ -1,4 +1,4 @@
-# Publication du site de documentation sur GitHub Pages (design.communeenligne.fr, fichier site/public/CNAME).
+# Deploys the documentation site to GitHub Pages (design.communeenligne.fr, see site/public/CNAME).
 name: Pages
 
 on:
@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  construire:
+  build:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -33,12 +33,12 @@ jobs:
         with:
           path: site/dist
 
-  publier:
-    needs: construire
+  deploy:
+    needs: build
     runs-on: ubuntu-24.04
     environment:
       name: github-pages
-      url: ${{ steps.publication.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: publication
+      - id: deployment
         uses: actions/deploy-pages@v4

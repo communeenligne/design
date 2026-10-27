@@ -1,0 +1,28 @@
+---
+// Pages d'une rubrique en tuiles : un aperçu (le composant lui-même, ou l'icône de la page), le titre (seul lien, qui
+// couvre la tuile), le résumé.
+import Icon from './Icon.astro'
+import { APERCUS } from '../lib/previews.js'
+
+const { rubrique } = Astro.props
+---
+<ul class="doc-tuiles">
+    {rubrique.pages.map((page) => {
+        const apercu = APERCUS[page.url]
+
+        return (
+            <li>
+                <article class="doc-tuile">
+                    {apercu
+                        ? <div class={`doc-tuile__apercu doc-tuile__apercu--${apercu.fond ?? 'clair'}${apercu.plein ? ' doc-tuile__apercu--plein' : ''}`} aria-hidden="true" inert set:html={apercu.html} />
+                        : <div class="doc-tuile__apercu doc-tuile__apercu--icone" aria-hidden="true"><span class="doc-tuile__pictogramme"><Icon nom={page.icone} taille="28" /></span></div>}
+                    <div class="doc-tuile__corps">
+                        <h2 class="doc-tuile__titre"><a class="doc-tuile__lien" href={page.url}>{page.titre}</a></h2>
+                        <p class="doc-tuile__resume">{page.description}</p>
+                    </div>
+                    <Icon nom="arrow-right" taille="18" appuyee class="doc-tuile__fleche" />
+                </article>
+            </li>
+        )
+    })}
+</ul>
