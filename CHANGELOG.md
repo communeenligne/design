@@ -3,7 +3,7 @@
 Toutes les versions de `@communeenligne/design`. Numérotation sémantique : un nom de variable, de classe, de fichier
 exporté ou de fonction qui change, c'est une version majeure.
 
-## 1.0.0 (non publiée)
+## 1.0.0 (27/10/2026)
 
 Première version : reprise de la landing de communeenligne.fr, à l'identique.
 
