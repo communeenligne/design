@@ -1,0 +1,85 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Tableau"
+description: "Un tableau de données simple, et le comparatif à colonne collée et colonne mise en avant de la page tarif."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Présenter des données à lire en lignes et en colonnes : tranches de population, comparaison de solutions, horaires.
+
+**Quand ne pas l'utiliser :** pour mettre en page des blocs (prendre une grille), ni pour une liste à une seule dimension.
+
+## Variantes
+
+<Example titre="Tableau simple" html={`
+    <div class="cel-tableau-defilant">
+        <table class="cel-tableau">
+            <caption>Abonnement annuel selon la population</caption>
+            <thead><tr><th scope="col">Population</th><th scope="col">Abonnement</th><th scope="col">Mise en service</th></tr></thead>
+            <tbody>
+                <tr><th scope="row">Moins de 500 habitants</th><td>480 € par an</td><td>300 €</td></tr>
+                <tr><th scope="row">De 500 à 1 999 habitants</th><td>720 € par an</td><td>450 €</td></tr>
+                <tr><th scope="row">De 2 000 à 3 499 habitants</th><td>960 € par an</td><td>600 €</td></tr>
+            </tbody>
+        </table>
+    </div>
+`} tailwind={`
+    <table class="w-full border-collapse text-15">
+        <thead><tr><th scope="col" class="px-3 py-2.5 border border-filet bg-fond-clair text-left">Population</th><th scope="col" class="px-3 py-2.5 border border-filet bg-fond-clair text-left">Abonnement</th></tr></thead>
+        <tbody><tr><td class="px-3 py-2.5 border border-filet">Moins de 500 habitants</td><td class="px-3 py-2.5 border border-filet">480 € par an</td></tr></tbody>
+    </table>
+`} />
+
+<Example titre="Comparatif (défilement horizontal, critères collés à gauche)" html={`
+    <p class="cel-comparatif-indication"><svg class="cel-icone cel-icone--18" aria-hidden="true"><use href="/design/icons/sprite.svg#arrows-left-right"></use></svg>Faites défiler le tableau pour voir toutes les colonnes.</p>
+    <div class="cel-comparatif" tabindex="0" role="region" aria-labelledby="legende-comparatif">
+        <table class="cel-comparatif__tableau">
+            <caption class="cel-comparatif__legende" id="legende-comparatif">Commune en ligne face aux autres solutions</caption>
+            <thead><tr>
+                <td class="cel-comparatif__coin"></td>
+                <th scope="col" class="cel-comparatif__colonne--nous">Commune en ligne</th>
+                <th scope="col">Site fait par une agence</th>
+                <th scope="col">Outil de création gratuit</th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="cel-comparatif__critere">Mise à jour</th>
+                    <td class="cel-comparatif__cellule cel-comparatif__cellule--nous"><span class="cel-comparatif__valeur"><span class="cel-repere cel-repere--bon"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg></span>Par la mairie, sans compétence technique</span></td>
+                    <td class="cel-comparatif__cellule"><span class="cel-comparatif__valeur"><span class="cel-repere cel-repere--moyen"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#clock"></use></svg></span>Souvent par l'agence, sur devis</span></td>
+                    <td class="cel-comparatif__cellule"><span class="cel-comparatif__valeur"><span class="cel-repere cel-repere--mauvais"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#x-mark"></use></svg></span>À la main, page par page</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="cel-comparatif__critere">Obligations légales</th>
+                    <td class="cel-comparatif__cellule cel-comparatif__cellule--nous">Prévues dès la mise en ligne</td>
+                    <td class="cel-comparatif__cellule">Selon le cahier des charges <span class="cel-comparatif__note">(à vérifier)</span></td>
+                    <td class="cel-comparatif__cellule">À la charge de la commune</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+`} />
+
+## États
+
+Le tableau n'est pas interactif. Le comparatif est atteignable au clavier (`tabindex="0"`) pour défiler avec les flèches ; il prend alors le contour de focus.
+
+<Example titre="Comparatif, focus visible" html={`
+    <div class="cel-comparatif" data-cel-etat="focus"><table class="cel-comparatif__tableau"><tbody><tr><th scope="row" class="cel-comparatif__critere">Focus visible</th><td class="cel-comparatif__cellule">Les flèches font défiler le tableau.</td></tr></tbody></table></div>
+`} />
+
+## Accessibilité
+
+- **Structure :** `<caption>`, `<th scope="col">` et `<th scope="row">`. Jamais de cellules fusionnées pour la mise en forme.
+- **Défilement :** le tableau large défile dans son bloc, pas la page ; le bloc défilant a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier.
+- **Repères :** chaque repère (bon, moyen, mauvais) est accompagné d'un texte ; la forme de l'icône diffère, pas seulement la couleur.
+
+<Contrasts paires={[['encre', 'fond-clair'], ['texte', 'surface'], ['texte-marine', 'surface-attenuee-2'], ['sur-fort', 'fond-fort'], ['repere-bon-texte', 'surface', 3], ['repere-moyen', 'repere-moyen-fond', 3], ['repere-mauvais', 'repere-mauvais-fond', 3]]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Une légende qui dit ce que montre le tableau.', 'Des en-têtes de ligne pour les critères.']} eviter={['Un tableau pour aligner des blocs.', 'Un repère sans texte.']} />

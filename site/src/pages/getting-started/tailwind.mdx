@@ -1,0 +1,56 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Avec ou sans Tailwind"
+description: "Le paquet fonctionne seul en CSS pur ; avec Tailwind 4, son thème expose les mêmes valeurs en utilitaires."
+---
+
+import Code from '../../components/Code.astro'
+
+## Sans Tailwind
+
+Les composants sont des classes `cel-` en CSS pur. Les valeurs se lisent dans les variables :
+
+<Code langue="css" code={`@import '@communeenligne/design';
+
+.ma-carte {
+    padding: var(--cel-espace-6);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-grand);
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte);
+}`} />
+
+## Avec Tailwind 4
+
+<Code langue="css" code={`@import 'tailwindcss';
+@import '@communeenligne/design/tailwind.css';   /* jetons, polices, thème Tailwind */
+@import '@communeenligne/design/components.css'; /* facultatif : classes cel- */`} />
+
+`tailwind.css` est généré depuis `tokens.css` : chaque variable devient un utilitaire qui pointe vers elle (`@theme inline`). Le thème sombre s'applique donc sans variante `dark:` : `bg-surface` vaut la surface claire ou sombre selon la classe posée sur `<html>`.
+
+| Variable du paquet | Utilitaires Tailwind |
+|---|---|
+| `--cel-couleur-texte-marine` | `text-texte-marine`, `bg-texte-marine`, `border-texte-marine` |
+| `--cel-couleur-surface` | `bg-surface` |
+| `--cel-taille-15` | `text-15` |
+| `--cel-taille-titre-section` | `text-titre-section` |
+| `--cel-graisse-extra` | `font-extra` |
+| `--cel-interligne-120` | `leading-120` |
+| `--cel-rayon-moyen` | `rounded-moyen` |
+| `--cel-ombre-bouton` | `shadow-bouton` |
+| `--cel-courbe-sortie` | `ease-sortie` |
+| `--cel-largeur-contenu` | `max-w-contenu` |
+| `--cel-espace-section` | `py-section` |
+| `--cel-rupture-telephone` | `telephone:` (640 px et plus), `max-telephone:` (moins de 640 px) |
+
+Les espacements suivent le pas de Tailwind (4 px) : `p-4` vaut `--cel-espace-4` (16 px), `gap-2.5` vaut `--cel-espace-2-5` (10 px).
+
+### Préflight
+
+Le préflight de Tailwind remet à zéro les marges et les titres, comme la base du paquet. Les deux cohabitent ; dans le panel Filament, garder la configuration de Filament et n'importer que `tailwind.css`.
+
+## Lequel choisir
+
+- **Composants réutilisés** (bouton, champ, tableau…) : les classes `cel-`, identiques partout, avec leurs états et l'accessibilité déjà réglés.
+- **Mise en page propre à une vue** : utilitaires Tailwind ou variables, au choix du projet.
+- Les pages des composants donnent, quand elle existe, la version Tailwind de chaque exemple.

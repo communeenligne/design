@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Lien d'évitement"
+description: "Le premier lien de la page, visible au clavier seulement, qui mène directement au contenu."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Permettre à une personne qui navigue au clavier de passer l'en-tête et la navigation. Il est hors de l'écran jusqu'à ce qu'il reçoive le focus. Appuyez sur Tab en haut de cette page pour le voir.
+
+**Quand ne pas l'utiliser :** il est sur toutes les pages, toujours le premier élément de `<body>`.
+
+## Exemple
+
+<Example titre="Lien d'évitement, focus visible" note="Affiché ici par data-cel-etat ; en vrai, il n'apparaît qu'au focus." html={`
+    <div class="cel-sur-fort">
+        <a class="cel-lien-evitement" href="#contenu" data-cel-etat="focus">Aller au contenu</a>
+    </div>
+`} />
+
+<Code code={`<body class="cel-page">
+    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+    <header>…</header>
+    <main id="contenu" tabindex="-1">…</main>
+</body>`} />
+
+## Accessibilité
+
+- **Ordre :** premier élément atteignable de la page.
+- **Cible :** `<main id="contenu" tabindex="-1">`, pour que le focus y passe vraiment (la base du paquet retire le contour de `main`).
+- **Contraste :** blanc sur marine, contour de focus or.
+
+<Contrasts paires={[['sur-fort', 'fond-fort'], ['cel-focus-couleur-sur-fort', 'fond-fort', 3]]} />
+
+## À faire, à éviter
+
+<DoDont faire={['« Aller au contenu », en français.']} eviter={['Un lien d\'évitement toujours visible, ou masqué par display: none.']} />

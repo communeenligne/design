@@ -1,0 +1,41 @@
+---
+// Points de rupture et largeurs lus dans tokens.css.
+import Doc from '../../layouts/Doc.astro'
+import Code from '../../components/Code.astro'
+import { jetons } from '../../lib/tokens.js'
+
+const ruptures = jetons.filter((jeton) => jeton.nom.startsWith('cel-rupture-'))
+const largeurs = jetons.filter((jeton) => jeton.groupe === 'Mise en page')
+const headings = [
+    { depth: 2, slug: 'conteneur', text: 'Conteneur' },
+    { depth: 2, slug: 'points-de-rupture', text: 'Points de rupture' },
+    { depth: 2, slug: 'grilles', text: 'Grilles' },
+]
+---
+<Doc title="Grille et points de rupture" description="Largeur du contenu, marges latérales et points de rupture : une mise en page fluide, sans grille à colonnes fixes." headings={headings}>
+    <h2 id="conteneur">Conteneur</h2>
+    <p><code>.cel-conteneur</code> centre le contenu sur 1 200 px au plus, avec 24 px de marge de chaque côté (16 px sur téléphone). <code>.cel-conteneur--etroit</code> : 880 px, pour les pages de texte.</p>
+    <div class="cel-tableau-defilant"><table class="cel-tableau">
+        <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Rôle</th></tr></thead>
+        <tbody>{largeurs.map((j) => <tr><td><code>--{j.nom}</code></td><td>{j.clair}</td><td>{j.landing ?? j.note}</td></tr>)}</tbody>
+    </table></div>
+
+    <h2 id="points-de-rupture">Points de rupture</h2>
+    <p>La landing n'a pas de grille à colonnes fixes : chaque bloc passe en colonne quand la place manque (<code>flex-wrap</code>, <code>grid-template-columns: repeat(auto-fit, minmax(…))</code>). Quatre seuils reviennent :</p>
+    <div class="cel-tableau-defilant"><table class="cel-tableau">
+        <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Usage</th><th scope="col">Tailwind</th></tr></thead>
+        <tbody>{ruptures.map((j) => <tr><td><code>--{j.nom}</code></td><td>{j.clair}</td><td>{j.note}</td><td><code>{j.nom.replace('cel-rupture-', '')}:</code>, <code>max-{j.nom.replace('cel-rupture-', '')}:</code></td></tr>)}</tbody>
+    </table></div>
+    <p>Une variable CSS ne peut pas servir dans <code>@media</code> : la valeur s'y écrit en px, et les variables servent aux scripts (<code>getComputedStyle</code>) et à la documentation. La landing emploie aussi 540, 560, 720, 900, 940 et 1 000 px, une fois chacun : leur rapprochement des quatre seuils est proposé pour une prochaine version.</p>
+    <Code langue="css" code={`/* Téléphone : 640 px et moins */
+@media (max-width: 640px) { … }
+
+/* Colonnes empilées : 860 px et moins */
+@media (max-width: 860px) { … }
+
+/* Pied de page sur quatre colonnes : 960 px et plus */
+@media (min-width: 960px) { … }`} />
+
+    <h2 id="grilles">Grilles</h2>
+    <p>Cartes : autant de colonnes que la largeur en permet, de la même taille (<code>repeat(auto-fill, minmax(240px, 1fr))</code>). Deux colonnes de texte et d'image : <code>flex: 1 1 460px</code> pour chacune, qui passent l'une sous l'autre d'elles-mêmes. Jamais de colonne seule et étirée au bout d'une rangée de trois.</p>
+</Doc>

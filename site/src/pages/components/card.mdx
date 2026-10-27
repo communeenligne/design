@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Carte"
+description: "Un bloc qui résume une page et y mène tout entier : un guide, une fonctionnalité."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Présenter une liste de pages de même nature (guides, fonctionnalités) : titre, résumé, une information secondaire. Toute la carte est cliquable, par le lien du titre.
+
+**Quand ne pas l'utiliser :** pour un seul lien isolé (prendre le [lien](/components/link/)), ni avec plusieurs liens dans la même carte.
+
+## Exemple
+
+<Example titre="Cartes de guides" fond="clair" html={`
+    <ul class="doc-cartes">
+        <li><article class="cel-carte">
+            <h3 class="cel-carte__titre"><a class="cel-carte__lien" href="#">Publier les actes de la commune</a></h3>
+            <p class="cel-carte__resume">Ce que la loi impose depuis 2022, et comment le faire en quelques minutes.</p>
+            <p class="cel-carte__meta">Lecture : 4 minutes</p>
+        </article></li>
+        <li><article class="cel-carte">
+            <h3 class="cel-carte__titre"><a class="cel-carte__lien" href="#">Choisir un nom de domaine</a></h3>
+            <p class="cel-carte__resume">Garder l'ancien, en prendre un nouveau : les étapes et les délais.</p>
+            <p class="cel-carte__meta">Lecture : 3 minutes</p>
+        </article></li>
+    </ul>
+`} tailwind={`
+    <article class="relative flex flex-col gap-2.5 p-5.5 rounded-14 border border-filet bg-surface transition duration-250 hover:-translate-y-1 hover:border-filet-focus hover:shadow-carte-survol focus-within:-translate-y-1 focus-within:border-filet-focus">
+        <h3 class="text-19 leading-130 font-extra"><a class="text-texte-marine no-underline after:absolute after:inset-0 after:rounded-[inherit]" href="#">Publier les actes de la commune</a></h3>
+        <p class="text-15 text-texte-2">Ce que la loi impose depuis 2022.</p>
+    </article>
+`} />
+
+La classe `doc-cartes` (grille) est propre à ce site : la grille de cartes se construit avec `repeat(auto-fill, minmax(240px, 1fr))`.
+
+## États
+
+<Example titre="Repos, survol, focus visible" fond="clair" html={`
+    <ul class="doc-cartes">
+        <li><article class="cel-carte"><p class="cel-carte__titre"><a class="cel-carte__lien" href="#">Repos</a></p></article></li>
+        <li><article class="cel-carte" data-cel-etat="survol"><p class="cel-carte__titre"><a class="cel-carte__lien" href="#">Survol</a></p></article></li>
+        <li><article class="cel-carte" data-cel-etat="focus"><p class="cel-carte__titre"><a class="cel-carte__lien" href="#">Focus visible</a></p></article></li>
+    </ul>
+`} />
+
+Au survol et au focus, la carte se soulève de 4 px, sa bordure fonce et elle prend une ombre (aucune ombre en sombre ; pas de déplacement avec la réduction des animations). Le contour de focus entoure toute la carte.
+
+## Accessibilité
+
+- **Rôle :** un seul lien, sur le titre ; son pseudo-élément couvre la carte. Le lecteur d'écran n'entend que le titre comme nom du lien.
+- **Liste :** des cartes de même nature sont dans une liste (`<ul>`).
+- **Titres :** niveau cohérent avec la page (`h2` ou `h3`).
+
+<Contrasts paires={[['texte-marine', 'surface'], ['texte-2', 'surface'], ['texte-discret-2', 'surface'], ['filet-focus', 'surface', 3]]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Des cartes de même hauteur dans une rangée.', 'Un titre qui reprend celui de la page de destination.']} eviter={['Un bouton ou un second lien dans une carte cliquable.', 'Un résumé de plus de deux lignes.']} />

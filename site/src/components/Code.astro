@@ -1,0 +1,9 @@
+---
+// Bloc de code à copier, sans coloration (elle écrirait des couleurs en attribut style). site.js ajoute « Copier ».
+import { desindenter } from '../lib/code.js'
+
+const { code, langue = 'html' } = Astro.props
+---
+<div class="doc-code" data-langue={langue}>
+    <pre><code>{desindenter(code)}</code></pre>
+</div>

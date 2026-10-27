@@ -1,0 +1,158 @@
+---
+// Gabarit de toutes les pages : en-tête (logo, « Design system », recherche, rubriques), navigation latérale de la
+// rubrique, fil d'Ariane, contenu, sommaire de la page à droite, pied de page avec le choix du thème. Non référencé.
+import '../styles/main.css'
+import Icon from '../components/Icon.astro'
+import { RUBRIQUES, filDAriane, rubriqueDe, voisines } from '../lib/navigation.js'
+import { VERSION } from '../lib/version.js'
+
+const props = Astro.props.frontmatter ?? Astro.props
+const { title, description, plein = false } = props
+const headings = Astro.props.headings ?? props.headings ?? []
+const chemin = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`
+const rubrique = rubriqueDe(chemin)
+const etapes = filDAriane(chemin, title)
+const { precedente, suivante } = voisines(chemin)
+const sommaire = headings.filter((titre) => titre.depth === 2)
+const titrePage = chemin === '/' ? 'Design system de Commune en ligne' : `${title} · Design system de Commune en ligne`
+const lateral = rubrique && rubrique.pages.length > 0
+---
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{titrePage}</title>
+    {description && <meta name="description" content={description}>}
+    <meta name="robots" content="noindex, nofollow">
+    {rubrique && <meta name="rubrique" content={rubrique.titre}>}
+    <meta name="theme-color" content="#1F3A5F">
+    <link rel="icon" href="/design/brand/favicon.svg" type="image/svg+xml">
+    <script is:inline src="/design/js/theme-boot.js"></script>
+    <script is:inline src="/design/js/motion-boot.js"></script>
+    <script is:inline type="module" src="/js/site.js"></script>
+</head>
+<body class="cel-page">
+    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+
+    <header class="doc-entete">
+        <div class="cel-conteneur doc-entete__haut">
+            <a href="/" class="doc-marque">
+                <img class="cel-logo-clair" src="/design/brand/logo.svg" alt="Commune en ligne" width="154" height="32">
+                <img class="cel-logo-sombre" src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne" width="154" height="32">
+                <span class="doc-marque__titre">Design system</span>
+            </a>
+            <form class="doc-recherche" role="search" action="/search/" method="get">
+                <label class="cel-masque" for="recherche-entete">Rechercher dans la documentation</label>
+                <span class="cel-champ doc-recherche__champ">
+                    <input id="recherche-entete" type="search" name="q" placeholder="Rechercher" autocomplete="off">
+                </span>
+                <button type="submit" class="cel-bouton cel-bouton--icone doc-recherche__bouton"><Icon nom="magnifying-glass" taille="20" appuyee /><span class="cel-masque">Rechercher</span></button>
+            </form>
+        </div>
+        <nav class="cel-conteneur cel-navigation doc-rubriques" aria-label="Rubriques">
+            <ul class="cel-navigation__liens">
+                {RUBRIQUES.map((r) => (
+                    <li><a href={r.url} aria-current={chemin === r.url ? 'page' : chemin.startsWith(r.url) ? 'true' : undefined}>{r.titre}</a></li>
+                ))}
+            </ul>
+        </nav>
+    </header>
+
+    <div class={`cel-conteneur doc-corps${lateral ? '' : ' doc-corps--sans-lateral'}${plein || sommaire.length === 0 ? ' doc-corps--sans-sommaire' : ''}`}>
+        {lateral && (
+            <nav class="doc-lateral" aria-labelledby="titre-lateral">
+                <details class="doc-lateral__plier" open>
+                    <summary class="doc-lateral__titre" id="titre-lateral">{rubrique.titre}</summary>
+                    <ul>
+                        <li><a href={rubrique.url} aria-current={chemin === rubrique.url ? 'page' : undefined}>Vue d'ensemble</a></li>
+                        {rubrique.pages.map((page) => (
+                            <li><a href={page.url} aria-current={chemin === page.url ? 'page' : undefined}>{page.titre}</a></li>
+                        ))}
+                    </ul>
+                </details>
+            </nav>
+        )}
+
+        <main id="contenu" tabindex="-1" class="doc-principal">
+            {chemin !== '/' && (
+                <nav class="cel-fil-ariane" aria-label="Fil d'Ariane">
+                    <ol>
+                        {etapes.map((etape, rang) => (
+                            <li>
+                                {rang === etapes.length - 1
+                                    ? <span aria-current="page">{etape.titre}</span>
+                                    : <><a href={etape.url}>{etape.titre}</a><span aria-hidden="true">›</span></>}
+                            </li>
+                        ))}
+                    </ol>
+                </nav>
+            )}
+            <h1 class="doc-titre" data-cel-apparition="titre">{title}</h1>
+            {description && <p class="cel-chapo doc-chapo">{description}</p>}
+
+            <div class="doc-contenu">
+                <slot />
+            </div>
+
+            {(precedente || suivante) && (
+                <nav class="doc-voisines" aria-label="Pages voisines">
+                    {precedente && <a class="cel-carte doc-voisines__lien" href={precedente.url}><span class="doc-voisines__sens">Précédent</span>{precedente.titre}</a>}
+                    {suivante && <a class="cel-carte doc-voisines__lien doc-voisines__lien--suivant" href={suivante.url}><span class="doc-voisines__sens">Suivant</span>{suivante.titre}</a>}
+                </nav>
+            )}
+        </main>
+
+        {!plein && sommaire.length > 0 && (
+            <aside class="doc-sommaire">
+                <nav aria-labelledby="titre-sommaire">
+                    <p class="doc-sommaire__titre" id="titre-sommaire">Sur cette page</p>
+                    <ul>
+                        {sommaire.map((titre) => <li><a href={`#${titre.slug}`}>{titre.text}</a></li>)}
+                    </ul>
+                </nav>
+            </aside>
+        )}
+    </div>
+
+    <footer class="cel-pied">
+        <div class="cel-conteneur">
+            <div class="cel-pied__liens">
+                <div class="cel-pied__identite">
+                    <a href="/" class="cel-pied__marque"><img src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne, design system" width="154" height="32" loading="lazy"></a>
+                    <p>Le design system de Commune en ligne : landing, panel et aide en ligne. Version {VERSION}.</p>
+                </div>
+                {RUBRIQUES.filter((r) => r.pages.length > 0).slice(0, 2).map((r, rang) => (
+                    <nav class="cel-pied__colonne" aria-labelledby={`pied-${rang}`}>
+                        <p class="cel-pied__titre" id={`pied-${rang}`}>{r.titre}</p>
+                        <ul>{r.pages.map((page) => <li><a href={page.url}>{page.titre}</a></li>)}</ul>
+                    </nav>
+                ))}
+                <nav class="cel-pied__colonne" aria-labelledby="pied-autres">
+                    <p class="cel-pied__titre" id="pied-autres">Et aussi</p>
+                    <ul>
+                        <li><a href="/components/">Composants</a></li>
+                        <li><a href="/patterns/">Modèles</a></li>
+                        <li><a href="/accessibility/">Accessibilité</a></li>
+                        <li><a href="/changelog/">Journal des versions</a></li>
+                        <li><a href="https://communeenligne.fr/" class="cel-pied__plus">communeenligne.fr</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="cel-pied__bas">
+                <div class="cel-pied__meta">
+                    <p>© 2026 · <span class="cel-pied__mot-symbole"><strong>commune</strong>enligne</span> · Design system {VERSION}</p>
+                    <p>Code sous licence MIT · police Manrope sous licence OFL</p>
+                </div>
+                <div class="cel-theme" role="group" aria-labelledby="pied-theme" data-cel-theme hidden>
+                    <span id="pied-theme">Thème :</span>
+                    <span class="cel-theme__options">
+                        <button type="button" class="cel-theme__option" data-cel-theme-option="clair" aria-pressed="true"><Icon nom="sun" />Clair</button>
+                        <button type="button" class="cel-theme__option" data-cel-theme-option="sombre" aria-pressed="false"><Icon nom="moon" />Sombre</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

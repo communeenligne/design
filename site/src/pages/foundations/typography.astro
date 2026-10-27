@@ -1,0 +1,75 @@
+---
+// Page générée depuis tokens.css.
+import Doc from '../../layouts/Doc.astro'
+import Example from '../../components/Example.astro'
+import { jetons } from '../../lib/tokens.js'
+
+const de = (prefixe) => jetons.filter((jeton) => jeton.nom.startsWith(prefixe))
+const headings = [
+    { depth: 2, slug: 'police', text: 'Police' },
+    { depth: 2, slug: 'tailles', text: 'Tailles' },
+    { depth: 2, slug: 'titres', text: 'Titres fluides' },
+    { depth: 2, slug: 'graisses', text: 'Graisses' },
+    { depth: 2, slug: 'interlignes', text: 'Interlignes' },
+    { depth: 2, slug: 'approche', text: 'Approche' },
+    { depth: 2, slug: 'hierarchie', text: 'Hiérarchie' },
+]
+const ligne = (jeton) => `${jeton.clair}${jeton.note ? ` · ${jeton.note}` : ''}`
+---
+<Doc title="Typographie" description="Manrope, hébergée avec le paquet, et l'échelle des tailles, graisses, interlignes et approches. Page générée à partir de tokens.css." headings={headings}>
+    <h2 id="police">Police</h2>
+    <p><strong>Manrope</strong>, graisses 500, 600, 700 et 800, jeu de caractères latin, servie depuis le domaine du site (aucun appel à un service de polices). Licence SIL Open Font License 1.1. Une police de repli aux mesures de Manrope (Arial, Arimo ou Liberation Sans ajustées) évite que le texte ne bouge pendant le chargement. Le texte courant, déclaré en 400, s'affiche en 500, la graisse la plus proche chargée : c'est le rendu de la landing.</p>
+    <p class="cel-chapo">Le site de votre commune, simple à tenir à jour. 0123456789 € — « à partir de »</p>
+
+    <h2 id="tailles">Tailles</h2>
+    <p>Texte courant : 17 px (<code>--cel-taille-texte</code>) ; chapô 19 px ; petit texte 15 px ; mentions 14 px. Les autres tailles portent leur valeur en px dans leur nom.</p>
+    <ul class="doc-echelle">
+        {de('cel-taille-').filter((j) => !j.nom.startsWith('cel-taille-titre') && !j.nom.startsWith('cel-taille-prix')).map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-echelle__nom">--{jeton.nom}<span>{ligne(jeton)}</span></span><p class="doc-specimen">Commune en ligne</p></li>
+        ))}
+    </ul>
+
+    <h2 id="titres">Titres fluides</h2>
+    <p>Les titres grandissent avec la largeur de l'écran entre deux bornes (<code>clamp()</code>). Le commentaire donne la règle de la landing qui l'emploie.</p>
+    <ul class="doc-echelle">
+        {[...de('cel-taille-titre'), ...de('cel-taille-prix')].map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-echelle__nom">--{jeton.nom}<span>{ligne(jeton)}</span></span><p class="doc-specimen">Votre commune</p></li>
+        ))}
+    </ul>
+
+    <h2 id="graisses">Graisses</h2>
+    <ul class="doc-echelle">
+        {de('cel-graisse-').map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-echelle__nom">--{jeton.nom}<span>{ligne(jeton)}</span></span><p class="doc-specimen doc-specimen--graisse">Mairie de Veckersviller</p></li>
+        ))}
+    </ul>
+
+    <h2 id="interlignes">Interlignes</h2>
+    <ul class="doc-echelle">
+        {de('cel-interligne-').map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-echelle__nom">--{jeton.nom}<span>{jeton.clair}</span></span><p class="doc-specimen doc-specimen--interligne">Les actualités, l'agenda et les comptes rendus du conseil, publiés par la mairie en quelques minutes.</p></li>
+        ))}
+    </ul>
+
+    <h2 id="approche">Approche</h2>
+    <ul class="doc-echelle">
+        {de('cel-approche-').map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-echelle__nom">--{jeton.nom}<span>{jeton.clair}</span></span><p class="doc-specimen doc-specimen--approche">Tarif 2026</p></li>
+        ))}
+    </ul>
+
+    <h2 id="hierarchie">Hiérarchie</h2>
+    <Example titre="Titre de section, chapô et texte" fond="page" html={`
+        <div class="cel-intro">
+            <h2 class="cel-titre-section cel-titre-section--marine">Pensé pour les mairies</h2>
+            <p class="cel-chapo">Un site complet, mis à jour par la secrétaire de mairie, sans compétence technique.</p>
+            <p>Le texte courant fait 17 px, interligne 1,6, en couleur texte.</p>
+        </div>
+    `} tailwind={`
+        <div class="flex flex-col gap-3.5 max-w-lecture">
+            <h2 class="text-titre-section leading-120 font-extra tracking-titre text-texte-marine text-balance">Pensé pour les mairies</h2>
+            <p class="text-chapo text-texte">Un site complet, mis à jour par la secrétaire de mairie, sans compétence technique.</p>
+            <p>Le texte courant fait 17 px, interligne 1,6, en couleur texte.</p>
+        </div>
+    `} />
+</Doc>

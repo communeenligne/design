@@ -1,0 +1,282 @@
+[
+  {
+    "nom": "academic-cap",
+    "source": "Heroicons 2.2, academic-cap (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "arrow-down-tray",
+    "source": "Heroicons 2.2, arrow-down-tray (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "arrow-right",
+    "source": "Landing de Commune en ligne (feature-tile.blade.php, help-topics.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "arrow-up-right",
+    "source": "Landing de Commune en ligne (references.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "arrows-left-right",
+    "source": "Landing de Commune en ligne (pricing.blade.php (défilement du comparatif))",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "bell",
+    "source": "Landing de Commune en ligne (hero.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "bell-alert",
+    "source": "Heroicons 2.2, bell-alert (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "bolt",
+    "source": "Landing de Commune en ligne (audience.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "book-open",
+    "source": "Heroicons 2.2, book-open (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "building-storefront",
+    "source": "Heroicons 2.2, building-storefront (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "calendar-days",
+    "source": "Heroicons 2.2, calendar-days (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "chat-bubble-left-right",
+    "source": "Heroicons 2.2, chat-bubble-left-right (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "check",
+    "source": "Landing de Commune en ligne (pricing.blade.php, plan.blade.php, signup.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "check-badge",
+    "source": "Heroicons 2.2, check-badge (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "check-circle",
+    "source": "Landing de Commune en ligne (commune-field.blade.php (redessinée au trait))",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "circle-stack",
+    "source": "Heroicons 2.2, circle-stack (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "clipboard-document-check",
+    "source": "Heroicons 2.2, clipboard-document-check (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "clipboard-document-list",
+    "source": "Heroicons 2.2, clipboard-document-list (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "clock",
+    "source": "Heroicons 2.2, clock (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "cloud-arrow-up",
+    "source": "Heroicons 2.2, cloud-arrow-up (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "computer-desktop",
+    "source": "Heroicons 2.2, computer-desktop (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "device-phone-mobile",
+    "source": "Heroicons 2.2, device-phone-mobile (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "document-check",
+    "source": "Heroicons 2.2, document-check (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "document-duplicate",
+    "source": "Heroicons 2.2, document-duplicate (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "document-text",
+    "source": "Heroicons 2.2, document-text (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "envelope",
+    "source": "Heroicons 2.2, envelope (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "envelope-open",
+    "source": "Heroicons 2.2, envelope-open (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "exclamation-triangle",
+    "source": "Heroicons 2.2, exclamation-triangle (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "globe-alt",
+    "source": "Heroicons 2.2, globe-alt (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "heart",
+    "source": "Landing de Commune en ligne (audience.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "help-video",
+    "source": "Landing de Commune en ligne (help-band.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "home-modern",
+    "source": "Heroicons 2.2, home-modern (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "identification",
+    "source": "Heroicons 2.2, identification (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "key",
+    "source": "Heroicons 2.2, key (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "lock-closed",
+    "source": "Heroicons 2.2, lock-closed (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "magnifying-glass",
+    "source": "Heroicons 2.2, magnifying-glass (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "map-pin",
+    "source": "Heroicons 2.2, map-pin (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "megaphone",
+    "source": "Heroicons 2.2, megaphone (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "moon",
+    "source": "Landing de Commune en ligne (footer.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "newspaper",
+    "source": "Heroicons 2.2, newspaper (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "pause",
+    "source": "Landing de Commune en ligne (references.blade.php (redessinée au trait))",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "photo",
+    "source": "Heroicons 2.2, photo (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "photos",
+    "source": "Landing de Commune en ligne (pricing.blade.php (stockage, ramenée de 48 à 24))",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "play",
+    "source": "Landing de Commune en ligne (references.blade.php (redessinée au trait))",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "question-mark-circle",
+    "source": "Heroicons 2.2, question-mark-circle (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "scale",
+    "source": "Heroicons 2.2, scale (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "server",
+    "source": "Heroicons 2.2, server (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "server-stack",
+    "source": "Heroicons 2.2, server-stack (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "shield-check",
+    "source": "Heroicons 2.2, shield-check (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "squares-2x2",
+    "source": "Heroicons 2.2, squares-2x2 (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "sun",
+    "source": "Landing de Commune en ligne (footer.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  },
+  {
+    "nom": "swatch",
+    "source": "Heroicons 2.2, swatch (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "trash",
+    "source": "Heroicons 2.2, trash (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "user-circle",
+    "source": "Heroicons 2.2, user-circle (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "user-group",
+    "source": "Heroicons 2.2, user-group (outline)",
+    "licence": "MIT, Tailwind Labs"
+  },
+  {
+    "nom": "x-mark",
+    "source": "Landing de Commune en ligne (audience.blade.php)",
+    "licence": "MIT, Commune en ligne"
+  }
+]

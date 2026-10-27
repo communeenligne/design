@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Page de fonctionnalité"
+description: "L'en-tête d'une page de fonctionnalité : fil d'Ariane, badge, titre, chapô, durée, actions et capture, suivi du bandeau d'aide."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import { ENTETE_PAGE, FIN_DE_PAGE } from '../../lib/patterns.js'
+
+## Composition
+
+1. En-tête de page sur fond clair (`cel-entete-page`) : [fil d'Ariane](/components/breadcrumb/), puis deux colonnes (`cel-fonctionnalite`) : texte à gauche, capture à droite ; elles passent l'une sous l'autre quand la place manque.
+2. [Bandeau d'aide](/components/banner/), collé (un seul filet).
+3. Les sections de la page (changements, étapes, fonctionnalités liées).
+4. Une [fin de page](/patterns/section/) marine vers l'inscription.
+
+<Example titre="En-tête d'une page de fonctionnalité" fond="plein" html={ENTETE_PAGE} />
+
+<Example titre="Fin de page" fond="plein" html={FIN_DE_PAGE} />
+
+## Règles
+
+- Le badge dit si la fonctionnalité est incluse ou à venir, avant le titre.
+- La durée est concrète (« 2 minutes pour ajouter un événement »).
+- Deux actions au plus : l'inscription (ocre) et une secondaire.
+- La capture a une hauteur fixe : rien ne bouge quand l'image arrive.
+
+<DoDont faire={['Un titre qui dit le bénéfice pour la mairie.', 'Le bandeau d\'aide sous l\'en-tête.']} eviter={['Plus de deux boutons.', 'Une capture sans texte de remplacement quand elle porte de l\'information.']} />

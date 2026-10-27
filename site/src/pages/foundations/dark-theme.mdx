@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Thème sombre"
+description: "Ce qui change en sombre, ce qui ne change pas, et comment écrire une couleur qui fonctionne dans les deux thèmes."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+
+## Ce qui change
+
+- **Les couleurs seulement.** Tailles, espaces, rayons et durées sont les mêmes.
+- **Les surfaces s'inversent** : la page passe à `#0f1620`, les cartes à `#172230`. Les textes s'éclaircissent pour garder 4,5:1.
+- **Le marine devient bleu clair** pour le texte (`--cel-couleur-texte-marine` : `#a7c9ee`) et plus lumineux pour les boutons (`--cel-couleur-bouton` : `#33659a`).
+- **Aucune ombre** : les couleurs d'ombre sont transparentes, les bordures suffisent.
+
+## Ce qui ne change pas
+
+Les couleurs posées sur une surface forte (fond marine, forêt) ou dorée restent identiques : texte blanc sur marine, encre sur or, logo pour fond sombre dans le pied de page. Elles sont regroupées dans tokens.css sous « identiques dans les deux thèmes ».
+
+## Écrire une couleur pour les deux thèmes
+
+Toujours une variable de rôle (`--cel-couleur-texte`, `--cel-couleur-surface`), jamais une couleur de marque (`--cel-couleur-marine`) pour un texte ou un fond de page : la couleur de marque ne change pas en sombre.
+
+<Example titre="Le même balisage, dans le thème en cours" fond="page" html={`
+    <div class="cel-encart">
+        <div class="cel-encart__corps">
+            <p class="cel-encart__titre">Changez de thème en pied de page</p>
+            <p>Cet encart n'a qu'une seule écriture : ses couleurs viennent des variables.</p>
+        </div>
+    </div>
+`} />
+
+## Contrastes clés
+
+<Contrasts paires={[
+    ['encre', 'fond-page'], ['texte', 'surface'], ['texte-discret', 'fond-clair'], ['texte-marine', 'surface'],
+    ['sur-fort', 'bouton'], ['sur-fort', 'fond-fort'], ['bordure-champ', 'surface', 3], ['cel-focus-couleur', 'fond-page', 3],
+]} />
+
+Le test du paquet vérifie 251 paires dans chaque thème ; le résultat est sur la page [Accessibilité](/accessibility/).

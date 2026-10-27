@@ -1,0 +1,273 @@
+/*
+ * @communeenligne/design : animations discrètes (reprise du module partagé de la landing et de la mise en route).
+ *
+ * Rien n'est masqué sans la classe cel-anim, posée sur <html> avant l'affichage par js/motion-boot.js, seulement
+ * quand le navigateur gère IntersectionObserver et que les animations ne sont pas réduites. Seules l'opacité et les
+ * propriétés translate et scale changent, plus le tracé d'une coche SVG : aucun décalage de mise en page. Le titre
+ * principal n'est jamais transparent. Durées de 150 à 400 ms, sans boucle, jamais sur un message d'erreur.
+ */
+
+/* ---------- Apparition au défilement : [data-cel-apparition] ---------- */
+
+.cel-anim [data-cel-apparition] {
+    opacity: 0;
+    translate: 0 16px;
+}
+
+.cel-anim [data-cel-apparition='gauche'] {
+    translate: -28px 0;
+}
+
+.cel-anim [data-cel-apparition='droite'] {
+    translate: 28px 0;
+}
+
+.cel-anim [data-cel-apparition='echelle'] {
+    translate: 0 8px;
+    scale: 0.97;
+}
+
+.cel-anim [data-cel-apparition='glisse'] {
+    translate: 40px 0;
+}
+
+.cel-anim [data-cel-apparition='titre'] {
+    opacity: 1;
+    translate: 0 6px;
+}
+
+.cel-anim [data-cel-apparition].cel-apparu,
+.cel-anim [data-cel-apparition]:focus-within {
+    opacity: 1;
+    translate: none;
+    scale: none;
+}
+
+.cel-anim [data-cel-apparition].cel-apparu {
+    transition:
+        opacity var(--cel-duree-posee) var(--cel-courbe-standard) var(--cel-retard, 0ms),
+        translate var(--cel-duree-lente) var(--cel-courbe-sortie) var(--cel-retard, 0ms),
+        scale var(--cel-duree-lente) var(--cel-courbe-sortie) var(--cel-retard, 0ms);
+}
+
+/* Remplissage : le bloc reste visible ; ses barres [data-cel-barre] s'allongent depuis la gauche, ou montent depuis le
+   bas avec [data-cel-barre="haut"], décalées par --cel-retard-barre. */
+.cel-anim [data-cel-apparition='remplissage'] {
+    opacity: 1;
+    translate: none;
+}
+
+.cel-anim [data-cel-apparition='remplissage'] [data-cel-barre] {
+    scale: 0 1;
+    transform-origin: left center;
+}
+
+.cel-anim [data-cel-apparition='remplissage'] [data-cel-barre='haut'] {
+    scale: 1 0;
+    transform-origin: center bottom;
+}
+
+.cel-anim [data-cel-apparition='remplissage'].cel-apparu [data-cel-barre] {
+    scale: none;
+    transition: scale var(--cel-duree-lente) var(--cel-courbe-sortie) var(--cel-retard-barre, 0ms);
+}
+
+/* Cartes qui se soulèvent au survol : leur propre transition s'ajoute à celle de l'apparition. */
+.cel-anim [data-cel-apparition].cel-apparu.cel-souleve {
+    transition:
+        opacity var(--cel-duree-posee) var(--cel-courbe-standard) var(--cel-retard, 0ms),
+        translate var(--cel-duree-lente) var(--cel-courbe-sortie) var(--cel-retard, 0ms),
+        transform var(--cel-duree-moderee) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-moderee) var(--cel-courbe-standard),
+        background-color var(--cel-duree-moderee) var(--cel-courbe-standard);
+}
+
+.cel-anim [data-cel-apparition].cel-en-cours {
+    will-change: opacity, translate, scale;
+}
+
+/* Élément qui reçoit le focus avant son tour : affiché sur-le-champ. */
+.cel-anim [data-cel-apparition].cel-apparu.cel-immediat {
+    transition: none;
+}
+
+/* Cascade : décalage de 70 ms par élément, plafonné à 490 ms. */
+.cel-retard-1 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 1);
+}
+
+.cel-retard-2 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 2);
+}
+
+.cel-retard-3 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 3);
+}
+
+.cel-retard-4 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 4);
+}
+
+.cel-retard-5 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 5);
+}
+
+.cel-retard-6 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 6);
+}
+
+.cel-retard-7 {
+    --cel-retard: calc(var(--cel-retard-cascade) * 7);
+}
+
+/* ---------- Carte-lien qui réagit au survol et au focus : .cel-carte-mobile ---------- */
+
+/* Légère élévation et ombre au survol comme au focus du clavier, sa flèche .cel-carte-mobile__fleche avance. Rien n'est
+   masqué : s'applique aussi sans cel-anim, jamais avec la réduction des animations (l'ombre seule reste). */
+.cel-carte-mobile {
+    transition:
+        translate var(--cel-duree-rapide) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-carte-mobile__fleche {
+    transition: translate var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-carte-mobile:hover,
+.cel-carte-mobile:focus-visible {
+    translate: 0 -3px;
+    box-shadow: var(--cel-ombre-carte-lien);
+}
+
+.cel-carte-mobile:hover .cel-carte-mobile__fleche,
+.cel-carte-mobile:focus-visible .cel-carte-mobile__fleche {
+    translate: 4px 0;
+}
+
+/* ---------- Changements d'état sur place : .cel-choix-anime, .cel-glisse, .cel-cascade ---------- */
+
+.cel-anim .cel-choix-anime {
+    transition:
+        translate var(--cel-duree-lente) var(--cel-courbe-glisse),
+        background-color var(--cel-duree-normale) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-normale) var(--cel-courbe-standard);
+}
+
+.cel-anim .cel-choix-anime * {
+    transition:
+        color var(--cel-duree-normale) var(--cel-courbe-standard),
+        border-color var(--cel-duree-normale) var(--cel-courbe-standard);
+}
+
+.cel-anim .cel-glisse {
+    transition:
+        translate var(--cel-duree-lente) var(--cel-courbe-glisse),
+        opacity var(--cel-duree-normale) var(--cel-courbe-standard);
+}
+
+.cel-anim .cel-cascade[data-cel-fondu] > * {
+    animation: cel-fondu-entrant var(--cel-duree-normale) var(--cel-courbe-standard) both;
+}
+
+.cel-anim .cel-cascade[data-cel-fondu] > :nth-child(2) {
+    animation-delay: 80ms;
+}
+
+.cel-anim .cel-cascade[data-cel-fondu] > :nth-child(n + 3) {
+    animation-delay: 160ms;
+}
+
+/* ---------- Fondus courts ---------- */
+
+/* Bloc affiché par le serveur après une action (confirmation, résultat) : [data-cel-fondu]. Bloc qui apparaît ou
+   disparaît pendant la saisie : fonduEntrant() et fonduSortant() de js/motion.js. */
+.cel-anim [data-cel-fondu],
+.cel-anim .cel-fondu-entrant {
+    animation: cel-fondu-entrant var(--cel-duree-moderee) var(--cel-courbe-standard) both;
+}
+
+.cel-anim .cel-fondu-sortant {
+    animation: cel-fondu-sortant var(--cel-duree-tres-rapide) var(--cel-courbe-standard) both;
+}
+
+/* Contenu qui change sur place. */
+.cel-anim .cel-rafraichi {
+    animation: cel-rafraichi var(--cel-duree-normale) var(--cel-courbe-standard);
+}
+
+/* Questions fréquentes : la réponse arrive en fondu à l'ouverture ; la fermeture reste celle du navigateur. */
+.cel-anim details[open] > :not(summary) {
+    animation: cel-fondu-entrant var(--cel-duree-moderee) var(--cel-courbe-standard);
+}
+
+/* Coche de confirmation tracée une fois (chemin SVG avec pathLength="1"). */
+.cel-anim .cel-trace-coche {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: cel-trace var(--cel-duree-lente) var(--cel-courbe-standard) 0.1s forwards;
+}
+
+@keyframes cel-fondu-entrant {
+    from {
+        opacity: 0;
+        translate: 0 6px;
+    }
+}
+
+@keyframes cel-fondu-sortant {
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes cel-rafraichi {
+    from {
+        opacity: 0.45;
+    }
+}
+
+@keyframes cel-trace {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Réduction des animations activée après le chargement : tout apparaît sans transition, la coche est tracée d'emblée. */
+@media (prefers-reduced-motion: reduce) {
+    .cel-anim [data-cel-apparition],
+    .cel-anim [data-cel-apparition] [data-cel-barre],
+    .cel-anim [data-cel-fondu],
+    .cel-anim .cel-fondu-entrant,
+    .cel-anim .cel-fondu-sortant,
+    .cel-anim .cel-rafraichi,
+    .cel-anim details[open] > :not(summary),
+    .cel-anim .cel-choix-anime,
+    .cel-anim .cel-choix-anime *,
+    .cel-anim .cel-glisse,
+    .cel-anim .cel-cascade[data-cel-fondu] > * {
+        transition: none;
+        animation: none;
+    }
+
+    .cel-anim .cel-trace-coche {
+        stroke-dashoffset: 0;
+        animation: none;
+    }
+
+    .cel-carte-mobile,
+    .cel-carte-mobile__fleche {
+        transition: none;
+    }
+
+    .cel-carte-mobile:hover,
+    .cel-carte-mobile:focus-visible,
+    .cel-carte-mobile:hover .cel-carte-mobile__fleche,
+    .cel-carte-mobile:focus-visible .cel-carte-mobile__fleche {
+        translate: none;
+    }
+
+    .cel-anim [data-cel-apparition='remplissage'] [data-cel-barre] {
+        scale: none;
+    }
+}

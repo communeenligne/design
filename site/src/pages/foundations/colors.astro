@@ -1,0 +1,58 @@
+---
+// Page générée depuis tokens.css : chaque couleur, ses valeurs claire et sombre, son nom dans la landing.
+import Doc from '../../layouts/Doc.astro'
+import Code from '../../components/Code.astro'
+import { groupesDe, quasiDoublons, slug } from '../../lib/tokens.js'
+
+const groupes = groupesDe('cel-couleur-')
+const doublons = quasiDoublons()
+const total = groupes.reduce((somme, groupe) => somme + groupe.jetons.length, 0)
+const headings = [
+    { depth: 2, slug: 'utilisation', text: 'Utilisation' },
+    ...groupes.map((groupe) => ({ depth: 2, slug: slug(groupe.nom), text: groupe.nom })),
+    { depth: 2, slug: 'valeurs-proches', text: 'Valeurs proches' },
+]
+---
+<Doc title="Couleurs" description={`Les ${total} couleurs du paquet, en thème clair et en thème sombre. Page générée à partir de tokens.css.`} headings={headings}>
+    <h2 id="utilisation">Utilisation</h2>
+    <p>Toujours une variable, jamais un code couleur : <code>color: var(--cel-couleur-texte)</code>, ou <code>text-texte</code> avec Tailwind. Les couleurs des textes, surfaces et bordures changent avec le thème ; celles des groupes « identiques dans les deux thèmes » sont posées sur une surface forte (marine) ou dorée et ne changent pas. Chaque carte montre la valeur claire à gauche, la sombre à droite, puis le nom de la variable dans <code>landing.css</code>.</p>
+    <Code langue="css" code={`.encart {
+    background: var(--cel-couleur-teinte-bleu-2);
+    color: var(--cel-couleur-bleu-texte);
+    border: 1px solid var(--cel-couleur-filet);
+}`} />
+
+    {groupes.map((groupe) => (
+        <>
+            <h2 id={slug(groupe.nom)}>{groupe.nom}</h2>
+            <ul class="doc-nuancier">
+                {groupe.jetons.map((jeton) => (
+                    <li class={`doc-nuance doc-v-${jeton.nom}`}>
+                        <div class="doc-nuance__echantillons" aria-hidden="true">
+                            <span class="doc-nuance__echantillon doc-ech--clair"></span>
+                            <span class="doc-nuance__echantillon doc-ech--sombre"></span>
+                        </div>
+                        <div class="doc-nuance__corps">
+                            <span class="doc-nuance__nom">--{jeton.nom}</span>
+                            <span class="doc-nuance__valeurs">{jeton.clair === jeton.sombre ? jeton.clair : `${jeton.clair} · ${jeton.sombre}`}</span>
+                            {jeton.landing && <span class="doc-nuance__landing">landing : {jeton.landing}</span>}
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </>
+    ))}
+
+    <h2 id="valeurs-proches">Valeurs proches</h2>
+    <p>Ces paires sont presque impossibles à distinguer à l'œil (écart CIE76 inférieur à 2,5 dans les deux thèmes ; 0 : identiques). Elles sont reprises telles quelles de la landing pour la reproduire à l'identique ; leur fusion est proposée pour une prochaine version majeure.</p>
+    <div class="cel-tableau-defilant">
+        <table class="cel-tableau">
+            <thead><tr><th scope="col">Variable</th><th scope="col">Proche de</th><th scope="col">Écart</th></tr></thead>
+            <tbody>
+                {doublons.map(({ a, b, ecart }) => (
+                    <tr><td><code>--{a.nom}</code><br />{a.clair} · {a.sombre}</td><td><code>--{b.nom}</code><br />{b.clair} · {b.sombre}</td><td>{ecart.toFixed(2).replace('.', ',')}</td></tr>
+                ))}
+            </tbody>
+        </table>
+    </div>
+</Doc>

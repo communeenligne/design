@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Liste cochée"
+description: "Une liste de ce qui est compris, chaque élément précédé d'une coche verte."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Énumérer ce qui est inclus dans l'offre, les garanties, les points déjà réglés.
+
+**Quand ne pas l'utiliser :** pour des étapes dans l'ordre (prendre les [étapes numérotées](/components/steps/)), ni pour une liste neutre (une liste à puces suffit).
+
+## Exemple
+
+<Example titre="Ce qui est compris" html={`
+    <ul class="cel-liste-coches">
+        <li><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg><span>Toutes les fonctionnalités, sans option payante</span></li>
+        <li><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg><span>Hébergement en France et sauvegardes quotidiennes</span></li>
+        <li><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg><span>Assistance sans limite</span></li>
+    </ul>
+`} tailwind={`
+    <ul class="flex flex-col gap-3 list-none p-0 m-0 text-texte">
+        <li class="flex gap-3"><svg class="size-[18px] mt-1 flex-none text-repere-bon-texte fill-none stroke-current stroke-[2.6] [stroke-linecap:round] [stroke-linejoin:round]" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg><span>Toutes les fonctionnalités, sans option payante</span></li>
+    </ul>
+`} />
+
+## États
+
+La liste n'est pas interactive.
+
+## Accessibilité
+
+- **Rôle :** liste (`<ul>`) ; la coche est décorative (`aria-hidden`), le texte porte le sens.
+- **Contraste :** coche à 3:1 au moins.
+
+<Contrasts paires={[['texte', 'surface'], ['repere-bon-texte', 'surface', 3], ['repere-bon-texte', 'fond-page', 3]]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Des éléments courts, de forme parallèle.']} eviter={['Mélanger coches et croix dans la même liste (prendre un tableau comparatif).']} />

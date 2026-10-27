@@ -1,0 +1,26 @@
+---
+// Page générée depuis tokens.css.
+import Doc from '../../layouts/Doc.astro'
+import { jetons } from '../../lib/tokens.js'
+
+const rayons = jetons.filter((jeton) => jeton.nom.startsWith('cel-rayon-'))
+const ombres = jetons.filter((jeton) => jeton.nom.startsWith('cel-ombre-'))
+const headings = [{ depth: 2, slug: 'rayons', text: 'Rayons' }, { depth: 2, slug: 'ombres', text: 'Ombres' }]
+---
+<Doc title="Rayons et ombres" description="Les arrondis et les ombres du paquet. Page générée à partir de tokens.css." headings={headings}>
+    <h2 id="rayons">Rayons</h2>
+    <p>Les plus courants ont un nom : <code>--cel-rayon-petit</code> (8 px), <code>--cel-rayon-moyen</code> (10 px, boutons et champs), <code>--cel-rayon-grand</code> (14 px, cartes), <code>--cel-rayon-bloc</code> (20 px, bloc tarif). Les pastilles sont en <code>--cel-rayon-pilule</code>, les numéros en <code>--cel-rayon-cercle</code>.</p>
+    <ul class="doc-formes">
+        {rayons.map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-boite doc-boite--rayon" aria-hidden="true"></span>--{jeton.nom}<span>{jeton.clair}</span></li>
+        ))}
+    </ul>
+
+    <h2 id="ombres">Ombres</h2>
+    <p>Discrètes, teintées de marine. <strong>Aucune ombre en thème sombre</strong> : leurs couleurs y deviennent transparentes, les bordures suffisent. Le commentaire donne la règle de la landing qui l'emploie.</p>
+    <ul class="doc-formes">
+        {ombres.map((jeton) => (
+            <li class={`doc-v-${jeton.nom}`}><span class="doc-boite doc-boite--ombre" aria-hidden="true"></span>--{jeton.nom}<span>{jeton.note}</span></li>
+        ))}
+    </ul>
+</Doc>

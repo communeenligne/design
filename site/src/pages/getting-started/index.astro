@@ -1,0 +1,13 @@
+---
+import Doc from '../../layouts/Doc.astro'
+import { RUBRIQUES } from '../../lib/navigation.js'
+
+const rubrique = RUBRIQUES.find((r) => r.url === '/getting-started/')
+---
+<Doc title={rubrique.titre} description={rubrique.description} plein>
+    <ul class="doc-cartes">
+        {rubrique.pages.map((page) => (
+            <li><article class="cel-carte"><h2 class="cel-carte__titre"><a class="cel-carte__lien" href={page.url}>{page.titre}</a></h2></article></li>
+        ))}
+    </ul>
+</Doc>

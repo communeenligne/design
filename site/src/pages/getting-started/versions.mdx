@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Versions"
+description: "Numérotation sémantique des versions du paquet, et ce qui fait une version majeure."
+---
+
+## Numérotation
+
+Les versions suivent la numérotation sémantique, `majeure.mineure.correctif` :
+
+- **Majeure** (2.0.0) : un nom de variable, de classe, de fichier exporté, d'attribut `data-cel-` ou de fonction de script change ou disparaît. **Un nom qui change, c'est une version majeure**, même si l'apparence ne bouge pas.
+- **Mineure** (1.1.0) : un ajout (nouvelle variable, nouveau composant, nouvelle variante, nouvelle icône), ou un changement de valeur voulu (une couleur ajustée pour le contraste).
+- **Correctif** (1.0.1) : une erreur corrigée sans changement voulu de l'apparence.
+
+## Monter de version
+
+1. Lire le [journal des versions](/changelog/).
+2. Changer les deux numéros dans l'adresse de l'archive (`.../download/v1.1.0/communeenligne-design-1.1.0.tgz`), puis `npm install`.
+3. Pour une version majeure, le journal liste chaque nom remplacé et son remplaçant.
+
+## Ce qui n'est pas garanti
+
+Les classes `doc-` et le code du site de documentation ne font pas partie du paquet. L'attribut `data-cel-etat` (états forcés) sert à la documentation et peut changer en version mineure.

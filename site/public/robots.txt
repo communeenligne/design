@@ -1,0 +1,3 @@
+# Documentation interne du design system de Commune en ligne : non référencée.
+User-agent: *
+Disallow: /

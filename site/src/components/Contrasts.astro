@@ -1,0 +1,31 @@
+---
+// Contrastes d'un composant, calculés à la construction depuis tokens.css (jamais recopiés), dans les deux thèmes.
+// paires : [texte, fond, seuil], noms de couleur sans le préfixe cel-couleur-.
+import { contraste, jetons, resoudre } from '../lib/tokens.js'
+
+const { paires = [] } = Astro.props
+const nom = (court) => (court.startsWith('cel-') ? court : `cel-couleur-${court}`)
+const lignes = paires.map(([texte, fond, seuil = 4.5]) => {
+    const [clair, sombre] = ['clair', 'sombre'].map((theme) => contraste(resoudre(jetons, nom(texte), theme), resoudre(jetons, nom(fond), theme)))
+
+    return { texte, fond, seuil, clair, sombre }
+})
+const format = (rapport) => `${rapport.toFixed(2).replace('.', ',')}:1`
+---
+<div class="cel-tableau-defilant">
+    <table class="cel-tableau doc-contrastes">
+        <caption>Contrastes calculés depuis tokens.css</caption>
+        <thead><tr><th scope="col">Premier plan</th><th scope="col">Fond</th><th scope="col">Clair</th><th scope="col">Sombre</th><th scope="col">Seuil</th></tr></thead>
+        <tbody>
+            {lignes.map((ligne) => (
+                <tr>
+                    <td><code>--{nom(ligne.texte)}</code></td>
+                    <td><code>--{nom(ligne.fond)}</code></td>
+                    <td>{format(ligne.clair)} {ligne.clair >= ligne.seuil ? '✓' : '✗ écart connu'}</td>
+                    <td>{format(ligne.sombre)} {ligne.sombre >= ligne.seuil ? '✓' : '✗ écart connu'}</td>
+                    <td>{String(ligne.seuil).replace('.', ',')}:1</td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>

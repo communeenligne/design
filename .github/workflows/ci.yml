@@ -1,0 +1,31 @@
+# Intégration continue : tests du paquet (contrastes, exports, fichiers générés), construction du site, liens internes.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Tests du paquet (contrastes, exports, fichiers générés)
+        run: npm test
+      - name: Archive du paquet (fichiers publiés)
+        run: npm pack -w @communeenligne/design --dry-run
+      - name: Construction du site
+        run: npm run build
+      - name: Liens internes, styles et scripts en ligne, noindex
+        run: npm run links
+      - name: Image Docker
+        run: docker build --target build .

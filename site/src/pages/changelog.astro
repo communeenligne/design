@@ -1,0 +1,13 @@
+---
+// Journal des versions : CHANGELOG.md du dépôt, rendu à la construction (une seule source).
+import Doc from '../layouts/Doc.astro'
+import { marked } from 'marked'
+import journal from '../../../CHANGELOG.md?raw'
+
+const html = marked.parse(journal.replace(/^# .*\n/, ''))
+const headings = [...journal.matchAll(/^## (.+)$/gm)].map(([, texte]) => ({ depth: 2, text: texte, slug: texte.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') }))
+const avecAncres = headings.reduce((page, titre) => page.replace(`<h2>${titre.text}</h2>`, `<h2 id="${titre.slug}">${titre.text}</h2>`), html)
+---
+<Doc title="Journal des versions" description="Ce qui change à chaque version du paquet. Lu dans CHANGELOG.md du dépôt." headings={headings}>
+    <Fragment set:html={avecAncres} />
+</Doc>

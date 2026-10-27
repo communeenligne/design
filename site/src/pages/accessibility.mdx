@@ -1,0 +1,47 @@
+---
+layout: ../layouts/Doc.astro
+title: "Accessibilité"
+description: "Les règles que le design system tient pour tous ses composants, et le résultat du test de contraste."
+---
+
+import Code from '../components/Code.astro'
+import Contrasts from '../components/Contrasts.astro'
+
+## Engagements
+
+Les sites de Commune en ligne visent le niveau AA du RGAA 4.1 (WCAG 2.1 AA). Le design system en porte la part visuelle :
+
+- **Contrastes :** 4,5:1 pour le texte, 3:1 pour les bordures des champs, les éléments d'interface, les icônes porteuses de sens et le focus, dans les deux thèmes.
+- **Focus visible :** contour de 3 px, décalé de 3 px, marine sur fond clair, or sur surface forte. Jamais retiré sans remplacement.
+- **Clavier :** tout est atteignable et utilisable au clavier, dans l'ordre de lecture ; les onglets suivent le motif ARIA (flèches, Début, Fin).
+- **Sans script :** chaque composant fonctionne sans JavaScript (onglets en liens, thème par le serveur, questions en `details`).
+- **Mouvement :** animations courtes, jamais en boucle, coupées par `prefers-reduced-motion`.
+- **Sens :** jamais porté par la seule couleur (badge écrit, onglet en gras et souligné, repères de formes différentes).
+- **Cibles :** 44 px de haut pour les filtres ; 32 px au moins pour les autres petites commandes.
+- **Texte :** 17 px pour le texte courant, 12 px au minimum (badges), zoom à 200 % sans perte.
+
+## Test de contraste
+
+`npm test` lit `tokens.css` et vérifie, dans chaque thème, **251 paires** : chaque texte sur chaque fond de page, les textes sur leurs teintes, les surfaces fortes et dorées, les bordures d'interface et le focus, et toute règle de `components.css` qui pose à la fois un texte et un fond. Il vérifie aussi que chaque couleur a sa valeur sombre et que les ombres disparaissent en sombre. Il tourne à chaque modification (intégration continue).
+
+<Code langue="text" code={`clair : 251 paires vérifiées, 250 conformes
+sombre : 251 paires vérifiées, 249 conformes
+écart connu : --cel-couleur-sur-fort-filet sur --cel-couleur-fond-fort (clair 2,22:1, sombre 1,84:1)
+écart connu : --cel-couleur-bouton sur --cel-couleur-surface (sombre 2,65:1)`} />
+
+### Écarts connus
+
+Repris tels quels de la landing, que la version 1.0.0 reproduit à l'identique ; le test les liste à chaque exécution et échoue si un nouvel écart apparaît :
+
+- **Contour du filtre non choisi sur fond marine** (2,22:1 en clair, 1,84:1 en sombre). Le filtre reste identifié par son texte blanc (WCAG 1.4.11 n'exige pas le contour quand le texte identifie le composant). Proposition : `#7d9cc4` pour `--cel-couleur-sur-fort-filet` (4,06:1 en clair, 3,37:1 en sombre).
+- **Bouton plein posé sur une carte, en sombre** (2,65:1 entre le bouton et la carte). Sur la page, 3:1 est atteint ; le bouton est identifié par son texte. Proposition : `#3d73ab` pour `--cel-couleur-bouton` en sombre (3,24:1 sur la carte, 4,95:1 pour le texte blanc).
+
+<Contrasts paires={[['sur-fort-filet', 'fond-fort', 3], ['bouton', 'surface', 3], ['bouton', 'fond-page', 3]]} />
+
+## Par composant
+
+Chaque page de composant a sa section Accessibilité : rôle, clavier, focus et le tableau de ses contrastes, calculé à la construction depuis `tokens.css`.
+
+## Ce que le design system ne garantit pas
+
+Le texte de remplacement des images, la structure des titres, l'ordre du contenu et la langue des passages restent à la charge de chaque page.

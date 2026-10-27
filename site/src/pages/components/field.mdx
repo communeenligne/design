@@ -1,0 +1,89 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Champ de formulaire"
+description: "Libellé, champ, aide et message d'erreur reliés entre eux ; récapitulatif des erreurs en haut du formulaire."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé est toujours visible, au-dessus du champ.
+
+**Quand ne pas l'utiliser :** pour un choix entre deux à quatre options toujours visibles (prendre le [contrôle segmenté](/components/segmented-control/)).
+
+## Variantes
+
+<Example titre="Texte, facultatif avec aide, liste, zone de texte" html={`
+    <form class="cel-pile">
+        <div class="cel-champ">
+            <label for="champ-nom">Nom de la commune</label>
+            <input id="champ-nom" type="text" name="nom" autocomplete="address-level2">
+        </div>
+        <div class="cel-champ">
+            <label for="champ-tel">Téléphone <span class="cel-champ__facultatif">(facultatif)</span></label>
+            <input id="champ-tel" type="tel" name="tel" autocomplete="tel" aria-describedby="aide-tel">
+            <p class="cel-champ__aide" id="aide-tel">Pour vous rappeler si besoin, jamais pour de la prospection.</p>
+        </div>
+        <div class="cel-champ">
+            <label for="champ-role">Votre fonction</label>
+            <select id="champ-role" name="role"><option>Maire</option><option>Secrétaire de mairie</option><option>Adjoint</option></select>
+        </div>
+        <div class="cel-champ">
+            <label for="champ-message">Message</label>
+            <textarea id="champ-message" name="message" rows="4"></textarea>
+        </div>
+    </form>
+`} tailwind={`
+    <div class="flex flex-col gap-1.5 text-15 font-forte text-texte-marine">
+        <label for="tw-nom">Nom de la commune</label>
+        <input id="tw-nom" type="text" class="w-full px-3.5 py-3 rounded-moyen border-[1.5px] border-bordure-champ bg-surface text-encre text-16 font-moyenne">
+    </div>
+`} />
+
+## États
+
+<Example titre="Erreur, désactivé, focus" html={`
+    <div class="cel-pile">
+        <div class="cel-champ">
+            <label for="champ-courriel">Adresse électronique</label>
+            <input id="champ-courriel" type="email" name="courriel" value="mairie@" aria-invalid="true" aria-describedby="erreur-courriel">
+            <p class="cel-champ__erreur" id="erreur-courriel">Saisissez une adresse complète, par exemple mairie@veckersviller.fr.</p>
+        </div>
+        <div class="cel-champ">
+            <label for="champ-insee">Code INSEE</label>
+            <input id="champ-insee" type="text" value="57707" disabled>
+        </div>
+        <div class="cel-champ">
+            <label for="champ-focus">Focus visible</label>
+            <input id="champ-focus" type="text" data-cel-etat="focus">
+        </div>
+    </div>
+`} />
+
+<Example titre="Récapitulatif des erreurs" html={`
+    <div class="cel-erreurs" role="alert" tabindex="-1">
+        <p class="cel-erreurs__titre">Deux champs sont à corriger :</p>
+        <ul>
+            <li><a href="#champ-courriel">Adresse électronique : adresse incomplète</a></li>
+            <li><a href="#champ-nom">Nom de la commune : obligatoire</a></li>
+        </ul>
+    </div>
+`} />
+
+## Accessibilité
+
+- **Libellé :** `<label for>` relié au champ, toujours visible ; jamais un texte d'exemple (`placeholder`) à la place.
+- **Aide et erreur :** reliées par `aria-describedby` ; le champ en erreur porte `aria-invalid="true"` et une bordure de 2 px, et le message dit comment corriger.
+- **Récapitulatif :** en haut du formulaire après l'envoi, reçoit le focus au chargement ; chaque erreur est un lien vers son champ.
+- **Clavier :** ordre de tabulation = ordre visuel. Focus : contour de 3 px.
+- **Saisie :** `autocomplete` et `type` justes (`email`, `tel`), `inputmode` pour les nombres.
+- **Bordure :** 3:1 au moins avec le fond, dans les deux thèmes.
+
+<Contrasts paires={[['bordure-champ', 'surface', 3], ['bordure-champ', 'fond-page', 3], ['encre', 'surface'], ['texte-marine', 'fond-page'], ['texte-discret', 'fond-page'], ['erreur', 'fond-page'], ['erreur-encre', 'teinte-rouge']]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Indiquer les champs facultatifs, pas les obligatoires.', 'Un message d\'erreur qui dit comment corriger.', 'Garder la saisie après une erreur.']} eviter={['Le texte d\'exemple comme seul libellé.', 'Une erreur signalée par la seule couleur.', 'Valider pendant la frappe et afficher une erreur avant la fin de la saisie.']} />

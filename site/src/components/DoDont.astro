@@ -1,0 +1,13 @@
+---
+const { faire = [], eviter = [] } = Astro.props
+---
+<div class="doc-regles">
+    <section class="doc-regles__colonne doc-regles__colonne--faire" aria-label="À faire">
+        <p class="doc-regles__titre"><svg class="cel-icone cel-icone--20 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#check" /></svg>À faire</p>
+        <ul>{faire.map((regle) => <li set:html={regle} />)}</ul>
+    </section>
+    <section class="doc-regles__colonne doc-regles__colonne--eviter" aria-label="À éviter">
+        <p class="doc-regles__titre"><svg class="cel-icone cel-icone--20 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#x-mark" /></svg>À éviter</p>
+        <ul>{eviter.map((regle) => <li set:html={regle} />)}</ul>
+    </section>
+</div>

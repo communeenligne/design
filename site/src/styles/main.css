@@ -1,0 +1,13 @@
+/*
+ * Feuille du site de documentation : le paquet, avec son thème Tailwind (pour rendre les versions Tailwind des
+ * exemples), puis la mise en page propre au site (site.css), écrite avec les seules variables du paquet.
+ */
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import '@communeenligne/design/tailwind.css';
+@import '@communeenligne/design/components.css';
+@import '@communeenligne/design/motion.css';
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@source '../pages';
+@import './tokens.generated.css';
+@import './site.css';

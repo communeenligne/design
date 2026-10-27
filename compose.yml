@@ -1,0 +1,41 @@
+# docker compose up                                  site de documentation en développement : http://localhost:4321
+# docker compose run --rm node npm test              tests du paquet
+# docker compose run --rm node npm run verifier      tests, construction, liens
+# docker compose --profile preview up --build preview   site construit, servi par nginx : http://localhost:8081
+#
+# Après un changement de package-lock.json : docker compose build && docker compose down -v (dépendances de l'image).
+
+name: communeenligne-design
+
+services:
+  site:
+    build:
+      context: .
+      target: dev
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    init: true
+
+  node:
+    build:
+      context: .
+      target: dev
+    profiles: ["tools"]
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    command: ["npm", "run", "verifier"]
+
+  preview:
+    build:
+      context: .
+      target: preview
+    profiles: ["preview"]
+    ports:
+      - "8081:80"
+
+volumes:
+  node_modules:

@@ -1,0 +1,28 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Pied de page"
+description: "Identité, trois colonnes de liens, puis en bas les liens légaux à gauche et le choix du thème à droite."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import { PIED } from '../../lib/patterns.js'
+
+## Composition
+
+Fond marine profond, lueur dorée discrète en haut à droite (décor). En haut, l'identité (logo pour fond sombre et une phrase) et trois colonnes de liens ; en bas, « © année » et la marque puis les liens légaux à gauche, le [sélecteur de thème](/components/theme-switch/) à droite.
+
+<Example titre="Pied de page de la landing" fond="plein" html={PIED} />
+
+## Comportement
+
+- Colonnes en grille automatique (190 px au moins chacune) ; à partir de 960 px, quatre colonnes, la première plus large.
+- Liens non soulignés, soulignés au survol ; focus or.
+- Le logo est toujours la version pour fond sombre, dans les deux thèmes.
+
+## Accessibilité
+
+- `<footer>`, chaque colonne est un `<nav>` nommé par son titre (`aria-labelledby`).
+- Les liens légaux ont un titre masqué (« Liens légaux »).
+
+<DoDont faire={['Les mêmes colonnes sur toutes les pages.', 'Les liens légaux toujours présents.']} eviter={['Plus de six liens par colonne.', 'Des liens sur des pages en construction.']} />

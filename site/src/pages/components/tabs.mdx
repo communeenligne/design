@@ -1,0 +1,74 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Onglets"
+description: "Plusieurs panneaux au même endroit, un seul affiché ; sans script, les panneaux se suivent."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Présenter des contenus de même nature, dont le visiteur ne lit qu'un à la fois : un exemple par rubrique de l'aide en ligne.
+
+**Quand ne pas l'utiliser :** pour des étapes à suivre dans l'ordre (prendre les [étapes numérotées](/components/steps/)), pour un contenu que tout le monde doit lire, ou au-delà de six onglets.
+
+## Exemple
+
+<Example titre="Onglets (motif ARIA tablist)" note="Avec le script tabs.js, les liens deviennent des onglets ; sans script, les panneaux s'affichent l'un sous l'autre avec leur titre." html={`
+    <div class="cel-onglets" data-cel-onglets>
+        <ul class="cel-onglets__liste" aria-label="Rubriques de l'aide">
+            <li><a class="cel-onglets__onglet" href="#onglet-actualites">Actualités</a></li>
+            <li><a class="cel-onglets__onglet" href="#onglet-agenda">Agenda</a></li>
+            <li><a class="cel-onglets__onglet" href="#onglet-documents">Documents</a></li>
+        </ul>
+        <div class="cel-onglets__panneaux">
+            <section class="cel-onglets__panneau" id="onglet-actualites" aria-labelledby="titre-onglet-actualites">
+                <h3 class="cel-onglets__titre-panneau" id="titre-onglet-actualites">Actualités</h3>
+                <p>Publier une actualité : Contenus, puis Actualités, puis Nouvelle actualité.</p>
+            </section>
+            <section class="cel-onglets__panneau" id="onglet-agenda" aria-labelledby="titre-onglet-agenda">
+                <h3 class="cel-onglets__titre-panneau" id="titre-onglet-agenda">Agenda</h3>
+                <p>Ajouter un événement : Contenus, puis Agenda, puis Nouvel événement.</p>
+            </section>
+            <section class="cel-onglets__panneau" id="onglet-documents" aria-labelledby="titre-onglet-documents">
+                <h3 class="cel-onglets__titre-panneau" id="titre-onglet-documents">Documents</h3>
+                <p>Publier un compte rendu : Contenus, puis Documents, puis Nouveau document.</p>
+            </section>
+        </div>
+    </div>
+`} />
+
+<Code langue="js" code={`import { initOnglets } from '@communeenligne/design/js/tabs.js'
+
+initOnglets()`} />
+
+## États
+
+<Example titre="Repos, survol, focus visible, choisi" html={`
+    <ul class="cel-onglets__liste" role="presentation">
+        <li><button type="button" class="cel-onglets__onglet">Repos</button></li>
+        <li><button type="button" class="cel-onglets__onglet" data-cel-etat="survol">Survol</button></li>
+        <li><button type="button" class="cel-onglets__onglet" data-cel-etat="focus">Focus visible</button></li>
+        <li><button type="button" class="cel-onglets__onglet" aria-selected="true">Choisi</button></li>
+    </ul>
+`} />
+
+L'onglet choisi est souligné de 2 px et en gras : pas seulement une autre couleur. Sur téléphone, la liste défile horizontalement.
+
+## Accessibilité
+
+- **Rôles :** `tablist`, `tab` (`aria-selected`, `aria-controls`), `tabpanel` (`aria-labelledby`), posés par le script.
+- **Clavier :** Tab entre dans la liste sur l'onglet choisi, puis passe au panneau ; flèches gauche et droite d'un onglet à l'autre (en boucle), Début et Fin. Le panneau s'affiche dès que l'onglet est choisi.
+- **Focus :** contour intérieur (décalé de −3 px) pour ne pas être coupé par le défilement.
+- **Annonce :** après le premier affichage, le changement de panneau est annoncé poliment (`aria-live`).
+- **Sans script :** liens vers les panneaux, tous affichés, chacun avec son titre.
+- **Ancre :** une adresse `#onglet-agenda` ouvre l'onglet correspondant.
+
+<Contrasts paires={[['texte-discret-2', 'fond-page'], ['texte-marine', 'fond-page']]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Des libellés d\'un ou deux mots.', 'Le premier onglet choisi par défaut.']} eviter={['Des onglets pour une navigation entre pages.', 'Des onglets imbriqués.']} />

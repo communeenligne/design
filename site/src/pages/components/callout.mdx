@@ -1,0 +1,58 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Encart"
+description: "Un bloc encadré dans le corps de la page pour une précision importante, souvent réglementaire."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Mettre à part une précision que le lecteur ne doit pas manquer : une obligation légale, une condition du contrat, un point d'attention.
+
+**Quand ne pas l'utiliser :** pour une erreur de formulaire (prendre le récapitulatif du [champ](/components/field/)), pour orienter vers l'aide (prendre le [bandeau](/components/banner/)), ni pour mettre en avant un texte ordinaire.
+
+## Variantes
+
+<Example titre="Encart avec icône" html={`
+    <div class="cel-encart">
+        <svg class="cel-icone cel-icone--28 cel-encart__icone" aria-hidden="true"><use href="/design/icons/sprite.svg#scale"></use></svg>
+        <div class="cel-encart__corps">
+            <h3 class="cel-encart__titre">Publication des actes</h3>
+            <p>Depuis le 1er juillet 2022, les actes des communes sont publiés sous forme électronique sur leur site.</p>
+        </div>
+    </div>
+`} tailwind={`
+    <div class="flex items-start gap-4.5 px-6.5 py-6 rounded-14 border border-filet">
+        <div class="flex flex-col gap-2 text-texte-2">
+            <h3 class="text-20 font-extra text-texte-marine">Publication des actes</h3>
+            <p>Depuis le 1er juillet 2022, les actes des communes sont publiés sous forme électronique sur leur site.</p>
+        </div>
+    </div>
+`} />
+
+<Example titre="Sur un fond clair" fond="clair" html={`
+    <div class="cel-encart">
+        <div class="cel-encart__corps">
+            <p class="cel-encart__titre">Sans engagement de durée</p>
+            <p>La commune peut refuser la reconduction à chaque échéance, avec un mois de préavis.</p>
+        </div>
+    </div>
+`} />
+
+## États
+
+L'encart n'est pas interactif. Un lien qu'il contient suit les états du [lien](/components/link/).
+
+## Accessibilité
+
+- **Structure :** le titre est un vrai titre (`h2` à `h4` selon la page) s'il structure le contenu, sinon un paragraphe.
+- **Icône :** décorative.
+
+<Contrasts paires={[['texte-2', 'fond-page'], ['texte-marine', 'fond-page'], ['texte-2', 'fond-clair']]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Un titre court qui résume la précision.', 'Un seul encart par section.']} eviter={['Un encart pour un paragraphe ordinaire.', 'Plusieurs encarts à la suite.']} />

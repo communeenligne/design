@@ -1,0 +1,29 @@
+---
+layout: ../../layouts/Doc.astro
+title: "En-tête"
+description: "Logo, navigation principale et action « J'inscris ma commune », toujours visible, sur téléphone aussi."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import { ENTETE } from '../../lib/patterns.js'
+
+## Composition
+
+Le logo (lien vers l'accueil), quatre liens au plus, puis l'action principale en bouton plein. La page en cours est soulignée d'un filet ocre ; une sous-page de la rubrique (une fonctionnalité, un guide) marque son lien avec `aria-current="true"`. L'action garde son fond plein quand elle est la page en cours, soulignée d'un filet ocre intérieur.
+
+<Example titre="En-tête de la landing" fond="plein" html={ENTETE} />
+
+## Comportement
+
+- **Téléphone (640 px et moins) :** logo centré, liens sur une ligne dans le même ordre, puis le bouton en dessous. Pas de menu replié : quatre liens tiennent.
+- **Thème :** deux images du logo, `cel-logo-clair` et `cel-logo-sombre`, une seule affichée.
+- **Lien d'évitement :** juste avant l'en-tête, premier élément de la page.
+
+## Accessibilité
+
+- `<header>`, puis `<nav aria-label="Navigation principale">` et une liste.
+- `aria-current="page"` sur la page en cours, `"true"` sur la rubrique d'une sous-page.
+- Le logo a pour texte « Commune en ligne, accueil ».
+
+<DoDont faire={['Quatre liens au plus, plus l\'action.', 'Le même en-tête sur toutes les pages.']} eviter={['Un menu déroulant.', 'Masquer l\'action principale sur téléphone.']} />

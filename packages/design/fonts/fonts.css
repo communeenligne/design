@@ -1,0 +1,64 @@
+/*
+ * Manrope, hébergée avec le paquet (aucune ressource d'un autre domaine). Graisses 500, 600, 700 et 800, jeu latin :
+ * celles de la landing. Licence SIL Open Font License 1.1 (fonts/OFL.txt), distincte de la licence MIT du paquet.
+ *
+ * Fichiers de @fontsource/manrope 5.3.0. Le texte courant (graisse 400) s'affiche avec la graisse 500, la plus proche
+ * chargée, comme sur la landing.
+ */
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 500;
+    src: url('./manrope-latin-500-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 600;
+    src: url('./manrope-latin-600-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url('./manrope-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 800;
+    src: url('./manrope-latin-800-normal.woff2') format('woff2');
+}
+
+/*
+ * Police de repli aux mesures de Manrope, le temps que Manrope se charge : le texte ne bouge presque pas au changement
+ * de police. Valeurs calculées sur les graisses 500 et 800 face à Arial, Arimo et Liberation Sans (reprises de la
+ * landing).
+ */
+@font-face {
+    font-family: 'Manrope Fallback';
+    src: local('Arial'), local('ArialMT'), local('Arimo'), local('Liberation Sans');
+    font-weight: 400 600;
+    size-adjust: 105.6%;
+    ascent-override: 100.94%;
+    descent-override: 28.41%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: 'Manrope Fallback';
+    src: local('Arial Bold'), local('Arial-BoldMT'), local('Arimo Bold'), local('Liberation Sans Bold');
+    font-weight: 700 900;
+    size-adjust: 103.04%;
+    ascent-override: 103.46%;
+    descent-override: 29.12%;
+    line-gap-override: 0%;
+}

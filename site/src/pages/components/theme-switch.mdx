@@ -1,0 +1,71 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Sélecteur de thème"
+description: "Deux pastilles dans une capsule pour choisir entre le thème clair et le thème sombre, dans le pied de page."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Laisser le visiteur choisir le thème. Le thème clair est celui par défaut ; le choix est gardé (cookie lu par le serveur, ou stockage local). Il se place à droite du bas du pied de page.
+
+**Quand ne pas l'utiliser :** ailleurs que dans le pied de page ; pas de troisième option « système » (la préférence du système n'est jamais lue).
+
+## Variantes
+
+<Example titre="Sur le pied de page (sans script : deux liens)" fond="profond" html={`
+    <div class="cel-theme" role="group" aria-labelledby="exemple-theme">
+        <span id="exemple-theme">Thème :</span>
+        <span class="cel-theme__options">
+            <a href="?theme=clair" class="cel-theme__option" aria-current="true"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#sun"></use></svg>Clair</a>
+            <a href="?theme=sombre" class="cel-theme__option"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#moon"></use></svg>Sombre</a>
+        </span>
+    </div>
+`} />
+
+<Example titre="Sur une surface claire (avec script : deux boutons)" html={`
+    <div class="cel-theme cel-theme--clair" role="group" aria-labelledby="exemple-theme-clair">
+        <span id="exemple-theme-clair">Thème :</span>
+        <span class="cel-theme__options">
+            <button type="button" class="cel-theme__option" aria-pressed="false"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#sun"></use></svg>Clair</button>
+            <button type="button" class="cel-theme__option" aria-pressed="true"><svg class="cel-icone" aria-hidden="true"><use href="/design/icons/sprite.svg#moon"></use></svg>Sombre</button>
+        </span>
+    </div>
+`} />
+
+Le sélecteur de cette page est celui du pied de page : il change vraiment le thème. Les exemples ci-dessus ne sont pas reliés au script.
+
+<Code langue="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
+
+// Les liens data-cel-theme-option deviennent des boutons aria-pressed.
+initTheme({ cookie: 'cel_theme' })`} />
+
+## États
+
+<Example titre="Option : repos, survol, focus, en cours" fond="profond" html={`
+    <span class="cel-theme__options">
+        <button type="button" class="cel-theme__option" aria-pressed="false">Repos</button>
+        <button type="button" class="cel-theme__option" aria-pressed="false" data-cel-etat="survol">Survol</button>
+        <button type="button" class="cel-theme__option" aria-pressed="false" data-cel-etat="focus">Focus</button>
+        <button type="button" class="cel-theme__option" aria-pressed="true">En cours</button>
+    </span>
+`} />
+
+Le thème en cours est une pastille pleine et en gras, pas seulement une autre couleur.
+
+## Accessibilité
+
+- **Rôle :** groupe (`role="group"`) nommé par « Thème : » ; sans script, l'option en cours porte `aria-current="true"` ; avec, des boutons `aria-pressed`.
+- **Clavier :** Tab d'une option à l'autre, Entrée ou Espace pour choisir.
+- **Focus :** or sur le pied de page (surface forte).
+- **Sans script :** les liens mènent à une adresse du serveur qui pose le cookie et revient à la page (`rel="nofollow"`, réponse non indexée).
+
+<Contrasts paires={[['sur-sombre', 'fond-fort-profond'], ['sur-or-marine', 'sur-fort'], ['cel-focus-couleur-sur-fort', 'fond-fort-profond', 3], ['texte', 'fond-page'], ['sur-fort', 'bouton'], ['bordure-champ', 'fond-page', 3]]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Les deux libellés écrits, avec leur icône.', 'Le thème appliqué tout de suite, sans recharger la page.']} eviter={['Un simple interrupteur sans libellé.', 'Déduire le thème de la préférence du système.']} />

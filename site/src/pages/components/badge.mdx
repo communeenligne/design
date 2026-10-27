@@ -1,0 +1,51 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Badge"
+description: "Une courte étiquette d'état posée près d'un titre : inclus, bientôt, automatique, brouillon."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Signaler l'état d'un élément en un ou deux mots : une fonctionnalité incluse dans l'offre, à venir, automatique, une page en brouillon.
+
+**Quand ne pas l'utiliser :** pour une action (le badge n'est pas cliquable), pour un message long (prendre l'[encart](/components/callout/)), pour un filtre (prendre la [pastille](/components/pill/)).
+
+## Variantes
+
+<Example titre="Neutre, inclus, bientôt, automatique, brouillon" html={`
+    <span class="cel-badge">Nouveau</span>
+    <span class="cel-badge cel-badge--inclus">Inclus dans l'offre</span>
+    <span class="cel-badge cel-badge--bientot">Bientôt, sans supplément</span>
+    <span class="cel-badge cel-badge--automatique">Automatique</span>
+    <span class="cel-badge cel-badge--brouillon">Brouillon</span>
+`} tailwind={`
+    <span class="inline-block px-2.5 py-[5px] rounded-12 bg-teinte-vert-2 text-vert-encre text-12 font-extra text-center">Inclus dans l'offre</span>
+    <span class="inline-block px-2.5 py-[5px] rounded-12 border border-filet-fort bg-surface text-texte-3 text-12 font-extra text-center">Bientôt, sans supplément</span>
+`} />
+
+<Example titre="Près d'un titre" html={`
+    <div class="cel-pile">
+        <span class="cel-badge cel-badge--inclus cel-fonctionnalite__badge">Inclus dans l'offre</span>
+        <h3 class="cel-titre-section cel-titre-section--marine">Agenda</h3>
+    </div>
+`} />
+
+## États
+
+Le badge n'a pas d'état interactif : ni survol, ni focus.
+
+## Accessibilité
+
+- **Rôle :** texte simple (`<span>`). Si l'état n'est porté que par le badge, il fait partie du nom accessible de l'élément (dans le titre, ou dans `aria-describedby`).
+- **Sens :** le mot dit l'état ; la couleur ne fait que l'appuyer.
+- **Contrastes :** 4,5:1, le texte faisant 12 px.
+
+<Contrasts paires={[['texte-marine', 'surface-survol'], ['vert-encre', 'teinte-vert-2'], ['texte-3', 'surface'], ['vert-encre-3', 'teinte-vert-3'], ['ocre-encre-3', 'teinte-sable']]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Un ou deux mots.', 'Toujours le même badge pour le même état, sur tout le site.']} eviter={['Un badge cliquable.', 'Plusieurs badges sur un même élément.', 'Une phrase dans un badge.']} />

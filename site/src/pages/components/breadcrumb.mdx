@@ -1,0 +1,58 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Fil d'Ariane"
+description: "Situe la page dans l'arborescence et permet de remonter d'un niveau."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Sur une page intérieure (une fonctionnalité, un guide), dire où l'on est et permettre de remonter. Il est placé en haut de l'en-tête de page, avant le titre.
+
+**Quand ne pas l'utiliser :** sur l'accueil, ni sur une page à un seul niveau.
+
+## Exemple
+
+<Example titre="Fil d'Ariane" fond="clair" html={`
+    <nav class="cel-fil-ariane" aria-label="Fil d'Ariane">
+        <ol>
+            <li><a href="#">Accueil</a><span aria-hidden="true">›</span></li>
+            <li><a href="#">Fonctionnalités</a><span aria-hidden="true">›</span></li>
+            <li><span aria-current="page">Agenda</span></li>
+        </ol>
+    </nav>
+`} tailwind={`
+    <nav class="text-14 text-texte-discret-2" aria-label="Fil d'Ariane">
+        <ol class="flex flex-wrap gap-x-2 gap-y-1 list-none p-0 m-0">
+            <li class="flex gap-2"><a href="#" class="text-texte-marine">Accueil</a><span aria-hidden="true">›</span></li>
+            <li class="flex gap-2"><span aria-current="page">Agenda</span></li>
+        </ol>
+    </nav>
+`} />
+
+## États
+
+<Example titre="Lien : survol, focus visible" fond="clair" html={`
+    <nav class="cel-fil-ariane" aria-label="Exemple d'états">
+        <ol>
+            <li><a href="#" data-cel-etat="focus">Focus visible</a><span aria-hidden="true">›</span></li>
+            <li><span aria-current="page">Page en cours</span></li>
+        </ol>
+    </nav>
+`} />
+
+## Accessibilité
+
+- **Rôle :** `<nav aria-label="Fil d'Ariane">` et une liste ordonnée.
+- **Page en cours :** dernier élément, en texte (pas un lien), avec `aria-current="page"`.
+- **Séparateur :** `›` masqué aux lecteurs d'écran.
+- **Données structurées :** mêmes étapes que le `BreadcrumbList` de la page, s'il y en a un.
+
+<Contrasts paires={[['texte-discret-2', 'fond-clair'], ['texte-marine', 'fond-clair']]} />
+
+## À faire, à éviter
+
+<DoDont faire={['Les mêmes intitulés que les titres des pages.', 'Le fil sur une seule ligne quand c\'est possible ; il passe à la ligne sinon.']} eviter={['Un lien vers la page en cours.', 'Un fil qui ne suit pas l\'arborescence (historique de navigation).']} />

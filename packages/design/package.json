@@ -1,0 +1,46 @@
+{
+    "name": "@communeenligne/design",
+    "version": "1.0.0",
+    "description": "Design system de Commune en ligne : jetons, polices, icônes, composants CSS et thème Tailwind 4.",
+    "license": "MIT",
+    "type": "module",
+    "style": "./index.css",
+    "files": [
+        "index.css",
+        "tokens.css",
+        "components.css",
+        "motion.css",
+        "tailwind.css",
+        "fonts",
+        "icons",
+        "brand",
+        "js",
+        "tools",
+        "LICENSE",
+        "README.md"
+    ],
+    "exports": {
+        ".": "./index.css",
+        "./index.css": "./index.css",
+        "./tokens.css": "./tokens.css",
+        "./components.css": "./components.css",
+        "./motion.css": "./motion.css",
+        "./tailwind.css": "./tailwind.css",
+        "./fonts/fonts.css": "./fonts/fonts.css",
+        "./fonts/*": "./fonts/*",
+        "./icons/sprite.svg": "./icons/sprite.svg",
+        "./icons/icons.json": "./icons/icons.json",
+        "./icons/*": "./icons/*",
+        "./brand/*": "./brand/*",
+        "./js/*": "./js/*",
+        "./tools/tokens.mjs": "./tools/tokens.mjs",
+        "./package.json": "./package.json"
+    },
+    "scripts": {
+        "generer": "node scripts/tailwind.mjs && node scripts/sprite.mjs",
+        "test": "node --test scripts/*.test.mjs"
+    },
+    "engines": {
+        "node": ">=20"
+    }
+}

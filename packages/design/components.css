@@ -1,0 +1,1812 @@
+/*
+ * @communeenligne/design : composants et modèles, en CSS pur (sans Tailwind), préfixés cel-.
+ *
+ * Toute valeur vient de tokens.css : aucune couleur écrite ici. Les styles de base (police, couleurs, liens, focus) ne
+ * s'appliquent que sous la classe cel-page (posée sur <body>), avec une spécificité nulle : le paquet peut entrer dans
+ * une application qui a déjà ses propres styles (panel Filament) sans les toucher.
+ *
+ * États forcés pour la documentation : data-cel-etat="survol" ou "focus" affiche l'état sans survol ni clavier.
+ *
+ * Changer un nom de classe, c'est une version majeure.
+ */
+
+/* ---------- Base (sous .cel-page) ---------- */
+
+:where(.cel-page),
+:where(.cel-page) *,
+:where(.cel-page) *::before,
+:where(.cel-page) *::after {
+    box-sizing: border-box;
+}
+
+:where(html:has(> body.cel-page)) {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+:where(.cel-page) {
+    margin: 0;
+    background: var(--cel-couleur-fond-page);
+    color: var(--cel-couleur-encre);
+    font-family: var(--cel-police-texte);
+    font-size: var(--cel-taille-texte);
+    font-weight: var(--cel-graisse-normale);
+    line-height: var(--cel-interligne-texte);
+    -webkit-font-smoothing: antialiased;
+}
+
+:where(.cel-page) :where(img, svg) {
+    display: block;
+    max-width: 100%;
+}
+
+:where(.cel-page) :where(a) {
+    color: var(--cel-couleur-texte-marine);
+}
+
+:where(.cel-page) :where(a:hover) {
+    color: var(--cel-couleur-texte-marine-survol);
+}
+
+:where(.cel-page) :where(h1, h2, h3, p, ul, ol) {
+    margin: 0;
+}
+
+:where(.cel-page) :where(input, select, textarea, button) {
+    font: inherit;
+}
+
+:where(.cel-page) :where([hidden]) {
+    display: none !important;
+}
+
+:where(.cel-page) :where(main:focus) {
+    outline: none;
+}
+
+/* Focus visible : 3 px, décalé de 3 px, marine ; doré sur une surface forte (la variable change, pas la règle). */
+:where(.cel-page) :focus-visible,
+:where(.cel-bouton, .cel-lien, .cel-champ :is(input, select, textarea), .cel-onglets__onglet, .cel-theme__option,
+    .cel-segmente__choix, .cel-filtre, .cel-pastille, .cel-fil-ariane a, .cel-questions__question, .cel-comparatif):focus-visible,
+[data-cel-etat~='focus'] {
+    outline: var(--cel-focus-epaisseur) solid var(--cel-focus-couleur);
+    outline-offset: var(--cel-focus-decalage);
+}
+
+.cel-sur-fort,
+.cel-section--forte,
+.cel-bloc-tarif__principal,
+.cel-pied {
+    --cel-focus-couleur: var(--cel-focus-couleur-sur-fort);
+}
+
+/* ---------- Utilitaires ---------- */
+
+.cel-masque {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.cel-lien-evitement {
+    position: absolute;
+    top: var(--cel-espace-2);
+    left: var(--cel-espace-2);
+    z-index: 10;
+    padding: var(--cel-espace-2-5) var(--cel-espace-4);
+    border-radius: var(--cel-rayon-8);
+    background: var(--cel-couleur-fond-fort);
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-forte);
+    transform: translateY(-200%);
+    --cel-focus-couleur: var(--cel-focus-couleur-sur-fort);
+}
+
+.cel-lien-evitement:focus,
+.cel-lien-evitement[data-cel-etat~='focus'] {
+    transform: none;
+    color: var(--cel-couleur-sur-fort);
+}
+
+/* ---------- Mise en page ---------- */
+
+.cel-conteneur {
+    max-width: var(--cel-largeur-contenu);
+    margin: 0 auto;
+    padding-left: var(--cel-marge-laterale);
+    padding-right: var(--cel-marge-laterale);
+}
+
+.cel-conteneur--etroit {
+    max-width: var(--cel-largeur-etroite);
+}
+
+.cel-section {
+    padding-top: var(--cel-espace-section);
+    padding-bottom: var(--cel-espace-section);
+}
+
+.cel-section--claire {
+    background: var(--cel-couleur-fond-clair);
+}
+
+.cel-section--forte {
+    background: var(--cel-couleur-fond-fort);
+    color: var(--cel-couleur-sur-fort);
+}
+
+.cel-pile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-6);
+}
+
+.cel-pile--7 {
+    gap: var(--cel-espace-7);
+}
+
+.cel-pile--9 {
+    gap: var(--cel-espace-9);
+}
+
+.cel-pile--10 {
+    gap: var(--cel-espace-10);
+}
+
+.cel-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-3-5);
+    max-width: var(--cel-largeur-lecture);
+}
+
+.cel-intro--centree {
+    align-items: center;
+    max-width: none;
+    text-align: center;
+}
+
+.cel-titre-section {
+    font-size: var(--cel-taille-titre-section);
+    line-height: var(--cel-interligne-120);
+    font-weight: var(--cel-graisse-extra);
+    letter-spacing: var(--cel-approche-titre);
+    text-wrap: balance;
+}
+
+.cel-titre-section--marine {
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-titre-section--grand {
+    font-size: var(--cel-taille-titre-section-grand);
+    line-height: var(--cel-interligne-115);
+}
+
+.cel-chapo {
+    font-size: var(--cel-taille-chapo);
+    color: var(--cel-couleur-texte);
+}
+
+.cel-intro--centree .cel-chapo {
+    max-width: 40em;
+}
+
+.cel-chapo--sur-fort {
+    color: var(--cel-couleur-sur-sombre);
+}
+
+.cel-texte {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-4);
+}
+
+.cel-texte h2 {
+    margin-top: var(--cel-espace-5);
+    font-size: var(--cel-taille-22);
+    font-weight: var(--cel-graisse-extra);
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-texte h3 {
+    font-size: var(--cel-taille-18);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-texte p,
+.cel-texte li {
+    color: var(--cel-couleur-texte);
+}
+
+.cel-texte ul,
+.cel-texte ol {
+    padding-left: var(--cel-espace-6);
+}
+
+/* ---------- Icônes ---------- */
+
+.cel-icone {
+    display: inline-block;
+    flex: none;
+    width: var(--cel-icone-taille);
+    height: var(--cel-icone-taille);
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--cel-icone-trait);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cel-icone--14 {
+    --cel-icone-taille: 14px;
+}
+
+.cel-icone--16 {
+    --cel-icone-taille: 16px;
+}
+
+.cel-icone--18 {
+    --cel-icone-taille: 18px;
+}
+
+.cel-icone--20 {
+    --cel-icone-taille: 20px;
+}
+
+.cel-icone--22 {
+    --cel-icone-taille: 22px;
+}
+
+.cel-icone--26 {
+    --cel-icone-taille: 26px;
+}
+
+.cel-icone--28 {
+    --cel-icone-taille: 28px;
+}
+
+.cel-icone--56 {
+    --cel-icone-taille: 56px;
+}
+
+/* Trait appuyé : coches et flèches des boutons de la landing. */
+.cel-icone--appuyee {
+    --cel-icone-trait: 2.4;
+}
+
+/* ---------- Bouton ---------- */
+
+.cel-bouton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-espace-2-5);
+    padding: 15px var(--cel-espace-6-5);
+    border: 0;
+    border-radius: var(--cel-rayon-moyen);
+    background: var(--cel-couleur-bouton);
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-forte);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duree-rapide) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-rapide) var(--cel-courbe-standard),
+        transform var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-bouton:hover,
+.cel-bouton[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-bouton-survol);
+    color: var(--cel-couleur-sur-fort);
+}
+
+.cel-bouton--secondaire {
+    padding: 13px var(--cel-espace-6);
+    border: 2px solid var(--cel-couleur-texte-marine);
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-bouton--secondaire:hover,
+.cel-bouton--secondaire[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte-marine-survol);
+}
+
+.cel-bouton--ocre {
+    background: var(--cel-couleur-or);
+    color: var(--cel-couleur-sur-or);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-bouton--ocre:hover,
+.cel-bouton--ocre[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-or-survol);
+    color: var(--cel-couleur-sur-or);
+}
+
+.cel-bouton--sur-fort {
+    background: transparent;
+    color: var(--cel-couleur-sur-fort);
+    box-shadow: inset 0 0 0 1.5px var(--cel-couleur-sur-fort-anneau);
+}
+
+.cel-bouton--sur-fort:hover,
+.cel-bouton--sur-fort:focus-visible,
+.cel-bouton--sur-fort[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-fond-fort-doux);
+    color: var(--cel-couleur-sur-fort);
+}
+
+/* Bouton avec une icône après le texte (« Voir la rubrique ») : marges resserrées. */
+.cel-bouton--icone {
+    padding: var(--cel-espace-3) var(--cel-espace-4-5);
+    font-weight: var(--cel-graisse-extra);
+}
+
+/* Survol et focus au clavier : la même légère élévation. */
+.cel-bouton:hover,
+.cel-bouton:focus-visible,
+.cel-bouton[data-cel-etat~='survol'],
+.cel-bouton[data-cel-etat~='focus'] {
+    transform: translateY(-1px);
+    box-shadow: var(--cel-ombre-bouton);
+}
+
+.cel-bouton:disabled,
+.cel-bouton[aria-disabled='true'] {
+    border-color: var(--cel-couleur-filet-fort);
+    background: var(--cel-couleur-surface-survol);
+    color: var(--cel-couleur-texte-discret);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ---------- Lien ---------- */
+
+.cel-lien {
+    color: var(--cel-couleur-texte-marine);
+    text-underline-offset: 3px;
+}
+
+.cel-lien:hover,
+.cel-lien[data-cel-etat~='survol'] {
+    color: var(--cel-couleur-texte-marine-survol);
+}
+
+.cel-lien--fort {
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-lien--discret {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cel-lien--discret:hover,
+.cel-lien--discret[data-cel-etat~='survol'] {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-lien--sur-fort,
+.cel-lien--sur-fort:hover,
+.cel-lien--sur-fort[data-cel-etat~='survol'] {
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-lien--fleche {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-espace-2);
+    font-weight: var(--cel-graisse-extra);
+    text-decoration: none;
+}
+
+.cel-lien--fleche .cel-icone {
+    transition: translate var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-lien--fleche:hover .cel-icone,
+.cel-lien--fleche:focus-visible .cel-icone,
+.cel-lien--fleche[data-cel-etat~='survol'] .cel-icone {
+    translate: 4px 0;
+}
+
+/* ---------- Puce ---------- */
+
+.cel-puce {
+    display: inline-block;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--cel-rayon-4);
+    background: var(--cel-couleur-ocre);
+}
+
+.cel-puce--verte {
+    background: var(--cel-couleur-vert);
+}
+
+/* ---------- Badge ---------- */
+
+.cel-badge {
+    display: inline-block;
+    padding: 5px var(--cel-espace-2-5);
+    border-radius: var(--cel-rayon-12);
+    background: var(--cel-couleur-surface-survol);
+    color: var(--cel-couleur-texte-marine);
+    font-size: var(--cel-taille-12);
+    font-weight: var(--cel-graisse-extra);
+    line-height: var(--cel-interligne-texte);
+    text-align: center;
+}
+
+.cel-badge--inclus {
+    background: var(--cel-couleur-teinte-vert-2);
+    color: var(--cel-couleur-vert-encre);
+}
+
+.cel-badge--bientot {
+    border: 1px solid var(--cel-couleur-filet-fort);
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte-3);
+}
+
+.cel-badge--automatique {
+    padding: 1px 9px;
+    border-radius: var(--cel-rayon-pilule);
+    background: var(--cel-couleur-teinte-vert-3);
+    color: var(--cel-couleur-vert-encre-3);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-badge--brouillon {
+    background: var(--cel-couleur-teinte-sable);
+    color: var(--cel-couleur-ocre-encre-3);
+}
+
+/* ---------- Pastille ---------- */
+
+.cel-pastilles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-2-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-pastille {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-espace-2);
+    padding: 9px var(--cel-espace-3-5);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-pilule);
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte-marine);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-forte);
+    text-decoration: none;
+}
+
+a.cel-pastille {
+    transition:
+        transform var(--cel-duree-moderee) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-moderee) var(--cel-courbe-standard),
+        background-color var(--cel-duree-moderee) var(--cel-courbe-standard);
+}
+
+a.cel-pastille:hover,
+a.cel-pastille:focus-visible,
+a.cel-pastille[data-cel-etat~='survol'] {
+    transform: translateY(-2px);
+    box-shadow: var(--cel-ombre-pastille);
+}
+
+.cel-pastille__compteur {
+    padding: 1px var(--cel-espace-2);
+    border-radius: var(--cel-rayon-pilule);
+    background: var(--cel-couleur-surface-survol);
+    font-size: var(--cel-taille-13);
+}
+
+/* ---------- Champ de formulaire ---------- */
+
+.cel-champ {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-1-5);
+    min-width: 0;
+    color: var(--cel-couleur-texte-marine);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-champ :is(input:not([type='checkbox'], [type='radio']), select, textarea) {
+    width: 100%;
+    padding: var(--cel-espace-3) var(--cel-espace-3-5);
+    border: 1.5px solid var(--cel-couleur-bordure-champ);
+    border-radius: var(--cel-rayon-moyen);
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-encre);
+    font: inherit;
+    font-size: var(--cel-taille-16);
+    font-weight: var(--cel-graisse-moyenne);
+}
+
+.cel-champ textarea {
+    resize: vertical;
+}
+
+.cel-champ [aria-invalid='true'] {
+    border: 2px solid var(--cel-couleur-erreur);
+}
+
+.cel-champ :is(input, select, textarea):disabled {
+    border-style: dashed;
+    background: var(--cel-couleur-surface-attenuee);
+    color: var(--cel-couleur-texte-discret);
+    cursor: not-allowed;
+}
+
+.cel-champ__facultatif {
+    font-weight: var(--cel-graisse-moyenne);
+    color: var(--cel-couleur-texte-discret);
+}
+
+.cel-champ__aide {
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-moyenne);
+    color: var(--cel-couleur-texte-discret);
+}
+
+.cel-champ__erreur {
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-demi);
+    color: var(--cel-couleur-erreur);
+}
+
+/* Récapitulatif des erreurs, en haut du formulaire. */
+.cel-erreurs {
+    padding: var(--cel-espace-4) var(--cel-espace-4-5);
+    border: 2px solid var(--cel-couleur-erreur);
+    border-radius: var(--cel-rayon-12);
+    background: var(--cel-couleur-teinte-rouge);
+    color: var(--cel-couleur-erreur-encre);
+}
+
+.cel-erreurs__titre {
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-erreurs ul {
+    margin-top: var(--cel-espace-1-5);
+    padding-left: var(--cel-espace-5);
+}
+
+.cel-erreurs a {
+    color: var(--cel-couleur-erreur-encre);
+}
+
+/* ---------- Bandeau ---------- */
+
+.cel-bandeau {
+    border-top: 1px solid var(--cel-couleur-filet);
+    border-bottom: 1px solid var(--cel-couleur-filet);
+    background: var(--cel-couleur-teinte-bleu-2);
+}
+
+/* Collé à l'en-tête de la page : un seul filet entre les deux. */
+.cel-entete-page + .cel-bandeau {
+    border-top: 0;
+}
+
+.cel-bandeau__interieur {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-espace-3);
+    padding-top: var(--cel-espace-4-5);
+    padding-bottom: var(--cel-espace-4-5);
+    color: var(--cel-couleur-texte);
+    text-align: center;
+}
+
+.cel-bandeau__interieur p {
+    margin: 0;
+}
+
+.cel-bandeau__icone {
+    flex: none;
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-bandeau__lien {
+    color: var(--cel-couleur-texte-marine);
+    font-weight: var(--cel-graisse-extra);
+    text-underline-offset: 3px;
+}
+
+/* Bandeau d'avertissement (brouillon, page non publiée). */
+.cel-bandeau--ocre {
+    border: 0;
+    background: var(--cel-couleur-teinte-sable);
+}
+
+.cel-bandeau--ocre .cel-bandeau__interieur {
+    padding-top: var(--cel-espace-3);
+    padding-bottom: var(--cel-espace-3);
+    color: var(--cel-couleur-ocre-encre);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-forte);
+}
+
+/* ---------- Encart ---------- */
+
+.cel-encart {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-espace-4-5);
+    padding: var(--cel-espace-6) var(--cel-espace-6-5);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-14);
+}
+
+.cel-encart__icone {
+    flex: none;
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-encart__corps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-2);
+    color: var(--cel-couleur-texte-2);
+}
+
+.cel-encart__titre {
+    font-size: var(--cel-taille-20);
+    font-weight: var(--cel-graisse-extra);
+    color: var(--cel-couleur-texte-marine);
+}
+
+/* ---------- Onglets ---------- */
+
+/* Sans script, les panneaux se suivent, chacun avec son titre, et les onglets sont des liens vers eux ; tabs.js
+   ajoute cel-onglets--actif. Le filet est une ombre intérieure : le soulignement de l'onglet le recouvre sans marge
+   négative, que le défilement horizontal couperait. */
+.cel-onglets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-7-5);
+}
+
+.cel-onglets__liste {
+    display: flex;
+    gap: var(--cel-espace-1) var(--cel-espace-7-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    box-shadow: inset 0 -1px 0 var(--cel-couleur-filet);
+}
+
+.cel-onglets__liste li {
+    flex: none;
+}
+
+.cel-onglets__onglet {
+    display: block;
+    padding: var(--cel-espace-3) 0;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--cel-couleur-texte-discret-2);
+    font: inherit;
+    font-size: var(--cel-taille-16);
+    font-weight: var(--cel-graisse-demi);
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        color var(--cel-duree-rapide) var(--cel-courbe-standard),
+        border-color var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-onglets__onglet:hover,
+.cel-onglets__onglet[data-cel-etat~='survol'] {
+    color: var(--cel-couleur-texte-marine);
+    text-decoration: none;
+}
+
+.cel-onglets__onglet:focus-visible,
+.cel-onglets__onglet[data-cel-etat~='focus'] {
+    outline-offset: -3px;
+    border-radius: var(--cel-rayon-4);
+}
+
+.cel-onglets__onglet[aria-selected='true'] {
+    border-bottom-color: var(--cel-couleur-texte-marine);
+    color: var(--cel-couleur-texte-marine);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-onglets__panneaux {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-10);
+}
+
+.cel-onglets__panneau {
+    padding-top: var(--cel-espace-1-5);
+}
+
+.cel-onglets:not(.cel-onglets--actif) .cel-onglets__panneau + .cel-onglets__panneau {
+    padding-top: var(--cel-espace-10);
+    border-top: 1px solid var(--cel-couleur-filet);
+}
+
+.cel-onglets__titre-panneau {
+    margin-bottom: var(--cel-espace-6);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-extra);
+    letter-spacing: var(--cel-approche-capitales);
+    text-transform: uppercase;
+    color: var(--cel-couleur-texte-discret-2);
+}
+
+.cel-onglets--actif .cel-onglets__titre-panneau {
+    display: none;
+}
+
+/* ---------- Tableau ---------- */
+
+.cel-tableau-defilant {
+    overflow-x: auto;
+}
+
+.cel-tableau {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--cel-taille-15);
+}
+
+.cel-tableau caption {
+    padding: var(--cel-espace-2-5) 0;
+    color: var(--cel-couleur-texte-discret);
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-forte);
+    text-align: left;
+}
+
+.cel-tableau :is(th, td) {
+    padding: var(--cel-espace-2-5) var(--cel-espace-3);
+    border: 1px solid var(--cel-couleur-filet);
+    text-align: left;
+    vertical-align: top;
+}
+
+.cel-tableau th {
+    background: var(--cel-couleur-fond-clair);
+}
+
+/* Comparatif : vrai tableau, défilement horizontal dans son bloc, critères collés à gauche. */
+.cel-comparatif {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-16);
+}
+
+.cel-comparatif:focus-visible {
+    outline-offset: 2px;
+}
+
+.cel-comparatif__tableau {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--cel-taille-15);
+}
+
+.cel-comparatif__legende {
+    padding: var(--cel-espace-3-5) var(--cel-espace-4-5);
+    color: var(--cel-couleur-texte-discret);
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-forte);
+    text-align: left;
+}
+
+.cel-comparatif :is(th, td) {
+    padding: var(--cel-espace-3-5) var(--cel-espace-4-5);
+    border-top: 1px solid var(--cel-couleur-filet-5);
+    text-align: left;
+    vertical-align: top;
+}
+
+.cel-comparatif thead th {
+    background: var(--cel-couleur-fond-clair);
+    color: var(--cel-couleur-texte-marine);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-comparatif .cel-comparatif__colonne--nous {
+    background: var(--cel-couleur-fond-fort);
+    color: var(--cel-couleur-sur-fort);
+}
+
+.cel-comparatif__coin,
+.cel-comparatif__critere {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 18%;
+    background: var(--cel-couleur-surface);
+    box-shadow: 1px 0 0 var(--cel-couleur-filet-5);
+}
+
+.cel-comparatif thead .cel-comparatif__coin {
+    background: var(--cel-couleur-fond-clair);
+}
+
+.cel-comparatif__critere {
+    color: var(--cel-couleur-texte-marine);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-comparatif__cellule {
+    color: var(--cel-couleur-texte);
+}
+
+.cel-comparatif__cellule--nous {
+    background: var(--cel-couleur-surface-attenuee-2);
+    color: var(--cel-couleur-texte-marine);
+    font-weight: var(--cel-graisse-demi);
+}
+
+.cel-comparatif__valeur {
+    display: flex;
+    gap: var(--cel-espace-2);
+    align-items: flex-start;
+}
+
+.cel-comparatif__valeur .cel-icone {
+    margin-top: var(--cel-espace-0-5);
+}
+
+.cel-comparatif__note {
+    color: var(--cel-couleur-texte-discret);
+    font-size: var(--cel-taille-14);
+}
+
+/* Indication de défilement : seulement quand le tableau (860 px au moins) dépasse la largeur. */
+.cel-comparatif-indication {
+    display: none;
+    align-items: center;
+    gap: var(--cel-espace-2);
+    color: var(--cel-couleur-texte-discret);
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-demi);
+}
+
+/* Repères du comparatif : bon, moyen, mauvais. */
+.cel-repere {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--cel-rayon-cercle);
+    --cel-icone-taille: 14px;
+    --cel-icone-trait: 2.6;
+}
+
+.cel-repere--bon {
+    color: var(--cel-couleur-repere-bon-texte);
+}
+
+.cel-repere--moyen {
+    background: var(--cel-couleur-repere-moyen-fond);
+    color: var(--cel-couleur-repere-moyen);
+}
+
+.cel-repere--mauvais {
+    background: var(--cel-couleur-repere-mauvais-fond);
+    color: var(--cel-couleur-repere-mauvais);
+}
+
+/* ---------- Fil d'Ariane ---------- */
+
+.cel-fil-ariane {
+    color: var(--cel-couleur-texte-discret-2);
+    font-size: var(--cel-taille-14);
+}
+
+.cel-fil-ariane ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-1) var(--cel-espace-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-fil-ariane li {
+    display: flex;
+    gap: var(--cel-espace-2);
+}
+
+.cel-fil-ariane a {
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-fil-ariane a:hover {
+    color: var(--cel-couleur-texte-marine-survol);
+}
+
+/* ---------- Sélecteur de thème ---------- */
+
+/* Deux pastilles dans une capsule : liens sans script, boutons avec (theme.js). Le thème en cours est une pastille pleine
+   et en gras, pas seulement une autre couleur. Par défaut, posé sur une surface forte (pied de page). */
+.cel-theme {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-2-5);
+}
+
+.cel-theme__options {
+    display: inline-flex;
+    gap: var(--cel-espace-0-5);
+    padding: 3px;
+    border: 1px solid var(--cel-couleur-sur-fort-separateur-18);
+    border-radius: var(--cel-rayon-pilule);
+}
+
+.cel-theme__option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-espace-1-5);
+    min-height: 32px;
+    padding: var(--cel-espace-1) var(--cel-espace-3);
+    border: 0;
+    border-radius: var(--cel-rayon-pilule);
+    background: none;
+    color: var(--cel-couleur-sur-sombre);
+    font: inherit;
+    font-size: var(--cel-taille-14);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duree-rapide) var(--cel-courbe-standard),
+        color var(--cel-duree-rapide) var(--cel-courbe-standard);
+    --cel-icone-taille: 16px;
+    --cel-icone-trait: 2;
+}
+
+.cel-theme__option:hover,
+.cel-theme__option[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-sur-fort-separateur-12);
+    color: var(--cel-couleur-sur-fort);
+    text-decoration: none;
+}
+
+.cel-theme__option[aria-current='true'],
+.cel-theme__option[aria-pressed='true'] {
+    background: var(--cel-couleur-sur-fort);
+    color: var(--cel-couleur-sur-or-marine);
+    font-weight: var(--cel-graisse-extra);
+}
+
+/* Sur une surface claire. */
+.cel-theme--clair .cel-theme__options {
+    border-color: var(--cel-couleur-bordure-champ);
+}
+
+.cel-theme--clair .cel-theme__option {
+    color: var(--cel-couleur-texte);
+}
+
+.cel-theme--clair .cel-theme__option:hover,
+.cel-theme--clair .cel-theme__option[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-surface-survol);
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-theme--clair .cel-theme__option[aria-current='true'],
+.cel-theme--clair .cel-theme__option[aria-pressed='true'] {
+    background: var(--cel-couleur-bouton);
+    color: var(--cel-couleur-sur-fort);
+}
+
+/* ---------- Questions (accordéon) ---------- */
+
+.cel-questions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-3);
+}
+
+.cel-questions__element {
+    padding: var(--cel-espace-5) var(--cel-espace-6);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-12);
+    background: var(--cel-couleur-surface);
+}
+
+.cel-questions__question {
+    font-size: var(--cel-taille-18);
+    font-weight: var(--cel-graisse-forte);
+    cursor: pointer;
+    list-style: none;
+}
+
+.cel-questions__question::-webkit-details-marker {
+    display: none;
+}
+
+.cel-questions__reponse {
+    margin-top: var(--cel-espace-3);
+    color: var(--cel-couleur-texte);
+}
+
+.cel-questions__reponse p + p {
+    margin-top: var(--cel-espace-2-5);
+}
+
+/* ---------- Contrôle segmenté ---------- */
+
+.cel-segmente {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-1);
+    padding: var(--cel-espace-1);
+    border-radius: var(--cel-rayon-12);
+    background: var(--cel-couleur-fond-segmente);
+}
+
+.cel-segmente__choix {
+    padding: var(--cel-espace-2) var(--cel-espace-3-5);
+    border: 0;
+    border-radius: var(--cel-rayon-9);
+    background: transparent;
+    color: var(--cel-couleur-texte-discret-5);
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-forte);
+    cursor: pointer;
+}
+
+.cel-segmente__choix:hover,
+.cel-segmente__choix[data-cel-etat~='survol'] {
+    color: var(--cel-couleur-texte-marine);
+}
+
+.cel-segmente__choix[aria-pressed='true'] {
+    background: var(--cel-couleur-surface);
+    color: var(--cel-couleur-texte-marine);
+    box-shadow: var(--cel-ombre-choix);
+}
+
+/* ---------- Filtre (sur une surface forte) ---------- */
+
+.cel-filtre {
+    min-height: 44px;
+    padding: var(--cel-espace-2-5) var(--cel-espace-4-5);
+    border: 1px solid var(--cel-couleur-sur-fort-filet);
+    border-radius: var(--cel-rayon-pilule);
+    background: transparent;
+    color: var(--cel-couleur-sur-fort);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-forte);
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duree-rapide) var(--cel-courbe-standard),
+        color var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-filtre:hover,
+.cel-filtre[data-cel-etat~='survol'] {
+    background: var(--cel-couleur-fond-fort-doux);
+}
+
+.cel-filtre[aria-pressed='true'] {
+    background: var(--cel-couleur-or);
+    color: var(--cel-couleur-sur-or);
+}
+
+/* ---------- Carte ---------- */
+
+/* Toute la carte mène à sa page ; le focus est dessiné sur la carte. */
+.cel-carte {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-2-5);
+    padding: var(--cel-espace-5-5);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-14);
+    background: var(--cel-couleur-surface);
+    transition:
+        transform var(--cel-duree-moderee) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-moderee) var(--cel-courbe-standard),
+        background-color var(--cel-duree-moderee) var(--cel-courbe-standard);
+}
+
+.cel-carte:has(.cel-carte__lien):hover,
+.cel-carte:focus-within,
+.cel-carte[data-cel-etat~='survol'] {
+    border-color: var(--cel-couleur-filet-focus);
+    box-shadow: var(--cel-ombre-carte-survol);
+    transform: translateY(-4px);
+}
+
+.cel-carte__titre {
+    font-size: var(--cel-taille-19);
+    line-height: var(--cel-interligne-130);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-carte__lien {
+    color: var(--cel-couleur-texte-marine);
+    text-decoration: none;
+}
+
+.cel-carte__lien::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.cel-carte__lien:focus-visible {
+    outline: none;
+}
+
+.cel-carte__lien:focus-visible::after,
+.cel-carte[data-cel-etat~='focus'] .cel-carte__lien::after {
+    outline: var(--cel-focus-epaisseur) solid var(--cel-focus-couleur);
+    outline-offset: var(--cel-focus-decalage);
+}
+
+.cel-carte__resume {
+    color: var(--cel-couleur-texte-2);
+    font-size: var(--cel-taille-15);
+}
+
+.cel-carte__meta {
+    margin-top: auto;
+    color: var(--cel-couleur-texte-discret-2);
+    font-size: var(--cel-taille-14);
+}
+
+/* ---------- Liste cochée ---------- */
+
+.cel-liste-coches {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--cel-couleur-texte);
+}
+
+.cel-liste-coches li {
+    display: flex;
+    gap: var(--cel-espace-3);
+}
+
+.cel-liste-coches .cel-icone {
+    margin-top: var(--cel-espace-1);
+    color: var(--cel-couleur-repere-bon-texte);
+    --cel-icone-taille: 18px;
+    --cel-icone-trait: 2.6;
+}
+
+/* ---------- Étapes numérotées ---------- */
+
+.cel-etapes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-etapes__etape {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-espace-4);
+    color: var(--cel-couleur-texte);
+    font-size: var(--cel-taille-17);
+}
+
+.cel-etapes__etape > :last-child {
+    padding-top: var(--cel-espace-0-5);
+}
+
+.cel-etapes__numero {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--cel-rayon-cercle);
+    box-shadow: inset 0 0 0 1.5px var(--cel-couleur-texte-marine);
+    color: var(--cel-couleur-texte-marine);
+    font-size: var(--cel-taille-14);
+    font-weight: var(--cel-graisse-extra);
+}
+
+/* ---------- Élévation au survol ---------- */
+
+.cel-souleve {
+    transition:
+        transform var(--cel-duree-moderee) var(--cel-courbe-standard),
+        box-shadow var(--cel-duree-moderee) var(--cel-courbe-standard),
+        background-color var(--cel-duree-moderee) var(--cel-courbe-standard);
+}
+
+.cel-souleve:hover,
+.cel-souleve:focus-visible,
+.cel-souleve:focus-within,
+.cel-souleve[data-cel-etat~='survol'] {
+    transform: translateY(-4px);
+    box-shadow: var(--cel-ombre-soulevee);
+}
+
+.cel-souleve--douce:hover,
+.cel-souleve--douce:focus-visible,
+.cel-souleve--douce:focus-within,
+.cel-souleve--douce[data-cel-etat~='survol'] {
+    box-shadow: var(--cel-ombre-soulevee-douce);
+}
+
+/* =====================================================================================================================
+ * Modèles : en-tête, en-tête de page, pied de page, bloc tarif, page de fonctionnalité, fin de page.
+ * ================================================================================================================== */
+
+/* ---------- En-tête du site ---------- */
+
+.cel-entete {
+    border-bottom: 1px solid var(--cel-couleur-filet-doux);
+    background: var(--cel-couleur-fond-page);
+}
+
+.cel-entete__interieur {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cel-espace-4) var(--cel-espace-8);
+    padding-top: var(--cel-espace-4);
+    padding-bottom: var(--cel-espace-4);
+}
+
+.cel-entete__marque {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.cel-entete__marque img {
+    width: auto;
+    height: 36px;
+}
+
+/* Logo selon le thème : deux images, une seule affichée. */
+.cel-logo-sombre,
+.cel-sombre .cel-logo-clair {
+    display: none !important;
+}
+
+.cel-sombre .cel-logo-sombre {
+    display: block !important;
+}
+
+.cel-navigation {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-3) var(--cel-espace-7);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-demi);
+}
+
+.cel-navigation__liens {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-2) var(--cel-espace-7);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-navigation a {
+    color: var(--cel-couleur-texte);
+    text-decoration: none;
+}
+
+.cel-navigation a:hover {
+    color: var(--cel-couleur-texte-marine);
+    text-decoration: underline;
+}
+
+/* Page en cours : soulignée d'un filet ocre. */
+.cel-navigation a[aria-current]:not(.cel-navigation__action) {
+    color: var(--cel-couleur-texte-marine);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--cel-couleur-ocre);
+}
+
+.cel-navigation .cel-navigation__action {
+    padding: var(--cel-espace-2-5) var(--cel-espace-4);
+    border-radius: var(--cel-rayon-moyen);
+    background: var(--cel-couleur-bouton);
+    color: var(--cel-couleur-sur-fort);
+}
+
+.cel-navigation .cel-navigation__action:hover {
+    background: var(--cel-couleur-bouton-survol);
+    color: var(--cel-couleur-sur-fort);
+    text-decoration: none;
+}
+
+/* Page en cours : le bouton reste plein, souligné d'un filet ocre. */
+.cel-navigation .cel-navigation__action[aria-current='page'] {
+    box-shadow: inset 0 -3px 0 var(--cel-couleur-ocre);
+}
+
+/* ---------- En-tête d'une page intérieure ---------- */
+
+.cel-entete-page {
+    border-bottom: 1px solid var(--cel-couleur-filet);
+    background: var(--cel-couleur-fond-clair);
+}
+
+.cel-entete-page__interieur {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-4-5);
+    padding-top: var(--cel-espace-7);
+    padding-bottom: var(--cel-espace-12);
+}
+
+.cel-entete-page__titre {
+    max-width: 18em;
+    font-size: var(--cel-taille-titre-page);
+    line-height: var(--cel-interligne-110);
+    font-weight: var(--cel-graisse-extra);
+    letter-spacing: var(--cel-approche-titre-grand);
+    color: var(--cel-couleur-texte-marine);
+    text-wrap: balance;
+}
+
+.cel-entete-page__chapo {
+    max-width: 38em;
+    font-size: var(--cel-taille-chapo);
+    color: var(--cel-couleur-texte-2);
+}
+
+/* ---------- Page de fonctionnalité : titre, durée, actions, capture ---------- */
+
+.cel-fonctionnalite {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-10) var(--cel-espace-14);
+}
+
+.cel-fonctionnalite__texte {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-4-5);
+}
+
+.cel-fonctionnalite__badge {
+    align-self: flex-start;
+    font-size: var(--cel-taille-14);
+}
+
+.cel-fonctionnalite__duree {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--cel-espace-2);
+    padding: var(--cel-espace-1-5) var(--cel-espace-3);
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-pilule);
+    background: var(--cel-couleur-surface);
+    font-size: var(--cel-taille-15);
+    font-weight: var(--cel-graisse-demi);
+}
+
+.cel-fonctionnalite__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-3);
+    margin-top: var(--cel-espace-1);
+}
+
+.cel-fonctionnalite__figure {
+    flex: 1 1 440px;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--cel-couleur-filet);
+    border-radius: var(--cel-rayon-16);
+    background: var(--cel-couleur-surface);
+    box-shadow: var(--cel-ombre-figure);
+}
+
+/* ---------- Fin de page : vers l'action principale ---------- */
+
+.cel-fin-de-page {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cel-espace-7) var(--cel-espace-12);
+}
+
+.cel-fin-de-page__texte {
+    flex: 1 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-4);
+}
+
+.cel-fin-de-page__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-3);
+}
+
+/* ---------- Bloc tarif ---------- */
+
+/* Un seul bloc en deux parties : prix et tranches sur fond fort, ce qui est compris à droite. */
+.cel-bloc-tarif {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    border-radius: var(--cel-rayon-bloc);
+    background: var(--cel-couleur-surface);
+    box-shadow: var(--cel-ombre-bloc);
+}
+
+.cel-bloc-tarif__principal,
+.cel-bloc-tarif__cote {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-5-5);
+    padding: clamp(24px, 4vw, 40px);
+}
+
+.cel-bloc-tarif__principal {
+    background: var(--cel-couleur-fond-fort);
+    color: var(--cel-couleur-sur-fort);
+}
+
+.cel-bloc-tarif__prix {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-1);
+}
+
+.cel-bloc-tarif__a-partir {
+    color: var(--cel-couleur-sur-fort-doux);
+    font-size: var(--cel-taille-15);
+}
+
+.cel-bloc-tarif__montant {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--cel-espace-1) var(--cel-espace-2-5);
+    color: var(--cel-couleur-sur-fort-doux);
+    font-size: var(--cel-taille-18);
+}
+
+.cel-bloc-tarif__montant strong {
+    color: var(--cel-couleur-sur-fort);
+    font-size: var(--cel-taille-prix);
+    line-height: var(--cel-interligne-100);
+    font-weight: var(--cel-graisse-extra);
+    letter-spacing: var(--cel-approche-chiffre);
+}
+
+.cel-bloc-tarif__mensuel,
+.cel-bloc-tarif__mise-en-service {
+    color: var(--cel-couleur-sur-fort-doux);
+}
+
+.cel-bloc-tarif__mise-en-service {
+    font-size: var(--cel-taille-14);
+}
+
+.cel-bloc-tarif__tranches {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--cel-couleur-sur-fort-separateur-16);
+}
+
+.cel-bloc-tarif__tranches li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--cel-espace-1) var(--cel-espace-3);
+    padding: 11px 0;
+    border-top: 1px solid var(--cel-couleur-sur-fort-separateur-16);
+}
+
+.cel-bloc-tarif__tranches strong {
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-bloc-tarif__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-3) var(--cel-espace-5);
+    margin-top: var(--cel-espace-1);
+}
+
+.cel-bloc-tarif__details,
+.cel-bloc-tarif__details:hover {
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-bloc-tarif__titre {
+    color: var(--cel-couleur-texte-marine);
+    font-size: var(--cel-taille-18);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-bloc-tarif__conditions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-espace-2) var(--cel-espace-6);
+    margin-top: auto;
+    padding-top: var(--cel-espace-4-5);
+    border-top: 1px solid var(--cel-couleur-filet-5);
+    color: var(--cel-couleur-texte-discret-2);
+    font-size: var(--cel-taille-14);
+}
+
+/* ---------- Pied de page ---------- */
+
+.cel-pied {
+    position: relative;
+    overflow: hidden;
+    background: var(--cel-couleur-fond-fort-profond);
+    color: var(--cel-couleur-sur-sombre);
+    font-size: var(--cel-taille-15);
+}
+
+/* Lueur dorée discrète en haut à droite : décor seulement. */
+.cel-pied::before {
+    content: '';
+    position: absolute;
+    top: -220px;
+    right: -160px;
+    width: 560px;
+    height: 560px;
+    border-radius: var(--cel-rayon-cercle);
+    background: radial-gradient(circle, var(--cel-couleur-lueur-or), var(--cel-couleur-lueur-or-0) 70%);
+    pointer-events: none;
+}
+
+.cel-pied .cel-conteneur {
+    position: relative;
+}
+
+.cel-pied a {
+    color: var(--cel-couleur-sur-sombre);
+    text-decoration: none;
+    transition: color var(--cel-duree-rapide) var(--cel-courbe-standard);
+}
+
+.cel-pied a:hover {
+    color: var(--cel-couleur-sur-fort);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-pied ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-pied__liens {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--cel-espace-9) var(--cel-espace-8);
+    padding: var(--cel-espace-14) 0 var(--cel-espace-10);
+}
+
+.cel-pied__identite {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-3-5);
+    max-width: 300px;
+    font-size: var(--cel-taille-14);
+}
+
+.cel-pied__marque {
+    display: inline-flex;
+    align-self: flex-start;
+}
+
+.cel-pied__identite img {
+    width: auto;
+    height: 32px;
+}
+
+.cel-pied__colonne {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-3-5);
+}
+
+.cel-pied__titre {
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-extra);
+}
+
+.cel-pied__colonne ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-espace-2-5);
+}
+
+.cel-pied .cel-pied__plus {
+    color: var(--cel-couleur-sur-fort);
+    font-weight: var(--cel-graisse-forte);
+}
+
+.cel-pied__bas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--cel-espace-3) var(--cel-espace-8);
+    padding: var(--cel-espace-5-5) 0 var(--cel-espace-7-5);
+    border-top: 1px solid var(--cel-couleur-sur-fort-separateur-12);
+    font-size: var(--cel-taille-14);
+}
+
+/* Marque et liens légaux : un seul écart, celui des liens entre eux. */
+.cel-pied__meta,
+.cel-pied__legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-espace-2) var(--cel-espace-6);
+}
+
+.cel-pied__mot-symbole strong {
+    font-weight: var(--cel-graisse-extra);
+}
+
+/* ---------- Grands écrans ---------- */
+
+@media (min-width: 960px) {
+    .cel-pied__liens {
+        grid-template-columns: 1.3fr repeat(3, 1fr);
+    }
+}
+
+/* ---------- Tablette ---------- */
+
+@media (max-width: 940px) {
+    .cel-comparatif-indication {
+        display: flex;
+    }
+}
+
+@media (max-width: 860px) {
+    .cel-bloc-tarif {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Téléphone ---------- */
+
+@media (max-width: 640px) {
+    .cel-conteneur {
+        padding-left: var(--cel-marge-laterale-telephone);
+        padding-right: var(--cel-marge-laterale-telephone);
+    }
+
+    .cel-entete__interieur {
+        justify-content: center;
+    }
+
+    /* Les liens sur une ligne, dans le même ordre, puis l'action principale, toujours visible. */
+    .cel-navigation {
+        flex-direction: column;
+        gap: var(--cel-espace-3);
+    }
+
+    .cel-navigation__liens {
+        justify-content: center;
+        gap: var(--cel-espace-2) var(--cel-espace-4);
+    }
+
+    .cel-tableau-defilant--telephone,
+    .cel-texte table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* ---------- Animations réduites ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    :where(html:has(> body.cel-page)) {
+        scroll-behavior: auto;
+    }
+
+    .cel-bouton,
+    .cel-souleve,
+    .cel-carte,
+    a.cel-pastille,
+    .cel-onglets__onglet,
+    .cel-theme__option,
+    .cel-filtre,
+    .cel-pied a,
+    .cel-lien--fleche .cel-icone {
+        transition: none;
+    }
+
+    .cel-bouton:hover,
+    .cel-bouton:focus-visible,
+    .cel-bouton[data-cel-etat],
+    .cel-souleve:hover,
+    .cel-souleve:focus-visible,
+    .cel-souleve:focus-within,
+    .cel-souleve[data-cel-etat],
+    .cel-carte:hover,
+    .cel-carte:focus-within,
+    .cel-carte[data-cel-etat],
+    a.cel-pastille:hover,
+    a.cel-pastille:focus-visible,
+    a.cel-pastille[data-cel-etat] {
+        transform: none;
+    }
+
+    .cel-lien--fleche:hover .cel-icone,
+    .cel-lien--fleche:focus-visible .cel-icone,
+    .cel-lien--fleche[data-cel-etat] .cel-icone {
+        translate: none;
+    }
+}

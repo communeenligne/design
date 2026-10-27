@@ -1,0 +1,29 @@
+---
+// Page de contrôle, non liée dans la navigation : en-tête, une section, le tarif et le pied de page de la landing,
+// écrits avec les seules classes du paquet (lib/patterns.js), à comparer à l'œil avec communeenligne.fr. Aucune
+// feuille du site : seulement le paquet.
+import '@communeenligne/design/index.css'
+import { ENTETE, SECTION, TARIF, PIED } from '../lib/patterns.js'
+---
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contrôle de fidélité · Design system de Commune en ligne</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="/design/brand/favicon.svg" type="image/svg+xml">
+    <script is:inline src="/design/js/theme-boot.js"></script>
+    <script is:inline src="/design/js/motion-boot.js"></script>
+    <script is:inline type="module" src="/js/control.js"></script>
+</head>
+<body class="cel-page">
+    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+    <Fragment set:html={ENTETE} />
+    <main id="contenu" tabindex="-1">
+        <Fragment set:html={SECTION} />
+        <Fragment set:html={TARIF} />
+    </main>
+    <Fragment set:html={PIED.replace('<div class="cel-theme" role="group"', '<div class="cel-theme" data-cel-theme role="group"').replaceAll('href="#" class="cel-theme__option" aria-current="true">', 'href="#" class="cel-theme__option" data-cel-theme-option="clair" aria-current="true">').replace('href="#" class="cel-theme__option">', 'href="#" class="cel-theme__option" data-cel-theme-option="sombre">')} />
+</body>
+</html>

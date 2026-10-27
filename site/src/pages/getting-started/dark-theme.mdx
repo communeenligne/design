@@ -1,0 +1,39 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Thème sombre"
+description: "Activer le thème sombre par la classe cel-sombre sur la balise html, côté serveur ou par le script du paquet."
+---
+
+import Code from '../../components/Code.astro'
+
+## Le principe
+
+Le thème clair est celui par défaut. Le thème sombre s'active en posant la classe `cel-sombre` sur `<html>` : seules les variables de couleur changent, les ombres deviennent transparentes. La préférence du système (`prefers-color-scheme`) n'est jamais lue : c'est le visiteur qui choisit, dans le pied de page.
+
+<Code code={`<html lang="fr" class="cel-sombre">`} />
+
+## Rendu par le serveur (landing)
+
+Le serveur lit le choix dans un cookie et pose la classe dès le rendu : aucun clignotement, et le choix fonctionne sans script. Le sélecteur est fait de deux liens qui posent le cookie puis reviennent à la page ; `theme.js` les remplace par des boutons quand le script tourne.
+
+<Code langue="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
+
+// Garde aussi le choix dans le cookie lu par le serveur.
+initTheme({ cookie: 'cel_theme' })`} />
+
+## Site statique
+
+Charger `js/theme-boot.js` dans `<head>`, sans `defer` : il pose la classe avant le premier affichage si le visiteur a choisi le thème sombre (stockage local, clé `cel-theme`). Puis `initTheme()` branche les boutons.
+
+<Code code={`<head>
+    <script src="/design/js/theme-boot.js"></script>
+</head>`} />
+
+## Logo
+
+Deux images, une seule affichée selon le thème, sans script :
+
+<Code code={`<img class="cel-logo-clair" src="/design/brand/logo.svg" alt="Commune en ligne" width="173" height="36">
+<img class="cel-logo-sombre" src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne" width="173" height="36">`} />
+
+Les couleurs de chaque thème sont sur la page [Couleurs](/foundations/colors/) ; les règles, sur [Fondamentaux · Thème sombre](/foundations/dark-theme/).
