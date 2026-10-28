@@ -1,6 +1,6 @@
 /*
- * @communeenligne/design, components, forms family: field with its hint and error, error summary, select, checkbox
- * and radio button in their choice group, segmented control, filter.
+ * @communeenligne/design, components, forms family: field with its hint and error, error summary, select, combobox,
+ * field in a sentence, checkbox and radio button in their choice group, segmented control, filter.
  *
  * Renaming a class is a major version.
  */
@@ -20,7 +20,7 @@
 .cel-field :is(input:not([type='checkbox'], [type='radio']), select, textarea) {
     width: 100%;
     padding: var(--cel-space-3) var(--cel-space-3-5);
-    border: 1.5px solid var(--cel-color-field-border);
+    border: var(--cel-border-thick) solid var(--cel-color-field-border);
     border-radius: var(--cel-radius-md);
     background: var(--cel-color-surface);
     color: var(--cel-color-text-strong);
@@ -115,6 +115,124 @@
     border-color: var(--cel-color-text-muted);
 }
 
+/* ---------- Combobox ---------- */
+
+/* A text field that proposes results while typing (js/combobox.js, ARIA combobox pattern): the list opens under the
+   field, a result is chosen with the arrows and Enter, or with the pointer. Without script, a plain text field. Set on
+   the .cel-field itself; --large: the large search field at the top of a page, its list over the content below. */
+.cel-combobox {
+    position: relative;
+}
+
+.cel-combobox__control {
+    position: relative;
+}
+
+.cel-combobox__icon {
+    position: absolute;
+    top: 50%;
+    left: var(--cel-space-3-5);
+    color: var(--cel-color-text-muted-2);
+    pointer-events: none;
+    translate: 0 -50%;
+    --cel-icon-size: 18px;
+    --cel-icon-stroke: 2;
+}
+
+.cel-field input.cel-combobox__input {
+    padding-left: calc(var(--cel-space-10) + var(--cel-space-0-5));
+}
+
+.cel-combobox__list {
+    max-height: 320px;
+    margin: 0;
+    padding: var(--cel-space-1-5);
+    overflow-y: auto;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-12);
+    background: var(--cel-color-surface);
+    box-shadow: var(--cel-shadow-list);
+    list-style: none;
+}
+
+.cel-combobox__option {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--cel-space-0-5) var(--cel-space-3);
+    padding: var(--cel-space-2-5) var(--cel-space-3);
+    border-radius: var(--cel-radius-8);
+    cursor: pointer;
+}
+
+.cel-combobox__option:hover,
+.cel-combobox__option[aria-selected='true'] {
+    background: var(--cel-color-surface-hover);
+}
+
+/* Active option: an outline as well as the background, never the color alone. */
+.cel-combobox__option[aria-selected='true'] {
+    outline: 2px solid var(--cel-color-primary);
+    outline-offset: -2px;
+}
+
+.cel-combobox__name {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-combobox__details {
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-medium);
+}
+
+.cel-combobox--large .cel-combobox__icon {
+    left: var(--cel-space-5);
+    color: var(--cel-color-primary);
+    --cel-icon-stroke: 2.2;
+}
+
+.cel-combobox--large input.cel-combobox__input {
+    padding: 19px var(--cel-space-5) 19px var(--cel-space-14);
+    border: 0;
+    border-radius: var(--cel-radius-16);
+    font-size: var(--cel-text-19);
+    box-shadow: var(--cel-shadow-search);
+}
+
+.cel-combobox--large .cel-combobox__list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 5;
+    margin-top: var(--cel-space-2);
+}
+
+/* ---------- Field in a sentence ---------- */
+
+/* A number typed within a sentence ("For [480] inhabitants, that is…"): underlined, five and a half digits wide,
+   without arrows. Its label is visually hidden; the sentence that follows is its result. */
+.cel-inline-field {
+    width: 5.5em;
+    padding: var(--cel-space-0-5) var(--cel-space-1-5);
+    border: 0;
+    border-bottom: 2px solid var(--cel-color-primary);
+    border-radius: 0;
+    background: transparent;
+    color: var(--cel-color-primary);
+    font: inherit;
+    font-weight: var(--cel-font-weight-extrabold);
+    appearance: textfield;
+}
+
+.cel-inline-field::-webkit-inner-spin-button,
+.cel-inline-field::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
 /* ---------- Checkboxes and radio buttons ---------- */
 
 /* A choice group: <fieldset class="cel-choice-group">, its question in <legend>, then one box per choice. */
@@ -164,7 +282,7 @@
     width: 22px;
     height: 22px;
     margin: 1px 0 0;
-    border: 1.5px solid var(--cel-color-field-border);
+    border: var(--cel-border-thick) solid var(--cel-color-field-border);
     border-radius: calc(var(--cel-radius-sm) / 2);
     background: var(--cel-color-surface);
     appearance: none;
@@ -289,6 +407,14 @@
 .cel-filter[aria-pressed='true'] {
     background: var(--cel-color-gold);
     color: var(--cel-color-on-gold);
+}
+
+/* ---------- Phone ---------- */
+
+@media (width < 640px) {
+    .cel-combobox--large input.cel-combobox__input {
+        font-size: var(--cel-text-17);
+    }
 }
 
 /* ---------- Reduced motion ---------- */

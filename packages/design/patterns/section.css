@@ -6,7 +6,10 @@
 
 /* ---------- Sections ---------- */
 
+/* Clipped in width, like the hero and the page header: the start of an offset reveal (left, right, slide) never widens
+   the page. clip, not hidden: no scrolling container, sticky elements still stick; the gutters keep focus outlines. */
 .cel-section {
+    overflow-x: clip;
     padding-top: var(--cel-space-section);
     padding-bottom: var(--cel-space-section);
 }

@@ -1,0 +1,55 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Règle des populations"
+description: "Sous la grille de prix, les tranches de population côte à côte et un repère doré sur la commune choisie."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Situer la commune choisie parmi les tranches de la [grille de prix](/components/price-grid/), d'un coup d'œil. La règle est **décorative** : la tranche choisie est déjà dite par la grille (carte mise en avant, « tranche de votre commune » pour les lecteurs d'écran) et par la ligne de résultat.
+
+## Composition
+
+`.cel-ruler` (masqué aux lecteurs d'écran, `aria-hidden="true"`) : la piste `__track` en dégradé, les graduations `__ticks` (une part égale par tranche, chaque `__tick` porte le début de sa tranche) et le repère `__pin`.
+
+Le repère se place par `--cel-ruler-pin`, en pour cent de la largeur (de 0 à 100), posée par le projet sur la règle : une classe écrite dans la balise `<style>` du gabarit avec le nonce, ou le script qui suit le choix de la commune. Il n'apparaît qu'avec `.cel-ruler--placed` et glisse jusqu'à sa nouvelle place. Sous le point de rupture des tablettes, où les cartes ne sont plus côte à côte, la règle est masquée.
+
+<Example title="Commune de 480 habitants (repère à 19 %)" html={`
+    <div class="cel-ruler cel-ruler--placed doc-ruler-pin" aria-hidden="true">
+        <span class="cel-ruler__track"></span>
+        <ol class="cel-ruler__ticks">
+            <li class="cel-ruler__tick">0</li>
+            <li class="cel-ruler__tick">500</li>
+            <li class="cel-ruler__tick">1 000</li>
+            <li class="cel-ruler__tick">2 000</li>
+            <li class="cel-ruler__tick">3 500</li>
+        </ol>
+        <span class="cel-ruler__pin"></span>
+    </div>
+`} />
+
+`doc-ruler-pin` est la classe de cette page qui pose `--cel-ruler-pin: 19`. Dans la landing :
+
+<Code code={`<style nonce="…">.ruler-position { --cel-ruler-pin: 19 }</style>
+<div class="cel-ruler cel-ruler--placed ruler-position" aria-hidden="true">…</div>`} />
+
+<Code lang="js" code={`// Nouvelle commune choisie : le repère glisse (la propriété personnalisée n'est pas un attribut style écrit dans le HTML).
+ruler.style.setProperty('--cel-ruler-pin', String(position))
+ruler.classList.add('cel-ruler--placed')`} />
+
+## Accessibilité
+
+- Décorative : `aria-hidden="true"` sur toute la règle ; l'information est dans la grille et la ligne de résultat.
+- Le glissement du repère est coupé avec `prefers-reduced-motion: reduce`.
+- Les graduations sont en `--cel-color-text-muted-2` : lisibles, même sans être lues.
+
+<Contrasts pairs={[['text-muted-2', 'background'], ['text-muted-2', 'background-muted']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['La même tranche mise en avant dans la grille.', 'Une part égale par tranche, quelle que soit son étendue.']} donts={['La règle comme seul moyen de connaître sa tranche.', 'Un repère placé avant tout choix de commune.']} />

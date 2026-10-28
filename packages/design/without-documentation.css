@@ -1,0 +1,11 @@
+/*
+ * @communeenligne/design without the documentation family: foundations, components and patterns except the
+ * documentation ones (components/documentation.css, patterns/documentation-page.css), animations. For a project
+ * that shows no code example and no documentation page (landing, panel). With Tailwind: tailwind.css, then
+ * components/without-documentation.css and patterns/without-documentation.css.
+ */
+
+@import './foundations/index.css';
+@import './components/without-documentation.css';
+@import './patterns/without-documentation.css';
+@import './motion.css';

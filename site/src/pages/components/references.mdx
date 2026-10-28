@@ -7,6 +7,47 @@ description: "« Elles ont choisi Commune en ligne » : une carte par commune, d
 import Example from '../../components/Example.astro'
 import Contrasts from '../../components/Contrasts.astro'
 import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+export const towns = [
+    ['Veckersviller', 'Moselle · 480 habitants', ['Actes', 'Agenda', 'Alertes']],
+    ['Saint-Exemple', 'Cantal · 210 habitants', ['Horaires', 'Actualités']],
+    ['Haute-Rive', 'Doubs · 1 250 habitants', ['Déchets', 'Lettre']],
+    ['Lavaud', 'Creuse · 95 habitants', ['Actes', 'Horaires']],
+    ['Mont-Clair', 'Savoie · 640 habitants', ['Agenda', 'Signalements']],
+    ['Les Ormes', 'Vienne · 2 300 habitants', ['Actualités', 'Démarches']],
+]
+export const card = ([name, meta, features], index) => `
+                <li class="cel-references__item">
+                    <article class="cel-reference">
+                        <div class="cel-reference__banner">
+                            <img class="cel-reference__logo" src="/design/brand/icon-on-dark.svg" alt="" width="44" height="44">
+                            <div class="cel-reference__identity"><h3 class="cel-reference__name">${name}</h3><p class="cel-reference__meta">${meta}</p></div>
+                        </div>
+                        <div class="cel-reference__body">
+                            <ul class="cel-reference__features" aria-label="Fonctionnalités employées">${features.map((feature) => `<li>${feature}</li>`).join('')}</ul>
+                            <a href="#" class="cel-reference__link">Voir le site<svg class="cel-icon cel-icon--16" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-up-right"></use></svg></a>
+                        </div>
+                    </article>
+                </li>`
+export const marquee = `
+    <section class="cel-section cel-references" aria-labelledby="titre-references-auto" data-cel-marquee>
+        <div class="cel-container cel-references__header">
+            <div class="cel-intro cel-references__intro">
+                <h2 id="titre-references-auto" class="cel-section-title cel-section-title--primary">Elles ont choisi Commune en ligne</h2>
+            </div>
+            <button type="button" class="cel-references__toggle" aria-pressed="false" data-cel-marquee-toggle data-cel-label-pause="Mettre en pause" data-cel-label-play="Reprendre" hidden>
+                <svg class="cel-icon cel-references__pause" aria-hidden="true"><use href="/design/icons/sprite.svg#pause"></use></svg>
+                <svg class="cel-icon cel-references__play" aria-hidden="true"><use href="/design/icons/sprite.svg#play"></use></svg>
+                <span data-cel-marquee-label>Mettre en pause</span>
+            </button>
+        </div>
+        <div class="cel-references__strip" tabindex="0" role="region" aria-label="Communes qui ont choisi Commune en ligne" data-cel-marquee-viewport>
+            <ul class="cel-references__track" data-cel-marquee-track>${towns.map(card).join('')}
+            </ul>
+        </div>
+    </section>
+`
 
 ## À quoi il sert
 
@@ -14,9 +55,9 @@ Montrer les communes qui utilisent déjà Commune en ligne, avec leur blason, un
 
 ## Composition
 
-`.cel-references` (une section, fond bleu très pâle) : un en-tête (`__entete`, titre et intro), puis la bande `__bande`, un vrai conteneur défilant avec accroche des cartes et un fondu sur les bords. La piste `__piste` est centrée quand toutes les cartes tiennent. Chaque carte `.cel-reference` a un bandeau aux couleurs de la commune, un corps (citation, fonctionnalités) et un lien.
+`.cel-references` (une section, fond bleu très pâle) : un en-tête (`__header`, titre et intro `__intro`), puis la bande `__strip`, un vrai conteneur défilant avec accroche des cartes et un fondu sur les bords. La piste `__track` est centrée quand toutes les cartes tiennent. Chaque carte `.cel-reference`, dans un `__item`, a un bandeau aux couleurs de la commune, un corps (citation, fonctionnalités) et un lien.
 
-Le défilement automatique de la landing (`initMarquee()` et son bouton pause) n'est pas dans le paquet : la bande reste immobile tant qu'on ne la fait pas défiler.
+Sur téléphone, les bords en fondu se resserrent (20 px au lieu de 48) et les cartes s'alignent sur la marge de la page (16 px).
 
 Couleurs de la commune : `--cel-reference-color` (fond du bandeau) et `--cel-reference-text`, posées par une classe propre à la commune, jamais par un attribut `style` ; leur contraste (4,5:1) est vérifié par le projet qui les pose. Sans elles, le bandeau est marine.
 
@@ -60,12 +101,25 @@ Couleurs de la commune : `--cel-reference-color` (fond du bandeau) et `--cel-ref
     </section>
 `} />
 
+## Défilement automatique
+
+Avec `initMarquee()` (`js/motion.js`), la bande avance lentement et en continu tant que les cartes ne tiennent pas dans la largeur : la bande prend la classe `cel-marquee-auto` (accroche des cartes coupée le temps du mouvement) ; pour boucler sans à-coup, les cartes sont copiées à la suite, copies masquées aux lecteurs d'écran et sorties de l'ordre de tabulation. Quand toutes les cartes tiennent, rien ne bouge, rien n'est copié, le bouton reste masqué et les bords perdent leur fondu (`cel-marquee-static`).
+
+Elle s'arrête au survol, au toucher, au focus, quand on la fait défiler (reprise trois secondes plus tard), hors de l'écran, et jusqu'au clic sur « Reprendre » avec le bouton `.cel-references__toggle` (`aria-pressed`, icônes `__pause` et `__play`, libellés `data-cel-label-pause` et `data-cel-label-play`). Sans script, ou avec la réduction des animations, elle se fait défiler à la main et chaque carte n'existe qu'une fois.
+
+<Example title="Six communes : la bande avance seule (survolez-la pour l'arrêter)" background="full" html={marquee} />
+
+<Code lang="js" code={`import { initMotion, initMarquee } from '@communeenligne/design/js/motion.js'
+
+initMotion()
+initMarquee()   // chaque [data-cel-marquee] de la page ; sans effet ailleurs`} />
+
 ## Accessibilité
 
 - La bande a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier : les flèches la font défiler. Le focus est dessiné à l'intérieur.
 - Chaque carte est un `<article>` titré par le nom de la commune ; le blason est décoratif.
-- Aucun mouvement sans action de la personne.
+- Sans `initMarquee()`, aucun mouvement sans action de la personne. Avec, le mouvement s'arrête de lui-même dès qu'on survole, touche ou parcourt la bande au clavier, et le bouton le met en pause (WCAG 2.2.2) ; jamais avec `prefers-reduced-motion: reduce`.
 
-<Contrasts pairs={[['on-strong', 'strong'], ['text', 'surface'], ['text-muted', 'surface'], ['text', 'background-muted'], ['primary', 'surface'], ['primary', 'tint-blue-2']]} />
+<Contrasts pairs={[['primary', 'surface'], ['on-strong', 'strong'], ['text', 'surface'], ['text-muted', 'surface'], ['text', 'background-muted'], ['primary', 'surface'], ['primary', 'tint-blue-2']]} />
 
-<DoDont dos={['Des communes réelles, avec leur accord.', 'Une citation courte.']} donts={['Un défilement automatique sans bouton pause.', 'Des couleurs de commune posées en attribut style.']} />
+<DoDont dos={['Des communes réelles, avec leur accord.', 'Une citation courte.']} donts={['Un défilement automatique sans bouton pause, ou qui reprend après « Mettre en pause ».', 'Des couleurs de commune posées en attribut style.']} />

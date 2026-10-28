@@ -7,10 +7,13 @@ const NAMED = ['cel-radius-sm', 'cel-radius-md', 'cel-radius-lg', 'cel-radius-xl
 const scale = startingWith('cel-radius-').filter((token) => !NAMED.includes(token.name))
 const named = startingWith('cel-radius-').filter((token) => NAMED.includes(token.name))
 const shadows = startingWith('cel-shadow-')
+const borders = startingWith('cel-border-')
 const headings = [
     { depth: 2, slug: 'echelle-des-rayons', text: 'Échelle des rayons' },
     { depth: 2, slug: 'rayons-nommes', text: 'Rayons nommés' },
+    { depth: 2, slug: 'epaisseur-des-bordures', text: 'Épaisseur des bordures' },
     { depth: 2, slug: 'ombres', text: 'Ombres' },
+    { depth: 2, slug: 'soulignement-dore', text: 'Soulignement doré' },
 ]
 ---
 <Doc title="Rayons et ombres" description="L'échelle des rayons, les quatre rayons nommés et les ombres, transparentes en sombre. Page générée à partir de foundations/radius.css et foundations/shadows.css." headings={headings}>
@@ -30,6 +33,13 @@ const headings = [
         ))}
     </ul>
 
+    <h2 id="epaisseur-des-bordures">Épaisseur des bordures</h2>
+    <p>Les bordures font 1 px ; <code>--cel-border-thick</code> (1,5 px) est celle des champs, des numéros d'étapes, des choix proposés après un envoi et des étiquettes en pointillés (« Bientôt »). Avec Tailwind : <code>border-thick</code>.</p>
+    <div class="cel-table-scroll"><table class="cel-table">
+        <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Tailwind</th></tr></thead>
+        <tbody>{borders.map((token) => <tr><td><code>--{token.name}</code></td><td>{token.light}</td><td><code>border-{token.name.replace('cel-border-', '')}</code></td></tr>)}</tbody>
+    </table></div>
+
     <h2 id="ombres">Ombres</h2>
     <p>Discrètes, teintées de marine. <strong>Aucune ombre en thème sombre</strong> : leurs couleurs y deviennent transparentes, les bordures suffisent. Sous chaque ombre, la règle de la landing qui l'emploie.</p>
     <ul class="doc-shapes">
@@ -37,4 +47,9 @@ const headings = [
             <li class={`doc-v-${token.name}`}><span class="doc-box doc-box--shadow" aria-hidden="true"></span>--{token.name}<span>{token.note ?? token.landing}</span></li>
         ))}
     </ul>
+    <p><code>--cel-shadow-scene</code> éclaire par en dessous la carte d'une scène d'illustration (posée sur le bas de son cadre) ; avec <code>--cel-leading-scene</code> (1,375), l'interligne serré de son texte. Exemple : <a href="/components/feature-tiles/">Cartes illustrées</a>.</p>
+
+    <h2 id="soulignement-dore">Soulignement doré</h2>
+    <p>Quelques mots d'un titre soulignés d'un trait doré épais et bas : <code>--cel-shadow-highlight</code>, posé par la classe <code>.cel-highlight</code> (ou <code>shadow-highlight</code> avec Tailwind). Ce n'est pas une ombre : il reste en thème sombre, et le texte garde sa couleur, son contraste ne change pas. Un titre, un mot ou deux, jamais un lien.</p>
+    <p class="cel-section-title cel-section-title--primary">Pensé pour <span class="cel-highlight">les mairies</span></p>
 </Doc>

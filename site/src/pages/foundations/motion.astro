@@ -15,6 +15,11 @@ const USES = {
     'cel-duration-steady': 'opacité des apparitions',
     'cel-duration-slow': 'mouvement des apparitions',
     'cel-delay-stagger': 'écart entre deux éléments qui apparaissent ensemble',
+    'cel-duration-float': 'un cycle de flottement (notification de l\'accroche)',
+    'cel-duration-float-slow': 'la seconde notification, décalée de la première',
+    'cel-duration-typing': 'texte tapé dans un aperçu',
+    'cel-duration-caret': 'clignotement du curseur',
+    'cel-duration-pulse': 'pulsation d\'un bouton dans un aperçu',
     'cel-ease-standard': 'survols, fondus',
     'cel-ease-out': 'apparitions, ouverture du menu',
     'cel-ease-glide': 'repère qui glisse',
@@ -26,13 +31,17 @@ const headings = [
     { depth: 2, slug: 'courbes', text: 'Courbes' },
     { depth: 2, slug: 'apparitions', text: 'Apparitions au défilement' },
     { depth: 2, slug: 'changements', text: 'Changements d\'état' },
+    { depth: 2, slug: 'entree', text: 'Entrée d\'un écran' },
+    { depth: 2, slug: 'ancres', text: 'Ancres douces' },
+    { depth: 2, slug: 'bande-defilante', text: 'Bande défilante' },
+    { depth: 2, slug: 'animations-decoratives', text: 'Animations décoratives' },
 ]
 ---
 <Doc title="Mouvement" description="Des animations discrètes, courtes et facultatives : reprise du module partagé de la landing et de la mise en route." headings={headings}>
     <h2 id="regles">Règles</h2>
     <ul>
         <li>Seules l'opacité, <code>translate</code> et <code>scale</code> changent : aucun décalage de mise en page.</li>
-        <li>De 150 à 400 ms, sans boucle. Jamais d'animation sur un message d'erreur, jamais de formulaire masqué.</li>
+        <li>De 150 à 400 ms, sans boucle (deux exceptions encadrées : la <a href="#bande-defilante">bande défilante</a> et les <a href="#animations-decoratives">animations décoratives</a> des aperçus). Jamais d'animation sur un message d'erreur, jamais de formulaire masqué.</li>
         <li>Rien n'est masqué sans la classe <code>cel-motion</code>, posée par <code>js/motion-boot.js</code> seulement si le navigateur sait animer et que les animations ne sont pas réduites ; retirée si le script principal ne tourne pas dans les 3 secondes.</li>
         <li><code>prefers-reduced-motion: reduce</code> : tout apparaît sans transition, les éléments ne bougent plus au survol.</li>
         <li>Le titre principal (<code>h1</code>) n'est jamais transparent.</li>
@@ -44,7 +53,7 @@ const headings = [
         {durations.map((token) => (
             <li class={`doc-v-${token.name}`}>
                 <span class="doc-scale__name">--{token.name}<span>{token.light}{USES[token.name] ? ` · ${USES[token.name]}` : ''}</span></span>
-                {token.name === 'cel-delay-stagger' ? <span /> : <span class="doc-motion-track" tabindex="0" aria-label={`Démonstration : ${token.light}`}><span class="doc-motion" /></span>}
+                {token.name === 'cel-delay-stagger' || token.group === 'Decorative animations' ? <span /> : <span class="doc-motion-track" tabindex="0" aria-label={`Démonstration : ${token.light}`}><span class="doc-motion" /></span>}
             </li>
         ))}
     </ul>
@@ -78,5 +87,47 @@ const headings = [
         <li><code>.cel-draw-check</code> : coche de confirmation tracée une fois (chemin SVG avec <code>pathLength="1"</code>).</li>
         <li><code>.cel-hover-card</code> : carte-lien qui se soulève, sa flèche <code>.cel-hover-card__arrow</code> avance.</li>
     </ul>
-    <p>Les animations décoratives de l'accroche de la landing (téléphone qui flotte, texte tapé, pulsation) lui restent propres et ne sont pas dans le paquet.</p>
+
+    <h2 id="entree" tabindex="-1">Entrée d'un écran</h2>
+    <p>Les blocs d'un écran qui porte <code>data-cel-enter</code> (ses enfants directs) apparaissent en fondu dès son affichage, l'un après l'autre : 60, 120 puis 180 ms d'écart. Le premier porte le titre <code>h1</code> : jamais transparent, 4 px de décalage au plus. <code>--cel-enter-delay</code> sur l'écran retarde les blocs suivants (une coche tracée d'abord, par exemple). Jamais sur un écran qui affiche des erreurs : elles apparaissent tout de suite. <code>initMotion()</code> lance l'entrée ; <code>initEnter()</code> existe seul, pour un écran ajouté après le chargement.</p>
+    <div class="doc-enter-demo">
+        <div class="cel-stack" data-cel-enter data-doc-enter>
+            <p class="cel-section-title cel-section-title--primary">Votre site est en ligne</p>
+            <p class="cel-lead">Les habitants le trouvent déjà à son adresse.</p>
+            <p><span class="cel-button">Voir le site</span></p>
+        </div>
+        <button type="button" class="cel-button cel-button--secondary" hidden data-doc-enter-replay>Rejouer l'entrée</button>
+    </div>
+    <Code code={`<main data-cel-enter>
+    <h1>Votre site est en ligne</h1>   <!-- jamais transparent -->
+    <p>…</p>
+    <p><a class="cel-button" href="…">Voir le site</a></p>
+</main>`} />
+
+    <h2 id="ancres" tabindex="-1">Ancres douces</h2>
+    <p>Un lien d'ancre qui porte <code>data-cel-smooth-anchor</code> fait défiler la page en douceur jusqu'à sa cible (aussitôt avec la réduction des animations), qui reçoit ensuite le focus pour les lecteurs d'écran et le clavier : la cible prend <code>tabindex="-1"</code>. L'adresse prend l'ancre, le bouton Précédent y revient. Sans script, le lien saute à l'ancre.</p>
+    <p><a href="#entree" data-cel-smooth-anchor>Remonter à « Entrée d'un écran »</a></p>
+    <Code code={`<a href="#informer" class="cel-pill" data-cel-smooth-anchor>Informer</a>
+…
+<section id="informer" tabindex="-1">…</section>
+
+<script type="module">
+    import { initSmoothAnchors } from '/design/js/motion.js'
+    initSmoothAnchors()
+</script>`} />
+
+    <h2 id="bande-defilante" tabindex="-1">Bande défilante</h2>
+    <p><code>initMarquee()</code> fait avancer lentement une bande <code>data-cel-marquee</code> quand ses cartes ne tiennent pas dans la largeur : seule boucle des animations du paquet, toujours interrompue par la personne (survol, toucher, focus, défilement à la main) et munie d'un bouton de pause. Composition, états <code>cel-marquee-auto</code> et <code>cel-marquee-static</code>, démonstration : <a href="/components/references/#défilement-automatique">Bande des références</a>.</p>
+
+    <h2 id="animations-decoratives">Animations décoratives</h2>
+    <p>Les aperçus de la landing (une notification qui flotte, un titre qui se tape, un bouton « Publier » qui pulse) ont leurs durées dans les fondamentaux, pour que la landing n'écrive aucune valeur : <code>--cel-duration-float</code> et <code>--cel-duration-float-slow</code> (6 et 7 s par cycle, décalées pour ne jamais flotter ensemble), <code>--cel-duration-typing</code> (1,4 s), <code>--cel-duration-caret</code> (0,8 s), <code>--cel-duration-pulse</code> (1,6 s). Les animations elles-mêmes restent dans le projet qui les dessine : le paquet ne fournit pas de boucle sans fin.</p>
+    <ul>
+        <li>Rien ne bouge sans <code>cel-motion</code> ni avec <code>prefers-reduced-motion: reduce</code> (<code>motion-reduce:animate-none</code>) ; le texte tapé est entièrement visible dans ce cas.</li>
+        <li>Une boucle qui dure plus de 5 secondes doit pouvoir s'arrêter (WCAG 2.2.2) : la limiter à quelques cycles (<code>animation-iteration-count</code>), ou la lier à un bouton de pause.</li>
+        <li>Les éléments d'un aperçu qui arrivent l'un après l'autre : l'utilitaire Tailwind <code>animation-delay-*</code>, en ms (<code>animation-delay-650</code>).</li>
+    </ul>
+    <Code lang="css" code={`@theme inline {
+    --animate-float: preview-float var(--cel-duration-float) var(--cel-ease-standard) 3;   /* trois cycles, 18 s */
+    --animate-typing: preview-type var(--cel-duration-typing) steps(29, end) forwards;
+}`} />
 </Doc>

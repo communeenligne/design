@@ -156,6 +156,7 @@ a.cel-pagination__link:hover,
     margin: 0;
     padding: 0;
     list-style: none;
+    position: relative;
     overflow-x: auto;
     scrollbar-width: thin;
     box-shadow: inset 0 -1px 0 var(--cel-color-line);
@@ -306,7 +307,7 @@ a.cel-pagination__link:hover,
 
 /* ---------- Phone ---------- */
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     /* Links on one line, in the same order, then the main action, always visible. */
     .cel-nav {
         flex-direction: column;

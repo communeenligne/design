@@ -2,7 +2,8 @@
  * @communeenligne/design, foundations: breakpoints.
  *
  * For scripts, Tailwind and the documentation: var() does not work in @media, so the stylesheets write these
- * values in their media queries.
+ * values in their media queries. Every breakpoint reads the same way, like Tailwind: a layout for screens below it is
+ * written (width < 640px), for screens from it (width >= 640px). No other width in a media query.
  *
  * A group title is written "---- Group name ----": the documentation site and the tests read this file.
  * Renaming a variable is a major version.
@@ -10,8 +11,8 @@
 
 :root {
     /* ---- Breakpoints ---- */
-    --cel-breakpoint-phone: 640px; /* max-width: phone */
-    --cel-breakpoint-tablet: 860px; /* max-width: stacked columns */
-    --cel-breakpoint-desktop: 960px; /* min-width: four-column footer */
-    --cel-breakpoint-wide: 1100px;
+    --cel-breakpoint-phone: 640px; /* below: phone */
+    --cel-breakpoint-tablet: 860px; /* below: stacked columns, phone menu */
+    --cel-breakpoint-desktop: 960px; /* from: three or four columns */
+    --cel-breakpoint-wide: 1100px; /* from: table of contents beside the page */
 }

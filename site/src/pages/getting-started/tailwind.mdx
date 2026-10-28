@@ -27,6 +27,14 @@ Les composants sont des classes `cel-` en CSS pur. Les valeurs se lisent dans le
 @import '@communeenligne/design/components';     /* facultatif : composants, classes cel- */
 @import '@communeenligne/design/patterns';       /* facultatif : modèles */`} />
 
+Sans la famille Documentation :
+
+<Code lang="css" code={`@import 'tailwindcss';
+@import '@communeenligne/design/tailwind.css';
+@import '@communeenligne/design/components/without-documentation.css';
+@import '@communeenligne/design/patterns/without-documentation.css';
+@import '@communeenligne/design/motion.css';`} />
+
 `tailwind.css` est généré depuis les fondamentaux : chaque variable devient un utilitaire qui pointe vers elle (`@theme inline`). Le thème sombre s'applique donc sans variante `dark:` : `bg-surface` vaut la surface claire ou sombre selon la classe posée sur `<html>`. Le nom de l'utilitaire est celui de la variable sans `--cel-` ni son préfixe de famille.
 
 | Variable du paquet | Utilitaires Tailwind |
@@ -42,9 +50,25 @@ Les composants sont des classes `cel-` en CSS pur. Les valeurs se lisent dans le
 | `--cel-ease-out` | `ease-out` |
 | `--cel-width-content` | `max-w-content` |
 | `--cel-space-section` | `py-section` |
-| `--cel-breakpoint-phone` | `phone:` (640 px et plus), `max-phone:` (moins de 640 px) |
+| `--cel-space-card`, `--cel-space-panel` | `p-card`, `p-panel` (retraits fluides) |
+| `--cel-border-thick` | `border-thick` (1,5 px) |
+| `--cel-leading-scene` | `leading-scene` |
+| `--cel-shadow-highlight` | `shadow-highlight` (soulignement doré) |
+| `--cel-breakpoint-phone` | `phone:` (640 px et plus), `max-phone:` (moins de 640 px) ; de même `tablet:`, `desktop:`, `wide:` |
 
 Les espacements suivent le pas de Tailwind (4 px) : `p-4` vaut `--cel-space-4` (16 px), `gap-2.5` vaut `--cel-space-2-5` (10 px).
+
+### Utilitaires du paquet
+
+Deux utilitaires que le thème seul ne donne pas, écrits dans `tailwind.css` sur les variables :
+
+- `grid-fit-*` : autant de colonnes que la largeur en permet, chacune large au moins du nombre de pas de 4 px (`grid-fit-70` : 280 px, `grid-fit-57.5` : 230 px), jamais plus large que la grille ;
+- `animation-delay-*` : le délai d'une animation, en ms (`animation-delay-650`).
+
+<Code code={`<ul class="grid grid-fit-70 gap-5">…</ul>
+<span class="animate-tick-in animation-delay-400 motion-reduce:animate-none">…</span>`} />
+
+Pas d'autre point de rupture que les quatre du paquet : la [page Grille](/foundations/grid/) dit ce que deviennent les autres seuils.
 
 ### Préflight
 

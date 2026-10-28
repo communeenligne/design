@@ -1,0 +1,57 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Bande d'appel"
+description: "En fin de page, dans la colonne du contenu : un titre, une phrase et les boutons, sur fond sable ou marine."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Proposer la suite à la fin d'une page : s'inscrire, voir l'offre, écrire. Une seule par page, après le contenu.
+
+**Quand ne pas l'utiliser :** en haut de page (c'est le rôle de l'[accroche](/components/hero/)) ; pour une simple précision (prendre l'[encart](/components/callout/)).
+
+## Variantes
+
+Le texte `__text` (titre `__title` et une ou deux phrases) à gauche, les boutons `__actions` à droite, dessous quand la largeur manque. Sable par défaut, pour l'offre ou l'inscription ; `--strong`, marine, pour une idée ou une question, avec les boutons `--accent` et `--on-strong`.
+
+<Example title="Sable : l'offre, après une page de fonctionnalité" html={`
+    <section class="cel-cta-band" aria-labelledby="exemple-appel">
+        <div class="cel-cta-band__text">
+            <h2 id="exemple-appel" class="cel-cta-band__title">Toutes les fonctionnalités, un seul prix</h2>
+            <p>À partir de 360 € par an, selon la population, sans engagement.</p>
+        </div>
+        <div class="cel-cta-band__actions">
+            <a href="#" class="cel-button">J'inscris ma commune</a>
+            <a href="#" class="cel-button cel-button--secondary">Voir le tarif</a>
+        </div>
+    </section>
+`} />
+
+<Example title="Marine (--strong) : une idée pour votre commune" html={`
+    <section class="cel-cta-band cel-cta-band--strong" aria-labelledby="exemple-appel-marine">
+        <div class="cel-cta-band__text">
+            <h2 id="exemple-appel-marine" class="cel-cta-band__title">Une idée pour votre commune ?</h2>
+            <p>Dites-nous ce qui vous manque : les fonctionnalités suivantes viennent des mairies.</p>
+        </div>
+        <div class="cel-cta-band__actions">
+            <a href="#" class="cel-button cel-button--accent">J'inscris ma commune</a>
+            <a href="#" class="cel-button cel-button--on-strong">Nous écrire</a>
+        </div>
+    </section>
+`} />
+
+## Accessibilité
+
+- Une `<section>` nommée par son titre (`aria-labelledby`), un vrai titre `h2`.
+- Des liens qui disent où ils mènent ; deux au plus, le principal en premier.
+- Sur le fond marine, le focus devient or.
+
+<Contrasts pairs={[['ochre-ink', 'warning-background'], ['primary', 'warning-background'], ['on-dark', 'strong'], ['on-strong', 'strong'], ['cel-focus-color', 'warning-background', 3], ['cel-focus-color-on-strong', 'strong', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Un titre court qui dit ce que la personne gagne.', 'La bande dans la colonne de la page, après le contenu.']} donts={['Deux bandes d\'appel sur une même page.', 'Plus de deux boutons.']} />

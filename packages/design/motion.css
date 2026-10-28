@@ -72,6 +72,12 @@
     transition: scale var(--cel-duration-slow) var(--cel-ease-out) var(--cel-bar-delay, 0ms);
 }
 
+/* Rows of a comparison: fade only. In a block that scrolls horizontally, a row still shifted by its reveal would add
+   a vertical scrollbar, gone once every row is shown. */
+.cel-motion .cel-comparison [data-cel-reveal] {
+    translate: none;
+}
+
 /* Cards that lift on hover: their own transition adds to the reveal one. */
 .cel-motion [data-cel-reveal].cel-revealed.cel-lift {
     transition:
@@ -118,6 +124,51 @@
 
 .cel-delay-7 {
     --cel-delay: calc(var(--cel-delay-stagger) * 7);
+}
+
+/* ---------- Entrance of a screen: [data-cel-enter] ---------- */
+
+/* The blocks of the screen (its children) fade in as soon as it is shown, one after the other (initEnter(), started
+   by initMotion()). The first one carries the h1 title: never transparent, a slight shift at most. --cel-enter-delay
+   on the screen: a wait before the blocks after the first (a check mark drawn first, for instance). Never on a screen
+   that shows errors: they appear at once. */
+.cel-motion [data-cel-enter] > * {
+    --cel-enter-offset: 0ms;
+    opacity: 0;
+    translate: 0 10px;
+}
+
+.cel-motion [data-cel-enter] > :first-child {
+    opacity: 1;
+    translate: 0 4px;
+}
+
+.cel-motion [data-cel-enter].cel-entered > *,
+.cel-motion [data-cel-enter] > :focus-within {
+    opacity: 1;
+    translate: none;
+}
+
+.cel-motion [data-cel-enter].cel-entered > * {
+    transition:
+        opacity var(--cel-duration-normal) var(--cel-ease-standard) calc(var(--cel-enter-delay, 0ms) + var(--cel-enter-offset)),
+        translate var(--cel-duration-steady) var(--cel-ease-out) calc(var(--cel-enter-delay, 0ms) + var(--cel-enter-offset));
+}
+
+.cel-motion [data-cel-enter].cel-entered > :first-child {
+    --cel-enter-delay: 0ms;
+}
+
+.cel-motion [data-cel-enter] > :nth-child(2) {
+    --cel-enter-offset: 60ms;
+}
+
+.cel-motion [data-cel-enter] > :nth-child(3) {
+    --cel-enter-offset: 120ms;
+}
+
+.cel-motion [data-cel-enter] > :nth-child(n + 4) {
+    --cel-enter-offset: 180ms;
 }
 
 /* ---------- Link card that reacts to hover and focus: .cel-hover-card ---------- */
@@ -237,6 +288,7 @@
 @media (prefers-reduced-motion: reduce) {
     .cel-motion [data-cel-reveal],
     .cel-motion [data-cel-reveal] [data-cel-bar],
+    .cel-motion [data-cel-enter] > *,
     .cel-motion [data-cel-fade],
     .cel-motion .cel-fade-in,
     .cel-motion .cel-fade-out,
@@ -269,5 +321,10 @@
 
     .cel-motion [data-cel-reveal='fill'] [data-cel-bar] {
         scale: none;
+    }
+
+    .cel-motion [data-cel-enter] > * {
+        opacity: 1;
+        translate: none;
     }
 }

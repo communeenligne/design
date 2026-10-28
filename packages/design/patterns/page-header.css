@@ -6,7 +6,9 @@
 
 /* ---------- Page header ---------- */
 
+/* Clipped in width: an offset reveal of its content (feature hero) never widens the page. */
 .cel-page-header {
+    overflow-x: clip;
     border-bottom: 1px solid var(--cel-color-line);
     background: var(--cel-color-background-muted);
 }

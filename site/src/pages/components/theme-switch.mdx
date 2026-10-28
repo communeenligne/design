@@ -39,10 +39,24 @@ Laisser le visiteur choisir le thème. Le thème clair est celui par défaut ; l
 
 Le sélecteur de cette page est celui du pied de page : il change vraiment le thème. Les exemples ci-dessus ne sont pas reliés au script.
 
+### Garder le choix : deux modes
+
+`initTheme()` remplace les liens `data-cel-theme-option` (« light », « dark ») par des boutons `aria-pressed` et applique le thème sans recharger la page. Le choix se garde de deux façons :
+
+| Mode | Appel | Où le choix est gardé | Qui pose `cel-dark` au chargement suivant |
+|---|---|---|---|
+| Site statique (cette documentation) | `initTheme()` | stockage local, clé `cel-theme` | `js/theme-boot.js`, dans `<head>` |
+| Page rendue par un serveur (landing) | `initTheme({ cookie: 'cel_theme', storage: false })` | le cookie seul, lu par le serveur | le serveur, dès le rendu |
+
 <Code lang="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
 
-// Les liens data-cel-theme-option (« light », « dark ») deviennent des boutons aria-pressed ; le cookie vaut light ou dark.
-initTheme({ cookie: 'cel_theme' })`} />
+// Site statique : stockage local, lu par theme-boot.js.
+initTheme()
+
+// Page rendue par un serveur : le cookie seul (light ou dark, un an), rien dans le stockage local.
+initTheme({ cookie: 'cel_theme', storage: false })`} />
+
+Avec `storage: false`, le script n'écrit rien dans le stockage local : le cookie est la seule trace du choix, celle que la politique de confidentialité déclare. `days` règle la durée du cookie (365 par défaut). `applyTheme(theme, options)` prend les mêmes options, pour un autre bouton que le sélecteur.
 
 ## États
 

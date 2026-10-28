@@ -1,0 +1,71 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Cartes d'étapes"
+description: "Une courte marche à suivre en cartes : toutes sur une ligne à partir de la tablette, l'une sous l'autre en dessous."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Expliquer en trois ou quatre temps ce qui va se passer : la reprise de l'ancien site, le paiement par mandat administratif. Chaque étape a un titre et une phrase.
+
+**Quand ne pas l'utiliser :** pour un mode d'emploi détaillé, dans le corps d'une page d'aide (prendre les [étapes numérotées](/components/steps/)).
+
+## Variantes
+
+`.cel-step-cards` est une liste ordonnée (`<ol>`) : toutes les cartes sur une ligne à partir du point de rupture des tablettes, l'une sous l'autre en dessous, jamais deux puis une. Chaque `.cel-step-card` dit son rang par une étiquette `__label` (« Étape 1 ») ou par un numéro dans un disque doré `__number`, puis son titre `__title` et sa phrase `__text`. `--muted` : sur fond gris, sans bordure.
+
+<Example title="Étiquette « Étape », avec bordure" html={`
+    <ol class="cel-step-cards">
+        <li class="cel-step-card">
+            <span class="cel-step-card__label">Étape 1</span>
+            <h3 class="cel-step-card__title">Vous nous donnez l'adresse</h3>
+            <p class="cel-step-card__text">Celle de l'ancien site, et les rubriques à garder.</p>
+        </li>
+        <li class="cel-step-card">
+            <span class="cel-step-card__label">Étape 2</span>
+            <h3 class="cel-step-card__title">Nous reprenons le contenu</h3>
+            <p class="cel-step-card__text">Actualités, documents et pages, rangés dans les bonnes fonctionnalités.</p>
+        </li>
+        <li class="cel-step-card">
+            <span class="cel-step-card__label">Étape 3</span>
+            <h3 class="cel-step-card__title">Vous relisez, puis publiez</h3>
+            <p class="cel-step-card__text">L'ancienne adresse mène ensuite au nouveau site.</p>
+        </li>
+    </ol>
+`} />
+
+<Example title="Numéro doré, sur fond gris (--muted)" html={`
+    <ol class="cel-step-cards cel-step-cards--muted">
+        <li class="cel-step-card">
+            <span class="cel-step-card__number" aria-hidden="true">1</span>
+            <h3 class="cel-step-card__title">Bon de commande</h3>
+            <p class="cel-step-card__text">Signé par le maire, sans marché public.</p>
+        </li>
+        <li class="cel-step-card">
+            <span class="cel-step-card__number" aria-hidden="true">2</span>
+            <h3 class="cel-step-card__title">Facture sur Chorus Pro</h3>
+            <p class="cel-step-card__text">Une fois par an, au début de l'abonnement.</p>
+        </li>
+        <li class="cel-step-card">
+            <span class="cel-step-card__number" aria-hidden="true">3</span>
+            <h3 class="cel-step-card__title">Mandat administratif</h3>
+            <p class="cel-step-card__text">Le paiement suit le circuit habituel de la trésorerie.</p>
+        </li>
+    </ol>
+`} />
+
+## Accessibilité
+
+- Une liste ordonnée : les lecteurs d'écran annoncent le rang de chaque étape. Le numéro du disque, qui le répète, est masqué (`aria-hidden="true"`) ; l'étiquette « Étape 1 » reste lue.
+- Chaque étape a un vrai titre, au niveau qui suit celui de la section.
+- L'ordre visuel est l'ordre du code, sur une ligne comme en colonne.
+
+<Contrasts pairs={[['text-ochre', 'background'], ['text', 'background'], ['on-gold', 'gold'], ['primary', 'background-muted'], ['text-2', 'background-muted']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Trois ou quatre étapes.', 'Un titre qui commence par ce que fait la personne ou l\'équipe.']} donts={['Plus de quatre étapes sur une ligne.', 'Des étapes sans ordre dans une liste ordonnée.']} />

@@ -1,0 +1,81 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Colonnes de coût"
+description: "Le coût sur la durée du contrat, une colonne par année, la mise en service au-dessus de l'abonnement la première année."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Montrer que la première année coûte plus (mise en service) et que les suivantes ne coûtent que l'abonnement, sur la page tarif. Le total et le calcul par habitant sont écrits à côté, en texte.
+
+## Composition
+
+`.cel-cost-chart` est une liste ordonnée, une `__year` par année : le montant `__amount`, la colonne `__bar` (la mise en service `__setup` au-dessus de l'abonnement `__subscription`), l'année `__label`, puis la même année écrite en une phrase pour les lecteurs d'écran (`.cel-visually-hidden`). Montant, colonne et année visibles sont décoratifs (`aria-hidden="true"`).
+
+La hauteur vient de deux propriétés posées par le projet sur la liste, en pour cent de la première année : `--cel-cost-setup-share` et `--cel-cost-subscription-share` (une classe écrite avec le nonce, jamais un attribut `style`). La première année vaut donc toujours toute la hauteur : 170 px, 120 px sur téléphone. Dans un bloc `data-cel-reveal="fill"`, les colonnes montent l'une après l'autre (`data-cel-bar="top"`). La légende `.cel-cost-legend` donne une pastille `__swatch` par part.
+
+<Example title="Quatre ans, mise en service de 300 € et abonnement de 480 € par an" html={`
+    <div class="cel-stack" data-cel-reveal="fill">
+        <ol class="cel-cost-chart doc-cost-shares" aria-label="Coût année par année">
+            <li class="cel-cost-chart__year">
+                <span class="cel-cost-chart__amount" aria-hidden="true">780 €</span>
+                <span class="cel-cost-chart__bar" aria-hidden="true" data-cel-bar="top"><span class="cel-cost-chart__setup"></span><span class="cel-cost-chart__subscription"></span></span>
+                <span class="cel-cost-chart__label" aria-hidden="true">Année 1</span>
+                <span class="cel-visually-hidden">Année 1 : 780 €, dont 300 € de mise en service.</span>
+            </li>
+            <li class="cel-cost-chart__year">
+                <span class="cel-cost-chart__amount" aria-hidden="true">480 €</span>
+                <span class="cel-cost-chart__bar" aria-hidden="true" data-cel-bar="top"><span class="cel-cost-chart__subscription"></span></span>
+                <span class="cel-cost-chart__label" aria-hidden="true">Année 2</span>
+                <span class="cel-visually-hidden">Année 2 : 480 €.</span>
+            </li>
+            <li class="cel-cost-chart__year">
+                <span class="cel-cost-chart__amount" aria-hidden="true">480 €</span>
+                <span class="cel-cost-chart__bar" aria-hidden="true" data-cel-bar="top"><span class="cel-cost-chart__subscription"></span></span>
+                <span class="cel-cost-chart__label" aria-hidden="true">Année 3</span>
+                <span class="cel-visually-hidden">Année 3 : 480 €.</span>
+            </li>
+            <li class="cel-cost-chart__year">
+                <span class="cel-cost-chart__amount" aria-hidden="true">480 €</span>
+                <span class="cel-cost-chart__bar" aria-hidden="true" data-cel-bar="top"><span class="cel-cost-chart__subscription"></span></span>
+                <span class="cel-cost-chart__label" aria-hidden="true">Année 4</span>
+                <span class="cel-visually-hidden">Année 4 : 480 €.</span>
+            </li>
+        </ol>
+        <ul class="cel-cost-legend">
+            <li><span class="cel-cost-legend__swatch cel-cost-legend__swatch--setup" aria-hidden="true"></span>Mise en service : 300 €, la première année</li>
+            <li><span class="cel-cost-legend__swatch" aria-hidden="true"></span>Abonnement : 480 € par an</li>
+        </ul>
+    </div>
+`} />
+
+`doc-cost-shares` est la classe de cette page : 300 € sur 780 €, soit 38 % pour la mise en service et 62 % pour l'abonnement.
+
+<Code code={`<style nonce="…">.cost-shares-1 { --cel-cost-setup-share: 38; --cel-cost-subscription-share: 62 }</style>
+<ol class="cel-cost-chart cost-shares-1" aria-label="Coût année par année">…</ol>`} />
+
+## Champ dans le texte
+
+Le nombre d'habitants se saisit dans la phrase même du calcul : `.cel-inline-field`, souligné, large de cinq chiffres et demi, sans flèches. Son libellé est masqué visuellement ; le résultat qui suit est une zone `aria-live="polite"`, réécrite une fois la saisie posée.
+
+<Example title="Calcul par habitant" html={`
+    <p>Pour <label for="exemple-habitants" class="cel-visually-hidden">Nombre d'habitants</label><input id="exemple-habitants" class="cel-inline-field" type="number" inputmode="numeric" min="1" step="1" value="480"> habitants, cela fait <strong aria-live="polite">1,15 € par habitant et par an</strong>.</p>
+`} />
+
+## Accessibilité
+
+- Chaque année est écrite en une phrase pour les lecteurs d'écran ; les colonnes et leurs chiffres sont masqués (`aria-hidden`), pour ne pas tout lire deux fois.
+- La liste a un nom (`aria-label`) ; les années sont dans l'ordre.
+- Les colonnes ne portent pas seules l'information : montants et légende sont écrits.
+- La montée des colonnes est coupée avec `prefers-reduced-motion: reduce`.
+
+<Contrasts pairs={[['primary', 'background'], ['text-muted-2', 'background'], ['text-2', 'background'], ['primary', 'background-muted'], ['text-muted-2', 'background-muted']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Le total sur la durée écrit à côté, en grand.', 'Les hauteurs calculées par le serveur depuis les prix.']} donts={['Une hauteur posée en attribut style.', 'Des colonnes sans montant ni légende.']} />

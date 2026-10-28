@@ -3,8 +3,9 @@
  * it by hand (npm run generate).
  *
  * @theme inline: each utility writes var(--cel-…) in the page; the dark theme (.cel-dark) therefore applies without a
- * dark: variant. Examples: bg-background, text-primary, border-line, rounded-md, shadow-button, text-15, font-extrabold,
- * max-w-content, py-section; breakpoints phone: (640 px and more), max-phone: (less than 640 px).
+ * dark: variant. Examples: bg-background, text-primary, border-line, border-thick, rounded-md, shadow-button, text-15,
+ * font-extrabold, leading-scene, max-w-content, py-section, p-card, p-panel; breakpoints phone: (640 px and more),
+ * max-phone: (less than 640 px). Utilities: grid-fit-*, animation-delay-*.
  */
 
 @import './foundations/index.css';
@@ -192,6 +193,7 @@
     --leading-body: var(--cel-leading-body);
     --leading-title: var(--cel-leading-title);
     --leading-title-large: var(--cel-leading-title-large);
+    --leading-scene: var(--cel-leading-scene);
     --tracking-title: var(--cel-tracking-title);
     --tracking-title-large: var(--cel-tracking-title-large);
     --tracking-figures: var(--cel-tracking-figures);
@@ -212,6 +214,8 @@
     --text-price-tier: var(--cel-text-price-tier);
     --text-price-quote: var(--cel-text-price-quote);
     --spacing-section: var(--cel-space-section);
+    --spacing-card: var(--cel-space-card);
+    --spacing-panel: var(--cel-space-panel);
     --container-content: var(--cel-width-content);
     --container-narrow: var(--cel-width-narrow);
     --container-reading: var(--cel-width-reading);
@@ -238,6 +242,7 @@
     --radius-md: var(--cel-radius-md);
     --radius-lg: var(--cel-radius-lg);
     --radius-xl: var(--cel-radius-xl);
+    --border-width-thick: var(--cel-border-thick);
     --shadow-choice: var(--cel-shadow-choice);
     --shadow-button: var(--cel-shadow-button);
     --shadow-pill: var(--cel-shadow-pill);
@@ -255,8 +260,22 @@
     --shadow-preview: var(--cel-shadow-preview);
     --shadow-search: var(--cel-shadow-search);
     --shadow-ruler-pin: var(--cel-shadow-ruler-pin);
+    --shadow-scene: var(--cel-shadow-scene);
+    --shadow-highlight: var(--cel-shadow-highlight);
     --ease-standard: var(--cel-ease-standard);
     --ease-out: var(--cel-ease-out);
     --ease-glide: var(--cel-ease-glide);
     --ease-bounce: var(--cel-ease-bounce);
+}
+
+/* Grid with as many columns as the width allows, each one N steps of 4 px wide at least (grid-fit-70: 280 px), never
+   wider than the grid: the same tracks as .cel-feature-tiles. */
+@utility grid-fit-* {
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--cel-space-1) * --value(number)), 100%), 1fr));
+}
+
+/* Delay of an animation, in ms (animation-delay-650: 650 ms), for the elements of a preview that arrive one after
+   the other. */
+@utility animation-delay-* {
+    animation-delay: calc(--value(integer) * 1ms);
 }

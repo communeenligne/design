@@ -37,6 +37,7 @@
     align-items: flex-start;
     gap: var(--cel-space-4);
     padding: var(--cel-space-7) var(--cel-space-6);
+    position: relative;
     overflow-x: auto;
 }
 
@@ -96,6 +97,7 @@
 .cel-code pre {
     margin: 0;
     padding: var(--cel-space-4) var(--cel-space-4-5);
+    position: relative;
     overflow-x: auto;
     color: var(--cel-color-text-strong);
     font-family: var(--cel-font-code);
@@ -335,7 +337,7 @@
 
 /* ---------- Phone ---------- */
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     .cel-example__preview {
         padding: var(--cel-space-5) var(--cel-space-4);
     }

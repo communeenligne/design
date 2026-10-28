@@ -36,6 +36,10 @@
     --cel-space-22: 88px;
     --cel-space-section: clamp(56px, 8vw, 88px); /* --section-padding */
 
+    /* ---- Fluid padding ---- */
+    --cel-space-card: clamp(20px, 4vw, 36px); /* cards, form blocks */
+    --cel-space-panel: clamp(24px, 4vw, 40px); /* large blocks, pricing contact */
+
     /* ---- Layout ---- */
     --cel-width-content: 1200px; /* --wrap */
     --cel-width-narrow: 880px; /* .wrap--narrow */

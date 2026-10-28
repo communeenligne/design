@@ -8,18 +8,20 @@ const breakpoints = startingWith('cel-breakpoint-')
 const widths = inGroup('Layout')
 // Use of each breakpoint, in French (the comments of the package are in English).
 const USES = {
-    'cel-breakpoint-phone': 'téléphone : 640 px et moins',
-    'cel-breakpoint-tablet': 'colonnes empilées, menu sur téléphone : 860 px et moins',
-    'cel-breakpoint-desktop': 'pied de page sur quatre colonnes : 960 px et plus',
-    'cel-breakpoint-wide': 'sommaire de la page de documentation : 1 100 px et plus',
+    'cel-breakpoint-phone': 'en dessous : téléphone (une colonne, marges de 16 px, tailles resserrées)',
+    'cel-breakpoint-tablet': 'en dessous : colonnes empilées, menu sur téléphone ; à partir : deux colonnes de liste, étapes sur une ligne',
+    'cel-breakpoint-desktop': 'à partir : trois ou quatre colonnes (cartes, pied de page) ; en dessous : comparatif qui défile',
+    'cel-breakpoint-wide': 'à partir : sommaire à côté de la page, quatre colonnes de cartes',
 }
 const headings = [
     { depth: 2, slug: 'conteneur', text: 'Conteneur' },
     { depth: 2, slug: 'points-de-rupture', text: 'Points de rupture' },
+    { depth: 3, slug: 'un-seul-sens', text: 'Un seul sens' },
+    { depth: 3, slug: 'seuils-non-repris', text: 'Les seuils de la landing non repris' },
     { depth: 2, slug: 'grilles', text: 'Grilles' },
 ]
 ---
-<Doc title="Grille et points de rupture" description="Largeur du contenu, marges latérales et points de rupture : une mise en page fluide, sans grille à colonnes fixes." headings={headings}>
+<Doc title="Grille et points de rupture" description="Largeur du contenu, marges latérales et quatre points de rupture lus dans le même sens : une mise en page fluide, sans grille à colonnes fixes." headings={headings}>
     <h2 id="conteneur">Conteneur</h2>
     <p><code>.cel-container</code> centre le contenu sur 1 200 px au plus, avec 24 px de marge de chaque côté (16 px sur téléphone). <code>.cel-container--narrow</code> : 880 px, pour les pages de texte.</p>
     <div class="cel-table-scroll"><table class="cel-table">
@@ -28,25 +30,46 @@ const headings = [
     </table></div>
 
     <h2 id="points-de-rupture">Points de rupture</h2>
-    <p>La landing n'a pas de grille à colonnes fixes : chaque bloc passe en colonne quand la place manque (<code>flex-wrap</code>, <code>grid-template-columns: repeat(auto-fit, minmax(…))</code>). Quatre seuils reviennent :</p>
+    <p>La landing n'a pas de grille à colonnes fixes : chaque bloc passe en colonne quand la place manque (<code>flex-wrap</code>, <code>grid-template-columns: repeat(auto-fit, minmax(…))</code>). Quatre seuils, et aucun autre :</p>
     <div class="cel-table-scroll"><table class="cel-table">
         <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Usage</th><th scope="col">Tailwind</th></tr></thead>
         <tbody>{breakpoints.map((token) => {
             const short = token.name.replace('cel-breakpoint-', '')
 
-            return <tr><td><code>--{token.name}</code></td><td>{token.light}</td><td>{USES[token.name] ?? '—'}</td><td><code>{short}:</code>, <code>max-{short}:</code></td></tr>
+            return <tr><td><code>--{token.name}</code></td><td>{token.light}</td><td>{USES[token.name] ?? '—'}</td><td><code>max-{short}:</code> (en dessous), <code>{short}:</code> (à partir)</td></tr>
         })}</tbody>
     </table></div>
-    <p>Une variable CSS ne peut pas servir dans <code>@media</code> : la valeur s'y écrit en px, et les variables servent aux scripts (<code>getComputedStyle</code>) et à la documentation. La landing emploie aussi 540, 560, 720, 900, 940 et 1 000 px, une fois chacun : leur rapprochement des quatre seuils est proposé pour une prochaine version.</p>
-    <Code lang="css" code={`/* Téléphone : 640 px et moins */
-@media (max-width: 640px) { … }
 
-/* Colonnes empilées, menu sur téléphone : 860 px et moins */
-@media (max-width: 860px) { … }
+    <h3 id="un-seul-sens">Un seul sens</h3>
+    <p>Chaque seuil se lit de la même façon, comme dans Tailwind : <strong>en dessous</strong> veut dire strictement inférieur (<code>width &lt; 640px</code>, <code>max-phone:</code>), <strong>à partir</strong> veut dire supérieur ou égal (<code>width &gt;= 640px</code>, <code>phone:</code>). À 640 px tout juste, la page n'est donc plus « téléphone ». Une variable CSS ne peut pas servir dans <code>@media</code> : la valeur s'y écrit en px ; un test du paquet refuse toute autre largeur et toute autre forme (<code>max-width</code>, <code>min-width</code>, <code>&lt;=</code>).</p>
+    <Code lang="css" code={`/* Téléphone : en dessous de 640 px */
+@media (width < 640px) { … }
 
-/* Pied de page sur quatre colonnes : 960 px et plus */
-@media (min-width: 960px) { … }`} />
+/* Colonnes empilées, menu sur téléphone : en dessous de 860 px */
+@media (width < 860px) { … }
+
+/* Trois ou quatre colonnes : à partir de 960 px */
+@media (width >= 960px) { … }`} />
+    <p>Dans un script, les mêmes requêtes : <code>matchMedia('(width &lt; 860px)')</code> ; les valeurs se lisent aussi dans <code>tokens.json</code> (<code>breakpoints.tablet</code> vaut <code>860</code>).</p>
+
+    <h3 id="seuils-non-repris">Les seuils de la landing non repris</h3>
+    <p>La landing employait en plus 540, 560, 720, 900, 940 et 1 000 px, chacun pour un seul bloc. Aucun composant n'en a besoin : chacun rejoint le seuil le plus proche qui a le même sens.</p>
+    <div class="cel-table-scroll"><table class="cel-table">
+        <thead><tr><th scope="col">Seuil</th><th scope="col">Bloc de la landing</th><th scope="col">Devient</th></tr></thead>
+        <tbody>
+            <tr><td>540 px</td><td>Fonctionnalités de l'accueil sur deux colonnes</td><td>640 px (<code>phone:</code>) : une colonne sur tout téléphone</td></tr>
+            <tr><td>560 px</td><td>Colonnes de coût, cartes de tranche, groupes de « Tout ce qui est inclus », grand champ de recherche</td><td>640 px, dans les composants (<code>.cel-cost-chart</code>, <code>.cel-tier</code>, <code>.cel-combobox--large</code>) ou avec <code>max-phone:</code></td></tr>
+            <tr><td>720 px</td><td>Liste sobre des fonctionnalités sur deux colonnes</td><td>860 px, dans <code>.cel-feature-list</code> : deux colonnes de texte quand les colonnes ne sont plus empilées</td></tr>
+            <tr><td>900 px</td><td>Trois étapes de la reprise de l'ancien site sur une ligne</td><td>860 px, dans <code>.cel-step-cards</code> : trois cartes de 250 px tiennent</td></tr>
+            <tr><td>940 px</td><td>Indication « Faites défiler » du comparatif</td><td>960 px : le tableau (860 px) et les marges ne tiennent plus en dessous</td></tr>
+            <tr><td>1 000 px</td><td>Guides sur trois colonnes, fonctionnalités liées sur quatre</td><td>960 px (<code>desktop:</code>), ou une grille adaptative <code>grid-fit-*</code></td></tr>
+        </tbody>
+    </table></div>
 
     <h2 id="grilles">Grilles</h2>
-    <p>Cartes : autant de colonnes que la largeur en permet, de la même taille (<code>repeat(auto-fill, minmax(240px, 1fr))</code>). Deux colonnes de texte et d'image : <code>flex: 1 1 460px</code> pour chacune, qui passent l'une sous l'autre d'elles-mêmes. Jamais de colonne seule et étirée au bout d'une rangée de trois.</p>
+    <p>Cartes : autant de colonnes que la largeur en permet, de la même taille, sans point de rupture. Avec Tailwind, l'utilitaire <code>grid-fit-*</code> du paquet donne ces colonnes : le nombre est la largeur minimale en pas de 4 px (<code>grid-fit-70</code> : 280 px), jamais plus large que la grille sur un petit écran. Deux colonnes de texte et d'image : <code>flex: 1 1 460px</code> pour chacune, qui passent l'une sous l'autre d'elles-mêmes. Jamais de colonne seule et étirée au bout d'une rangée de trois : pour trois blocs, une ligne ou une colonne (<code>.cel-step-cards</code>).</p>
+    <Code code={`<ul class="grid grid-fit-70 gap-5">…</ul>   <!-- 280 px au moins par colonne -->
+
+<!-- Sans Tailwind -->
+.guides { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }`} />
 </Doc>

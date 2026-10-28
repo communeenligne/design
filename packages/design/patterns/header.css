@@ -34,7 +34,7 @@
 
 /* ---------- Phone ---------- */
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     /* Without phone menu, the navigation wraps under the centered brand. */
     .cel-header__inner:not(:has(> .cel-menu)) {
         justify-content: center;
@@ -42,7 +42,7 @@
 }
 
 /* With the phone menu: brand on the left, menu button on the right; without script, the menu list below. */
-@media (max-width: 860px) {
+@media (width < 860px) {
     .cel-header__inner > .cel-menu:not(.cel-menu--enhanced) {
         flex-basis: 100%;
     }

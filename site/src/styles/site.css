@@ -273,6 +273,28 @@ kbd {
     overflow-wrap: anywhere;
 }
 
+/* ---------- Demonstrations of the component pages ---------- */
+
+/* Place of the pin of the population ruler, and shares of the cost chart: set by a class, never a style attribute. */
+.doc-ruler-pin {
+    --cel-ruler-pin: 19;
+}
+
+.doc-cost-shares {
+    --cel-cost-setup-share: 38;
+    --cel-cost-subscription-share: 62;
+}
+
+.doc-enter-demo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--cel-space-5);
+    padding: var(--cel-space-6);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-lg);
+}
+
 /* ---------- Section indexes, control page ---------- */
 
 .doc-cards {
@@ -656,7 +678,7 @@ kbd {
     }
 }
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     .doc-search-button__shortcut {
         display: none;
     }

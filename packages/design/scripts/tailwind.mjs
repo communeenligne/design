@@ -18,6 +18,7 @@ const NAMESPACES = [
     ['cel-radius-', 'radius-'],
     ['cel-shadow-', 'shadow-'],
     ['cel-ease-', 'ease-'],
+    ['cel-border-', 'border-width-'],
 ]
 
 const NAMED = {
@@ -25,7 +26,23 @@ const NAMED = {
     'cel-width-narrow': 'container-narrow',
     'cel-width-reading': 'container-reading',
     'cel-space-section': 'spacing-section',
+    'cel-space-card': 'spacing-card',
+    'cel-space-panel': 'spacing-panel',
 }
+
+// Utilities that the theme alone cannot give, built on the variables too.
+const UTILITIES = `/* Grid with as many columns as the width allows, each one N steps of 4 px wide at least (grid-fit-70: 280 px), never
+   wider than the grid: the same tracks as .cel-feature-tiles. */
+@utility grid-fit-* {
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--cel-space-1) * --value(number)), 100%), 1fr));
+}
+
+/* Delay of an animation, in ms (animation-delay-650: 650 ms), for the elements of a preview that arrive one after
+   the other. */
+@utility animation-delay-* {
+    animation-delay: calc(--value(integer) * 1ms);
+}
+`
 
 export const generate = () => {
     const { tokens } = readTokens()
@@ -49,8 +66,9 @@ export const generate = () => {
  * it by hand (npm run generate).
  *
  * @theme inline: each utility writes var(--cel-…) in the page; the dark theme (.cel-dark) therefore applies without a
- * dark: variant. Examples: bg-background, text-primary, border-line, rounded-md, shadow-button, text-15, font-extrabold,
- * max-w-content, py-section; breakpoints phone: (640 px and more), max-phone: (less than 640 px).
+ * dark: variant. Examples: bg-background, text-primary, border-line, border-thick, rounded-md, shadow-button, text-15,
+ * font-extrabold, leading-scene, max-w-content, py-section, p-card, p-panel; breakpoints phone: (640 px and more),
+ * max-phone: (less than 640 px). Utilities: grid-fit-*, animation-delay-*.
  */
 
 @import './foundations/index.css';
@@ -58,7 +76,8 @@ export const generate = () => {
 @theme inline {
 ${lines.join('\n')}
 }
-`
+
+${UTILITIES}`
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

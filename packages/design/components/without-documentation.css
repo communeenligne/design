@@ -1,0 +1,11 @@
+/*
+ * @communeenligne/design, components without the documentation family (code block, example, dos and don'ts, tiles).
+ * Built on the foundations, which this file does not import (see components/index.css).
+ */
+
+@import './base.css';
+@import './forms.css';
+@import './navigation.css';
+@import './menu.css';
+@import './content.css';
+@import './landing.css';

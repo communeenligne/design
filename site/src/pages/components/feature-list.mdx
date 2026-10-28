@@ -1,0 +1,62 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Liste des fonctionnalités"
+description: "Une ligne sobre, sans lien, par fonctionnalité qui n'a pas sa page : pictogramme, nom et phrase, sur deux colonnes."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Nommer, sous les [cartes illustrées](/components/feature-tiles/), les fonctionnalités d'un domaine qui n'ont pas de page à elles : la liste est complète sans promettre une page qui n'existe pas.
+
+## Composition
+
+`.cel-feature-list` : une colonne, deux à partir du point de rupture des tablettes, séparées par des filets. Chaque ligne `__item` : le pictogramme `__icon` (ocre, décoratif), puis `__body` avec `__heading` (le nom `__name` et, s'il y a lieu, un badge) et la phrase `__summary`.
+
+<Example title="Quatre fonctionnalités" html={`
+    <ul class="cel-feature-list">
+        <li class="cel-feature-list__item">
+            <svg class="cel-icon cel-feature-list__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#clock"></use></svg>
+            <span class="cel-feature-list__body">
+                <span class="cel-feature-list__heading"><strong class="cel-feature-list__name">Horaires de la mairie</strong></span>
+                <span class="cel-feature-list__summary">Les heures d'ouverture, toujours à jour.</span>
+            </span>
+        </li>
+        <li class="cel-feature-list__item">
+            <svg class="cel-icon cel-feature-list__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#bell-alert"></use></svg>
+            <span class="cel-feature-list__body">
+                <span class="cel-feature-list__heading"><strong class="cel-feature-list__name">Fermetures exceptionnelles</strong><span class="cel-badge cel-badge--auto">Automatique</span></span>
+                <span class="cel-feature-list__summary">Un bandeau sur le site le jour même.</span>
+            </span>
+        </li>
+        <li class="cel-feature-list__item">
+            <svg class="cel-icon cel-feature-list__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#map-pin"></use></svg>
+            <span class="cel-feature-list__body">
+                <span class="cel-feature-list__heading"><strong class="cel-feature-list__name">Plan d'accès</strong></span>
+                <span class="cel-feature-list__summary">L'adresse de la mairie et son plan.</span>
+            </span>
+        </li>
+        <li class="cel-feature-list__item">
+            <svg class="cel-icon cel-feature-list__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#user-group"></use></svg>
+            <span class="cel-feature-list__body">
+                <span class="cel-feature-list__heading"><strong class="cel-feature-list__name">Élus</strong></span>
+                <span class="cel-feature-list__summary">Le maire, les adjoints et leurs délégations.</span>
+            </span>
+        </li>
+    </ul>
+`} />
+
+## Accessibilité
+
+- Une vraie liste (`<ul>`), une ligne par fonctionnalité ; aucun lien, aucun élément qui en ait l'air.
+- Le pictogramme est décoratif (`aria-hidden="true"`) ; le badge « Automatique » est écrit.
+- Sur deux colonnes, l'ordre de lecture va de gauche à droite, ligne par ligne.
+
+<Contrasts pairs={[['primary', 'background'], ['text-2', 'background'], ['ochre-icon', 'background', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Les fonctionnalités sans page, après les cartes du même domaine.', 'Une phrase courte, sur une ou deux lignes.']} donts={['Une ligne cliquable qui ne mène nulle part.', 'Une fonctionnalité qui a sa page dans cette liste.']} />

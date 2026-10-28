@@ -12,7 +12,7 @@ Le paquet est publié à chaque version comme une archive jointe à la publicati
 
 <Code lang="json" code={`{
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.0.0/communeenligne-design-2.0.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.1.0/communeenligne-design-2.1.0.tgz"
     }
 }`} />
 
@@ -34,6 +34,10 @@ Le paquet est rangé en trois parties, plus le thème Tailwind :
 Pour tout le design system (landing, centre d'aide), sans Tailwind, un seul import :
 
 <Code lang="css" code={`@import '@communeenligne/design';`} />
+
+Sans la famille Documentation (bloc de code, exemple, à faire et à éviter, tuiles, page de documentation), pour un projet qui ne montre ni code ni documentation (la landing, le panel) :
+
+<Code lang="css" code={`@import '@communeenligne/design/without-documentation.css';`} />
 
 Ou partie par partie, pour ne prendre que ce qui sert :
 
@@ -67,25 +71,45 @@ Un outil de construction (Vite, Laravel Vite) copie les polices et réécrit leu
 
 ## Scripts
 
-Quatre modules sans dépendance, à importer dans le script de la page :
+Cinq modules sans dépendance extérieure, à importer dans le script de la page :
 
 <Code lang="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
 import { initTabs } from '@communeenligne/design/js/tabs.js'
 import { initMenu } from '@communeenligne/design/js/menu.js'
-import { initMotion } from '@communeenligne/design/js/motion.js'
+import { initMotion, initSmoothAnchors, initMarquee } from '@communeenligne/design/js/motion.js'
+import { initCombobox } from '@communeenligne/design/js/combobox.js'
 
-initTheme()   // sélecteur de thème (.cel-theme)
-initTabs()    // onglets (.cel-tabs)
-initMenu()    // menu sur téléphone (.cel-menu)
-initMotion()  // apparitions au défilement`} />
+initTheme()            // sélecteur de thème (.cel-theme) ; { cookie: 'cel_theme', storage: false } avec un serveur
+initTabs()             // onglets (.cel-tabs)
+initMenu()             // menu sur téléphone (.cel-menu)
+initMotion()           // apparitions au défilement, entrée des écrans
+initSmoothAnchors()    // liens d'ancre data-cel-smooth-anchor
+initMarquee()          // bande des références qui défile
+initCombobox(element, { search })   // recherche de commune (.cel-combobox)`} />
 
-Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le menu sur téléphone est une liste en haut de la page, le sélecteur de thème est fait de liens que le serveur traite.
+Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le menu sur téléphone est une liste en haut de la page, le sélecteur de thème est fait de liens que le serveur traite, la recherche de commune est un champ texte, la bande des références se fait défiler à la main.
+
+## Valeurs hors du CSS
+
+`tokens.json`, généré depuis les fondamentaux, donne les valeurs principales sans `var()` : les couleurs en clair et en sombre, les polices et leurs graisses, les points de rupture (en px, des nombres), les espacements, la mise en page, les rayons et les bordures. Pour une valeur demandée hors d'une feuille de style (couleur de la barre du navigateur, courriel, graphique dessiné par un script, `matchMedia`), le projet la lit là au lieu de la recopier.
+
+<Code lang="js" code={`import tokens from '@communeenligne/design/tokens.json' with { type: 'json' }
+
+tokens.colors.primary          // { light: '#1f3a5f', dark: '#…' }
+tokens.breakpoints.tablet      // 860
+matchMedia(\`(width < \${tokens.breakpoints.tablet}px)\`)`} />
+
+<Code lang="php" code={`// Laravel : la couleur de la barre du navigateur, depuis le paquet installé.
+$tokens = json_decode(file_get_contents(base_path('node_modules/@communeenligne/design/tokens.json')), true);
+$themeColor = $tokens['colors']['strong']['light'];`} />
 
 ## Fichiers du paquet
 
 | Fichier | Contenu |
 |---|---|
 | `index.css` | Tout : fondamentaux, composants, modèles, animations |
+| `without-documentation.css` | Tout sauf la famille Documentation ; `components/without-documentation.css` et `patterns/without-documentation.css` pour Tailwind |
+| `tokens.json` | Valeurs principales résolues, couleurs en clair et en sombre |
 | `foundations/` | Les variables, un fichier par sujet (`colors.css`, clair sur `:root`, sombre sous `:root.cel-dark` ; `typography.css`, `spacing.css`, `breakpoints.css`, `radius.css`, `shadows.css`, `motion.css`, `focus.css`, `icons.css`) ; `index.css` importe aussi Manrope |
 | `components/` | Les composants, un fichier par famille ; `index.css` les importe tous |
 | `patterns/` | Les modèles de page ; `index.css` les importe tous |
@@ -94,5 +118,5 @@ Sans script, chaque composant reste utilisable : les onglets s'affichent l'un so
 | `fonts/` | Manrope 500 à 800, `fonts.css`, licence OFL |
 | `icons/` | Icônes SVG, planche `sprite.svg`, `icons.json`, licences |
 | `brand/` | Logo et icône de Commune en ligne (hors licence MIT) |
-| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `menu.js`, `motion.js` |
+| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `menu.js`, `motion.js`, `combobox.js` |
 | `tools/tokens.mjs` | Lecture des variables en Node (tests, documentation) |

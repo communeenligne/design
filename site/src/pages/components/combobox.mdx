@@ -1,0 +1,101 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Recherche de commune"
+description: "Un champ texte qui propose les communes pendant la saisie (motif combobox de l'ARIA), choisies au clavier ou au pointeur."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Choisir une commune dans la liste officielle (inscription, contact, prix exact sur la page tarif) sans faire défiler 35 000 noms : dès deux caractères, la liste propose les communes qui correspondent.
+
+**Quand ne pas l'utiliser :** pour une liste courte et fixe (prendre la [liste déroulante](/components/select/)) ; pour une recherche dans le texte du site.
+
+## Composition
+
+`.cel-combobox` se pose sur le `.cel-field` lui-même : libellé, `__control` (l'icône `__icon` et le champ `__input`), la liste `__list`, l'aide, une zone `aria-live` masquée qui annonce le nombre de résultats. Chaque résultat `__option` a un nom `__name` et, s'il y a lieu, des précisions `__details` (département, code postal, population).
+
+Les résultats viennent du projet, jamais du script : `search` reçoit le texte tapé et rend une liste d'objets `{ id, label, details }`. La landing interroge sa propre liste (`/inscription/communes`), jamais un service extérieur.
+
+<Example title="Dans un formulaire (essayez « ve » ou « sa »)" html={`
+    <div class="cel-field cel-combobox" data-cel-combobox data-doc-communes data-cel-message-none="Aucune commune trouvée" data-cel-message-one="1 commune trouvée" data-cel-message-many="# communes trouvées" data-cel-message-selected="# choisie" data-cel-message-unavailable="Recherche indisponible pour le moment">
+        <label for="exemple-commune">Votre commune</label>
+        <div class="cel-combobox__control">
+            <svg class="cel-icon cel-combobox__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#magnifying-glass"></use></svg>
+            <input id="exemple-commune" class="cel-combobox__input" type="text" name="commune" autocomplete="off" spellcheck="false" placeholder="Par exemple : Veckersviller" aria-describedby="aide-exemple-commune" data-cel-combobox-input>
+        </div>
+        <ul id="exemple-communes" class="cel-combobox__list" aria-label="Communes trouvées" hidden data-cel-combobox-list></ul>
+        <p class="cel-field__hint" id="aide-exemple-commune">Tapez au moins deux lettres du nom.</p>
+        <p class="cel-visually-hidden" aria-live="polite" data-cel-combobox-status></p>
+    </div>
+`} />
+
+<Example title="Grand champ en haut de page (--large), libellé lu par les lecteurs d'écran" background="muted" html={`
+    <div class="cel-field cel-combobox cel-combobox--large" data-cel-combobox data-doc-communes data-cel-message-none="Aucune commune trouvée" data-cel-message-one="1 commune trouvée" data-cel-message-many="# communes trouvées" data-cel-message-selected="# choisie" data-cel-message-unavailable="Recherche indisponible pour le moment">
+        <label for="exemple-tarif" class="cel-visually-hidden">Votre commune</label>
+        <div class="cel-combobox__control">
+            <svg class="cel-icon cel-combobox__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#magnifying-glass"></use></svg>
+            <input id="exemple-tarif" class="cel-combobox__input" type="text" name="commune" autocomplete="off" spellcheck="false" placeholder="Votre commune ?" data-cel-combobox-input>
+        </div>
+        <ul id="exemple-tarifs" class="cel-combobox__list" aria-label="Communes trouvées" hidden data-cel-combobox-list></ul>
+        <p class="cel-visually-hidden" aria-live="polite" data-cel-combobox-status></p>
+    </div>
+`} />
+
+## États
+
+<Example title="Liste ouverte, deuxième résultat actif (rendu statique)" html={`
+    <div class="cel-field cel-combobox">
+        <label for="exemple-ouvert">Votre commune</label>
+        <div class="cel-combobox__control">
+            <svg class="cel-icon cel-combobox__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#magnifying-glass"></use></svg>
+            <input id="exemple-ouvert" class="cel-combobox__input" type="text" value="Sai" autocomplete="off" role="combobox" aria-expanded="true" aria-controls="exemple-ouverts" aria-activedescendant="exemple-ouverts-2">
+        </div>
+        <ul id="exemple-ouverts" class="cel-combobox__list" role="listbox" aria-label="Communes trouvées">
+            <li id="exemple-ouverts-1" class="cel-combobox__option" role="option" aria-selected="false"><span class="cel-combobox__name">Saint-Avold</span><span class="cel-combobox__details">Moselle · 57500 · 15 600 habitants</span></li>
+            <li id="exemple-ouverts-2" class="cel-combobox__option" role="option" aria-selected="true"><span class="cel-combobox__name">Saint-Flour</span><span class="cel-combobox__details">Cantal · 15100 · 6 500 habitants</span></li>
+            <li id="exemple-ouverts-3" class="cel-combobox__option" role="option" aria-selected="false"><span class="cel-combobox__name">Saint-Jean-de-Luz</span><span class="cel-combobox__details">Pyrénées-Atlantiques · 64500 · 14 000 habitants</span></li>
+        </ul>
+    </div>
+`} />
+
+Le résultat actif a un fond et un contour de 2 px : jamais la couleur seule. Le survol au pointeur prend le même fond.
+
+## Script
+
+<Code lang="js" code={`import { initCombobox } from '@communeenligne/design/js/combobox.js'
+
+document.querySelectorAll('[data-cel-combobox]').forEach((element) => {
+    const code = element.closest('form').querySelector('[name="insee_code"]')
+
+    initCombobox(element, {
+        // Rend [{ id, label, details }] ; signal : la recherche précédente est annulée à chaque frappe.
+        search: async (query, { signal }) => {
+            const response = await fetch(\`/inscription/communes?q=\${encodeURIComponent(query)}\`, { signal, headers: { Accept: 'application/json' } })
+            const { results } = await response.json()
+
+            return results.map((commune) => ({ ...commune, id: commune.code, label: commune.name, details: \`\${commune.department} · \${commune.postal_code}\` }))
+        },
+        onChoose: (commune) => { code.value = commune.code },
+        onInput: () => { code.value = '' },   // le texte changé n'est plus la commune choisie
+    })
+})`} />
+
+Options : `minLength` (2 par défaut), `delay` (200 ms entre la dernière frappe et la recherche). `initCombobox()` rend `{ clear() }`, pour un bouton « Changer » qui vide le champ et y rend le focus. Les messages annoncés viennent des attributs `data-cel-message-none`, `-one`, `-many` (`#` y devient le nombre), `-selected` (`#` y devient le nom) et `-unavailable`.
+
+## Accessibilité
+
+- **Motif :** combobox de l'ARIA avec liste (`role="combobox"`, `aria-autocomplete="list"`, `aria-expanded`, `aria-controls` ; `role="listbox"` et `role="option"`), posé par le script : sans lui, un simple champ texte que le serveur lit, et la page propose les communes possibles après l'envoi.
+- **Clavier :** flèche bas pour ouvrir la liste et descendre, flèche haut pour remonter, Entrée pour choisir, Échap pour fermer ; le focus reste dans le champ (`aria-activedescendant`).
+- **Annonces :** le nombre de résultats, puis la commune choisie, dans une zone `aria-live="polite"` ; l'état ARIA change sans attendre la fin du fondu.
+- **Libellé :** toujours présent ; masqué visuellement seulement pour le grand champ, dont l'exemple dit ce qu'on attend.
+
+<Contrasts pairs={[['primary', 'surface'], ['text-muted', 'surface'], ['primary', 'surface-hover'], ['text-muted', 'surface-hover'], ['field-border', 'surface', 3], ['primary', 'background-muted', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Des précisions qui distinguent les homonymes (département, code postal).', 'Une recherche sur la liste du serveur, sans service extérieur.']} donts={['Choisir le premier résultat sans action de la personne.', 'Ouvrir la liste dès le premier caractère.']} />

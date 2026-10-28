@@ -17,6 +17,13 @@
     --cel-duration-slow: 400ms; /* reveal movement */
     --cel-delay-stagger: 70ms; /* offset between two elements revealed together */
 
+    /* ---- Decorative animations ---- */
+    --cel-duration-float: 6s; /* one floating cycle of a notification of the hero */
+    --cel-duration-float-slow: 7s; /* the second notification, out of step with the first */
+    --cel-duration-typing: 1.4s; /* text typed in a preview */
+    --cel-duration-caret: 0.8s; /* blinking of the caret */
+    --cel-duration-pulse: 1.6s; /* pulse of a button in a preview */
+
     /* ---- Easing ---- */
     --cel-ease-standard: ease;
     --cel-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); /* reveals */

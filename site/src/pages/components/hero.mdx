@@ -49,6 +49,7 @@ Dire en une phrase ce que propose Commune en ligne, et mener à l'inscription. U
 
 - Le titre est le `h1` de la page ; la section est nommée par lui (`aria-labelledby`).
 - Le visuel est décoratif (`alt=""`) ou porte un texte de remplacement s'il montre une information.
+- Le visuel peut arriver de côté (`data-cel-reveal="slide"`) : l'accroche coupe ce qui dépasse en largeur (`overflow-x: clip`), son état de départ ne fait donc jamais défiler la page sur téléphone. Les sections et l'en-tête de page font de même.
 
 <Contrasts pairs={[['primary', 'background-muted'], ['text', 'background-muted'], ['on-gold', 'gold'], ['primary', 'surface']]} />
 

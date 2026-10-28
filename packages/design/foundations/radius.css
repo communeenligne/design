@@ -1,7 +1,7 @@
 /*
  * @communeenligne/design, foundations: radius.
  *
- * The radius scale in px, and four named radii used by components (sm, md, lg, xl).
+ * The radius scale in px, four named radii used by components (sm, md, lg, xl), and the border widths.
  *
  * A group title is written "---- Group name ----": the documentation site and the tests read this file.
  * Renaming a variable is a major version.
@@ -28,4 +28,7 @@
     --cel-radius-md: var(--cel-radius-10);
     --cel-radius-lg: var(--cel-radius-14);
     --cel-radius-xl: var(--cel-radius-20);
+
+    /* ---- Border widths ---- */
+    --cel-border-thick: 1.5px; /* step numbers, suggested choices, dashed labels */
 }

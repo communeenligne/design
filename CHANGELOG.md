@@ -3,6 +3,81 @@
 Toutes les versions de `@communeenligne/design`. Numérotation sémantique : un nom de variable, de classe, de fichier
 exporté ou de fonction qui change, c'est une version majeure.
 
+## 2.1.0 (28/10/2026)
+
+Ce que la landing avait dû ajouter elle-même (`resources/css/landing/provisional.css`) entre dans le paquet. Version
+mineure : rien n'est renommé ni retiré.
+
+### Ajouté
+
+- Thème : option `storage` de `initTheme()` et `applyTheme()`. `initTheme({ cookie: 'cel_theme', storage: false })`
+  garde le choix dans le cookie lu par le serveur et n'écrit rien dans le stockage local ; sans option, le stockage
+  local reste le mode par défaut (site statique, `theme-boot.js`).
+- Variables : retraits fluides `--cel-space-card` (20 à 36 px) et `--cel-space-panel` (24 à 40 px) ; bordure
+  `--cel-border-thick` (1,5 px, désormais celle des champs, des numéros d'étapes et du menu) ; soulignement doré
+  `--cel-shadow-highlight` et sa classe `.cel-highlight` ; ombre `--cel-shadow-scene` et interligne
+  `--cel-leading-scene` des scènes d'illustration ; durées des animations décoratives `--cel-duration-float`,
+  `-float-slow`, `-typing`, `-caret`, `-pulse`.
+- Composants, famille Formulaires : recherche de commune (`.cel-combobox`, `--large`, script `js/combobox.js`,
+  `initCombobox()`, motif combobox de l'ARIA : flèches, Entrée, Échap, `aria-activedescendant`, nombre de résultats
+  annoncé) ; champ dans le texte (`.cel-inline-field`).
+- Composants, famille Sections de la landing : règle des populations (`.cel-ruler`, repère placé par
+  `--cel-ruler-pin`, `.cel-ruler--placed`) ; colonnes de coût (`.cel-cost-chart`, parts `--cel-cost-setup-share` et
+  `--cel-cost-subscription-share`, légende `.cel-cost-legend`) ; bande d'appel (`.cel-cta-band`, sable, `--strong`
+  marine) ; cartes illustrées (`.cel-feature-tiles`, `.cel-feature-tile`, teintes `--sand`, `--sage`, `--lilac`,
+  `--single`) ; liste des fonctionnalités (`.cel-feature-list`) ; cartes d'étapes (`.cel-step-cards`, étiquette ou
+  numéro, `--muted`) ; lignes de stockage (`.cel-storage`, `--included`).
+- Compléments : tableaux de `.cel-prose` ; comparatif avec une colonne des critères de 130 px au moins sur téléphone et
+  des lignes `data-cel-reveal` qui apparaissent sans translation ; bande des références qui défile seule
+  (`initMarquee()`, états `cel-marquee-auto` et `cel-marquee-static`, bouton `.cel-references__toggle`), bords plus
+  étroits sur téléphone ; cartes de tranche resserrées sur téléphone.
+- Scripts, `js/motion.js` : `initEnter()` (entrée d'un écran `data-cel-enter`, lancée par `initMotion()`),
+  `initSmoothAnchors()` (liens `data-cel-smooth-anchor`), `initMarquee()` (`data-cel-marquee` et ses parties).
+- Tailwind : `p-card`, `p-panel`, `border-thick`, `leading-scene`, `shadow-scene`, `shadow-highlight` ; utilitaires
+  `grid-fit-*` (grille adaptative) et `animation-delay-*`.
+- `tokens.json` : couleurs en clair et en sombre, polices, graisses, points de rupture (en px), espacements, mise en
+  page, rayons et bordures, valeurs résolues ; généré par `npm run generate`, vérifié par les tests.
+- `without-documentation.css` : tout sauf la famille Documentation ; `components/without-documentation.css` et
+  `patterns/without-documentation.css` pour Tailwind.
+- Tests : les requêtes média n'emploient que les quatre points de rupture, écrits `(width < X)` ou `(width >= X)` ;
+  les feuilles sans documentation importent tout le reste ; `tokens.json` est à jour.
+- Documentation : une page par nouveau composant, sections Thème (deux modes), Grille (décision sur les points de
+  rupture), Mouvement (entrée, ancres, bande défilante, animations décoratives), Rayons et ombres (bordures,
+  soulignement), Installation (`tokens.json`, feuille sans documentation).
+
+### Changé
+
+- Points de rupture : quatre seuils, tous lus dans le même sens. « En dessous » s'écrit `(width < 640px)` (strictement
+  inférieur, comme `max-phone:` de Tailwind), « à partir » `(width >= 960px)`. Avant, les feuilles écrivaient
+  `max-width: 640px` (640 px compris) : à 640, 860 et 1 100 px tout juste, la mise en page est désormais celle du
+  dessus. L'indication de défilement du comparatif apparaît sous 960 px (940 px avant).
+- `js/menu.js` ferme le menu à partir de 860 px (`(width >= 860px)`, 861 px avant).
+
+### Corrigé
+
+- Débordement de la page sur téléphone : `.cel-hero`, `.cel-section` et `.cel-page-header` coupent ce qui dépasse en
+  largeur (`overflow-x: clip`), pour que l'état de départ d'une apparition décalée (`left`, `right`, `slide`) n'élargisse
+  plus la page ; `clip` ne crée pas de conteneur défilant, les éléments collants restent collés.
+- Les blocs qui défilent en largeur sont positionnés (`position: relative`) : `.cel-comparison`, `.cel-table-scroll`,
+  les tableaux de `.cel-prose` sur téléphone, `.cel-tabs__list`, `.cel-code pre`, `.cel-example__preview`, les
+  tableaux de la page de documentation. Les textes masqués de leurs cellules (`.cel-visually-hidden`) restent dans la
+  zone de défilement au lieu de faire déborder la page. Un test le vérifie pour tout nouveau bloc défilant.
+
+### Pour la landing
+
+Chaque bloc de `provisional.css` a son remplaçant : `bp540:` → `phone:`, `max-bp560:` → `max-phone:`, `bp720:` et
+`bp900:` → `tablet:` (ou `.cel-feature-list`, `.cel-step-cards`), `bp1000:` → `desktop:` ; `combobox-input` →
+`.cel-combobox__input` ; `ruler-pin` et `--pin` → `.cel-ruler__pin` et `--cel-ruler-pin` ; `cost-chart`,
+`cost-bar-*`, `--setup-share`, `--subscription-share` → `.cel-cost-chart`, `__setup`, `__subscription`,
+`--cel-cost-setup-share`, `--cel-cost-subscription-share` ; `cost-input` → `.cel-inline-field` ; `is-auto`,
+`is-static` → `cel-marquee-auto`, `cel-marquee-static` ; `data-marquee*`, `data-label-pause`, `data-label-resume` →
+`data-cel-marquee*`, `data-cel-label-pause`, `data-cel-label-play` ; `smoothAnchors()` et `data-smooth-anchor` →
+`initSmoothAnchors()` et `data-cel-smooth-anchor` ; `data-enter`, `is-entered`, `--enter-base` → `data-cel-enter`,
+`cel-entered`, `--cel-enter-delay` ; `shadow-highlight`, `shadow-scene`, `leading-scene`, `p-card`, `p-panel`,
+`border-thick`, `grid-fit-*`, `animation-delay-*` gardent leur nom. Restent dans la landing : les images clés et
+`--animate-*` de ses aperçus (sur les nouvelles durées), la liste cochée en CSS sur fond marine (`.auto-list`), la
+barre d'avancement et les délais des deux notifications de l'accroche.
+
 ## 2.0.0 (28/10/2026)
 
 Un seul design system, celui de Commune en ligne (landing, centre d'aide, puis panel), et tous les noms en anglais.

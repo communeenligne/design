@@ -45,15 +45,33 @@ Comparer Commune en ligne à d'autres solutions, critère par critère. C'est un
 
 ## États
 
-Le comparatif est atteignable au clavier (`tabindex="0"`) pour défiler avec les flèches ; il prend alors le contour de focus. Sous 940 px de large, l'indication « Faites défiler » apparaît.
+Le comparatif est atteignable au clavier (`tabindex="0"`) pour défiler avec les flèches ; il prend alors le contour de focus. Sous le point de rupture des ordinateurs (960 px), où le tableau ne tient plus, l'indication « Faites défiler » apparaît.
+
+Sur téléphone, la colonne des critères, collée à gauche, garde 130 px au moins (18 % de la largeur au-delà) : le critère reste lisible pendant que les solutions défilent.
 
 <Example title="Comparatif, focus visible" html={`
     <div class="cel-comparison" data-cel-state="focus"><table class="cel-comparison__table"><tbody><tr><th scope="row" class="cel-comparison__criterion">Focus visible</th><td class="cel-comparison__cell">Les flèches font défiler le tableau.</td></tr></tbody></table></div>
 `} />
 
+### Lignes qui apparaissent
+
+Les lignes peuvent porter `data-cel-reveal` : dans un comparatif, elles apparaissent en fondu seul, sans translation. Une ligne encore décalée dans un bloc qui défile en largeur ajouterait une barre de défilement verticale, qui disparaîtrait une fois toutes les lignes affichées.
+
+<Example title="Lignes qui apparaissent en fondu" html={`
+    <div class="cel-comparison" role="region" aria-labelledby="legende-apparition" tabindex="0">
+        <table class="cel-comparison__table">
+            <caption id="legende-apparition" class="cel-comparison__caption">Mise à jour du site</caption>
+            <tbody>
+                <tr data-cel-reveal><th scope="row" class="cel-comparison__criterion">Par qui</th><td class="cel-comparison__cell cel-comparison__cell--us">La mairie, en quelques minutes</td><td class="cel-comparison__cell">Un prestataire, sur devis</td></tr>
+                <tr data-cel-reveal><th scope="row" class="cel-comparison__criterion">Quand</th><td class="cel-comparison__cell cel-comparison__cell--us">Le jour même</td><td class="cel-comparison__cell">Sous quelques semaines</td></tr>
+            </tbody>
+        </table>
+    </div>
+`} />
+
 ## Accessibilité
 
-- **Défilement :** le tableau défile dans son bloc, pas la page ; le bloc défilant a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier.
+- **Défilement :** le tableau défile dans son bloc, pas la page ; le bloc est positionné, pour que les textes masqués des cellules (`.cel-visually-hidden`) y restent au lieu d'élargir la page ; le bloc défilant a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier.
 - **Repères :** chaque repère (bon, moyen, mauvais) est accompagné d'un texte ; la forme de l'icône diffère, pas seulement la couleur.
 
 <Contrasts pairs={[['text-strong', 'background-muted'], ['text', 'surface'], ['primary', 'surface-muted-2'], ['on-strong', 'strong'], ['mark-good-text', 'surface', 3], ['mark-mid', 'mark-mid-background', 3], ['mark-bad', 'mark-bad-background', 3]]} />

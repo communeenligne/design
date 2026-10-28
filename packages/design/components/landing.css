@@ -1,13 +1,16 @@
 /*
- * @communeenligne/design, components, landing sections family: hero, feature cards, price grid (tiers), pricing
- * block, references strip. Taken from the landing of communeenligne.fr.
+ * @communeenligne/design, components, landing sections family: hero, feature cards, illustrated feature cards and
+ * feature list, price grid (tiers), population ruler, cost chart, pricing block, storage lines, step cards, references
+ * strip, call-to-action band. Taken from the landing of communeenligne.fr.
  *
  * Renaming a class is a major version.
  */
 
 /* ---------- Hero ---------- */
 
+/* Clipped in width: the start of an offset reveal (data-cel-reveal="slide" on the visual) never widens the page. */
 .cel-hero {
+    overflow-x: clip;
     background: var(--cel-color-background-muted);
 }
 
@@ -155,6 +158,178 @@
     color: var(--cel-color-green-text);
 }
 
+/* ---------- Illustrated feature cards ---------- */
+
+/* One card per feature that has its own page: a tinted illustration, the name, a sentence, "See the page" with its
+   arrow; the whole card is the link (with .cel-hover-card). As many columns as the width allows, 280 px wide at
+   least. --single: a card alone in its list spans the width, the illustration beside the text. Always as wide as its
+   container, even in a flex row: shrunk to its content, the grid would fall back to one column. */
+.cel-feature-tiles {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: var(--cel-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-feature-tiles > li {
+    display: flex;
+}
+
+.cel-feature-tile,
+.cel-feature-tile:hover {
+    color: var(--cel-color-text-strong);
+}
+
+.cel-feature-tile {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-surface);
+    text-decoration: none;
+}
+
+/* Decorative slot (aria-hidden) for the illustration, set on its bottom edge; four tints. */
+.cel-feature-tile__visual {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 150px;
+    overflow: hidden;
+    padding: var(--cel-space-4-5) var(--cel-space-4-5) 0;
+    background: var(--cel-color-tint-sky);
+}
+
+.cel-feature-tile__visual--sand {
+    background: var(--cel-color-tint-sand-light);
+}
+
+.cel-feature-tile__visual--sage {
+    background: var(--cel-color-tint-sage);
+}
+
+.cel-feature-tile__visual--lilac {
+    background: var(--cel-color-tint-lilac);
+}
+
+/* Without illustration: the icon of the feature, centered. */
+.cel-feature-tile__icon {
+    align-self: center;
+    margin-bottom: var(--cel-space-4-5);
+    color: var(--cel-color-primary);
+    --cel-icon-size: 56px;
+}
+
+.cel-feature-tile__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+    min-width: 0;
+    padding: var(--cel-space-5);
+}
+
+.cel-feature-tile__heading,
+.cel-feature-list__heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2);
+}
+
+.cel-feature-tile__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-19);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-feature-tile__summary {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
+.cel-feature-tile__more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    margin-top: auto;
+    padding-top: var(--cel-space-2-5);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-feature-tiles--single .cel-feature-tile {
+    flex-flow: row wrap;
+}
+
+.cel-feature-tiles--single :is(.cel-feature-tile__visual, .cel-feature-tile__body) {
+    flex: 1 1 300px;
+}
+
+.cel-feature-tiles--single .cel-feature-tile__visual {
+    height: auto;
+    min-height: 170px;
+}
+
+.cel-feature-tiles--single .cel-feature-tile__body {
+    justify-content: center;
+}
+
+.cel-feature-tiles--single .cel-feature-tile__more {
+    margin-top: 0;
+}
+
+/* ---------- Feature list ---------- */
+
+/* The features without a page of their own: a sober line each, without link (pictogram, name, sentence). One column,
+   two from the tablet breakpoint, separated by lines. */
+.cel-feature-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: var(--cel-space-10);
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--cel-color-line);
+    list-style: none;
+}
+
+.cel-feature-list__item {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-4);
+    padding: var(--cel-space-4) var(--cel-space-1);
+    border-bottom: 1px solid var(--cel-color-line);
+}
+
+.cel-feature-list__icon {
+    flex: none;
+    color: var(--cel-color-ochre-icon);
+    --cel-icon-size: 26px;
+}
+
+.cel-feature-list__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.cel-feature-list__name {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-17);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-feature-list__summary {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
 /* ---------- Price grid (tiers) ---------- */
 
 /* One card per population tier; the one of the chosen municipality is lifted, on a strong background. */
@@ -239,6 +414,185 @@
 
 .cel-tier--selected .cel-tier__setup {
     border-top-color: var(--cel-color-on-strong-divider-18);
+}
+
+/* ---------- Population ruler ---------- */
+
+/* Decorative (aria-hidden), under the price grid: one equal share per tier, and a pin set at --cel-ruler-pin (percent
+   of the width, from 0 to 100), given by the project on the ruler (a class written with the nonce, or a script). The
+   pin shows once placed (.cel-ruler--placed) and glides to its new place. Hidden below the tablet breakpoint, where
+   the tiers no longer stand side by side. As wide as its container: its parts are all positioned, it has no width of
+   its own. */
+.cel-ruler {
+    position: relative;
+    width: 100%;
+    height: 54px;
+    margin-top: var(--cel-space-1-5);
+    container-type: inline-size;
+}
+
+.cel-ruler__track {
+    position: absolute;
+    top: var(--cel-space-2-5);
+    right: 0;
+    left: 0;
+    height: var(--cel-space-1);
+    border-radius: var(--cel-radius-2);
+    background: linear-gradient(90deg, var(--cel-color-ruler-start), var(--cel-color-ruler-end));
+}
+
+.cel-ruler__ticks {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Each tick is the start of a tier: its label is centered on the line. */
+.cel-ruler__tick {
+    position: relative;
+    justify-self: start;
+    padding-top: var(--cel-space-5-5);
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-12);
+    font-weight: var(--cel-font-weight-bold);
+    translate: -50% 0;
+}
+
+.cel-ruler__tick::before {
+    content: '';
+    position: absolute;
+    top: var(--cel-space-1-5);
+    left: 50%;
+    width: var(--cel-space-0-5);
+    height: var(--cel-space-3);
+    margin-left: -1px;
+    background: var(--cel-color-ruler-tick);
+}
+
+.cel-ruler__pin {
+    position: absolute;
+    top: 3px;
+    left: -9px;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--cel-radius-circle);
+    background: var(--cel-color-ochre);
+    box-shadow: var(--cel-shadow-ruler-pin);
+    opacity: 0;
+    translate: calc(var(--cel-ruler-pin, 0) * 1cqi) 0;
+    transition:
+        translate var(--cel-duration-slow) var(--cel-ease-glide),
+        opacity var(--cel-duration-normal) var(--cel-ease-standard);
+}
+
+.cel-ruler--placed .cel-ruler__pin {
+    opacity: 1;
+}
+
+/* ---------- Cost chart ---------- */
+
+/* One column per year of the contract, its height in proportion to the cost, the setup above the subscription the
+   first year. --cel-cost-setup-share and --cel-cost-subscription-share: percent of the first year, given by the
+   project on the chart (a class written with the nonce). Columns and their figures are decorative (aria-hidden): each
+   year is written in a sentence for screen readers (.cel-visually-hidden). In a [data-cel-reveal="fill"] block, the
+   columns ([data-cel-bar="top"]) rise one after the other. */
+.cel-cost-chart {
+    --cel-cost-chart-height: 170px;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    align-items: end;
+    gap: var(--cel-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-cost-chart > :nth-child(2) {
+    --cel-bar-delay: 50ms;
+}
+
+.cel-cost-chart > :nth-child(3) {
+    --cel-bar-delay: 100ms;
+}
+
+.cel-cost-chart > :nth-child(n + 4) {
+    --cel-bar-delay: 150ms;
+}
+
+.cel-cost-chart__year {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: var(--cel-space-1-5);
+    min-width: 0;
+}
+
+.cel-cost-chart__amount {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.cel-cost-chart__bar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--cel-radius-8) var(--cel-radius-8) 0 0;
+}
+
+.cel-cost-chart__setup {
+    height: calc(var(--cel-cost-chart-height) * var(--cel-cost-setup-share, 0) / 100);
+    background: var(--cel-color-ochre);
+}
+
+.cel-cost-chart__subscription {
+    height: calc(var(--cel-cost-chart-height) * var(--cel-cost-subscription-share, 100) / 100);
+    background: var(--cel-color-strong);
+}
+
+.cel-cost-chart__label {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
+    text-align: center;
+}
+
+/* Legend under the chart: a swatch per part, its amount in text. */
+.cel-cost-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1-5) var(--cel-space-5-5);
+    margin: 0;
+    padding: var(--cel-space-3) 0 0;
+    border-top: 1px solid var(--cel-color-line-4);
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-14);
+    list-style: none;
+}
+
+.cel-cost-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+}
+
+.cel-cost-legend__swatch {
+    flex: none;
+    width: var(--cel-space-3);
+    height: var(--cel-space-3);
+    border-radius: var(--cel-radius-3);
+    background: var(--cel-color-strong);
+}
+
+.cel-cost-legend__swatch--setup {
+    background: var(--cel-color-ochre);
 }
 
 /* ---------- Pricing block ---------- */
@@ -355,11 +709,180 @@
     font-size: var(--cel-text-14);
 }
 
+/* ---------- Storage lines ---------- */
+
+/* One line per storage level: the capacity in a tag, the total and what it allows, the price on the right.
+   --included: the line of the offer, on a strong background, first. */
+.cel-storage {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-storage__line {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-4);
+    padding: var(--cel-space-4) var(--cel-space-4-5);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-14);
+    background: var(--cel-color-surface);
+}
+
+.cel-storage__capacity {
+    flex: none;
+    min-width: var(--cel-space-16);
+    padding: var(--cel-space-1-5) var(--cel-space-2-5);
+    border-radius: var(--cel-radius-10);
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-extrabold);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.cel-storage__text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--cel-leading-130);
+}
+
+.cel-storage__total {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-17);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-storage__note {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+    overflow-wrap: anywhere;
+}
+
+.cel-storage__price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+    text-align: right;
+}
+
+.cel-storage__price strong {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-17);
+    white-space: nowrap;
+}
+
+.cel-storage__line--included {
+    border-color: var(--cel-color-primary);
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-storage__line--included .cel-storage__capacity {
+    background: var(--cel-color-ochre);
+    color: var(--cel-color-on-gold-navy);
+}
+
+.cel-storage__line--included .cel-storage__total {
+    color: var(--cel-color-on-strong);
+}
+
+.cel-storage__line--included .cel-storage__note {
+    color: var(--cel-color-on-dark);
+}
+
+.cel-storage__line--included :is(.cel-storage__price, .cel-storage__price strong) {
+    color: var(--cel-color-gold);
+}
+
+/* ---------- Step cards ---------- */
+
+/* A short procedure in a few cards, in an <ol>: all on one row from the tablet breakpoint, stacked below (never two
+   then one). The label ("Étape 1") or the number in a gold disc says the order. --muted: on a gray background,
+   without border. */
+.cel-step-cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cel-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-step-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2);
+    padding: var(--cel-space-6);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-14);
+}
+
+.cel-step-card__label {
+    color: var(--cel-color-text-ochre);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-step-card__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--cel-space-8);
+    height: var(--cel-space-8);
+    border-radius: var(--cel-radius-circle);
+    background: var(--cel-color-gold);
+    color: var(--cel-color-on-gold);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-step-card__title {
+    font-size: var(--cel-text-19);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-step-card__text {
+    color: var(--cel-color-text);
+    font-size: var(--cel-text-16);
+}
+
+.cel-step-cards--muted {
+    gap: var(--cel-space-4);
+}
+
+.cel-step-cards--muted .cel-step-card {
+    gap: var(--cel-space-2-5);
+    padding: var(--cel-space-5-5);
+    border: 0;
+    background: var(--cel-color-background-muted);
+}
+
+.cel-step-cards--muted .cel-step-card__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-17);
+}
+
+.cel-step-cards--muted .cel-step-card__text {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
 /* ---------- References strip ---------- */
 
-/* A real scrolling container (finger, wheel, keyboard) with card snapping, faded edges. The automatic scrolling of
-   the landing (initMarquee) is not kept: the strip stays still until it is scrolled. Bounded one-column grid: the
-   track, wider than the screen, cannot widen the section. */
+/* A real scrolling container (finger, wheel, keyboard) with card snapping, faded edges. Without initMarquee()
+   (js/motion.js), the strip stays still until it is scrolled; with it, it moves slowly while the cards do not fit
+   (cel-marquee-auto: no snapping), with a pause button (.cel-references__toggle), and stays still, without faded
+   edges, when they all fit (cel-marquee-static). Bounded one-column grid: the track, wider than the screen, cannot
+   widen the section. */
 .cel-references {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -397,6 +920,15 @@
     mask-image: linear-gradient(90deg, transparent 0, currentColor var(--cel-references-fade), currentColor calc(100% - var(--cel-references-fade)), transparent 100%);
 }
 
+.cel-references__strip.cel-marquee-auto {
+    scroll-snap-type: none;
+}
+
+.cel-references__strip.cel-marquee-static {
+    -webkit-mask-image: none;
+    mask-image: none;
+}
+
 .cel-references__strip::-webkit-scrollbar {
     display: none;
 }
@@ -420,6 +952,33 @@
     flex: none;
     width: min(320px, calc(100vw - 56px));
     scroll-snap-align: center;
+}
+
+/* Pause button of the automatic scrolling, in the header of the section: hidden (hidden attribute) until the
+   script shows it. The pause icon while it moves, the play icon once paused (aria-pressed="true"). */
+.cel-references__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    font: inherit;
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+    --cel-icon-size: 14px;
+}
+
+.cel-references__toggle:hover {
+    border-color: var(--cel-color-primary);
+}
+
+.cel-references__toggle[hidden],
+.cel-references__toggle[aria-pressed='true'] .cel-references__pause,
+.cel-references__toggle:not([aria-pressed='true']) .cel-references__play {
+    display: none;
 }
 
 /* Banner in the colors of the municipality: --cel-reference-color and --cel-reference-text, set by a class specific
@@ -530,17 +1089,83 @@
     text-decoration: underline;
 }
 
+/* ---------- Call-to-action band ---------- */
+
+/* At the end of a page, within its column: the title and a sentence or two on the left, the buttons on the right
+   (below them when the width runs out). Sand by default (the offer, the sign-up); --strong: navy (an idea, a
+   question), with .cel-button--accent and .cel-button--on-strong. */
+.cel-cta-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cel-space-5) var(--cel-space-10);
+    padding: var(--cel-space-9);
+    border-radius: var(--cel-radius-18);
+    background: var(--cel-color-warning-background);
+    color: var(--cel-color-ochre-ink);
+}
+
+.cel-cta-band__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1);
+    max-width: 578px;
+}
+
+.cel-cta-band__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-24);
+    line-height: var(--cel-leading-125);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-3);
+}
+
+.cel-cta-band--strong {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-dark);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-cta-band--strong .cel-cta-band__text {
+    gap: var(--cel-space-1-5);
+}
+
+.cel-cta-band--strong .cel-cta-band__title {
+    color: var(--cel-color-on-strong);
+    font-size: var(--cel-text-26);
+}
+
 /* ---------- Large screens ---------- */
 
-@media (min-width: 960px) {
+@media (width >= 960px) {
     .cel-features {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
+/* ---------- From the tablet breakpoint ---------- */
+
+@media (width >= 860px) {
+    .cel-feature-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cel-step-cards {
+        grid-template-columns: none;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-flow: column;
+    }
+}
+
 /* ---------- Tablet ---------- */
 
-@media (max-width: 860px) {
+@media (width < 860px) {
     .cel-pricing {
         grid-template-columns: minmax(0, 1fr);
     }
@@ -554,20 +1179,65 @@
     .cel-tier--selected {
         translate: none;
     }
+
+    .cel-ruler {
+        display: none;
+    }
 }
 
 /* ---------- Phone ---------- */
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     .cel-tiers {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cel-tier {
+        padding: var(--cel-space-5);
+    }
+
+    .cel-cost-chart {
+        --cel-cost-chart-height: 120px;
+        gap: var(--cel-space-1-5);
+    }
+
+    .cel-cost-chart__amount {
+        font-size: var(--cel-text-13);
+    }
+
+    .cel-storage__line {
+        gap: var(--cel-space-3);
+        padding: var(--cel-space-3-5);
+    }
+
+    .cel-storage__capacity {
+        min-width: var(--cel-space-14);
+        padding-right: var(--cel-space-2);
+        padding-left: var(--cel-space-2);
+        font-size: var(--cel-text-14);
+    }
+
+    /* Narrower faded edges, the cards aligned on the gutter of the page. */
+    .cel-references__strip {
+        --cel-references-fade: var(--cel-space-5);
+        scroll-padding-inline: var(--cel-gutter-phone);
+    }
+
+    .cel-references__track {
+        padding-right: var(--cel-gutter-phone);
+        padding-left: var(--cel-gutter-phone);
+    }
+
+    .cel-cta-band {
+        padding: var(--cel-space-6);
     }
 }
 
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-    .cel-tier {
+    .cel-tier,
+    .cel-ruler__pin {
         transition: none;
     }
 }

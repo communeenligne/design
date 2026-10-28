@@ -37,9 +37,9 @@ Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé
         </div>
     </form>
 `} tailwind={`
-    <div class="flex flex-col gap-1.5 text-15 font-weight-bold text-principale">
+    <div class="flex flex-col gap-1.5 text-15 font-bold text-primary">
         <label for="tw-nom">Nom de la commune</label>
-        <input id="tw-nom" type="text" class="w-full px-3.5 py-3 rounded-md border-[1.5px] border-field-border bg-surface text-text-strong text-16 font-weight-medium">
+        <input id="tw-nom" type="text" class="w-full px-3.5 py-3 rounded-md border-thick border-field-border bg-surface text-text-strong text-16 font-medium">
     </div>
 `} />
 
@@ -73,6 +73,8 @@ Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé
     </div>
 `} />
 
+Deux champs particuliers ont leur page : la [recherche de commune](/components/combobox/), qui propose des résultats pendant la saisie, et le [champ dans le texte](/components/cost-chart/#champ-dans-le-texte) (`.cel-inline-field`), un nombre saisi au milieu d'une phrase.
+
 ## Accessibilité
 
 - **Libellé :** `<label for>` relié au champ, toujours visible ; jamais un texte d'exemple (`placeholder`) à la place.
@@ -80,7 +82,7 @@ Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé
 - **Récapitulatif :** en haut du formulaire après l'envoi, reçoit le focus au chargement ; chaque erreur est un lien vers son champ.
 - **Clavier :** ordre de tabulation = ordre visuel. Focus : contour de 3 px.
 - **Saisie :** `autocomplete` et `type` justes (`email`, `tel`), `inputmode` pour les nombres.
-- **Bordure :** 3:1 au moins avec le fond, dans les deux thèmes.
+- **Bordure :** 1,5 px (`--cel-border-thick`), 3:1 au moins avec le fond, dans les deux thèmes.
 
 <Contrasts pairs={[['field-border', 'surface', 3], ['field-border', 'background', 3], ['text-strong', 'surface'], ['primary', 'background'], ['text-muted', 'background'], ['error', 'background'], ['error-ink', 'error-background']]} />
 

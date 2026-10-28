@@ -26,4 +26,8 @@
     --cel-shadow-preview: 0 24px 48px var(--cel-color-shadow-ink-10); /* .panel-mock */
     --cel-shadow-search: 0 0 0 2px var(--cel-color-primary), 0 14px 34px var(--cel-color-shadow-navy-16); /* .combobox--hero input */
     --cel-shadow-ruler-pin: 0 0 0 4px var(--cel-color-surface), 0 4px 10px var(--cel-color-shadow-black-20); /* .ruler__pin */
+    --cel-shadow-scene: 0 -2px 12px var(--cel-color-shadow-navy-10); /* card of an illustration scene, lit from below */
+
+    /* ---- Highlight ---- */
+    --cel-shadow-highlight: inset 0 -0.32em 0 var(--cel-color-gold-hover); /* gold underline of a heading word, kept in dark */
 }

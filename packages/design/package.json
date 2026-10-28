@@ -1,12 +1,14 @@
 {
     "name": "@communeenligne/design",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Design system de Commune en ligne : fondamentaux (variables, clair et sombre), composants, modèles, polices, icônes, thème Tailwind 4.",
     "license": "MIT",
     "type": "module",
     "style": "./index.css",
     "files": [
         "index.css",
+        "without-documentation.css",
+        "tokens.json",
         "foundations",
         "components",
         "patterns",
@@ -23,14 +25,19 @@
     "exports": {
         ".": "./index.css",
         "./index.css": "./index.css",
+        "./without-documentation": "./without-documentation.css",
+        "./without-documentation.css": "./without-documentation.css",
         "./foundations": "./foundations/index.css",
         "./foundations/*": "./foundations/*",
         "./components": "./components/index.css",
+        "./components/without-documentation": "./components/without-documentation.css",
         "./components/*": "./components/*",
         "./patterns": "./patterns/index.css",
+        "./patterns/without-documentation": "./patterns/without-documentation.css",
         "./patterns/*": "./patterns/*",
         "./motion.css": "./motion.css",
         "./tailwind.css": "./tailwind.css",
+        "./tokens.json": "./tokens.json",
         "./fonts/fonts.css": "./fonts/fonts.css",
         "./fonts/*": "./fonts/*",
         "./icons/sprite.svg": "./icons/sprite.svg",
@@ -42,7 +49,7 @@
         "./package.json": "./package.json"
     },
     "scripts": {
-        "generate": "node scripts/tailwind.mjs && node scripts/sprite.mjs",
+        "generate": "node scripts/tailwind.mjs && node scripts/json.mjs && node scripts/sprite.mjs",
         "test": "node --test scripts/*.test.mjs"
     },
     "engines": {

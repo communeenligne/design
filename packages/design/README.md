@@ -10,7 +10,9 @@ Design system de Commune en ligne (landing, centre d'aide, panel), en CSS pur, p
   documentation) ;
 - `tailwind.css` : le thème Tailwind 4, branché sur les variables.
 
-Plus les icônes, le logo et les scripts (`js/theme.js`, `js/tabs.js`, `js/menu.js`, `js/motion.js`).
+Plus les icônes, le logo, les scripts (`js/theme.js`, `js/tabs.js`, `js/menu.js`, `js/motion.js`, `js/combobox.js`)
+et `tokens.json` (les valeurs principales, couleurs en clair et en sombre, pour les projets qui en ont besoin hors du
+CSS). `without-documentation.css` : tout sauf la famille documentation.
 
 - Documentation : https://design.communeenligne.fr
 - Installation, imports avec et sans Tailwind, règles de version : README du dépôt.

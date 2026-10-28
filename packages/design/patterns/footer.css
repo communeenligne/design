@@ -123,7 +123,7 @@
 
 /* ---------- Large screens ---------- */
 
-@media (min-width: 960px) {
+@media (width >= 960px) {
     .cel-footer__links {
         grid-template-columns: 1.3fr repeat(3, 1fr);
     }

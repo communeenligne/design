@@ -1,0 +1,51 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Lignes de stockage"
+description: "Le volume inclus dans l'offre, puis chaque extension, avec sa capacité, le total obtenu et son prix annuel."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Dire sur la page tarif ce qui est compris (le volume inclus) et ce que coûte un volume de plus, niveau par niveau, sans commande en ligne : la question mène au formulaire de la page.
+
+## Composition
+
+`.cel-storage` est une liste, une `__line` par niveau : la capacité dans une étiquette `__capacity`, puis `__text` (le total `__total` et ce qu'il permet `__note`), enfin le prix `__price` (le montant en `<strong>`, hors taxes dessous s'il y a lieu). La première ligne, `--included`, est celle de l'offre, sur fond marine.
+
+<Example title="Volume inclus et deux extensions" html={`
+    <ul class="cel-storage">
+        <li class="cel-storage__line cel-storage__line--included">
+            <span class="cel-storage__capacity">10 Go</span>
+            <span class="cel-storage__text"><strong class="cel-storage__total">10 Go</strong><span class="cel-storage__note">Inclus dans l'abonnement</span></span>
+            <span class="cel-storage__price"><strong>Inclus</strong></span>
+        </li>
+        <li class="cel-storage__line">
+            <span class="cel-storage__capacity">+ 20 Go</span>
+            <span class="cel-storage__text"><strong class="cel-storage__total">30 Go au total</strong><span class="cel-storage__note">Pour les photothèques et les archives des bulletins</span></span>
+            <span class="cel-storage__price"><strong>60 € / an</strong><span>50 € HT</span></span>
+        </li>
+        <li class="cel-storage__line">
+            <span class="cel-storage__capacity">+ 50 Go</span>
+            <span class="cel-storage__text"><strong class="cel-storage__total">60 Go au total</strong><span class="cel-storage__note">Pour les vidéos des conseils municipaux</span></span>
+            <span class="cel-storage__price"><strong>120 € / an</strong><span>100 € HT</span></span>
+        </li>
+    </ul>
+`} />
+
+Sur téléphone, les lignes se resserrent (12 px d'écart, 14 px de marge intérieure) et l'étiquette de capacité rétrécit ; la note passe à la ligne au besoin, même au milieu d'un mot trop long.
+
+## Accessibilité
+
+- Une vraie liste ; chaque ligne se lit dans l'ordre : capacité, total, usage, prix.
+- Le volume inclus se distingue par son texte (« Inclus »), pas seulement par son fond.
+- Les prix restent sur une ligne (`white-space: nowrap`) : un montant n'est jamais coupé.
+
+<Contrasts pairs={[['on-strong', 'strong'], ['on-dark', 'strong'], ['gold', 'strong'], ['on-gold-navy', 'ochre'], ['primary', 'surface'], ['text-muted-2', 'surface'], ['text-muted', 'surface'], ['primary', 'background-muted']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Les extensions par capacité croissante.', 'Ce que permet chaque volume, sans chiffre d\'usage inventé.']} donts={['Un bouton de commande en ligne.', 'Un prix sans la mention hors taxes quand la commune la demande.']} />

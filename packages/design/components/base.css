@@ -282,7 +282,7 @@
 .cel-button--on-strong {
     background: transparent;
     color: var(--cel-color-on-strong);
-    box-shadow: inset 0 0 0 1.5px var(--cel-color-on-strong-ring);
+    box-shadow: inset 0 0 0 var(--cel-border-thick) var(--cel-color-on-strong-ring);
 }
 
 .cel-button--on-strong:hover,
@@ -476,7 +476,7 @@ a.cel-pill[data-cel-state~='hover'] {
 
 /* ---------- Phone ---------- */
 
-@media (max-width: 640px) {
+@media (width < 640px) {
     .cel-container {
         padding-left: var(--cel-gutter-phone);
         padding-right: var(--cel-gutter-phone);

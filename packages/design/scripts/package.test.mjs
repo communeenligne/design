@@ -1,6 +1,7 @@
 // Package checks: declared exports present, imports resolved, no resource from another domain, no color written
 // outside foundations/colors.css, foundations that only set variables, components and patterns built on known
-// variables, classes prefixed cel-, no French word nor accent in an exposed name, generated files up to date.
+// variables, breakpoints of the foundations only, read the same way, classes prefixed cel-, no French word nor accent
+// in an exposed name, generated files up to date.
 
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
@@ -9,6 +10,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { generate as generateTailwind } from './tailwind.mjs'
 import { generate as generateSprite, icons } from './sprite.mjs'
+import { generate as generateJson } from './json.mjs'
 import { FOUNDATIONS, readTokens } from '../tools/tokens.mjs'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
@@ -60,14 +62,77 @@ test('index.css imports the foundations, the components, the patterns and the an
     }
 })
 
+// Entry sheets of a folder, which import the others.
+const ENTRIES = ['index.css', 'without-documentation.css']
+const DOCUMENTATION = ['components/documentation.css', 'patterns/documentation-page.css']
+
 test('each family index imports every file of its folder', () => {
     for (const folder of ['foundations', 'components', 'patterns']) {
         const index = read(`${folder}/index.css`)
-        const missing = readdirSync(join(ROOT, folder)).filter((file) => file !== 'index.css' && !index.includes(`@import './${file}'`))
+        const missing = readdirSync(join(ROOT, folder)).filter((file) => !ENTRIES.includes(file) && !index.includes(`@import './${file}'`))
 
         assert.deepEqual(missing, [], `${folder}/index.css`)
     }
     assert.deepEqual(FOUNDATIONS.map((name) => `${name}.css`).sort(), readdirSync(join(ROOT, 'foundations')).filter((file) => file !== 'index.css').sort())
+})
+
+test('the sheets without documentation import every file but the documentation family', () => {
+    for (const folder of ['components', 'patterns']) {
+        const sheet = read(`${folder}/without-documentation.css`)
+        const imported = [...sheet.matchAll(/@import '\.\/([^']+)'/g)].map(([, file]) => file).sort()
+        const expected = readdirSync(join(ROOT, folder)).filter((file) => !ENTRIES.includes(file) && !DOCUMENTATION.includes(`${folder}/${file}`)).sort()
+
+        assert.deepEqual(imported, expected, `${folder}/without-documentation.css`)
+    }
+
+    const root = read('without-documentation.css')
+
+    for (const file of ['./foundations/index.css', './components/without-documentation.css', './patterns/without-documentation.css', './motion.css']) {
+        assert.ok(root.includes(`@import '${file}'`), `${file} missing from without-documentation.css`)
+    }
+})
+
+test('media queries only use the breakpoints of the foundations, read the same way (width < X, width >= X)', () => {
+    const breakpoints = new Set(readTokens().tokens.filter((token) => token.name.startsWith('cel-breakpoint-')).map((token) => token.light))
+    const faults = []
+
+    for (const file of [...stylesheets, ...scripts]) {
+        const content = file.endsWith('.css') ? withoutComments(file) : read(file).replace(/^\s*\/\/.*$/gm, '')
+
+        for (const [query] of content.matchAll(/\((?:min-|max-)?width[^)]*\)/g)) {
+            const match = query.match(/^\(width (<|>=) (\d+px)\)$/)
+
+            if (!match || !breakpoints.has(match[2])) {
+                faults.push(`${file}: ${query}`)
+            }
+        }
+    }
+
+    assert.deepEqual(faults, [])
+})
+
+test('each block that scrolls in width is positioned, each full-width band clips in width', () => {
+    const faults = []
+
+    for (const sheet of componentSheets) {
+        for (const [, selector, rule] of withoutComments(sheet).matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+            // A visually hidden text (position: absolute) would otherwise be placed against the page and widen it.
+            if (/overflow-x:\s*auto/.test(rule) && !/(?<![-\w])position:\s*(relative|absolute|fixed|sticky)/.test(rule)) {
+                faults.push(`${sheet}: ${selector.trim()} scrolls without position`)
+            }
+        }
+    }
+
+    // The start of an offset reveal (left, right, slide) must not widen the page.
+    for (const [sheet, band] of [['components/landing.css', '.cel-hero'], ['components/landing.css', '.cel-references'], ['patterns/section.css', '.cel-section'], ['patterns/page-header.css', '.cel-page-header']]) {
+        const rule = withoutComments(sheet).match(new RegExp(`\\n\\${band} \\{([^}]*)\\}`))?.[1] ?? ''
+
+        if (!/overflow-x:\s*clip/.test(rule)) {
+            faults.push(`${sheet}: ${band} does not clip in width`)
+        }
+    }
+
+    assert.deepEqual(faults, [])
 })
 
 test('no resource loaded from another domain', () => {
@@ -209,6 +274,17 @@ test('no inline style required: scripts write no style attribute', () => {
 
 test('tailwind.css is up to date with the foundations', () => {
     assert.equal(read('tailwind.css'), generateTailwind())
+})
+
+test('tokens.json is up to date with the foundations, colors in both themes resolved to a value', () => {
+    assert.equal(read('tokens.json'), generateJson())
+
+    const json = JSON.parse(read('tokens.json'))
+
+    for (const [name, value] of Object.entries(json.colors)) {
+        assert.ok(!`${value.light} ${value.dark}`.includes('var('), `${name} is not resolved`)
+    }
+    assert.equal(typeof json.breakpoints.phone, 'number')
 })
 
 test('the icon sheet is up to date and each icon has its source', () => {

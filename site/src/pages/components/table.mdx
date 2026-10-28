@@ -35,6 +35,23 @@ Présenter des données à lire en lignes et en colonnes : tranches de populatio
     </table>
 `} />
 
+### Dans un texte (cel-prose)
+
+Les tableaux d'un texte écrit en Markdown (conditions générales, politique de confidentialité) n'ont pas de classe : dans `.cel-prose`, ils prennent l'allure de `.cel-table`, et défilent dans leur bloc sur téléphone.
+
+<Example title="Tableau d'un texte en Markdown" html={`
+    <div class="cel-prose">
+        <p>Les données gardées, et pendant combien de temps :</p>
+        <table>
+            <thead><tr><th scope="col">Donnée</th><th scope="col">Durée de conservation</th></tr></thead>
+            <tbody>
+                <tr><td>Messages du formulaire de contact</td><td>Un an</td></tr>
+                <tr><td>Journaux de connexion au panel</td><td>Six mois</td></tr>
+            </tbody>
+        </table>
+    </div>
+`} />
+
 ## États
 
 Le tableau n'est pas interactif. Large, il défile dans son bloc (`.cel-table-scroll`) plutôt que d'élargir la page ; `.cel-table-scroll--phone` ne le fait défiler que sur téléphone.

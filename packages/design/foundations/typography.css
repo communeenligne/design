@@ -62,6 +62,7 @@
     --cel-leading-body: var(--cel-leading-160);
     --cel-leading-title: var(--cel-leading-120);
     --cel-leading-title-large: var(--cel-leading-110);
+    --cel-leading-scene: 1.375; /* text of the illustration scenes */
 
     /* ---- Letter spacing ---- */
     --cel-tracking-title: -0.02em;

@@ -1,0 +1,89 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Cartes illustrées"
+description: "Une carte-lien par fonctionnalité qui a sa page : illustration sur fond teinté, nom, phrase et « Voir la page »."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Présenter les fonctionnalités d'un domaine (page « Fonctionnalités », fonctionnalités liées d'une page ou d'un guide) et mener à la page de chacune. Les fonctionnalités sans page vont dans la [liste des fonctionnalités](/components/feature-list/), sous les cartes.
+
+## Composition
+
+`.cel-feature-tiles` est une liste : autant de colonnes que la largeur en permet, 280 px au moins chacune. Chaque carte `.cel-feature-tile` est un lien tout entier (avec `.cel-hover-card`, qui la soulève au survol et au focus) : l'illustration `__visual` (décorative, posée sur son bord bas ; teintes `--sand`, `--sage`, `--lilac`, ciel par défaut), puis `__body` avec `__heading` (le nom `__title` et, s'il y a lieu, un badge), la phrase `__summary` et « Voir la page » `__more`, dont la flèche `.cel-hover-card__arrow` avance.
+
+Sans illustration, l'icône de la fonctionnalité `__icon`, centrée. Seule dans sa liste (`--single`), la carte prend toute la largeur, l'illustration à côté du texte.
+
+<Example title="Trois cartes, une scène d'illustration et deux icônes" html={`
+    <ul class="cel-feature-tiles">
+        <li>
+            <a href="#" class="cel-feature-tile cel-hover-card">
+                <span class="cel-feature-tile__visual" aria-hidden="true">
+                    <span class="flex w-52.5 flex-col gap-2 rounded-t-10 bg-scene-card p-2.5 text-12 leading-scene text-scene-text shadow-scene">
+                        <strong class="text-scene-navy">Conseil municipal</strong>
+                        <span>Jeudi 14 mars, 20 h, salle des fêtes</span>
+                        <span class="h-2 w-4/5 rounded-4 bg-scene-line"></span>
+                    </span>
+                </span>
+                <span class="cel-feature-tile__body">
+                    <span class="cel-feature-tile__heading"><strong class="cel-feature-tile__title">Agenda</strong></span>
+                    <span class="cel-feature-tile__summary">Les rendez-vous de la commune, ajoutés à l'agenda des habitants.</span>
+                    <span class="cel-feature-tile__more">Voir la page<svg class="cel-icon cel-icon--16 cel-icon--bold cel-hover-card__arrow" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></span>
+                </span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="cel-feature-tile cel-hover-card">
+                <span class="cel-feature-tile__visual cel-feature-tile__visual--sand" aria-hidden="true"><svg class="cel-icon cel-feature-tile__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+                <span class="cel-feature-tile__body">
+                    <span class="cel-feature-tile__heading"><strong class="cel-feature-tile__title">Publication des actes</strong><span class="cel-badge cel-badge--auto">Automatique</span></span>
+                    <span class="cel-feature-tile__summary">Délibérations et arrêtés en ligne, comme la loi le demande.</span>
+                    <span class="cel-feature-tile__more">Voir la page<svg class="cel-icon cel-icon--16 cel-icon--bold cel-hover-card__arrow" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></span>
+                </span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="cel-feature-tile cel-hover-card">
+                <span class="cel-feature-tile__visual cel-feature-tile__visual--sage" aria-hidden="true"><svg class="cel-icon cel-feature-tile__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#trash"></use></svg></span>
+                <span class="cel-feature-tile__body">
+                    <span class="cel-feature-tile__heading"><strong class="cel-feature-tile__title">Collecte des déchets</strong></span>
+                    <span class="cel-feature-tile__summary">Le calendrier des tournées, et un rappel la veille.</span>
+                    <span class="cel-feature-tile__more">Voir la page<svg class="cel-icon cel-icon--16 cel-icon--bold cel-hover-card__arrow" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></span>
+                </span>
+            </a>
+        </li>
+    </ul>
+`} />
+
+L'illustration de la première carte est une scène faite d'utilitaires Tailwind : couleurs `scene-*`, interligne `leading-scene` (`--cel-leading-scene`) et ombre portée vers le haut `shadow-scene` (`--cel-shadow-scene`, transparente en sombre).
+
+<Example title="Carte seule dans sa liste (--single)" html={`
+    <ul class="cel-feature-tiles cel-feature-tiles--single">
+        <li>
+            <a href="#" class="cel-feature-tile cel-hover-card">
+                <span class="cel-feature-tile__visual cel-feature-tile__visual--lilac" aria-hidden="true"><svg class="cel-icon cel-feature-tile__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#envelope-open"></use></svg></span>
+                <span class="cel-feature-tile__body">
+                    <span class="cel-feature-tile__heading"><strong class="cel-feature-tile__title">Lettre d'information</strong></span>
+                    <span class="cel-feature-tile__summary">Les nouvelles de la commune, envoyées par courriel aux habitants inscrits.</span>
+                    <span class="cel-feature-tile__more">Voir la page<svg class="cel-icon cel-icon--16 cel-icon--bold cel-hover-card__arrow" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></span>
+                </span>
+            </a>
+        </li>
+    </ul>
+`} />
+
+## Accessibilité
+
+- Toute la carte est un seul lien : son nom est le titre, la phrase et « Voir la page » ; le focus se dessine autour de la carte.
+- L'illustration est décorative (`aria-hidden="true"`) : elle ne dit rien que le texte ne dise.
+- Le soulèvement au survol et au focus est coupé avec `prefers-reduced-motion: reduce` (l'ombre reste).
+
+<Contrasts pairs={[['primary', 'surface'], ['text-2', 'surface'], ['text-strong', 'surface']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une carte par fonctionnalité qui a sa page.', 'Une phrase qui dit ce que la fonctionnalité fait pour la mairie.']} donts={['Un lien « Voir la page » séparé du reste de la carte.', 'Une illustration qui porte un texte à lire.']} />

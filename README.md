@@ -34,12 +34,12 @@ Chaque version est publiée comme une archive jointe à la publication GitHub (�
 ```json
 {
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.0.0/communeenligne-design-2.0.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.1.0/communeenligne-design-2.1.0.tgz"
     }
 }
 ```
 
-**Pourquoi pas `"github:<organisation>/design#v2.0.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
+**Pourquoi pas `"github:<organisation>/design#v2.1.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
 installer un dépôt Git, mais seulement le `package.json` placé à sa racine : il n'a aucune syntaxe pour un sous-dossier
 (Yarn et pnpm en ont une, npm non). Une archive produite par `npm pack` dans le sous-dossier contient exactement les
 fichiers publiés, s'installe sans Git (absent des images `node:alpine` de l'application), ne change jamais une fois
@@ -64,6 +64,11 @@ Avec Tailwind 4 :
 @import '@communeenligne/design/patterns';       /* facultatif : modèles */
 ```
 
+Sans la famille Documentation (bloc de code, exemple, tuiles, page de documentation) :
+`@communeenligne/design/without-documentation.css`, ou avec Tailwind `components/without-documentation.css` et
+`patterns/without-documentation.css`. Une valeur hors du CSS (couleur de la barre du navigateur, point de rupture
+dans un script) se lit dans `@communeenligne/design/tokens.json`, jamais recopiée.
+
 Puis `class="cel-page"` sur `<body>` pour les styles de base, et `class="cel-dark"` sur `<html>` pour le thème
 sombre. Détails : https://design.communeenligne.fr/getting-started/installation/. Pour passer de 1.0.0 à 2.0.0 : la
 correspondance des noms dans `CHANGELOG.md`.
@@ -81,7 +86,7 @@ Numérotation sémantique, consignée dans `CHANGELOG.md` :
 
 1. Mettre à jour `version` dans `packages/design/package.json` et le titre de la version dans `CHANGELOG.md` (date).
 2. `docker compose run --rm node npm run check`.
-3. Commit, puis étiquette : `git tag v2.0.0 && git push origin main v2.0.0`.
+3. Commit, puis étiquette : `git tag v2.1.0 && git push origin main v2.1.0`.
 4. L'action « Release » vérifie que l'étiquette correspond à la version, lance les tests, construit l'archive
    (`npm pack -w @communeenligne/design`) et crée la publication GitHub avec l'archive jointe.
 
@@ -97,7 +102,7 @@ Numérotation sémantique, consignée dans `CHANGELOG.md` :
 - Tout ce que le paquet expose est en anglais, préfixé `cel-` : classes, variables, attributs `data-cel-` et leurs
   valeurs, fonctions, fichiers, commentaires. Un test échoue sur un mot français ou un accent. Les textes du site de
   documentation restent en français.
-- Après une modification des variables ou des icônes : `npm run generate` (régénère `tailwind.css` et
+- Après une modification des variables ou des icônes : `npm run generate` (régénère `tailwind.css`, `tokens.json` et
   `icons/sprite.svg`).
 
 ## Licences
