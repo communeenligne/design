@@ -27,4 +27,10 @@ jobs:
       - name: GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" communeenligne-design-*.tgz --title "$GITHUB_REF_NAME" --notes "See CHANGELOG.md. Install: \"@communeenligne/design\": \"https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/communeenligne-design-${GITHUB_REF_NAME#v}.tgz\""
+        run: |
+          notes="See CHANGELOG.md. Install: \"@communeenligne/design\": \"https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/communeenligne-design-${GITHUB_REF_NAME#v}.tgz\""
+          if gh release view "$GITHUB_REF_NAME" > /dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" communeenligne-design-*.tgz --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" communeenligne-design-*.tgz --title "$GITHUB_REF_NAME" --notes "$notes"
+          fi
