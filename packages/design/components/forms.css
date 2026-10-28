@@ -1,0 +1,300 @@
+/*
+ * @communeenligne/design, components, forms family: field with its hint and error, error summary, select, checkbox
+ * and radio button in their choice group, segmented control, filter.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Form field ---------- */
+
+.cel-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+    min-width: 0;
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-field :is(input:not([type='checkbox'], [type='radio']), select, textarea) {
+    width: 100%;
+    padding: var(--cel-space-3) var(--cel-space-3-5);
+    border: 1.5px solid var(--cel-color-field-border);
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-text-strong);
+    font: inherit;
+    font-size: var(--cel-text-16);
+    font-weight: var(--cel-font-weight-medium);
+}
+
+.cel-field textarea {
+    resize: vertical;
+}
+
+.cel-field [aria-invalid='true'] {
+    border: 2px solid var(--cel-color-error);
+}
+
+.cel-field :is(input, select, textarea):disabled {
+    border-style: dashed;
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-text-muted);
+    cursor: not-allowed;
+}
+
+.cel-field__optional {
+    font-weight: var(--cel-font-weight-medium);
+    color: var(--cel-color-text-muted);
+}
+
+.cel-field__hint {
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-medium);
+    color: var(--cel-color-text-muted);
+}
+
+.cel-field__error {
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+    color: var(--cel-color-error);
+}
+
+/* Error summary, at the top of the form. */
+.cel-error-summary {
+    padding: var(--cel-space-4) var(--cel-space-4-5);
+    border: 2px solid var(--cel-color-error);
+    border-radius: var(--cel-radius-lg);
+    background: var(--cel-color-error-background);
+    color: var(--cel-color-error-ink);
+}
+
+.cel-error-summary__title {
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-error-summary ul {
+    margin-top: var(--cel-space-1-5);
+    padding-left: var(--cel-space-5);
+}
+
+.cel-error-summary a {
+    color: var(--cel-color-error-ink);
+}
+
+/* ---------- Select ---------- */
+
+/* The native <select> in a wrapper that draws the chevron: the open list stays the system one (keyboard, screen
+   readers, phones). */
+.cel-select {
+    position: relative;
+    display: block;
+}
+
+.cel-field .cel-select select {
+    padding-right: var(--cel-space-10);
+    appearance: none;
+    cursor: pointer;
+}
+
+.cel-select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: var(--cel-space-4);
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--cel-color-text-strong);
+    border-bottom: 2px solid var(--cel-color-text-strong);
+    pointer-events: none;
+    transform: translateY(-75%) rotate(45deg);
+}
+
+.cel-select:has(select:disabled)::after {
+    border-color: var(--cel-color-text-muted);
+}
+
+/* ---------- Checkboxes and radio buttons ---------- */
+
+/* A choice group: <fieldset class="cel-choice-group">, its question in <legend>, then one box per choice. */
+.cel-choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.cel-choice-group__legend {
+    margin-bottom: var(--cel-space-1);
+    padding: 0;
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-choice-group--inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: var(--cel-space-6);
+}
+
+.cel-choice-group--inline .cel-choice-group__legend {
+    flex-basis: 100%;
+}
+
+/* The label wraps the box: the whole line is clickable. */
+.cel-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-space-2-5);
+    color: var(--cel-color-text-strong);
+    font-size: var(--cel-text-16);
+    font-weight: var(--cel-font-weight-medium);
+    cursor: pointer;
+}
+
+.cel-choice input {
+    display: grid;
+    flex: none;
+    place-content: center;
+    width: 22px;
+    height: 22px;
+    margin: 1px 0 0;
+    border: 1.5px solid var(--cel-color-field-border);
+    border-radius: calc(var(--cel-radius-sm) / 2);
+    background: var(--cel-color-surface);
+    appearance: none;
+    cursor: pointer;
+}
+
+.cel-choice input[type='radio'] {
+    border-radius: var(--cel-radius-circle);
+}
+
+/* Check mark and dot drawn in the surface color, on the primary color. */
+.cel-choice input::before {
+    content: '';
+    display: none;
+}
+
+.cel-choice input:checked {
+    border-color: var(--cel-color-primary);
+    background: var(--cel-color-primary);
+}
+
+.cel-choice input[type='checkbox']:checked::before {
+    display: block;
+    width: 6px;
+    height: 11px;
+    margin-top: -2px;
+    border-right: 2.5px solid var(--cel-color-surface);
+    border-bottom: 2.5px solid var(--cel-color-surface);
+    transform: rotate(45deg);
+}
+
+.cel-choice input[type='radio']:checked {
+    background: var(--cel-color-surface);
+    border-width: 2px;
+}
+
+.cel-choice input[type='radio']:checked::before {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--cel-radius-circle);
+    background: var(--cel-color-primary);
+}
+
+.cel-choice input[aria-invalid='true'],
+.cel-choice-group[aria-invalid='true'] .cel-choice input {
+    border: 2px solid var(--cel-color-error);
+}
+
+.cel-choice:has(input:disabled) {
+    color: var(--cel-color-text-muted);
+    cursor: not-allowed;
+}
+
+.cel-choice input:disabled {
+    border-style: dashed;
+    background: var(--cel-color-background-muted);
+    cursor: not-allowed;
+}
+
+.cel-choice__hint {
+    display: block;
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+}
+
+/* ---------- Segmented control ---------- */
+
+.cel-segmented {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1);
+    padding: var(--cel-space-1);
+    border-radius: var(--cel-radius-12);
+    background: var(--cel-color-segmented-background);
+}
+
+.cel-segmented__option {
+    padding: var(--cel-space-2) var(--cel-space-3-5);
+    border: 0;
+    border-radius: var(--cel-radius-9);
+    background: transparent;
+    color: var(--cel-color-text-muted-5);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+}
+
+.cel-segmented__option:hover,
+.cel-segmented__option[data-cel-state~='hover'] {
+    color: var(--cel-color-primary);
+}
+
+.cel-segmented__option[aria-pressed='true'] {
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    box-shadow: var(--cel-shadow-choice);
+}
+
+/* ---------- Filter (on a strong surface) ---------- */
+
+.cel-filter {
+    min-height: 44px;
+    padding: var(--cel-space-2-5) var(--cel-space-4-5);
+    border: 1px solid var(--cel-color-on-strong-line);
+    border-radius: var(--cel-radius-pill);
+    background: transparent;
+    color: var(--cel-color-on-strong);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duration-fast) var(--cel-ease-standard),
+        color var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-filter:hover,
+.cel-filter[data-cel-state~='hover'] {
+    background: var(--cel-color-strong-soft);
+}
+
+.cel-filter[aria-pressed='true'] {
+    background: var(--cel-color-gold);
+    color: var(--cel-color-on-gold);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-filter {
+        transition: none;
+    }
+}

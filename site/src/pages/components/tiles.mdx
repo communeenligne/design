@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Tuiles"
+description: "Les pages d'une rubrique en tuiles : un aperçu ou un pictogramme, un titre qui couvre la tuile, un résumé."
+---
+
+import Example from '../../components/Example.astro'
+
+## À quoi il sert
+
+Présenter les pages d'une rubrique sur sa page d'index, comme [Composants](/components/). L'aperçu est le composant lui-même, réduit, inerte et masqué aux lecteurs d'écran ; à défaut, le pictogramme de la page.
+
+<Example title="Deux tuiles" html={`
+    <ul class="cel-tiles">
+        <li>
+            <article class="cel-tile">
+                <div class="cel-tile__preview cel-tile__preview--muted" aria-hidden="true" inert><span class="cel-button">J'inscris ma commune</span></div>
+                <div class="cel-tile__body">
+                    <h3 class="cel-tile__title"><a class="cel-tile__link" href="/components/button/">Bouton</a></h3>
+                    <p class="cel-tile__summary">L'action principale d'un écran ou d'une section.</p>
+                </div>
+            </article>
+        </li>
+        <li>
+            <article class="cel-tile">
+                <div class="cel-tile__preview cel-tile__preview--icon" aria-hidden="true">
+                    <span class="cel-tile__pictogram"><svg class="cel-icon cel-icon--28" aria-hidden="true"><use href="/design/icons/sprite.svg#bars-3"></use></svg></span>
+                </div>
+                <div class="cel-tile__body">
+                    <h3 class="cel-tile__title"><a class="cel-tile__link" href="/components/menu/">Menu sur téléphone</a></h3>
+                    <p class="cel-tile__summary">Un bouton qui ouvre la navigation en plein écran.</p>
+                </div>
+            </article>
+        </li>
+    </ul>
+`} />
+
+## Accessibilité
+
+- Le titre est le seul lien ; il couvre toute la tuile et son focus est dessiné autour d'elle.
+- L'aperçu porte `aria-hidden="true"` et `inert` : ses boutons et ses liens ne sont ni lus ni atteints au clavier.

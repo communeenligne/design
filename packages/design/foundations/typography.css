@@ -1,0 +1,88 @@
+/*
+ * @communeenligne/design, foundations: typography.
+ *
+ * Fonts (Manrope, hosted with the package), text sizes, weights, line heights, letter spacing, fluid heading sizes.
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Fonts ---- */
+    --cel-font-body: 'Manrope', 'Manrope Fallback', 'Segoe UI', sans-serif; /* body */
+    --cel-font-heading: var(--cel-font-body);
+
+    /* ---- Code font ---- */
+    --cel-font-code: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', 'DejaVu Sans Mono', monospace; /* documentation */
+
+    /* ---- Body text size ---- */
+    --cel-text-base: var(--cel-text-17); /* body */
+
+    /* ---- Text sizes ---- */
+    --cel-text-11: 11px;
+    --cel-text-12: 12px;
+    --cel-text-13: 13px;
+    --cel-text-14: 14px;
+    --cel-text-15: 15px;
+    --cel-text-16: 16px;
+    --cel-text-17: 17px;
+    --cel-text-18: 18px;
+    --cel-text-19: 19px;
+    --cel-text-20: 20px;
+    --cel-text-21: 21px;
+    --cel-text-22: 22px;
+    --cel-text-24: 24px;
+    --cel-text-26: 26px;
+    --cel-text-30: 30px;
+    --cel-text-34: 34px;
+    --cel-text-lead: var(--cel-text-19);
+    --cel-text-small: var(--cel-text-15);
+    --cel-text-note: var(--cel-text-14);
+
+    /* ---- Font weights ---- */
+    --cel-font-weight-regular: 400;
+    --cel-font-weight-medium: 500;
+    --cel-font-weight-semibold: 600;
+    --cel-font-weight-bold: 700;
+    --cel-font-weight-extrabold: 800;
+
+    /* ---- Line heights ---- */
+    --cel-leading-100: 1;
+    --cel-leading-106: 1.06;
+    --cel-leading-110: 1.1;
+    --cel-leading-112: 1.12;
+    --cel-leading-115: 1.15;
+    --cel-leading-120: 1.2;
+    --cel-leading-125: 1.25;
+    --cel-leading-130: 1.3;
+    --cel-leading-135: 1.35;
+    --cel-leading-150: 1.5;
+    --cel-leading-155: 1.55;
+    --cel-leading-160: 1.6;
+    --cel-leading-body: var(--cel-leading-160);
+    --cel-leading-title: var(--cel-leading-120);
+    --cel-leading-title-large: var(--cel-leading-110);
+
+    /* ---- Letter spacing ---- */
+    --cel-tracking-title: -0.02em;
+    --cel-tracking-title-large: -0.025em;
+    --cel-tracking-figures: -0.03em;
+    --cel-tracking-caps: 0.04em;
+    --cel-tracking-caps-wide: 0.06em;
+
+    /* ---- Fluid heading sizes ---- */
+    --cel-text-title-hero: clamp(36px, 1.6rem + 2.6vw, 52px); /* .hero__title */
+    --cel-text-title-pricing: clamp(34px, 1.6rem + 2.4vw, 50px); /* .pricing-top__title */
+    --cel-text-title-page: clamp(32px, 1.6rem + 2vw, 46px); /* .page-intro__title */
+    --cel-text-title-form: clamp(32px, 1.6rem + 2vw, 44px); /* .signup__title */
+    --cel-text-title-split: clamp(32px, 1.6rem + 1.8vw, 44px); /* .split-heading__title */
+    --cel-text-title-section-large: clamp(30px, 2rem + 1.4vw, 40px); /* .section-title--large */
+    --cel-text-title-section: clamp(28px, 2.2rem + 0.8vw, 36px); /* .section-title */
+    --cel-text-title-subsection: clamp(26px, 1.4rem + 1vw, 32px); /* .pricing-section__title */
+    --cel-text-title-confirmation: clamp(26px, 1.3rem + 1.2vw, 32px); /* .signup-sent__title */
+    --cel-text-title-message: clamp(24px, 1.2rem + 1vw, 30px); /* .contact-sent__title */
+    --cel-text-price: clamp(48px, 2rem + 3vw, 64px); /* .price-block__amount strong */
+    --cel-text-price-total: clamp(44px, 2rem + 3vw, 64px); /* .cost-panel__total */
+    --cel-text-price-tier: clamp(30px, 1.2rem + 1.6vw, 40px); /* .tier-card__price */
+    --cel-text-price-quote: clamp(26px, 1rem + 1.4vw, 32px); /* .tier-card__price--quote */
+}

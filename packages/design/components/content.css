@@ -1,0 +1,528 @@
+/*
+ * @communeenligne/design, components, content family: text blocks (stack, intro, section title, lead, prose), table,
+ * comparison and its marks, callout, banner, card, checklist, numbered steps, FAQ.
+ *
+ * Renaming a class is a major version.
+ */
+
+.cel-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-6);
+}
+
+.cel-stack--7 {
+    gap: var(--cel-space-7);
+}
+
+.cel-stack--9 {
+    gap: var(--cel-space-9);
+}
+
+.cel-stack--10 {
+    gap: var(--cel-space-10);
+}
+
+.cel-intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+    max-width: var(--cel-width-reading);
+}
+
+.cel-intro--centered {
+    align-items: center;
+    max-width: none;
+    text-align: center;
+}
+
+.cel-section-title {
+    font-size: var(--cel-text-title-section);
+    line-height: var(--cel-leading-120);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title);
+    text-wrap: balance;
+}
+
+.cel-section-title--primary {
+    color: var(--cel-color-primary);
+}
+
+.cel-section-title--large {
+    font-size: var(--cel-text-title-section-large);
+    line-height: var(--cel-leading-115);
+}
+
+.cel-lead {
+    font-size: var(--cel-text-lead);
+    color: var(--cel-color-text);
+}
+
+.cel-intro--centered .cel-lead {
+    max-width: 40em;
+}
+
+.cel-lead--on-strong {
+    color: var(--cel-color-on-dark);
+}
+
+.cel-prose {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4);
+}
+
+.cel-prose h2 {
+    margin-top: var(--cel-space-5);
+    font-size: var(--cel-text-22);
+    font-weight: var(--cel-font-weight-extrabold);
+    color: var(--cel-color-primary);
+}
+
+.cel-prose h3 {
+    font-size: var(--cel-text-18);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-prose p,
+.cel-prose li {
+    color: var(--cel-color-text);
+}
+
+.cel-prose ul,
+.cel-prose ol {
+    padding-left: var(--cel-space-6);
+}
+
+/* ---------- Table ---------- */
+
+.cel-table-scroll {
+    overflow-x: auto;
+}
+
+.cel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--cel-text-15);
+}
+
+.cel-table caption {
+    padding: var(--cel-space-2-5) 0;
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    text-align: left;
+}
+
+.cel-table :is(th, td) {
+    padding: var(--cel-space-2-5) var(--cel-space-3);
+    border: 1px solid var(--cel-color-line);
+    text-align: left;
+    vertical-align: top;
+}
+
+.cel-table th {
+    background: var(--cel-color-background-muted);
+}
+
+/* Comparison: a real table, horizontal scrolling inside its block, criteria stuck to the left. */
+.cel-comparison {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-16);
+}
+
+.cel-comparison:focus-visible {
+    outline-offset: 2px;
+}
+
+.cel-comparison__table {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--cel-text-15);
+}
+
+.cel-comparison__caption {
+    padding: var(--cel-space-3-5) var(--cel-space-4-5);
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    text-align: left;
+}
+
+.cel-comparison :is(th, td) {
+    padding: var(--cel-space-3-5) var(--cel-space-4-5);
+    border-top: 1px solid var(--cel-color-line-5);
+    text-align: left;
+    vertical-align: top;
+}
+
+.cel-comparison thead th {
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-comparison .cel-comparison__column--us {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-comparison__corner,
+.cel-comparison__criterion {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    width: 18%;
+    background: var(--cel-color-surface);
+    box-shadow: 1px 0 0 var(--cel-color-line-5);
+}
+
+.cel-comparison thead .cel-comparison__corner {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-comparison__criterion {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-comparison__cell {
+    color: var(--cel-color-text);
+}
+
+.cel-comparison__cell--us {
+    background: var(--cel-color-surface-muted-2);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-comparison__value {
+    display: flex;
+    gap: var(--cel-space-2);
+    align-items: flex-start;
+}
+
+.cel-comparison__value .cel-icon {
+    margin-top: var(--cel-space-0-5);
+}
+
+.cel-comparison__note {
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+}
+
+/* Scroll hint: only when the table (860 px at least) is wider than the screen. */
+.cel-comparison-hint {
+    display: none;
+    align-items: center;
+    gap: var(--cel-space-2);
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+/* Comparison marks: good, mid, bad. */
+.cel-mark {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--cel-radius-circle);
+    --cel-icon-size: 14px;
+    --cel-icon-stroke: 2.6;
+}
+
+.cel-mark--good {
+    color: var(--cel-color-mark-good-text);
+}
+
+.cel-mark--mid {
+    background: var(--cel-color-mark-mid-background);
+    color: var(--cel-color-mark-mid);
+}
+
+.cel-mark--bad {
+    background: var(--cel-color-mark-bad-background);
+    color: var(--cel-color-mark-bad);
+}
+
+/* ---------- Callout ---------- */
+
+.cel-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-space-4-5);
+    padding: var(--cel-space-6) var(--cel-space-6-5);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-14);
+}
+
+.cel-callout__icon {
+    flex: none;
+    color: var(--cel-color-primary);
+}
+
+.cel-callout__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2);
+    color: var(--cel-color-text-2);
+}
+
+.cel-callout__title {
+    font-size: var(--cel-text-20);
+    font-weight: var(--cel-font-weight-extrabold);
+    color: var(--cel-color-primary);
+}
+
+/* ---------- Banner ---------- */
+
+.cel-banner {
+    border-top: 1px solid var(--cel-color-line);
+    border-bottom: 1px solid var(--cel-color-line);
+    background: var(--cel-color-tint-blue-2);
+}
+
+/* Right after the page header: a single line between the two. */
+.cel-page-header + .cel-banner {
+    border-top: 0;
+}
+
+.cel-banner__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-space-3);
+    padding-top: var(--cel-space-4-5);
+    padding-bottom: var(--cel-space-4-5);
+    color: var(--cel-color-text);
+    text-align: center;
+}
+
+.cel-banner__inner p {
+    margin: 0;
+}
+
+.cel-banner__icon {
+    flex: none;
+    color: var(--cel-color-primary);
+}
+
+.cel-banner__link {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+    text-underline-offset: 3px;
+}
+
+/* Warning banner (draft, unpublished page). */
+.cel-banner--warning {
+    border: 0;
+    background: var(--cel-color-warning-background);
+}
+
+.cel-banner--warning .cel-banner__inner {
+    padding-top: var(--cel-space-3);
+    padding-bottom: var(--cel-space-3);
+    color: var(--cel-color-ochre-ink);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* ---------- Card ---------- */
+
+/* The whole card leads to its page; the focus is drawn on the card. */
+.cel-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    padding: var(--cel-space-5-5);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-14);
+    background: var(--cel-color-surface);
+    transition:
+        transform var(--cel-duration-moderate) var(--cel-ease-standard),
+        box-shadow var(--cel-duration-moderate) var(--cel-ease-standard),
+        background-color var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+.cel-card:has(.cel-card__link):hover,
+.cel-card:focus-within,
+.cel-card[data-cel-state~='hover'] {
+    border-color: var(--cel-color-focus-line);
+    box-shadow: var(--cel-shadow-card-hover);
+    transform: translateY(-4px);
+}
+
+.cel-card__title {
+    font-size: var(--cel-text-19);
+    line-height: var(--cel-leading-130);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-card__link {
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+.cel-card__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.cel-card__link:focus-visible {
+    outline: none;
+}
+
+.cel-card__link:focus-visible::after,
+.cel-card[data-cel-state~='focus'] .cel-card__link::after {
+    outline: var(--cel-focus-width) solid var(--cel-focus-color);
+    outline-offset: var(--cel-focus-offset);
+}
+
+.cel-card__summary {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
+.cel-card__meta {
+    margin-top: auto;
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+}
+
+/* ---------- Checklist ---------- */
+
+.cel-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--cel-color-text);
+}
+
+.cel-checklist li {
+    display: flex;
+    gap: var(--cel-space-3);
+}
+
+.cel-checklist .cel-icon {
+    margin-top: var(--cel-space-1);
+    color: var(--cel-color-mark-good-text);
+    --cel-icon-size: 18px;
+    --cel-icon-stroke: 2.6;
+}
+
+/* ---------- Numbered steps ---------- */
+
+.cel-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-steps__step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-space-4);
+    color: var(--cel-color-text);
+    font-size: var(--cel-text-17);
+}
+
+.cel-steps__step > :last-child {
+    padding-top: var(--cel-space-0-5);
+}
+
+.cel-steps__number {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--cel-radius-circle);
+    box-shadow: inset 0 0 0 1.5px var(--cel-color-primary);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* ---------- FAQ (accordion) ---------- */
+
+.cel-faq {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3);
+}
+
+.cel-faq__item {
+    padding: var(--cel-space-5) var(--cel-space-6);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-12);
+    background: var(--cel-color-surface);
+}
+
+.cel-faq__question {
+    font-size: var(--cel-text-18);
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+    list-style: none;
+}
+
+.cel-faq__question::-webkit-details-marker {
+    display: none;
+}
+
+.cel-faq__answer {
+    margin-top: var(--cel-space-3);
+    color: var(--cel-color-text);
+}
+
+.cel-faq__answer p + p {
+    margin-top: var(--cel-space-2-5);
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 940px) {
+    .cel-comparison-hint {
+        display: flex;
+    }
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 640px) {
+    .cel-table-scroll--phone,
+    .cel-prose table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-card {
+        transition: none;
+    }
+
+    .cel-card:hover,
+    .cel-card:focus-within,
+    .cel-card[data-cel-state] {
+        transform: none;
+    }
+}

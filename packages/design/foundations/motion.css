@@ -1,0 +1,25 @@
+/*
+ * @communeenligne/design, foundations: motion.
+ *
+ * Durations and easing curves of transitions and animations (motion.css, js/motion.js).
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Durations ---- */
+    --cel-duration-xfast: 150ms; /* fade out */
+    --cel-duration-fast: 200ms; /* hovers, buttons */
+    --cel-duration-moderate: 250ms; /* lifted cards, fade in */
+    --cel-duration-normal: 300ms; /* state change */
+    --cel-duration-steady: 350ms; /* reveal opacity */
+    --cel-duration-slow: 400ms; /* reveal movement */
+    --cel-delay-stagger: 70ms; /* offset between two elements revealed together */
+
+    /* ---- Easing ---- */
+    --cel-ease-standard: ease;
+    --cel-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1); /* reveals */
+    --cel-ease-glide: cubic-bezier(0.2, 0.8, 0.2, 1); /* in-place state change */
+    --cel-ease-bounce: cubic-bezier(0.2, 1.4, 0.4, 1); /* .pop-in of the hero */
+}

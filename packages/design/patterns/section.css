@@ -1,0 +1,21 @@
+/*
+ * @communeenligne/design, patterns: section, the building block of pages (fluid padding, three backgrounds).
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Sections ---------- */
+
+.cel-section {
+    padding-top: var(--cel-space-section);
+    padding-bottom: var(--cel-space-section);
+}
+
+.cel-section--muted {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-section--strong {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+}

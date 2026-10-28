@@ -1,0 +1,61 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Grille de prix"
+description: "La page tarif : une carte par tranche de population ; celle de la commune choisie est soulevée, sur fond marine."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Montrer toutes les tranches de prix d'un coup, et faire ressortir celle de la commune une fois qu'elle a été choisie (recherche de la commune sur la page tarif).
+
+## Variantes
+
+`.cel-tiers` (une liste) range les cartes `.cel-tier` sur une ligne ; deux par ligne sous 860 px, une seule sur téléphone. `.cel-tier--selected` soulève la carte et la passe sur fond marine ; le script de la page pose la classe (aucun script dans le paquet).
+
+<Example title="Quatre tranches, la deuxième choisie (montants d'exemple)" html={`
+    <ul class="cel-tiers" aria-label="Prix selon le nombre d'habitants">
+        <li><div class="cel-tier">
+            <span class="cel-tier__label">Moins de 500 habitants</span>
+            <span class="cel-tier__price">360 €</span>
+            <span class="cel-tier__subtitle">par an, soit 30 € par mois</span>
+            <span class="cel-tier__setup">Mise en service : 240 €</span>
+        </div></li>
+        <li><div class="cel-tier cel-tier--selected">
+            <span class="cel-tier__label">De 500 à 999 habitants</span>
+            <span class="cel-tier__price">480 €</span>
+            <span class="cel-tier__subtitle">par an, soit 40 € par mois</span>
+            <span class="cel-tier__setup">Mise en service : 320 €</span>
+            <a href="#" class="cel-tier__link">J'inscris ma commune</a>
+        </div></li>
+        <li><div class="cel-tier">
+            <span class="cel-tier__label">De 1 000 à 3 499 habitants</span>
+            <span class="cel-tier__price">720 €</span>
+            <span class="cel-tier__subtitle">par an, soit 60 € par mois</span>
+            <span class="cel-tier__setup">Mise en service : 480 €</span>
+        </div></li>
+        <li><div class="cel-tier">
+            <span class="cel-tier__label">3 500 habitants et plus</span>
+            <span class="cel-tier__price cel-tier__price--quote">Sur devis</span>
+            <a href="#" class="cel-tier__link">Nous écrire</a>
+        </div></li>
+    </ul>
+`} />
+
+## Règles
+
+- Les montants viennent des réglages commerciaux de la landing, jamais écrits en dur.
+- Une seule tranche choisie à la fois ; aucune avant que la commune soit connue.
+
+## Accessibilité
+
+- La liste a un nom (`aria-label`). La tranche choisie est aussi dite en texte près de la recherche (« Votre commune : 640 habitants »), pas seulement par la couleur.
+- Le focus est or sur la tranche choisie.
+- Avec la réduction des animations, la carte change de fond sans glisser.
+
+<Contrasts pairs={[['text-muted-2', 'surface'], ['primary', 'surface'], ['text-2', 'surface'], ['on-strong-gold', 'strong'], ['on-strong', 'strong'], ['on-strong-soft', 'strong'], ['cel-focus-color-on-strong', 'strong', 3]]} />
+
+<DoDont dos={['Le prix annuel en grand, le mensuel dessous.']} donts={['Mettre une tranche en avant avant que la commune soit choisie.', 'Un prix barré.']} />

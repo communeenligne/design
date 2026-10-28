@@ -1,10 +1,10 @@
 ---
 import Doc from '../../layouts/Doc.astro'
 import SectionIndex from '../../components/SectionIndex.astro'
-import { RUBRIQUES } from '../../lib/navigation.js'
+import { SECTIONS } from '../../lib/navigation.js'
 
-const rubrique = RUBRIQUES.find((r) => r.url === '/components/')
+const section = SECTIONS.find((s) => s.url === '/components/')
 ---
-<Doc title={rubrique.titre} description={rubrique.description} plein>
-    <SectionIndex rubrique={rubrique} />
+<Doc title={section.title} description={section.description} full>
+    <SectionIndex section={section} />
 </Doc>

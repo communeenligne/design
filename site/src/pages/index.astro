@@ -1,77 +1,81 @@
 ---
-// Accueil : premiers pas, les quatre grandes rubriques en panneaux (pages en pastilles), accessibilité et journal, principes.
+// Home: first steps, the main sections as panels (pages as pills), accessibility and changelog, principles.
 import Doc from '../layouts/Doc.astro'
 import Code from '../components/Code.astro'
 import Icon from '../components/Icon.astro'
-import { NOM, RUBRIQUES } from '../lib/navigation.js'
+import { SECTIONS, SITE_NAME } from '../lib/navigation.js'
 import { VERSION } from '../lib/version.js'
+import icons from '@communeenligne/design/icons/icons.json'
 
-const principales = RUBRIQUES.filter((rubrique) => rubrique.pages.length > 0)
-const autres = RUBRIQUES.filter((rubrique) => rubrique.pages.length === 0)
-const VISIBLES = 8
-const ancre = (rubrique) => `rubrique-${rubrique.url.replaceAll('/', '')}`
-const principes = [
-    ['swatch', 'Une seule source', 'Les valeurs vivent dans tokens.css ; les pages des fondamentaux en sont générées et ne peuvent pas diverger du paquet.'],
-    ['key', 'Des noms stables, en français', '--cel-couleur-marine, .cel-bouton--secondaire. Un nom qui change, c\'est une version majeure.'],
-    ['moon', 'Clair par défaut', 'Le thème sombre s\'active par la classe cel-sombre sur html, jamais d\'après la préférence du système.'],
+const main = SECTIONS.filter((section) => section.pages.length > 0)
+const others = SECTIONS.filter((section) => section.pages.length === 0)
+const VISIBLE = 8
+const components = SECTIONS.find((section) => section.url === '/components/').pages.length
+const patterns = SECTIONS.find((section) => section.url === '/patterns/').pages.length
+const anchor = (section) => `section-${section.url.replaceAll('/', '')}`
+const PRINCIPLES = [
+    ['swatch', 'Une seule source', 'Les valeurs vivent dans les fondamentaux (foundations/) ; les pages des couleurs, de la typographie et des espacements en sont générées et ne peuvent pas diverger du paquet.'],
+    ['squares-2x2', 'Un seul design system', 'Pour la landing, le centre d\'aide et le panel de Commune en ligne. Les sites des communes ont leurs propres thèmes, dans l\'application.'],
+    ['key', 'Des noms stables, en anglais', '--cel-color-primary, .cel-button--secondary, data-cel-state : des noms par rôle. Un nom qui change, c\'est une version majeure.'],
+    ['moon', 'Clair par défaut', 'Le thème sombre s\'active par la classe cel-dark sur html, jamais d\'après la préférence du système.'],
     ['check-circle', 'Accessible d\'abord', '4,5:1 pour le texte, 3:1 pour l\'interface et le focus, vérifiés par un test à chaque modification.'],
     ['lock-closed', 'Rien d\'extérieur', 'Aucune ressource chargée depuis un autre domaine, aucun style ni script en ligne requis.'],
     ['heart', 'L\'identité de communeenligne', 'Aucun élément du Système de design de l\'État, réservé aux sites de l\'État.'],
 ]
 ---
-<Doc title={NOM} description="Les couleurs, la typographie, les icônes et les composants de Commune en ligne, dans un seul paquet utilisé par la landing, le panel et l'aide en ligne." plein>
-    <div class="doc-accueil">
-        <section class="doc-accueil__depart" aria-labelledby="titre-depart">
-            <h2 id="titre-depart" class="cel-masque">Premiers pas</h2>
-            <Code langue="css" code={`@import '@communeenligne/design';`} />
-            <div class="doc-accueil__actions">
-                <a class="cel-bouton" href="/getting-started/installation/">Installer le paquet</a>
-                <a class="cel-bouton cel-bouton--secondaire" href="/components/">Voir les composants</a>
+<Doc title={SITE_NAME} description="Les couleurs, la typographie, les icônes et les composants de Commune en ligne, dans un seul paquet utilisé par la landing, le panel et l'aide en ligne." full>
+    <div class="doc-home">
+        <section class="doc-home__start" aria-labelledby="start-title">
+            <h2 id="start-title" class="cel-visually-hidden">Premiers pas</h2>
+            <Code lang="css" code={`@import '@communeenligne/design';`} />
+            <div class="doc-home__actions">
+                <a class="cel-button" href="/getting-started/installation/">Installer le paquet</a>
+                <a class="cel-button cel-button--secondary" href="/components/">Voir les composants</a>
             </div>
-            <p class="doc-accueil__version">Version {VERSION} · 139 couleurs · 56 icônes · 18 composants · 5 modèles</p>
+            <p class="doc-home__version">Version {VERSION} · {components} composants · {patterns} modèles · {icons.length} icônes</p>
         </section>
 
-        <section aria-labelledby="titre-rubriques" class="doc-accueil__bloc">
-            <h2 id="titre-rubriques" class="cel-titre-section cel-titre-section--marine">Rubriques</h2>
-            <div class="doc-rubriques-accueil">
-                {principales.map((rubrique) => (
-                    <section class="doc-rubrique" aria-labelledby={ancre(rubrique)}>
-                        <div class="doc-rubrique__entete">
-                            <span class="doc-pictogramme" aria-hidden="true"><Icon nom={rubrique.icone} taille="26" /></span>
+        <section aria-labelledby="sections-title" class="doc-home__block">
+            <h2 id="sections-title" class="cel-section-title cel-section-title--primary">Rubriques</h2>
+            <div class="doc-sections-home">
+                {main.map((section) => (
+                    <section class="doc-section" aria-labelledby={anchor(section)}>
+                        <div class="doc-section__header">
+                            <span class="cel-pictogram" aria-hidden="true"><Icon name={section.icon} size="26" /></span>
                             <div>
-                                <h3 class="doc-rubrique__titre" id={ancre(rubrique)}><a href={rubrique.url}>{rubrique.titre}</a></h3>
-                                <p class="doc-rubrique__compte">{rubrique.pages.length} pages</p>
+                                <h3 class="doc-section__title" id={anchor(section)}><a href={section.url}>{section.title}</a></h3>
+                                <p class="doc-section__count">{section.pages.length} pages</p>
                             </div>
                         </div>
-                        <p class="doc-rubrique__resume">{rubrique.description}</p>
-                        <ul class="cel-pastilles">
-                            {rubrique.pages.slice(0, VISIBLES).map((page) => <li><a class="cel-pastille" href={page.url}>{page.titre}</a></li>)}
-                            {rubrique.pages.length > VISIBLES && <li class="doc-rubrique__plus"><a class="cel-lien cel-lien--fleche" href={rubrique.url}>Et {rubrique.pages.length - VISIBLES} autres<Icon nom="arrow-right" taille="16" appuyee /></a></li>}
+                        <p class="doc-section__summary">{section.description}</p>
+                        <ul class="cel-pills">
+                            {section.pages.slice(0, VISIBLE).map((page) => <li><a class="cel-pill" href={page.url}>{page.title}</a></li>)}
+                            {section.pages.length > VISIBLE && <li class="doc-section__more"><a class="cel-link cel-link--arrow" href={section.url}>Et {section.pages.length - VISIBLE} autres<Icon name="arrow-right" size="16" bold /></a></li>}
                         </ul>
                     </section>
                 ))}
             </div>
-            <ul class="doc-raccourcis">
-                {autres.map((rubrique) => (
+            <ul class="doc-shortcuts">
+                {others.map((section) => (
                     <li>
-                        <article class="doc-raccourci">
-                            <span class="doc-pictogramme doc-pictogramme--petit" aria-hidden="true"><Icon nom={rubrique.icone} taille="22" /></span>
-                            <div class="doc-raccourci__texte">
-                                <h3 class="doc-raccourci__titre"><a class="doc-tuile__lien" href={rubrique.url}>{rubrique.titre}</a></h3>
-                                <p class="doc-raccourci__resume">{rubrique.description}</p>
+                        <article class="doc-shortcut">
+                            <span class="cel-pictogram cel-pictogram--small" aria-hidden="true"><Icon name={section.icon} size="22" /></span>
+                            <div class="doc-shortcut__text">
+                                <h3 class="doc-shortcut__title"><a class="cel-tile__link" href={section.url}>{section.title}</a></h3>
+                                <p class="doc-shortcut__summary">{section.description}</p>
                             </div>
-                            <Icon nom="arrow-right" taille="18" appuyee class="doc-tuile__fleche" />
+                            <Icon name="arrow-right" size="18" bold class="cel-tile__arrow" />
                         </article>
                     </li>
                 ))}
             </ul>
         </section>
 
-        <section aria-labelledby="titre-principes" class="doc-accueil__bloc">
-            <h2 id="titre-principes" class="cel-titre-section cel-titre-section--marine">Principes</h2>
-            <ul class="doc-principes">
-                {principes.map(([icone, titre, texte]) => (
-                    <li><Icon nom={icone} taille="22" class="doc-principes__icone" /><h3 class="doc-principes__titre">{titre}</h3><p>{texte}</p></li>
+        <section aria-labelledby="principles-title" class="doc-home__block">
+            <h2 id="principles-title" class="cel-section-title cel-section-title--primary">Principes</h2>
+            <ul class="doc-principles">
+                {PRINCIPLES.map(([icon, title, text]) => (
+                    <li><Icon name={icon} size="22" class="doc-principles__icon" /><h3 class="doc-principles__title">{title}</h3><p>{text}</p></li>
                 ))}
             </ul>
         </section>

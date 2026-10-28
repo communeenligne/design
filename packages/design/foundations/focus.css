@@ -1,0 +1,16 @@
+/*
+ * @communeenligne/design, foundations: visible focus.
+ *
+ * Focus outline: 3 px, offset by 3 px, primary color; gold on a strong surface (cel-on-strong).
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Focus ---- */
+    --cel-focus-width: 3px;
+    --cel-focus-offset: 3px;
+    --cel-focus-color: var(--cel-color-primary);
+    --cel-focus-color-on-strong: var(--cel-color-gold);
+}

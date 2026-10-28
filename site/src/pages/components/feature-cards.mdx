@@ -1,0 +1,46 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Cartes de fonctionnalités"
+description: "Trois cartes colorées (bleu, ocre, vert) : une icône, un titre, un texte ; trois colonnes sur grand écran, une seule en dessous."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Présenter trois publics ou trois grands usages côte à côte (« Pour la mairie », « Pour les habitants », « Pour les élus »).
+
+## Variantes
+
+`.cel-features` (une liste) range les cartes : trois colonnes égales à partir de 960 px, une seule colonne en dessous, jamais une carte seule étirée sous deux autres. `.cel-feature` est bleue par défaut, `--ocre` et `--vert` pour les deux autres.
+
+<Example title="Bleu, ocre, vert" html={`
+    <ul class="cel-features">
+        <li class="cel-feature">
+            <span class="cel-feature__icon"><svg class="cel-icon cel-icon--28" aria-hidden="true"><use href="/design/icons/sprite.svg#home-modern"></use></svg></span>
+            <h3 class="cel-feature__title">Pour la mairie</h3>
+            <p class="cel-feature__text">Publier une actualité ou un acte en deux minutes, sans compétence technique.</p>
+        </li>
+        <li class="cel-feature cel-feature--ochre">
+            <span class="cel-feature__icon"><svg class="cel-icon cel-icon--28" aria-hidden="true"><use href="/design/icons/sprite.svg#user-group"></use></svg></span>
+            <h3 class="cel-feature__title">Pour les habitants</h3>
+            <p class="cel-feature__text">Les horaires, les démarches et les alertes, sur téléphone comme sur ordinateur.</p>
+        </li>
+        <li class="cel-feature cel-feature--green">
+            <span class="cel-feature__icon"><svg class="cel-icon cel-icon--28" aria-hidden="true"><use href="/design/icons/sprite.svg#check-badge"></use></svg></span>
+            <h3 class="cel-feature__title">Pour les élus</h3>
+            <p class="cel-feature__text">Les obligations de publication tenues, sans y penser.</p>
+        </li>
+    </ul>
+`} />
+
+## Accessibilité
+
+- Une liste (`<ul>`) : le nombre de cartes est annoncé.
+- L'icône est décorative ; le titre dit tout.
+
+<Contrasts pairs={[['blue-title', 'tint-blue'], ['blue-text', 'tint-blue'], ['ochre-title', 'tint-ochre-3'], ['ochre-ink', 'tint-ochre-3'], ['green-title', 'success-background'], ['green-text', 'success-background'], ['on-strong', 'strong'], ['on-gold', 'ochre'], ['on-strong', 'green']]} />
+
+<DoDont dos={['Trois cartes, trois couleurs différentes.', 'Un texte de deux lignes environ.']} donts={['Une carte cliquable sans lien visible.', 'Quatre cartes ou plus.']} />

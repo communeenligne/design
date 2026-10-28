@@ -1,200 +1,202 @@
-// Script du site de documentation : thème, onglets et animations du paquet, boutons de copie, recherche en direct.
+// Script of the documentation site: theme, tabs, phone menu and animations of the package, copy buttons, live search.
 
 import { initTheme } from '/design/js/theme.js'
-import { initOnglets } from '/design/js/tabs.js'
-import { initMouvement } from '/design/js/motion.js'
+import { initTabs } from '/design/js/tabs.js'
+import { initMenu } from '/design/js/menu.js'
+import { initMotion } from '/design/js/motion.js'
 
 initTheme()
-initOnglets()
-initMouvement()
+initTabs()
+initMenu()
+initMotion()
 
-// Le choix du thème n'a de sens qu'avec ce script : il est masqué sans lui.
+// The theme switch only makes sense with this script: it is hidden without it.
 document.querySelectorAll('[data-cel-theme][hidden]').forEach((groupe) => groupe.removeAttribute('hidden'))
 
-// ---------- Copier le code d'un exemple ----------
+// ---------- Copy the code of an example ----------
 
-document.querySelectorAll('.doc-code').forEach((bloc) => {
+document.querySelectorAll('.cel-code').forEach((block) => {
     if (!navigator.clipboard) {
         return
     }
 
-    const bouton = document.createElement('button')
-    bouton.type = 'button'
-    bouton.className = 'doc-code__copier'
-    bouton.innerHTML = '<svg class="cel-icone cel-icone--18" aria-hidden="true" focusable="false"><use></use></svg>'
-    const icone = bouton.querySelector('use')
-    // Icône « dupliquer » au repos, coche pendant deux secondes après la copie ; le nom accessible suit.
-    const etat = (copie) => {
-        const libelle = copie ? 'Code copié' : 'Copier le code'
-        icone.setAttribute('href', `/design/icons/sprite.svg#${copie ? 'check' : 'document-duplicate'}`)
-        bouton.setAttribute('aria-label', libelle)
-        bouton.title = libelle
+    const button = document.createElement('button')
+    button.type = 'button'
+    button.className = 'cel-code__copy'
+    button.innerHTML = '<svg class="cel-icon cel-icon--18" aria-hidden="true" focusable="false"><use></use></svg>'
+    const icon = button.querySelector('use')
+    // "Duplicate" icon at rest, check mark for two seconds after copying; the accessible name follows.
+    const setCopied = (copied) => {
+        const label = copied ? 'Code copié' : 'Copier le code'
+        icon.setAttribute('href', `/design/icons/sprite.svg#${copied ? 'check' : 'document-duplicate'}`)
+        button.setAttribute('aria-label', label)
+        button.title = label
     }
-    etat(false)
-    bouton.addEventListener('click', async () => {
-        await navigator.clipboard.writeText(bloc.querySelector('code').textContent)
-        etat(true)
-        setTimeout(() => etat(false), 2000)
+    setCopied(false)
+    button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(block.querySelector('code').textContent)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
     })
-    bloc.append(bouton)
+    block.append(button)
 })
 
-// ---------- Recherche en direct : Ctrl+K (⌘K sur Mac), ou le bouton de l'en-tête ----------
-// Fenêtre modale (<dialog>) : champ en combobox, résultats en listbox (aria-activedescendant) ; flèches pour choisir,
-// Entrée pour ouvrir, Échap pour fermer. L'index (/search-index.json) est chargé à la première ouverture. Sans script,
-// le bouton reste masqué : la navigation et le fil d'Ariane suffisent.
+// ---------- Live search: Ctrl+K (⌘K on Mac), or the button of the header ----------
+// Modal window (<dialog>): field as a combobox, results as a listbox (aria-activedescendant); arrows to choose, Enter to
+// open, Escape to close. The index (/search-index.json) is loaded at the first opening. Without script, the button
+// stays hidden: the navigation and the breadcrumb are enough.
 
-const dialogue = document.querySelector('[data-recherche]')
-const ouvrir = document.querySelector('[data-recherche-ouvrir]')
+const dialog = document.querySelector('[data-search]')
+const openButton = document.querySelector('[data-search-open]')
 
-if (dialogue && ouvrir && typeof dialogue.showModal === 'function') {
-    const champ = dialogue.querySelector('input')
-    const liste = dialogue.querySelector('[data-recherche-resultats]')
-    const etat = dialogue.querySelector('[data-recherche-etat]')
+if (dialog && openButton && typeof dialog.showModal === 'function') {
+    const field = dialog.querySelector('input')
+    const list = dialog.querySelector('[data-search-results]')
+    const status = dialog.querySelector('[data-search-status]')
     const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)
     const MAX = 12
-    let index = null
-    let resultats = []
-    let actif = -1
+    let searchIndex = null
+    let results = []
+    let active = -1
 
-    ouvrir.querySelector('[data-raccourci]').textContent = mac ? '⌘ K' : 'Ctrl K'
-    ouvrir.setAttribute('aria-keyshortcuts', mac ? 'Meta+K' : 'Control+K')
-    ouvrir.hidden = false
+    openButton.querySelector('[data-search-shortcut]').textContent = mac ? '⌘ K' : 'Ctrl K'
+    openButton.setAttribute('aria-keyshortcuts', mac ? 'Meta+K' : 'Control+K')
+    openButton.hidden = false
 
-    const normaliser = (texte) => texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+    const normalize = (text) => text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
-    const charger = async () => {
-        if (index === null) {
-            index = fetch('/search-index.json')
-                .then((reponse) => reponse.json())
-                .then(({ entrees }) => entrees.map((entree) => ({ ...entree, _titre: normaliser(entree.titre), _texte: normaliser(`${entree.page ?? ''} ${entree.resume} ${entree.mots}`) })))
+    const load = async () => {
+        if (searchIndex === null) {
+            searchIndex = fetch('/search-index.json')
+                .then((response) => response.json())
+                .then(({ entries }) => entries.map((entry) => ({ ...entry, _title: normalize(entry.title), _text: normalize(`${entry.page ?? ''} ${entry.summary} ${entry.words}`) })))
                 .catch(() => [])
         }
 
-        return index
+        return searchIndex
     }
 
-    const extrait = (entree, mot) => {
-        if (entree.resume) {
-            return entree.resume
+    const excerpt = (entry, word) => {
+        if (entry.summary) {
+            return entry.summary
         }
 
-        const position = normaliser(entree.mots).indexOf(mot)
+        const position = normalize(entry.words).indexOf(word)
 
-        return position === -1 ? '' : `…${entree.mots.slice(Math.max(0, position - 50), position + 90)}…`
+        return position === -1 ? '' : `…${entry.words.slice(Math.max(0, position - 50), position + 90)}…`
     }
 
-    const choisir = (rang) => {
-        actif = rang
-        ;[...liste.children].forEach((element, i) => element.setAttribute('aria-selected', String(i === rang)))
+    const select = (rank) => {
+        active = rank
+        ;[...list.children].forEach((element, i) => element.setAttribute('aria-selected', String(i === rank)))
 
-        if (rang >= 0) {
-            champ.setAttribute('aria-activedescendant', `resultat-${rang}`)
-            liste.children[rang].scrollIntoView({ block: 'nearest' })
+        if (rank >= 0) {
+            field.setAttribute('aria-activedescendant', `search-result-${rank}`)
+            list.children[rank].scrollIntoView({ block: 'nearest' })
         } else {
-            champ.removeAttribute('aria-activedescendant')
+            field.removeAttribute('aria-activedescendant')
         }
     }
 
-    const chercher = async () => {
-        const entrees = await charger()
-        const requete = champ.value.trim()
-        const mots = normaliser(requete).split(/\s+/).filter(Boolean)
+    const search = async () => {
+        const entries = await load()
+        const query = field.value.trim()
+        const words = normalize(query).split(/\s+/).filter(Boolean)
 
-        resultats = mots.length === 0 ? [] : entrees
-            .map((entree) => {
+        results = words.length === 0 ? [] : entries
+            .map((entry) => {
                 let score = 0
 
-                for (const mot of mots) {
-                    const dansTitre = entree._titre.includes(mot)
+                for (const word of words) {
+                    const inTitle = entry._title.includes(word)
 
-                    if (!dansTitre && !entree._texte.includes(mot)) {
+                    if (!inTitle && !entry._text.includes(word)) {
                         return null
                     }
 
-                    score += (entree._titre.startsWith(mot) ? 30 : dansTitre ? 20 : 2) + (entree.page ? 0 : 5)
+                    score += (entry._title.startsWith(word) ? 30 : inTitle ? 20 : 2) + (entry.page ? 0 : 5)
                 }
 
-                return { entree, score }
+                return { entry, score }
             })
             .filter(Boolean)
             .sort((a, b) => b.score - a.score)
             .slice(0, MAX)
-            .map(({ entree }) => entree)
+            .map(({ entry }) => entry)
 
-        liste.replaceChildren(...resultats.map((entree, rang) => {
+        list.replaceChildren(...results.map((entry, rank) => {
             const element = document.createElement('li')
-            element.id = `resultat-${rang}`
+            element.id = `search-result-${rank}`
             element.setAttribute('role', 'option')
             element.setAttribute('aria-selected', 'false')
-            element.className = 'doc-dialogue__resultat'
+            element.className = 'doc-search__result'
 
-            const lien = document.createElement('a')
-            lien.href = entree.url
-            lien.tabIndex = -1
-            const chemin = document.createElement('span')
-            chemin.className = 'doc-dialogue__chemin'
-            chemin.textContent = [entree.rubrique, entree.page].filter(Boolean).join(' › ') || 'Accueil'
-            const titre = document.createElement('span')
-            titre.className = 'doc-dialogue__titre'
-            titre.textContent = entree.titre
-            lien.append(chemin, titre)
+            const link = document.createElement('a')
+            link.href = entry.url
+            link.tabIndex = -1
+            const path = document.createElement('span')
+            path.className = 'doc-search__path'
+            path.textContent = [entry.section, entry.page].filter(Boolean).join(' › ') || 'Accueil'
+            const title = document.createElement('span')
+            title.className = 'doc-search__title'
+            title.textContent = entry.title
+            link.append(path, title)
 
-            const resume = extrait(entree, mots[0])
-            if (resume) {
-                const texte = document.createElement('span')
-                texte.className = 'doc-dialogue__extrait'
-                texte.textContent = resume
-                lien.append(texte)
+            const summary = excerpt(entry, words[0])
+            if (summary) {
+                const text = document.createElement('span')
+                text.className = 'doc-search__excerpt'
+                text.textContent = summary
+                link.append(text)
             }
 
-            element.append(lien)
-            element.addEventListener('mousemove', () => actif !== rang && choisir(rang))
+            element.append(link)
+            element.addEventListener('mousemove', () => active !== rank && select(rank))
 
             return element
         }))
 
-        champ.setAttribute('aria-expanded', String(resultats.length > 0))
-        etat.textContent = mots.length === 0 ? '' : resultats.length === 0 ? `Aucun résultat pour « ${requete} ».` : `${resultats.length} résultat${resultats.length > 1 ? 's' : ''}`
-        choisir(resultats.length > 0 ? 0 : -1)
+        field.setAttribute('aria-expanded', String(results.length > 0))
+        status.textContent = words.length === 0 ? '' : results.length === 0 ? `Aucun résultat pour « ${query} ».` : `${results.length} résultat${results.length > 1 ? 's' : ''}`
+        select(results.length > 0 ? 0 : -1)
     }
 
-    const afficher = () => {
-        if (dialogue.open) {
+    const show = () => {
+        if (dialog.open) {
             return
         }
 
-        dialogue.showModal()
-        champ.select()
-        charger()
+        dialog.showModal()
+        field.select()
+        load()
     }
 
-    ouvrir.addEventListener('click', afficher)
-    dialogue.querySelector('[data-recherche-fermer]').addEventListener('click', () => dialogue.close())
-    // Un clic sur le fond (hors du cadre) ferme la fenêtre.
-    dialogue.addEventListener('click', (evenement) => evenement.target === dialogue && dialogue.close())
-    dialogue.addEventListener('close', () => ouvrir.focus())
+    openButton.addEventListener('click', show)
+    dialog.querySelector('[data-search-close]').addEventListener('click', () => dialog.close())
+    // A click on the backdrop (outside the frame) closes the window.
+    dialog.addEventListener('click', (event) => event.target === dialog && dialog.close())
+    dialog.addEventListener('close', () => openButton.focus())
 
-    document.addEventListener('keydown', (evenement) => {
-        if ((evenement.ctrlKey || evenement.metaKey) && !evenement.altKey && evenement.key.toLowerCase() === 'k') {
-            evenement.preventDefault()
-            dialogue.open ? dialogue.close() : afficher()
+    document.addEventListener('keydown', (event) => {
+        if ((event.ctrlKey || event.metaKey) && !event.altKey && event.key.toLowerCase() === 'k') {
+            event.preventDefault()
+            dialog.open ? dialog.close() : show()
         }
     })
 
-    champ.addEventListener('input', chercher)
-    champ.addEventListener('keydown', (evenement) => {
-        if (evenement.key === 'ArrowDown' || evenement.key === 'ArrowUp') {
-            evenement.preventDefault()
+    field.addEventListener('input', search)
+    field.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault()
 
-            if (resultats.length > 0) {
-                const pas = evenement.key === 'ArrowDown' ? 1 : -1
-                choisir((actif + pas + resultats.length) % resultats.length)
+            if (results.length > 0) {
+                const step = event.key === 'ArrowDown' ? 1 : -1
+                select((active + step + results.length) % results.length)
             }
-        } else if (evenement.key === 'Enter' && actif >= 0) {
-            evenement.preventDefault()
-            window.location.href = resultats[actif].url
-            dialogue.close()
+        } else if (event.key === 'Enter' && active >= 0) {
+            event.preventDefault()
+            window.location.href = results[active].url
+            dialog.close()
         }
     })
 }

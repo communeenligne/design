@@ -1,0 +1,138 @@
+/*
+ * @communeenligne/design, patterns: footer (identity, link columns, legal links, theme switch), on the deep strong
+ * surface.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Footer ---------- */
+
+.cel-footer {
+    position: relative;
+    overflow: hidden;
+    background: var(--cel-color-strong-deep);
+    color: var(--cel-color-on-dark);
+    font-size: var(--cel-text-15);
+}
+
+/* Discreet gold glow at the top right: decoration only. */
+.cel-footer::before {
+    content: '';
+    position: absolute;
+    top: -220px;
+    right: -160px;
+    width: 560px;
+    height: 560px;
+    border-radius: var(--cel-radius-circle);
+    background: radial-gradient(circle, var(--cel-color-glow-gold), var(--cel-color-glow-gold-0) 70%);
+    pointer-events: none;
+}
+
+.cel-footer .cel-container {
+    position: relative;
+}
+
+.cel-footer a {
+    color: var(--cel-color-on-dark);
+    text-decoration: none;
+    transition: color var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-footer a:hover {
+    color: var(--cel-color-on-strong);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-footer ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-footer__links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--cel-space-9) var(--cel-space-8);
+    padding: var(--cel-space-14) 0 var(--cel-space-10);
+}
+
+.cel-footer__identity {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+    max-width: 300px;
+    font-size: var(--cel-text-14);
+}
+
+.cel-footer__brand {
+    display: inline-flex;
+    align-self: flex-start;
+}
+
+.cel-footer__identity img {
+    width: auto;
+    height: 32px;
+}
+
+.cel-footer__column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+}
+
+.cel-footer__title {
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-footer__column ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+}
+
+.cel-footer .cel-footer__more {
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-footer__bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--cel-space-3) var(--cel-space-8);
+    padding: var(--cel-space-5-5) 0 var(--cel-space-7-5);
+    border-top: 1px solid var(--cel-color-on-strong-divider-12);
+    font-size: var(--cel-text-14);
+}
+
+/* Brand and legal links: a single gap, the one between links. */
+.cel-footer__meta,
+.cel-footer__legal ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2) var(--cel-space-6);
+}
+
+.cel-footer__wordmark strong {
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* ---------- Large screens ---------- */
+
+@media (min-width: 960px) {
+    .cel-footer__links {
+        grid-template-columns: 1.3fr repeat(3, 1fr);
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-footer a {
+        transition: none;
+    }
+}

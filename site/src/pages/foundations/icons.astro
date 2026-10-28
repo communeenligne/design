@@ -1,9 +1,9 @@
 ---
-// Liste lue dans icons/icons.json du paquet.
+// List read in icons/icons.json of the package.
 import Doc from '../../layouts/Doc.astro'
 import Code from '../../components/Code.astro'
 import Icon from '../../components/Icon.astro'
-import icones from '@communeenligne/design/icons/icons.json'
+import icons from '@communeenligne/design/icons/icons.json'
 
 const headings = [
     { depth: 2, slug: 'format', text: 'Format' },
@@ -13,13 +13,13 @@ const headings = [
     { depth: 2, slug: 'licences', text: 'Licences' },
 ]
 ---
-<Doc title="Icônes" description={`Les ${icones.length} icônes de la landing, au même format : 24 × 24, trait de 1,5, couleur héritée.`} headings={headings}>
+<Doc title="Icônes" description={`Les ${icons.length} icônes de la landing et de la documentation, au même format : 24 × 24, trait de 1,5, couleur héritée.`} headings={headings}>
     <h2 id="format">Format</h2>
-    <p>Grille de 24 × 24, trait de 1,5, extrémités et angles arrondis, sans remplissage, couleur du texte (<code>currentColor</code>). Le trait s'épaissit par la variable <code>--cel-icone-trait</code> (<code>.cel-icone--appuyee</code> : 2,4, pour les coches et flèches), la taille par <code>--cel-icone-taille</code> ou les classes <code>.cel-icone--16</code> à <code>--56</code>.</p>
+    <p>Grille de 24 × 24, trait de 1,5, extrémités et angles arrondis, sans remplissage, couleur du texte (<code>currentColor</code>). Le trait s'épaissit par la variable <code>--cel-icon-stroke</code> (<code>.cel-icon--bold</code> : 2,4, pour les coches et flèches), la taille par <code>--cel-icon-size</code> ou les classes <code>.cel-icon--16</code> à <code>--56</code>.</p>
 
     <h2 id="utilisation">Utilisation</h2>
     <p>Par la planche (<code>icons/sprite.svg</code>, un <code>&lt;symbol&gt;</code> par icône), servie depuis le domaine du site ; adapter le chemin :</p>
-    <Code code={`<svg class="cel-icone cel-icone--20" aria-hidden="true" focusable="false">
+    <Code code={`<svg class="cel-icon cel-icon--20" aria-hidden="true" focusable="false">
     <use href="/design/icons/sprite.svg#calendar-days"></use>
 </svg>`} />
     <p>Ou en fichier individuel (<code>icons/calendar-days.svg</code>), à copier dans la vue ou à charger en image. Dans une vue Blade, <code>file_get_contents</code> du fichier du paquet donne le SVG en ligne.</p>
@@ -27,21 +27,21 @@ const headings = [
     <h2 id="accessibilite">Accessibilité</h2>
     <ul>
         <li>Décorative (à côté d'un texte) : <code>aria-hidden="true"</code>, toujours.</li>
-        <li>Seule dans un bouton ou un lien : texte dans <code>.cel-masque</code> ou <code>aria-label</code> sur le bouton, jamais sur l'icône.</li>
+        <li>Seule dans un bouton ou un lien : texte dans <code>.cel-visually-hidden</code> ou <code>aria-label</code> sur le bouton, jamais sur l'icône.</li>
         <li>Porteuse de sens sans texte (repère de comparaison) : contraste de 3:1 au moins avec le fond.</li>
     </ul>
 
     <h2 id="catalogue">Catalogue</h2>
-    <ul class="doc-grille-icones">
-        {icones.map((icone) => (
-            <li><Icon nom={icone.nom} taille="28" /><code>{icone.nom}</code></li>
+    <ul class="doc-icon-grid">
+        {icons.map((icon) => (
+            <li><Icon name={icon.name} size="28" /><code>{icon.name}</code></li>
         ))}
     </ul>
 
     <h2 id="licences">Licences</h2>
-    <p>{icones.filter((i) => i.licence.startsWith('MIT, Tailwind')).length} icônes viennent de Heroicons 2.2 (licence MIT, Tailwind Labs) : ce sont celles que la landing affiche par Filament. Les {icones.filter((i) => !i.licence.startsWith('MIT, Tailwind')).length} autres sont les pictogrammes dessinés à la main dans les vues de la landing, ramenés au format commun (licence MIT du paquet). Le détail est dans <code>icons/icons.json</code> et <code>icons/LICENSES.md</code>.</p>
-    <div class="cel-tableau-defilant"><table class="cel-tableau">
+    <p>{icons.filter((i) => i.license.startsWith('MIT, Tailwind')).length} icônes viennent de Heroicons 2.2 (licence MIT, Tailwind Labs)  : celles que la landing affiche par Filament, et l'icône du menu sur téléphone (<code>bars-3</code>). Les {icons.filter((i) => !i.license.startsWith('MIT, Tailwind')).length} autres sont les pictogrammes dessinés à la main dans les vues de la landing, ramenés au format commun (licence MIT du paquet). Le détail est dans <code>icons/icons.json</code> et <code>icons/LICENSES.md</code>.</p>
+    <div class="cel-table-scroll"><table class="cel-table">
         <thead><tr><th scope="col">Icône</th><th scope="col">Source</th><th scope="col">Licence</th></tr></thead>
-        <tbody>{icones.map((i) => <tr><td><code>{i.nom}</code></td><td>{i.source}</td><td>{i.licence}</td></tr>)}</tbody>
+        <tbody>{icons.map((i) => <tr><td><code>{i.name}</code></td><td>{i.source}</td><td>{i.license}</td></tr>)}</tbody>
     </table></div>
 </Doc>

@@ -17,14 +17,14 @@ Permettre à une personne qui navigue au clavier de passer l'en-tête et la navi
 
 ## Exemple
 
-<Example titre="Lien d'évitement, focus visible" note="Affiché ici par data-cel-etat ; en vrai, il n'apparaît qu'au focus." html={`
-    <div class="cel-sur-fort">
-        <a class="cel-lien-evitement" href="#contenu" data-cel-etat="focus">Aller au contenu</a>
+<Example title="Lien d'évitement, focus visible" note="Affiché ici par data-cel-state ; en vrai, il n'apparaît qu'au focus." html={`
+    <div class="cel-on-strong">
+        <a class="cel-skip-link" href="#contenu" data-cel-state="focus">Aller au contenu</a>
     </div>
 `} />
 
 <Code code={`<body class="cel-page">
-    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+    <a class="cel-skip-link" href="#contenu">Aller au contenu</a>
     <header>…</header>
     <main id="contenu" tabindex="-1">…</main>
 </body>`} />
@@ -35,8 +35,8 @@ Permettre à une personne qui navigue au clavier de passer l'en-tête et la navi
 - **Cible :** `<main id="contenu" tabindex="-1">`, pour que le focus y passe vraiment (la base du paquet retire le contour de `main`).
 - **Contraste :** blanc sur marine, contour de focus or.
 
-<Contrasts paires={[['sur-fort', 'fond-fort'], ['cel-focus-couleur-sur-fort', 'fond-fort', 3]]} />
+<Contrasts pairs={[['on-strong', 'strong'], ['cel-focus-color-on-strong', 'strong', 3]]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['« Aller au contenu », en français.']} eviter={['Un lien d\'évitement toujours visible, ou masqué par display: none.']} />
+<DoDont dos={['« Aller au contenu », en français.']} donts={['Un lien d\'évitement toujours visible, ou masqué par display: none.']} />

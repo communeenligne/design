@@ -1,0 +1,31 @@
+/*
+ * @communeenligne/design, foundations: radius.
+ *
+ * The radius scale in px, and four named radii used by components (sm, md, lg, xl).
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Radius ---- */
+    --cel-radius-2: 2px;
+    --cel-radius-3: 3px;
+    --cel-radius-4: 4px;
+    --cel-radius-5: 5px;
+    --cel-radius-6: 6px;
+    --cel-radius-8: 8px;
+    --cel-radius-9: 9px;
+    --cel-radius-10: 10px;
+    --cel-radius-12: 12px;
+    --cel-radius-14: 14px;
+    --cel-radius-16: 16px;
+    --cel-radius-18: 18px;
+    --cel-radius-20: 20px;
+    --cel-radius-pill: 999px;
+    --cel-radius-circle: 50%;
+    --cel-radius-sm: var(--cel-radius-8);
+    --cel-radius-md: var(--cel-radius-10);
+    --cel-radius-lg: var(--cel-radius-14);
+    --cel-radius-xl: var(--cel-radius-20);
+}

@@ -1,0 +1,52 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Focus visible"
+description: "Le contour qui montre où l'on est au clavier : 3 px, décalé de 3 px, dans la couleur de focus, sur tous les composants."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+
+## À quoi il sert
+
+Montrer à la personne qui navigue au clavier quel élément recevra Entrée ou Espace. Le paquet le dessine sur tout élément atteignable sous `.cel-page`, et sur ses propres composants partout ailleurs (bouton, lien, champ, case, onglet, fil d'Ariane, pagination).
+
+## Variantes
+
+Une seule règle : `outline: var(--cel-focus-width) solid var(--cel-focus-color)`, décalée de `--cel-focus-offset`. La couleur vient du thème : `--cel-focus-color` sur les fonds de la page, `--cel-focus-color-on-strong` sur la surface forte. Poser `.cel-on-strong` sur un bloc à fond fort change la variable pour tout ce qu'il contient, sans toucher la règle.
+
+<Example title="Sur les fonds de la page" html={`
+    <a href="#" class="cel-button" data-cel-state="focus">Bouton</a>
+    <a href="#" class="cel-link" data-cel-state="focus">Lien</a>
+`} />
+
+<Example title="Sur une surface forte (.cel-on-strong)" background="strong" html={`
+    <div class="cel-on-strong">
+        <a href="#" class="cel-link cel-link--on-strong" data-cel-state="focus">Lien sur surface forte</a>
+    </div>
+`} />
+
+<Code lang="css" code={`/* Un bloc à fond fort propre au projet */
+.bandeau-mairie {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}`} />
+
+## États
+
+`:focus-visible` seulement : le contour suit le clavier, pas le clic de la souris. Les onglets le dessinent à l'intérieur (décalage négatif), pour que le défilement horizontal de leur liste ne le coupe pas.
+
+## Accessibilité
+
+- **Toujours visible :** ne jamais écrire `outline: none` sans le remplacer par un contour aussi net.
+- **Contraste :** 3:1 au moins entre le contour et le fond, vérifié pour chaque fond du thème.
+- **Jamais masqué :** un élément collé (en-tête fixe) ne doit pas recouvrir l'élément qui a le focus.
+
+<Contrasts pairs={[['cel-focus-color', 'background', 3], ['cel-focus-color', 'surface', 3], ['cel-focus-color', 'background-muted', 3], ['cel-focus-color-on-strong', 'strong', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Laisser la règle du paquet s\'appliquer.', 'Poser .cel-on-strong sur un bloc à fond fort.']} donts={['outline: none sans remplacement.', 'Une couleur de focus écrite en dur dans un composant.']} />

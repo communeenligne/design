@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Comparatif"
+description: "Le tableau de la page tarif : défilement horizontal dans son bloc, critères collés à gauche, colonne de Commune en ligne mise en avant."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Comparer Commune en ligne à d'autres solutions, critère par critère. C'est un vrai tableau, construit sur le [tableau](/components/table/) pour la structure, avec la mise en forme de la landing.
+
+## Variantes
+
+<Example title="Défilement horizontal, critères collés à gauche" html={`
+    <p class="cel-comparison-hint"><svg class="cel-icon cel-icon--18" aria-hidden="true"><use href="/design/icons/sprite.svg#arrows-left-right"></use></svg>Faites défiler le tableau pour voir toutes les colonnes.</p>
+    <div class="cel-comparison" tabindex="0" role="region" aria-labelledby="legende-comparatif">
+        <table class="cel-comparison__table">
+            <caption class="cel-comparison__caption" id="legende-comparatif">Commune en ligne face aux autres solutions</caption>
+            <thead><tr>
+                <td class="cel-comparison__corner"></td>
+                <th scope="col" class="cel-comparison__column--us">Commune en ligne</th>
+                <th scope="col">Site fait par une agence</th>
+                <th scope="col">Outil de création gratuit</th>
+            </tr></thead>
+            <tbody>
+                <tr>
+                    <th scope="row" class="cel-comparison__criterion">Mise à jour</th>
+                    <td class="cel-comparison__cell cel-comparison__cell--us"><span class="cel-comparison__value"><span class="cel-mark cel-mark--good"><svg class="cel-icon" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg></span>Par la mairie, sans compétence technique</span></td>
+                    <td class="cel-comparison__cell"><span class="cel-comparison__value"><span class="cel-mark cel-mark--mid"><svg class="cel-icon" aria-hidden="true"><use href="/design/icons/sprite.svg#clock"></use></svg></span>Souvent par l'agence, sur devis</span></td>
+                    <td class="cel-comparison__cell"><span class="cel-comparison__value"><span class="cel-mark cel-mark--bad"><svg class="cel-icon" aria-hidden="true"><use href="/design/icons/sprite.svg#x-mark"></use></svg></span>À la main, page par page</span></td>
+                </tr>
+                <tr>
+                    <th scope="row" class="cel-comparison__criterion">Obligations légales</th>
+                    <td class="cel-comparison__cell cel-comparison__cell--us">Prévues dès la mise en ligne</td>
+                    <td class="cel-comparison__cell">Selon le cahier des charges <span class="cel-comparison__note">(à vérifier)</span></td>
+                    <td class="cel-comparison__cell">À la charge de la commune</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+`} />
+
+## États
+
+Le comparatif est atteignable au clavier (`tabindex="0"`) pour défiler avec les flèches ; il prend alors le contour de focus. Sous 940 px de large, l'indication « Faites défiler » apparaît.
+
+<Example title="Comparatif, focus visible" html={`
+    <div class="cel-comparison" data-cel-state="focus"><table class="cel-comparison__table"><tbody><tr><th scope="row" class="cel-comparison__criterion">Focus visible</th><td class="cel-comparison__cell">Les flèches font défiler le tableau.</td></tr></tbody></table></div>
+`} />
+
+## Accessibilité
+
+- **Défilement :** le tableau défile dans son bloc, pas la page ; le bloc défilant a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier.
+- **Repères :** chaque repère (bon, moyen, mauvais) est accompagné d'un texte ; la forme de l'icône diffère, pas seulement la couleur.
+
+<Contrasts pairs={[['text-strong', 'background-muted'], ['text', 'surface'], ['primary', 'surface-muted-2'], ['on-strong', 'strong'], ['mark-good-text', 'surface', 3], ['mark-mid', 'mark-mid-background', 3], ['mark-bad', 'mark-bad-background', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une seule colonne mise en avant, la nôtre.', 'Un texte à côté de chaque repère.']} donts={['Un repère sans texte.', 'Plus de quatre colonnes de solutions.']} />

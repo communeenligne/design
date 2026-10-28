@@ -1,0 +1,83 @@
+/*
+ * @communeenligne/design, patterns: feature page (feature hero: badge, title, duration, actions, screenshot) and page
+ * end (towards the main action).
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Feature hero: title, duration, actions, screenshot ---------- */
+
+.cel-feature-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-10) var(--cel-space-14);
+}
+
+.cel-feature-hero__text {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4-5);
+}
+
+.cel-feature-hero__badge {
+    align-self: flex-start;
+    font-size: var(--cel-text-14);
+}
+
+.cel-feature-hero__duration {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--cel-space-2);
+    padding: var(--cel-space-1-5) var(--cel-space-3);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-surface);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-feature-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-3);
+    margin-top: var(--cel-space-1);
+}
+
+.cel-feature-hero__figure {
+    flex: 1 1 440px;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-surface);
+    box-shadow: var(--cel-shadow-figure);
+}
+
+/* ---------- Page end: towards the main action ---------- */
+
+.cel-page-end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cel-space-7) var(--cel-space-12);
+}
+
+.cel-page-end__text {
+    flex: 1 1 480px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4);
+}
+
+.cel-page-end__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-3);
+}

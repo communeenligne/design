@@ -1,16 +1,16 @@
-// Amorce des animations : à charger dans <head>, sans defer ni async, avant toute feuille de style
-// (<script src=".../motion-boot.js"></script>). Pose la classe cel-anim sur <html> avant le premier affichage,
-// seulement si le navigateur sait animer et que les animations ne sont pas réduites ; si initMouvement() ne s'est pas
-// exécutée dans les 3 secondes, la retire : tout reste visible. Fichier externe : aucun script en ligne à autoriser.
+// Motion boot: load in <head>, without defer or async, before any stylesheet
+// (<script src=".../motion-boot.js"></script>). Sets the cel-motion class on <html> before the first paint, only if
+// the browser can animate and motion is not reduced; if initMotion() has not run within 3 seconds, removes it:
+// everything stays visible. External file: no inline script to allow.
 ;(function () {
-    var racine = document.documentElement
+    var root = document.documentElement
     if (!('IntersectionObserver' in window) || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         return
     }
-    racine.classList.add('cel-anim')
+    root.classList.add('cel-motion')
     setTimeout(function () {
-        if (!racine.classList.contains('cel-anim-prete')) {
-            racine.classList.remove('cel-anim')
+        if (!root.classList.contains('cel-motion-ready')) {
+            root.classList.remove('cel-motion')
         }
     }, 3000)
 })()

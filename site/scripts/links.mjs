@@ -1,95 +1,95 @@
-// Vérifications du site construit (dist/) : liens internes et ancres, aucune ressource d'un autre domaine, aucun style
-// ni script en ligne, robots noindex, nofollow sur chaque page, robots.txt qui refuse tout, aucun plan du site.
+// Checks of the built site (dist/): internal links and anchors, no resource from another domain, no inline style or
+// script, robots noindex, nofollow on each page, robots.txt that disallows everything, no sitemap.
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const DIST = fileURLToPath(new URL('../dist/', import.meta.url))
-const erreurs = []
+const errors = []
 
-const fichiers = (dossier) => readdirSync(dossier).flatMap((nom) => {
-    const chemin = join(dossier, nom)
+const files = (folder) => readdirSync(folder).flatMap((name) => {
+    const path = join(folder, name)
 
-    return statSync(chemin).isDirectory() ? fichiers(chemin) : [chemin]
+    return statSync(path).isDirectory() ? files(path) : [path]
 })
 
-const pages = fichiers(DIST).filter((fichier) => fichier.endsWith('.html'))
-const ancres = new Map(pages.map((fichier) => [fichier, new Set([...readFileSync(fichier, 'utf8').matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id))]))
+const pages = files(DIST).filter((file) => file.endsWith('.html'))
+const anchors = new Map(pages.map((file) => [file, new Set([...readFileSync(file, 'utf8').matchAll(/\sid="([^"]+)"/g)].map(([, id]) => id))]))
 
-const cibleDe = (chemin) => {
-    const brut = decodeURIComponent(chemin)
-    const candidats = brut.endsWith('/') ? [join(DIST, brut, 'index.html')] : [join(DIST, brut), join(DIST, brut, 'index.html')]
+const targetOf = (path) => {
+    const raw = decodeURIComponent(path)
+    const candidates = raw.endsWith('/') ? [join(DIST, raw, 'index.html')] : [join(DIST, raw), join(DIST, raw, 'index.html')]
 
-    return candidats.find((candidat) => existsSync(candidat) && statSync(candidat).isFile())
+    return candidates.find((candidate) => existsSync(candidate) && statSync(candidate).isFile())
 }
 
 for (const page of pages) {
     const html = readFileSync(page, 'utf8')
-    const nom = `/${relative(DIST, page).replaceAll('\\', '/')}`
+    const name = `/${relative(DIST, page).replaceAll('\\', '/')}`
 
     if (!/<meta name="robots" content="noindex, nofollow">/.test(html)) {
-        erreurs.push(`${nom} : balise robots noindex, nofollow absente`)
+        errors.push(`${name} : balise robots noindex, nofollow absente`)
     }
 
     if (/\sstyle="/.test(html) || /<style[\s>]/.test(html)) {
-        erreurs.push(`${nom} : style en ligne`)
+        errors.push(`${name} : style en ligne`)
     }
 
-    for (const [balise] of html.matchAll(/<script\b[^>]*>/g)) {
-        if (!/\ssrc="/.test(balise)) {
-            erreurs.push(`${nom} : script en ligne ${balise}`)
+    for (const [tag] of html.matchAll(/<script\b[^>]*>/g)) {
+        if (!/\ssrc="/.test(tag)) {
+            errors.push(`${name} : script en ligne ${tag}`)
         }
     }
 
-    for (const [, attribut, valeur] of html.matchAll(/\s(href|src|action)="([^"]*)"/g)) {
-        if (/^(https?:)?\/\//.test(valeur)) {
-            // Un lien vers un autre site est permis ; une ressource chargée (src, <link>) ne l'est pas : voir plus bas.
-            if (attribut === 'src') {
-                erreurs.push(`${nom} : ressource d'un autre domaine ${valeur}`)
+    for (const [, attribute, value] of html.matchAll(/\s(href|src|action)="([^"]*)"/g)) {
+        if (/^(https?:)?\/\//.test(value)) {
+            // A link to another site is allowed; a loaded resource (src, <link>) is not: see below.
+            if (attribute === 'src') {
+                errors.push(`${name} : ressource d'un autre domaine ${value}`)
             }
             continue
         }
 
-        if (!valeur.startsWith('/') && !valeur.startsWith('#')) {
+        if (!value.startsWith('/') && !value.startsWith('#')) {
             continue
         }
 
-        const [chemin, ancre] = valeur.split('#')
-        const cible = chemin === '' ? page : cibleDe(chemin)
+        const [path, anchor] = value.split('#')
+        const target = path === '' ? page : targetOf(path)
 
-        if (!cible) {
-            erreurs.push(`${nom} : lien cassé ${valeur}`)
-        } else if (ancre && cible.endsWith('.html') && !ancres.get(cible)?.has(decodeURIComponent(ancre))) {
-            erreurs.push(`${nom} : ancre introuvable ${valeur}`)
+        if (!target) {
+            errors.push(`${name} : lien cassé ${value}`)
+        } else if (anchor && target.endsWith('.html') && !anchors.get(target)?.has(decodeURIComponent(anchor))) {
+            errors.push(`${name} : ancre introuvable ${value}`)
         }
     }
 }
 
-for (const [, valeur] of pages.flatMap((page) => [...readFileSync(page, 'utf8').matchAll(/<link[^>]+href="((?:https?:)?\/\/[^"]+)"/g)])) {
-    erreurs.push(`ressource d'un autre domaine : ${valeur}`)
+for (const [, value] of pages.flatMap((page) => [...readFileSync(page, 'utf8').matchAll(/<link[^>]+href="((?:https?:)?\/\/[^"]+)"/g)])) {
+    errors.push(`ressource d'un autre domaine : ${value}`)
 }
 
 if (!/User-agent: \*\s+Disallow: \/\s*$/m.test(readFileSync(join(DIST, 'robots.txt'), 'utf8'))) {
-    erreurs.push('robots.txt ne refuse pas tout')
+    errors.push('robots.txt ne refuse pas tout')
 }
 
-if (fichiers(DIST).some((fichier) => /sitemap/i.test(fichier))) {
-    erreurs.push('un plan du site a été produit')
+if (files(DIST).some((file) => /sitemap/i.test(file))) {
+    errors.push('un plan du site a été produit')
 }
 
 if (readFileSync(join(DIST, 'CNAME'), 'utf8').trim() !== 'design.communeenligne.fr') {
-    erreurs.push('CNAME absent ou incorrect')
+    errors.push('CNAME absent ou incorrect')
 }
 
-// La feuille du site n'écrit aucune couleur : seulement les variables du paquet.
-const feuille = readFileSync(fileURLToPath(new URL('../src/styles/site.css', import.meta.url)), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
-for (const [couleur] of feuille.matchAll(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/gi)) {
-    erreurs.push(`site.css : couleur écrite hors des jetons ${couleur}`)
+// The stylesheet of the site writes no color: only the variables of the package.
+const sheet = readFileSync(fileURLToPath(new URL('../src/styles/site.css', import.meta.url)), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
+for (const [color] of sheet.matchAll(/#[0-9a-f]{3,8}\b|rgba?\(|hsla?\(/gi)) {
+    errors.push(`site.css : couleur écrite hors des variables ${color}`)
 }
 
-if (erreurs.length > 0) {
-    console.error(erreurs.join('\n'))
+if (errors.length > 0) {
+    console.error(errors.join('\n'))
     process.exit(1)
 }
 

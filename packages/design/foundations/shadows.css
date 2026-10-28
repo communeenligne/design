@@ -1,0 +1,29 @@
+/*
+ * @communeenligne/design, foundations: shadows.
+ *
+ * Built on the shadow colors of colors.css, which are transparent in dark.
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Shadows ---- */
+    --cel-shadow-choice: 0 1px 2px var(--cel-color-shadow-black-08); /* selected .segmented__choice */
+    --cel-shadow-button: 0 6px 16px var(--cel-color-shadow-ink-15); /* .button:hover */
+    --cel-shadow-pill: 0 6px 16px var(--cel-color-shadow-navy-12); /* .pill.lift:hover */
+    --cel-shadow-card: 0 0 0 1px var(--cel-color-line), 0 6px 16px var(--cel-color-shadow-navy-06); /* .tier-card */
+    --cel-shadow-reference: 0 8px 22px var(--cel-color-shadow-navy-07); /* .reference-card */
+    --cel-shadow-card-hover: 0 10px 24px var(--cel-color-shadow-navy-12); /* .guide-card.lift:hover */
+    --cel-shadow-toast: 0 10px 24px var(--cel-color-shadow-ink-12); /* .toast */
+    --cel-shadow-list: 0 12px 28px var(--cel-color-shadow-navy-12); /* .combobox__list */
+    --cel-shadow-lift: 0 14px 30px var(--cel-color-shadow-deep-35); /* .lift:hover */
+    --cel-shadow-lift-soft: 0 14px 30px var(--cel-color-shadow-deep-18); /* .feature.lift:hover */
+    --cel-shadow-card-link: 0 16px 34px var(--cel-color-shadow-navy-16); /* .motion-card:hover */
+    --cel-shadow-figure: 0 18px 40px var(--cel-color-shadow-navy-10); /* .feature-hero__figure */
+    --cel-shadow-block: 0 0 0 1px var(--cel-color-line), 0 18px 40px var(--cel-color-shadow-navy-08); /* .price-block */
+    --cel-shadow-tier-selected: 0 22px 40px var(--cel-color-shadow-navy-28); /* .tier-card.is-selected */
+    --cel-shadow-preview: 0 24px 48px var(--cel-color-shadow-ink-10); /* .panel-mock */
+    --cel-shadow-search: 0 0 0 2px var(--cel-color-primary), 0 14px 34px var(--cel-color-shadow-navy-16); /* .combobox--hero input */
+    --cel-shadow-ruler-pin: 0 0 0 4px var(--cel-color-surface), 0 4px 10px var(--cel-color-shadow-black-20); /* .ruler__pin */
+}

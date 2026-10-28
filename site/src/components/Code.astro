@@ -1,9 +1,9 @@
 ---
-// Bloc de code à copier, sans coloration (elle écrirait des couleurs en attribut style). site.js ajoute le bouton de copie.
-import { desindenter } from '../lib/code.js'
+// Code block to copy, without highlighting (it would write colors in style attributes). site.js adds the copy button.
+import { dedent } from '../lib/code.js'
 
-const { code, langue = 'html' } = Astro.props
+const { code, lang = 'html' } = Astro.props
 ---
-<div class="doc-code" data-langue={langue}>
-    <pre><code>{desindenter(code)}</code></pre>
+<div class="cel-code" data-lang={lang}>
+    <pre><code>{dedent(code)}</code></pre>
 </div>

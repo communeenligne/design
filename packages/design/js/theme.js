@@ -1,54 +1,54 @@
-// Sélecteur de thème (.cel-theme) : sans script, deux liens (le serveur pose le choix) ; avec, deux boutons
-// aria-pressed qui changent de thème sans recharger la page. Le choix est gardé dans le stockage local (clé
-// « cel-theme », lue par theme-boot.js) et, si l'option cookie est donnée, dans ce cookie pour un rendu par le serveur.
+// Theme switch (.cel-theme): without script, two links (the server stores the choice); with it, two aria-pressed
+// buttons that change the theme without reloading the page. The choice is kept in local storage (key "cel-theme",
+// read by theme-boot.js) and, if the cookie option is given, in that cookie for a server-side rendering.
 //
-// Balisage : <div class="cel-theme" data-cel-theme> … <a data-cel-theme-option="clair"> … <a data-cel-theme-option="sombre">.
+// Markup: <div class="cel-theme" data-cel-theme> … <a data-cel-theme-option="light"> … <a data-cel-theme-option="dark">.
 
-const CLE = 'cel-theme'
-const THEMES = ['clair', 'sombre']
+const KEY = 'cel-theme'
+const THEMES = ['light', 'dark']
 
-export const themeCourant = () => (document.documentElement.classList.contains('cel-sombre') ? 'sombre' : 'clair')
+export const currentTheme = () => (document.documentElement.classList.contains('cel-dark') ? 'dark' : 'light')
 
-export const appliquerTheme = (theme, { cookie = null, jours = 365 } = {}) => {
+export const applyTheme = (theme, { cookie = null, days = 365 } = {}) => {
     if (!THEMES.includes(theme)) {
         return
     }
 
-    document.documentElement.classList.toggle('cel-sombre', theme === 'sombre')
+    document.documentElement.classList.toggle('cel-dark', theme === 'dark')
 
     try {
-        window.localStorage.setItem(CLE, theme)
-    } catch (erreur) {
-        // Stockage indisponible : le choix vaut pour la page en cours.
+        window.localStorage.setItem(KEY, theme)
+    } catch (error) {
+        // Storage unavailable: the choice holds for the current page.
     }
 
     if (cookie) {
-        const securise = window.location.protocol === 'https:' ? '; secure' : ''
-        document.cookie = `${cookie}=${theme}; path=/; max-age=${jours * 86400}; samesite=lax${securise}`
+        const secure = window.location.protocol === 'https:' ? '; secure' : ''
+        document.cookie = `${cookie}=${theme}; path=/; max-age=${days * 86400}; samesite=lax${secure}`
     }
 
-    document.querySelectorAll('[data-cel-theme-option]').forEach((bouton) => {
-        if (bouton instanceof HTMLButtonElement) {
-            bouton.setAttribute('aria-pressed', String(bouton.dataset.celThemeOption === theme))
+    document.querySelectorAll('[data-cel-theme-option]').forEach((button) => {
+        if (button instanceof HTMLButtonElement) {
+            button.setAttribute('aria-pressed', String(button.dataset.celThemeOption === theme))
         }
     })
 }
 
 export const initTheme = (options = {}) => {
-    document.querySelectorAll('[data-cel-theme]').forEach((groupe) => {
-        groupe.querySelectorAll('a[data-cel-theme-option], button[data-cel-theme-option]').forEach((option) => {
-            const bouton = option instanceof HTMLButtonElement ? option : document.createElement('button')
+    document.querySelectorAll('[data-cel-theme]').forEach((group) => {
+        group.querySelectorAll('a[data-cel-theme-option], button[data-cel-theme-option]').forEach((option) => {
+            const button = option instanceof HTMLButtonElement ? option : document.createElement('button')
 
-            if (bouton !== option) {
-                bouton.type = 'button'
-                bouton.className = option.className
-                bouton.dataset.celThemeOption = option.dataset.celThemeOption
-                bouton.replaceChildren(...option.childNodes)
-                option.replaceWith(bouton)
+            if (button !== option) {
+                button.type = 'button'
+                button.className = option.className
+                button.dataset.celThemeOption = option.dataset.celThemeOption
+                button.replaceChildren(...option.childNodes)
+                option.replaceWith(button)
             }
 
-            bouton.setAttribute('aria-pressed', String(bouton.dataset.celThemeOption === themeCourant()))
-            bouton.addEventListener('click', () => appliquerTheme(bouton.dataset.celThemeOption, options))
+            button.setAttribute('aria-pressed', String(button.dataset.celThemeOption === currentTheme()))
+            button.addEventListener('click', () => applyTheme(button.dataset.celThemeOption, options))
         })
     })
 }

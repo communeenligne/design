@@ -1,4 +1,4 @@
-import paquet from '@communeenligne/design/package.json'
+import manifest from '@communeenligne/design/package.json'
 
-export const VERSION = paquet.version
-export const ICONES = '/design/icons/sprite.svg'
+export const VERSION = manifest.version
+export const SPRITE = '/design/icons/sprite.svg'

@@ -1,0 +1,11 @@
+/*
+ * @communeenligne/design, patterns: header, footer, section, page header, feature page, documentation page. Built on
+ * the foundations and the components.
+ */
+
+@import './header.css';
+@import './footer.css';
+@import './section.css';
+@import './page-header.css';
+@import './feature-page.css';
+@import './documentation-page.css';

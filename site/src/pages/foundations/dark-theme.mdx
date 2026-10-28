@@ -11,21 +11,21 @@ import Contrasts from '../../components/Contrasts.astro'
 
 - **Les couleurs seulement.** Tailles, espaces, rayons et durées sont les mêmes.
 - **Les surfaces s'inversent** : la page passe à `#0f1620`, les cartes à `#172230`. Les textes s'éclaircissent pour garder 4,5:1.
-- **Le marine devient bleu clair** pour le texte (`--cel-couleur-texte-marine` : `#a7c9ee`) et plus lumineux pour les boutons (`--cel-couleur-bouton` : `#33659a`).
+- **Le marine devient bleu clair** pour le texte (`--cel-color-primary` : `#a7c9ee`) et plus lumineux pour les boutons (`--cel-color-action` : `#33659a`).
 - **Aucune ombre** : les couleurs d'ombre sont transparentes, les bordures suffisent.
 
 ## Ce qui ne change pas
 
-Les couleurs posées sur une surface forte (fond marine, forêt) ou dorée restent identiques : texte blanc sur marine, encre sur or, logo pour fond sombre dans le pied de page. Elles sont regroupées dans tokens.css sous « identiques dans les deux thèmes ».
+Les couleurs posées sur une surface forte (fond marine, forêt) ou dorée restent identiques : texte blanc sur marine, encre sur or, logo pour fond sombre dans le pied de page. Elles sont regroupées dans `foundations/colors.css` sous « same in both themes » (identiques dans les deux thèmes). Une variable qui renvoie à une autre (`--cel-focus-color: var(--cel-color-primary)`) la suit en sombre, sans être redéfinie.
 
 ## Écrire une couleur pour les deux thèmes
 
-Toujours une variable de rôle (`--cel-couleur-texte`, `--cel-couleur-surface`), jamais une couleur de marque (`--cel-couleur-marine`) pour un texte ou un fond de page : la couleur de marque ne change pas en sombre.
+Toujours une variable de rôle (`--cel-color-text`, `--cel-color-surface`, `--cel-color-primary`), jamais une couleur de marque (`--cel-color-navy`) pour un texte ou un fond de page : la couleur de marque ne change pas en sombre.
 
-<Example titre="Le même balisage, dans le thème en cours" fond="page" html={`
-    <div class="cel-encart">
-        <div class="cel-encart__corps">
-            <p class="cel-encart__titre">Changez de thème en pied de page</p>
+<Example title="Le même balisage, dans le thème en cours" background="page" html={`
+    <div class="cel-callout">
+        <div class="cel-callout__body">
+            <p class="cel-callout__title">Changez de thème en pied de page</p>
             <p>Cet encart n'a qu'une seule écriture : ses couleurs viennent des variables.</p>
         </div>
     </div>
@@ -33,9 +33,9 @@ Toujours une variable de rôle (`--cel-couleur-texte`, `--cel-couleur-surface`),
 
 ## Contrastes clés
 
-<Contrasts paires={[
-    ['encre', 'fond-page'], ['texte', 'surface'], ['texte-discret', 'fond-clair'], ['texte-marine', 'surface'],
-    ['sur-fort', 'bouton'], ['sur-fort', 'fond-fort'], ['bordure-champ', 'surface', 3], ['cel-focus-couleur', 'fond-page', 3],
+<Contrasts pairs={[
+    ['text-strong', 'background'], ['text', 'surface'], ['text-muted', 'background-muted'], ['primary', 'surface'],
+    ['on-strong', 'action'], ['on-strong', 'strong'], ['field-border', 'surface', 3], ['cel-focus-color', 'background', 3],
 ]} />
 
-Le test du paquet vérifie 251 paires dans chaque thème ; le résultat est sur la page [Accessibilité](/accessibility/).
+Le test du paquet vérifie 295 paires en clair et en sombre ; le résultat est sur la page [Accessibilité](/accessibility/).

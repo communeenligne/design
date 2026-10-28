@@ -16,27 +16,27 @@ Changer une présentation sans quitter la page : afficher le coût par an ou par
 
 ## Exemple
 
-<Example titre="Contrôle segmenté" html={`
-    <div class="cel-segmente" role="group" aria-label="Période affichée">
-        <button type="button" class="cel-segmente__choix" aria-pressed="true">Par an</button>
-        <button type="button" class="cel-segmente__choix" aria-pressed="false">Par mois</button>
-        <button type="button" class="cel-segmente__choix" aria-pressed="false">Sur quatre ans</button>
+<Example title="Contrôle segmenté" html={`
+    <div class="cel-segmented" role="group" aria-label="Période affichée">
+        <button type="button" class="cel-segmented__option" aria-pressed="true">Par an</button>
+        <button type="button" class="cel-segmented__option" aria-pressed="false">Par mois</button>
+        <button type="button" class="cel-segmented__option" aria-pressed="false">Sur quatre ans</button>
     </div>
 `} tailwind={`
-    <div class="flex flex-wrap gap-1 p-1 rounded-12 bg-fond-segmente" role="group" aria-label="Période affichée">
-        <button type="button" class="px-3.5 py-2 rounded-9 bg-surface text-texte-marine shadow-choix text-14 font-forte" aria-pressed="true">Par an</button>
-        <button type="button" class="px-3.5 py-2 rounded-9 text-texte-discret-5 text-14 font-forte hover:text-texte-marine" aria-pressed="false">Par mois</button>
+    <div class="flex flex-wrap gap-1 p-1 rounded-12 bg-segmented-background" role="group" aria-label="Période affichée">
+        <button type="button" class="px-3.5 py-2 rounded-9 bg-surface text-primary shadow-choice text-14 font-weight-bold" aria-pressed="true">Par an</button>
+        <button type="button" class="px-3.5 py-2 rounded-9 text-text-muted-5 text-14 font-weight-bold hover:text-primary" aria-pressed="false">Par mois</button>
     </div>
 `} />
 
 ## États
 
-<Example titre="Repos, survol, focus visible, choisi" html={`
-    <div class="cel-segmente" role="group" aria-label="États">
-        <button type="button" class="cel-segmente__choix" aria-pressed="false">Repos</button>
-        <button type="button" class="cel-segmente__choix" aria-pressed="false" data-cel-etat="survol">Survol</button>
-        <button type="button" class="cel-segmente__choix" aria-pressed="false" data-cel-etat="focus">Focus</button>
-        <button type="button" class="cel-segmente__choix" aria-pressed="true">Choisi</button>
+<Example title="Repos, survol, focus visible, choisi" html={`
+    <div class="cel-segmented" role="group" aria-label="États">
+        <button type="button" class="cel-segmented__option" aria-pressed="false">Repos</button>
+        <button type="button" class="cel-segmented__option" aria-pressed="false" data-cel-state="hover">Survol</button>
+        <button type="button" class="cel-segmented__option" aria-pressed="false" data-cel-state="focus">Focus</button>
+        <button type="button" class="cel-segmented__option" aria-pressed="true">Choisi</button>
     </div>
 `} />
 
@@ -48,8 +48,8 @@ Le choix en cours est une pastille blanche (surface) légèrement ombrée, en ma
 - **Clavier :** Tab de bouton en bouton, Entrée ou Espace.
 - **Changement :** le contenu mis à jour est dans une zone `aria-live="polite"` s'il est loin du contrôle.
 
-<Contrasts paires={[['texte-discret-5', 'fond-segmente'], ['texte-marine', 'surface']]} />
+<Contrasts pairs={[['text-muted-5', 'segmented-background'], ['primary', 'surface']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Des libellés courts et de longueur proche.', 'Un choix toujours sélectionné.']} eviter={['Un contrôle segmenté qui envoie un formulaire.', 'Plus de quatre choix.']} />
+<DoDont dos={['Des libellés courts et de longueur proche.', 'Un choix toujours sélectionné.']} donts={['Un contrôle segmenté qui envoie un formulaire.', 'Plus de quatre choix.']} />

@@ -16,33 +16,33 @@ Le bandeau d'aide oriente vers l'aide en ligne sur les pages tarif, fonctionnali
 
 ## Variantes
 
-<Example titre="Bandeau d'aide" fond="plein" html={`
-    <aside class="cel-bandeau" aria-label="Aide en ligne">
-        <div class="cel-conteneur cel-bandeau__interieur">
-            <svg class="cel-icone cel-icone--22 cel-bandeau__icone" aria-hidden="true"><use href="/design/icons/sprite.svg#help-video"></use></svg>
-            <p>Une question sur la prise en main ? Tutoriels et vidéos sur <a href="#" class="cel-bandeau__lien">aide.communeenligne.fr</a></p>
+<Example title="Bandeau d'aide" background="full" html={`
+    <aside class="cel-banner" aria-label="Aide en ligne">
+        <div class="cel-container cel-banner__inner">
+            <svg class="cel-icon cel-icon--22 cel-banner__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#help-video"></use></svg>
+            <p>Une question sur la prise en main ? Tutoriels et vidéos sur <a href="#" class="cel-banner__link">aide.communeenligne.fr</a></p>
         </div>
     </aside>
 `} tailwind={`
-    <aside class="border-y border-filet bg-teinte-bleu-2" aria-label="Aide en ligne">
-        <div class="max-w-contenu mx-auto px-6 max-telephone:px-4 flex items-center justify-center gap-3 py-4.5 text-texte text-center">
-            <p>Une question sur la prise en main ? <a href="#" class="text-texte-marine font-extra underline-offset-3">aide.communeenligne.fr</a></p>
+    <aside class="border-y border-line bg-tint-blue-2" aria-label="Aide en ligne">
+        <div class="max-w-content mx-auto px-6 max-phone:px-4 flex items-center justify-center gap-3 py-4.5 text-text text-center">
+            <p>Une question sur la prise en main ? <a href="#" class="text-primary font-weight-extrabold underline-offset-3">aide.communeenligne.fr</a></p>
         </div>
     </aside>
 `} />
 
-<Example titre="Bandeau ocre (brouillon)" fond="plein" html={`
-    <div class="cel-bandeau cel-bandeau--ocre" role="status">
-        <p class="cel-conteneur cel-bandeau__interieur">Brouillon : cette page n'est pas encore publiée.</p>
+<Example title="Bandeau ocre (brouillon)" background="full" html={`
+    <div class="cel-banner cel-banner--warning" role="status">
+        <p class="cel-container cel-banner__inner">Brouillon : cette page n'est pas encore publiée.</p>
     </div>
 `} />
 
 ## États
 
-<Example titre="Lien du bandeau : survol, focus" fond="plein" html={`
-    <aside class="cel-bandeau" aria-label="Exemple d'états">
-        <div class="cel-conteneur cel-bandeau__interieur">
-            <p><a href="#" class="cel-bandeau__lien" data-cel-etat="survol">Survol</a> · <a href="#" class="cel-bandeau__lien" data-cel-etat="focus">Focus visible</a></p>
+<Example title="Lien du bandeau : survol, focus" background="full" html={`
+    <aside class="cel-banner" aria-label="Exemple d'états">
+        <div class="cel-container cel-banner__inner">
+            <p><a href="#" class="cel-banner__link" data-cel-state="hover">Survol</a> · <a href="#" class="cel-banner__link" data-cel-state="focus">Focus visible</a></p>
         </div>
     </aside>
 `} />
@@ -53,8 +53,8 @@ Le bandeau d'aide oriente vers l'aide en ligne sur les pages tarif, fonctionnali
 - **Clavier :** seul le lien est atteignable.
 - **Icône :** décorative (`aria-hidden`).
 
-<Contrasts paires={[['texte', 'teinte-bleu-2'], ['texte-marine', 'teinte-bleu-2'], ['ocre-encre', 'teinte-sable'], ['cel-focus-couleur', 'teinte-bleu-2', 3]]} />
+<Contrasts pairs={[['text', 'tint-blue-2'], ['primary', 'tint-blue-2'], ['ochre-ink', 'warning-background'], ['cel-focus-color', 'tint-blue-2', 3]]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Une seule phrase, un seul lien.', 'Toute la largeur, sous l\'en-tête de la page.']} eviter={['Un bandeau dans le corps de la page.', 'Deux bandeaux à la suite.']} />
+<DoDont dos={['Une seule phrase, un seul lien.', 'Toute la largeur, sous l\'en-tête de la page.']} donts={['Un bandeau dans le corps de la page.', 'Deux bandeaux à la suite.']} />

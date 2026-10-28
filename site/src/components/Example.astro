@@ -1,25 +1,24 @@
 ---
-// Démonstration vivante : le rendu, puis le code HTML à copier et, s'il existe, la version en classes Tailwind (rendue
-// elle aussi, avec le thème Tailwind du paquet). fond : page, clair, fort ou profond (surface sur laquelle poser
-// l'exemple).
+// Live example: the rendering, then the HTML code to copy and, if any, the Tailwind version (rendered too, with the
+// Tailwind theme of the package). background: page, muted, strong, deep or full (surface to set the example on; full:
+// edge to edge).
 import Code from './Code.astro'
-import { desindenter } from '../lib/code.js'
+import { dedent } from '../lib/code.js'
 
-const { titre, html, tailwind, fond = 'page', note } = Astro.props
-const rendu = desindenter(html)
+const { title, html, tailwind, background = 'page', note } = Astro.props
 ---
-<figure class="doc-exemple">
-    {titre && <figcaption class="doc-exemple__titre">{titre}</figcaption>}
-    {note && <p class="doc-exemple__note">{note}</p>}
-    <div class={`doc-exemple__rendu doc-exemple__rendu--${fond}`} set:html={rendu} />
-    <details class="doc-exemple__code" open>
+<figure class="cel-example">
+    {title && <figcaption class="cel-example__title">{title}</figcaption>}
+    {note && <p class="cel-example__note">{note}</p>}
+    <div class={`cel-example__preview cel-example__preview--${background}`} set:html={dedent(html)} />
+    <details class="cel-example__code" open>
         <summary>Code HTML</summary>
         <Code code={html} />
     </details>
     {tailwind && (
-        <details class="doc-exemple__code">
+        <details class="cel-example__code">
             <summary>Version Tailwind</summary>
-            <div class={`doc-exemple__rendu doc-exemple__rendu--${fond}`} set:html={desindenter(tailwind)} />
+            <div class={`cel-example__preview cel-example__preview--${background}`} set:html={dedent(tailwind)} />
             <Code code={tailwind} />
         </details>
     )}

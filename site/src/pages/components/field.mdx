@@ -16,56 +16,56 @@ Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé
 
 ## Variantes
 
-<Example titre="Texte, facultatif avec aide, liste, zone de texte" html={`
-    <form class="cel-pile">
-        <div class="cel-champ">
+<Example title="Texte, facultatif avec aide, liste, zone de texte" html={`
+    <form class="cel-stack">
+        <div class="cel-field">
             <label for="champ-nom">Nom de la commune</label>
             <input id="champ-nom" type="text" name="nom" autocomplete="address-level2">
         </div>
-        <div class="cel-champ">
-            <label for="champ-tel">Téléphone <span class="cel-champ__facultatif">(facultatif)</span></label>
+        <div class="cel-field">
+            <label for="champ-tel">Téléphone <span class="cel-field__optional">(facultatif)</span></label>
             <input id="champ-tel" type="tel" name="tel" autocomplete="tel" aria-describedby="aide-tel">
-            <p class="cel-champ__aide" id="aide-tel">Pour vous rappeler si besoin, jamais pour de la prospection.</p>
+            <p class="cel-field__hint" id="aide-tel">Pour vous rappeler si besoin, jamais pour de la prospection.</p>
         </div>
-        <div class="cel-champ">
+        <div class="cel-field">
             <label for="champ-role">Votre fonction</label>
             <select id="champ-role" name="role"><option>Maire</option><option>Secrétaire de mairie</option><option>Adjoint</option></select>
         </div>
-        <div class="cel-champ">
+        <div class="cel-field">
             <label for="champ-message">Message</label>
             <textarea id="champ-message" name="message" rows="4"></textarea>
         </div>
     </form>
 `} tailwind={`
-    <div class="flex flex-col gap-1.5 text-15 font-forte text-texte-marine">
+    <div class="flex flex-col gap-1.5 text-15 font-weight-bold text-principale">
         <label for="tw-nom">Nom de la commune</label>
-        <input id="tw-nom" type="text" class="w-full px-3.5 py-3 rounded-moyen border-[1.5px] border-bordure-champ bg-surface text-encre text-16 font-moyenne">
+        <input id="tw-nom" type="text" class="w-full px-3.5 py-3 rounded-md border-[1.5px] border-field-border bg-surface text-text-strong text-16 font-weight-medium">
     </div>
 `} />
 
 ## États
 
-<Example titre="Erreur, désactivé, focus" html={`
-    <div class="cel-pile">
-        <div class="cel-champ">
+<Example title="Erreur, désactivé, focus" html={`
+    <div class="cel-stack">
+        <div class="cel-field">
             <label for="champ-courriel">Adresse électronique</label>
             <input id="champ-courriel" type="email" name="courriel" value="mairie@" aria-invalid="true" aria-describedby="erreur-courriel">
-            <p class="cel-champ__erreur" id="erreur-courriel">Saisissez une adresse complète, par exemple mairie@veckersviller.fr.</p>
+            <p class="cel-field__error" id="erreur-courriel">Saisissez une adresse complète, par exemple mairie@veckersviller.fr.</p>
         </div>
-        <div class="cel-champ">
+        <div class="cel-field">
             <label for="champ-insee">Code INSEE</label>
             <input id="champ-insee" type="text" value="57707" disabled>
         </div>
-        <div class="cel-champ">
+        <div class="cel-field">
             <label for="champ-focus">Focus visible</label>
-            <input id="champ-focus" type="text" data-cel-etat="focus">
+            <input id="champ-focus" type="text" data-cel-state="focus">
         </div>
     </div>
 `} />
 
-<Example titre="Récapitulatif des erreurs" html={`
-    <div class="cel-erreurs" role="alert" tabindex="-1">
-        <p class="cel-erreurs__titre">Deux champs sont à corriger :</p>
+<Example title="Récapitulatif des erreurs" html={`
+    <div class="cel-error-summary" role="alert" tabindex="-1">
+        <p class="cel-error-summary__title">Deux champs sont à corriger :</p>
         <ul>
             <li><a href="#champ-courriel">Adresse électronique : adresse incomplète</a></li>
             <li><a href="#champ-nom">Nom de la commune : obligatoire</a></li>
@@ -82,8 +82,8 @@ Saisir un texte court ou long, une adresse, un choix dans une liste. Le libellé
 - **Saisie :** `autocomplete` et `type` justes (`email`, `tel`), `inputmode` pour les nombres.
 - **Bordure :** 3:1 au moins avec le fond, dans les deux thèmes.
 
-<Contrasts paires={[['bordure-champ', 'surface', 3], ['bordure-champ', 'fond-page', 3], ['encre', 'surface'], ['texte-marine', 'fond-page'], ['texte-discret', 'fond-page'], ['erreur', 'fond-page'], ['erreur-encre', 'teinte-rouge']]} />
+<Contrasts pairs={[['field-border', 'surface', 3], ['field-border', 'background', 3], ['text-strong', 'surface'], ['primary', 'background'], ['text-muted', 'background'], ['error', 'background'], ['error-ink', 'error-background']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Indiquer les champs facultatifs, pas les obligatoires.', 'Un message d\'erreur qui dit comment corriger.', 'Garder la saisie après une erreur.']} eviter={['Le texte d\'exemple comme seul libellé.', 'Une erreur signalée par la seule couleur.', 'Valider pendant la frappe et afficher une erreur avant la fin de la saisie.']} />
+<DoDont dos={['Indiquer les champs facultatifs, pas les obligatoires.', 'Un message d\'erreur qui dit comment corriger.', 'Garder la saisie après une erreur.']} donts={['Le texte d\'exemple comme seul libellé.', 'Une erreur signalée par la seule couleur.', 'Valider pendant la frappe et afficher une erreur avant la fin de la saisie.']} />

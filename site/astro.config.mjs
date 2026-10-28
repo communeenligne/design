@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import tailwindcss from '@tailwindcss/vite'
 
-// Site statique, publié sur GitHub Pages (design.communeenligne.fr). Aucun style ni script en ligne : feuilles de style
-// externes, scripts dans public/js. Aucune coloration syntaxique (elle écrirait des couleurs en attribut style).
+// Static site, published on GitHub Pages (design.communeenligne.fr). No inline style or script: external stylesheets,
+// scripts in public/js. No syntax highlighting (it would write colors in style attributes).
 export default defineConfig({
     site: 'https://design.communeenligne.fr',
     trailingSlash: 'always',

@@ -1,0 +1,31 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Bloc de code"
+description: "Du code à copier, sans coloration, avec son bouton de copie, pour la documentation et le centre d'aide."
+---
+
+import Code from '../../components/Code.astro'
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+
+## À quoi il sert
+
+Montrer du code à reprendre tel quel. Pas de coloration syntaxique : elle écrirait des couleurs dans des attributs `style`, et le code reste lisible en clair comme en sombre. La langue est donnée par `data-lang`.
+
+<Example title="Bloc de code" html={`
+    <div class="cel-code" data-lang="css">
+        <pre><code>@import '@communeenligne/design';</code></pre>
+    </div>
+`} />
+
+## Bouton de copie
+
+Le bouton est ajouté par le script de la page, seulement si le navigateur sait écrire dans le presse-papiers : sans script, rien ne promet une copie qui n'aurait pas lieu. Il prend la classe `cel-code__copy` et le nom « Copier le code », puis « Code copié » pendant deux secondes.
+
+<Code lang="js" code={`const button = document.createElement('button')
+button.type = 'button'
+button.className = 'cel-code__copy'
+button.setAttribute('aria-label', 'Copier le code')
+block.append(button)`} />
+
+<Contrasts pairs={[['text', 'surface-muted'], ['primary', 'surface']]} />

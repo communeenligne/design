@@ -1,0 +1,23 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Exemple"
+description: "Un rendu vivant d'un composant, son code HTML et, s'il y a lieu, sa version Tailwind."
+---
+
+import Example from '../../components/Example.astro'
+
+## À quoi il sert
+
+Montrer un composant tel qu'il s'affiche, puis le code qui le produit. Chaque page des composants en est faite.
+
+<Example title="Un exemple" note="La note, facultative, précise ce que l'exemple montre." html={`
+    <a class="cel-button" href="#">J'inscris ma commune</a>
+`} tailwind={`
+    <a class="inline-flex items-center rounded-md bg-action px-5 py-3 font-bold text-on-strong" href="#">J'inscris ma commune</a>
+`} />
+
+## Composition
+
+- `cel-example` (`<figure>`), son titre `cel-example__title` (`<figcaption>`), sa note `cel-example__note`.
+- `cel-example__preview` : le rendu, sur l'un des fonds `--page`, `--muted`, `--strong` (marine), `--deep` (pied de page) ou `--full` (bord à bord, pour une section entière).
+- `cel-example__code` (`<details>`) : le code HTML, ouvert ; la version Tailwind, fermée, avec son propre rendu.

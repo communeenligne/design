@@ -1,0 +1,337 @@
+/*
+ * @communeenligne/design, patterns: documentation page, for the documentation site and the help center. Header
+ * (brand and wordmark, sections, phone menu), side navigation grouped by family, breadcrumb, title and lead, written
+ * content, table of contents on the right, previous and next pages.
+ *
+ * Below the tablet breakpoint, the sections and the side navigation give way to the phone menu (cel-menu): they carry
+ * the cel-hide-below-tablet class.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Header ---------- */
+
+.cel-doc-header {
+    border-bottom: 1px solid var(--cel-color-line-soft);
+    background: var(--cel-color-background);
+}
+
+.cel-doc-header__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--cel-space-4) var(--cel-space-8);
+    padding-top: var(--cel-space-4);
+    padding-bottom: var(--cel-space-3);
+}
+
+.cel-doc-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-3);
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+.cel-doc-header__brand img {
+    width: 36px;
+    height: 36px;
+}
+
+.cel-doc-header__name {
+    color: var(--cel-color-text-strong);
+    font-size: var(--cel-text-18);
+    font-weight: var(--cel-font-weight-semibold);
+    letter-spacing: var(--cel-tracking-title);
+}
+
+/* Wordmark "communeenligne": "commune" in bold, like the logo. */
+.cel-wordmark {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-medium);
+}
+
+.cel-wordmark strong {
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-doc-header__sections {
+    padding-top: var(--cel-space-1);
+    padding-bottom: var(--cel-space-3-5);
+}
+
+/* Without script, the menu panel is a list under the top bar: it takes the whole width. */
+.cel-doc-header__top > .cel-menu:not(.cel-menu--enhanced) {
+    flex-basis: 100%;
+}
+
+/* ---------- Body: side navigation, content, table of contents ---------- */
+
+.cel-doc-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 200px;
+    gap: var(--cel-space-12);
+    align-items: start;
+    padding-top: var(--cel-space-10);
+    padding-bottom: var(--cel-space-20);
+}
+
+.cel-doc-layout--no-toc {
+    grid-template-columns: 220px minmax(0, 1fr);
+}
+
+.cel-doc-layout--no-sidenav {
+    grid-template-columns: minmax(0, 1fr) 200px;
+}
+
+.cel-doc-layout--no-sidenav.cel-doc-layout--no-toc {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.cel-sidenav,
+.cel-toc {
+    position: sticky;
+    top: var(--cel-space-6);
+    max-height: calc(100vh - var(--cel-space-12));
+    overflow-y: auto;
+    font-size: var(--cel-text-15);
+}
+
+.cel-sidenav ul,
+.cel-toc ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-0-5);
+    margin: var(--cel-space-3) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-sidenav__title,
+.cel-toc__title {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-caps);
+    text-transform: uppercase;
+}
+
+/* Family of pages inside a section (Components: Base, Forms, Navigation…). */
+.cel-sidenav__group {
+    margin-top: var(--cel-space-5);
+    padding-left: var(--cel-space-3);
+    color: var(--cel-color-text-strong);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-sidenav__group + ul {
+    margin-top: var(--cel-space-1-5);
+}
+
+.cel-sidenav a,
+.cel-toc a {
+    display: block;
+    padding: var(--cel-space-1-5) var(--cel-space-3);
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--cel-radius-6) var(--cel-radius-6) 0;
+    color: var(--cel-color-text);
+    text-decoration: none;
+}
+
+.cel-sidenav a:hover,
+.cel-toc a:hover {
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-primary);
+}
+
+.cel-sidenav a[aria-current='page'] {
+    border-left-color: var(--cel-color-ochre);
+    background: var(--cel-color-surface-current);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-toc a {
+    padding-top: var(--cel-space-1);
+    padding-bottom: var(--cel-space-1);
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+}
+
+.cel-doc-main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-5);
+}
+
+.cel-doc-title {
+    font-size: var(--cel-text-title-page);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    color: var(--cel-color-primary);
+    text-wrap: balance;
+}
+
+.cel-doc-lead {
+    max-width: 40em;
+    color: var(--cel-color-text-2);
+}
+
+/* ---------- Written content (direct children only: examples keep their own styles) ---------- */
+
+.cel-doc-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4);
+    max-width: 52em;
+}
+
+.cel-doc-content > h2 {
+    margin-top: var(--cel-space-8);
+    padding-top: var(--cel-space-6);
+    border-top: 1px solid var(--cel-color-line);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-26);
+    line-height: var(--cel-leading-120);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title);
+    scroll-margin-top: var(--cel-space-6);
+}
+
+.cel-doc-content > h2:first-child {
+    margin-top: 0;
+}
+
+.cel-doc-content > h3 {
+    margin-top: var(--cel-space-3);
+    font-size: var(--cel-text-19);
+    font-weight: var(--cel-font-weight-extrabold);
+    scroll-margin-top: var(--cel-space-6);
+}
+
+.cel-doc-content > p,
+.cel-doc-content > ul,
+.cel-doc-content > ol {
+    color: var(--cel-color-text);
+}
+
+.cel-doc-content > ul,
+.cel-doc-content > ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+    margin: 0;
+    padding-left: var(--cel-space-6);
+}
+
+.cel-doc-content :not(pre) > code {
+    padding: 1px var(--cel-space-1-5);
+    border-radius: var(--cel-radius-4);
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-text-strong);
+    font-family: var(--cel-font-code);
+    font-size: 0.88em;
+    overflow-wrap: anywhere;
+}
+
+.cel-doc-content > .cel-callout,
+.cel-doc-content > .cel-table-scroll {
+    margin: var(--cel-space-2) 0;
+}
+
+.cel-doc-content > table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--cel-text-15);
+}
+
+.cel-doc-content > table :is(th, td) {
+    padding: var(--cel-space-2-5) var(--cel-space-3);
+    border: 1px solid var(--cel-color-line);
+    text-align: left;
+    vertical-align: top;
+}
+
+.cel-doc-content > table th {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--cel-space-4);
+    margin-top: var(--cel-space-10);
+}
+
+.cel-pager__link {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+    text-decoration: none;
+}
+
+.cel-pager__link--next {
+    grid-column: 2;
+    text-align: right;
+}
+
+.cel-pager__direction {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* ---------- Medium and small screens ---------- */
+
+@media (max-width: 1100px) {
+    .cel-doc-layout,
+    .cel-doc-layout--no-toc {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+
+    .cel-doc-layout--no-sidenav,
+    .cel-doc-layout--no-sidenav.cel-doc-layout--no-toc {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cel-toc {
+        display: none;
+    }
+}
+
+@media (max-width: 860px) {
+    .cel-doc-layout,
+    .cel-doc-layout--no-toc {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--cel-space-6);
+        padding-top: var(--cel-space-6);
+    }
+}
+
+@media (max-width: 640px) {
+    /* Brand and menu button on the first line, anything else (search) on its own line below. */
+    .cel-doc-header__top {
+        gap: var(--cel-space-3) var(--cel-space-4);
+    }
+
+    .cel-doc-header__top > :not(.cel-doc-header__brand, .cel-menu) {
+        order: 1;
+        flex-basis: 100%;
+    }
+
+    .cel-doc-content > table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .cel-pager {
+        grid-template-columns: 1fr;
+    }
+
+    .cel-pager__link--next {
+        grid-column: 1;
+    }
+}

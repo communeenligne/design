@@ -1,18 +1,18 @@
-// Copie dans public/design/ les fichiers du paquet servis tels quels (planche d'icônes, logo, scripts) : le site les
-// prend dans @communeenligne/design, comme n'importe quel projet, jamais dans une copie à lui.
+// Copies to public/design/ the files of the package served as they are (icon sprite, logo, scripts): the site takes
+// them from @communeenligne/design, like any project, never from a copy of its own.
 
 import { cpSync, rmSync } from 'node:fs'
 import { dirname } from 'node:path'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 
-const paquet = dirname(createRequire(import.meta.url).resolve('@communeenligne/design/package.json'))
-const cible = fileURLToPath(new URL('../public/design/', import.meta.url))
+const pkg = dirname(createRequire(import.meta.url).resolve('@communeenligne/design/package.json'))
+const target = fileURLToPath(new URL('../public/design/', import.meta.url))
 
-rmSync(cible, { recursive: true, force: true })
+rmSync(target, { recursive: true, force: true })
 
-for (const dossier of ['icons', 'brand', 'js']) {
-    cpSync(`${paquet}/${dossier}`, `${cible}${dossier}`, { recursive: true })
+for (const folder of ['icons', 'brand', 'js']) {
+    cpSync(`${pkg}/${folder}`, `${target}${folder}`, { recursive: true })
 }
 
-console.log('Fichiers du paquet copiés dans public/design/.')
+console.log('Package files copied to public/design/.')

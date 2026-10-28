@@ -1,0 +1,63 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Case à cocher"
+description: "Un ou plusieurs choix indépendants, ou une acceptation : la case native, redessinée, avec son libellé cliquable."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Choisir zéro, un ou plusieurs éléments d'une liste (les alertes à recevoir), ou accepter une condition (« J'accepte d'être recontacté »).
+
+**Quand ne pas l'utiliser :** pour un seul choix parmi plusieurs (prendre des [boutons radio](/components/radio/)), pour une action immédiate (un [bouton](/components/button/)).
+
+## Variantes
+
+Le libellé `.cel-choice` entoure la case : toute la ligne est cliquable. Plusieurs cases forment un groupe : `<fieldset class="cel-choice-group">` et sa question en `<legend class="cel-choice-group__legend">`.
+
+<Example title="Groupe de cases" html={`
+    <fieldset class="cel-choice-group">
+        <legend class="cel-choice-group__legend">Alertes à recevoir</legend>
+        <label class="cel-choice"><input type="checkbox" checked> Fermetures de la mairie</label>
+        <label class="cel-choice"><input type="checkbox"> Collecte des déchets</label>
+        <label class="cel-choice"><input type="checkbox"> <span>Travaux<span class="cel-choice__hint">Routes coupées, coupures d'eau.</span></span></label>
+    </fieldset>
+`} />
+
+<Example title="Groupe en ligne (.cel-choice-group--inline)" html={`
+    <fieldset class="cel-choice-group cel-choice-group--inline">
+        <legend class="cel-choice-group__legend">Jours de présence</legend>
+        <label class="cel-choice"><input type="checkbox" checked> Lundi</label>
+        <label class="cel-choice"><input type="checkbox"> Mercredi</label>
+        <label class="cel-choice"><input type="checkbox" checked> Vendredi</label>
+    </fieldset>
+`} />
+
+## États
+
+<Example title="Focus visible, erreur, désactivée" html={`
+    <fieldset class="cel-choice-group">
+        <legend class="cel-choice-group__legend">États</legend>
+        <label class="cel-choice"><input type="checkbox" data-cel-state="focus"> Focus visible</label>
+        <label class="cel-choice"><input type="checkbox" aria-invalid="true" aria-describedby="exemple-accord-erreur"> J'accepte d'être recontacté</label>
+        <span class="cel-field__error" id="exemple-accord-erreur">Cochez la case pour envoyer votre demande.</span>
+        <label class="cel-choice"><input type="checkbox" disabled> Désactivée</label>
+        <label class="cel-choice"><input type="checkbox" checked disabled> Cochée, désactivée</label>
+    </fieldset>
+`} />
+
+## Accessibilité
+
+- **Natif :** un vrai `<input type="checkbox">`, redessiné par `appearance: none` : clavier (Espace), état annoncé et formulaire sans script.
+- **Groupe :** `<fieldset>` et `<legend>` ; la question est lue avec chaque case.
+- **Erreur :** `aria-invalid="true"` sur la case (ou sur le `<fieldset>`), message relié par `aria-describedby`.
+- **Coche :** dessinée dans la couleur de la surface sur la couleur principale (4,5:1) ; la case non cochée a une bordure à 3:1.
+
+<Contrasts pairs={[['field-border', 'surface', 3], ['primary', 'surface', 3], ['surface', 'primary'], ['text-strong', 'background'], ['error', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Un libellé qui dit ce qui se passe si la case est cochée.', 'Les cases d\'un groupe dans une liste verticale.']} donts={['Une case pré-cochée pour un consentement.', 'Une case qui déclenche une action sans envoi du formulaire.']} />

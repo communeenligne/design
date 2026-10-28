@@ -1,0 +1,60 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Liste déroulante"
+description: "Un choix parmi une longue liste : le <select> natif, à l'apparence des champs, avec le menu du système."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Choisir une valeur parmi plus de six : un département, un mois, un type de démarche. Le menu qui s'ouvre est celui du système : il marche au clavier, avec les lecteurs d'écran et sur téléphone, sans script.
+
+**Quand ne pas l'utiliser :** pour deux à six options (prendre des [boutons radio](/components/radio/), tous visibles), pour plusieurs choix (des [cases à cocher](/components/checkbox/)).
+
+## Variantes
+
+Le `<select>` se place dans un [champ](/components/field/) (`.cel-field`), entouré de `.cel-select` qui dessine le chevron.
+
+<Example title="Liste déroulante" html={`
+    <div class="cel-field">
+        <label for="exemple-mois">Mois de la collecte</label>
+        <span class="cel-select">
+            <select id="exemple-mois">
+                <option>Janvier</option><option>Février</option><option selected>Mars</option><option>Avril</option>
+            </select>
+        </span>
+    </div>
+`} />
+
+## États
+
+<Example title="Erreur, désactivée" html={`
+    <div class="cel-field">
+        <label for="exemple-type">Type de démarche</label>
+        <span class="cel-select">
+            <select id="exemple-type" aria-invalid="true" aria-describedby="exemple-type-erreur">
+                <option value="">Choisir…</option><option>État civil</option><option>Urbanisme</option>
+            </select>
+        </span>
+        <span class="cel-field__error" id="exemple-type-erreur">Choisissez le type de démarche.</span>
+    </div>
+    <div class="cel-field">
+        <label for="exemple-commune">Commune</label>
+        <span class="cel-select"><select id="exemple-commune" disabled><option>Veckersviller</option></select></span>
+    </div>
+`} />
+
+## Accessibilité
+
+- **Libellé :** un `<label for>` relié, comme tout champ ; erreur et aide reliées par `aria-describedby`.
+- **Pas de faux menu :** jamais une liste construite en `<div>` à la place du `<select>`.
+- **Première option :** « Choisir… » (valeur vide) quand aucun choix n'est fait par défaut.
+
+<Contrasts pairs={[['field-border', 'surface', 3], ['text-strong', 'surface'], ['primary', 'background'], ['error', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Des options courtes, dans un ordre attendu (alphabétique, chronologique).']} donts={['Une liste déroulante pour deux options.', 'Une liste qui change de page dès qu\'on choisit.']} />

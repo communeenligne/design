@@ -1,0 +1,361 @@
+/*
+ * @communeenligne/design, components, documentation family: code block with its copy button, live example (rendering,
+ * HTML code, Tailwind version), do and don't columns, tiles of a section index, pictogram. Used by the documentation
+ * site and the help center.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Example: rendering, code ---------- */
+
+.cel-example {
+    margin: var(--cel-space-2) 0;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-12);
+    background: var(--cel-color-surface);
+}
+
+.cel-example__title {
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    border-bottom: 1px solid var(--cel-color-line);
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-example__note {
+    padding: var(--cel-space-2-5) var(--cel-space-4) 0;
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+}
+
+.cel-example__preview {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: var(--cel-space-4);
+    padding: var(--cel-space-7) var(--cel-space-6);
+    overflow-x: auto;
+}
+
+.cel-example__preview > * {
+    min-width: 0;
+}
+
+.cel-example__preview--page {
+    background: var(--cel-color-background);
+}
+
+.cel-example__preview--muted {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-example__preview--strong {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-example__preview--deep {
+    background: var(--cel-color-strong-deep);
+    color: var(--cel-color-on-dark);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+/* Full-width patterns (header, footer, section): no padding, in a column. */
+.cel-example__preview--full {
+    display: block;
+    padding: 0;
+}
+
+.cel-example__code {
+    border-top: 1px solid var(--cel-color-line);
+}
+
+.cel-example__code > summary {
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+}
+
+.cel-code {
+    position: relative;
+    margin: 0;
+    background: var(--cel-color-background-muted);
+}
+
+.cel-doc-content > .cel-code {
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-12);
+}
+
+.cel-code pre {
+    margin: 0;
+    padding: var(--cel-space-4) var(--cel-space-4-5);
+    overflow-x: auto;
+    color: var(--cel-color-text-strong);
+    font-family: var(--cel-font-code);
+    font-size: var(--cel-text-14);
+    line-height: var(--cel-leading-150);
+    tab-size: 4;
+}
+
+/* Icon only: the accessible name ("Copier le code", then "Code copié") is in aria-label. */
+.cel-code__copy {
+    position: absolute;
+    top: var(--cel-space-2);
+    right: var(--cel-space-2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid var(--cel-color-field-border);
+    border-radius: var(--cel-radius-8);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    cursor: pointer;
+}
+
+.cel-code__copy:hover {
+    background: var(--cel-color-surface-hover);
+}
+
+/* ---------- Do, don't ---------- */
+
+.cel-dos-donts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--cel-space-4);
+    margin: var(--cel-space-2) 0;
+}
+
+.cel-dos-donts__column {
+    padding: var(--cel-space-5);
+    border-top: 4px solid var(--cel-color-mark-good);
+    border-radius: var(--cel-radius-12);
+    background: var(--cel-color-tint-green);
+    color: var(--cel-color-green-text);
+}
+
+.cel-dos-donts__column--dont {
+    border-top-color: var(--cel-color-error);
+    background: var(--cel-color-error-background);
+    color: var(--cel-color-error-ink);
+}
+
+.cel-dos-donts__title {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-dos-donts ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2);
+    margin: var(--cel-space-3) 0 0;
+    padding-left: var(--cel-space-5);
+}
+
+/* ---------- Tiles of the pages of a section ---------- */
+
+.cel-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--cel-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-tiles > li {
+    display: flex;
+}
+
+.cel-tile {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-surface);
+    transition:
+        border-color var(--cel-duration-fast) var(--cel-ease-standard),
+        box-shadow var(--cel-duration-fast) var(--cel-ease-standard),
+        transform var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-tile:hover,
+.cel-tile:focus-within {
+    border-color: var(--cel-color-focus-line);
+    box-shadow: var(--cel-shadow-card-hover);
+    transform: translateY(-3px);
+}
+
+.cel-tile__preview {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-space-2-5);
+    position: relative;
+    height: 148px;
+    padding: var(--cel-space-5);
+    overflow: hidden;
+    border-bottom: 1px solid var(--cel-color-line);
+    pointer-events: none;
+}
+
+.cel-tile__preview--muted {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-tile__preview--strong {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-tile__preview--deep {
+    background: var(--cel-color-strong-deep);
+    color: var(--cel-color-on-dark);
+}
+
+.cel-tile__preview--full {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.cel-tile__preview--full > * {
+    width: 100%;
+}
+
+.cel-tile__preview > :not(.cel-badge, .cel-pill, .cel-filter, .cel-button, .cel-link) {
+    max-width: 100%;
+}
+
+.cel-tile__preview .cel-field,
+.cel-tile__preview .cel-faq,
+.cel-tile__preview .cel-card,
+.cel-tile__preview .cel-table {
+    width: 100%;
+}
+
+.cel-tile__preview .cel-table {
+    font-size: var(--cel-text-13);
+}
+
+.cel-tile__preview--icon {
+    background: var(--cel-color-tint-blue-2);
+}
+
+.cel-pictogram,
+.cel-tile__pictogram {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--cel-radius-14);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    box-shadow: inset 0 0 0 1px var(--cel-color-line);
+}
+
+.cel-tile__pictogram {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--cel-radius-18);
+}
+
+.cel-pictogram--small {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--cel-radius-12);
+}
+
+.cel-tile__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+    padding: var(--cel-space-4-5) var(--cel-space-12) var(--cel-space-5) var(--cel-space-5);
+}
+
+.cel-tile__title {
+    font-size: var(--cel-text-18);
+    line-height: var(--cel-leading-130);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-tile__summary {
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-15);
+}
+
+.cel-tile__link {
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+/* The title is the only link; it covers the whole tile, the focus is drawn around it. */
+.cel-tile__link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+}
+
+.cel-tile__link:focus-visible {
+    outline: none;
+}
+
+/* Arrow in the bottom right corner, which moves forward when the tile is hovered or focused. */
+.cel-tile__arrow {
+    position: absolute;
+    right: var(--cel-space-5);
+    bottom: var(--cel-space-5);
+    color: var(--cel-color-primary);
+    transition: translate var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-tile:hover .cel-tile__arrow,
+.cel-tile:focus-within .cel-tile__arrow {
+    translate: 4px 0;
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 640px) {
+    .cel-example__preview {
+        padding: var(--cel-space-5) var(--cel-space-4);
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-tile,
+    .cel-tile__arrow {
+        transition: none;
+    }
+
+    .cel-tile:hover,
+    .cel-tile:focus-within {
+        transform: none;
+    }
+
+    .cel-tile:hover .cel-tile__arrow,
+    .cel-tile:focus-within .cel-tile__arrow {
+        translate: none;
+    }
+}

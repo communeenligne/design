@@ -1,0 +1,518 @@
+/*
+ * @communeenligne/design, components, base family: page base, visible focus, utilities, container, logos, icons,
+ * button, link, badge, dot, pill, lift on hover. Pure CSS (no Tailwind), prefixed cel-, built on the foundations only.
+ *
+ * Base styles (font, colors, links, focus) apply only under the cel-page class (set on <body>), with zero
+ * specificity: the package can enter an application that already has its own styles (Filament panel) without
+ * touching them.
+ *
+ * Forced states for the documentation: data-cel-state="hover" or "focus" shows the state without hover or keyboard.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Base (under .cel-page) ---------- */
+
+:where(.cel-page),
+:where(.cel-page) *,
+:where(.cel-page) *::before,
+:where(.cel-page) *::after {
+    box-sizing: border-box;
+}
+
+:where(html:has(> body.cel-page)) {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+:where(.cel-page) {
+    margin: 0;
+    background: var(--cel-color-background);
+    color: var(--cel-color-text-strong);
+    font-family: var(--cel-font-body);
+    font-size: var(--cel-text-base);
+    font-weight: var(--cel-font-weight-regular);
+    line-height: var(--cel-leading-body);
+    -webkit-font-smoothing: antialiased;
+}
+
+:where(.cel-page) :where(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--cel-font-heading);
+}
+
+:where(.cel-page) :where(img, svg) {
+    display: block;
+    max-width: 100%;
+}
+
+:where(.cel-page) :where(a) {
+    color: var(--cel-color-primary);
+}
+
+:where(.cel-page) :where(a:hover) {
+    color: var(--cel-color-primary-hover);
+}
+
+:where(.cel-page) :where(h1, h2, h3, p, ul, ol) {
+    margin: 0;
+}
+
+:where(.cel-page) :where(input, select, textarea, button) {
+    font: inherit;
+}
+
+:where(.cel-page) :where([hidden]) {
+    display: none !important;
+}
+
+:where(.cel-page) :where(main:focus) {
+    outline: none;
+}
+
+/* ---------- Focus ---------- */
+
+/* Visible focus: 3 px, offset by 3 px, focus color; the "on strong" one on a strong surface (the variable changes,
+   not the rule). Components listed here get it outside .cel-page too. */
+:where(.cel-page) :focus-visible,
+:where(.cel-button, .cel-link, .cel-field :is(input, select, textarea), .cel-choice input, .cel-tabs__tab,
+    .cel-breadcrumb a, .cel-pagination__link, .cel-theme__option, .cel-segmented__option, .cel-filter, .cel-pill,
+    .cel-faq__question, .cel-comparison, .cel-references__strip, .cel-menu__toggle, .cel-menu__close,
+    .cel-menu__panel a):focus-visible,
+[data-cel-state~='focus'] {
+    outline: var(--cel-focus-width) solid var(--cel-focus-color);
+    outline-offset: var(--cel-focus-offset);
+}
+
+.cel-on-strong,
+.cel-section--strong,
+.cel-pricing__main,
+.cel-tier--selected,
+.cel-footer {
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+/* ---------- Utilities ---------- */
+
+.cel-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.cel-skip-link {
+    position: absolute;
+    top: var(--cel-space-2);
+    left: var(--cel-space-2);
+    z-index: 10;
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    border-radius: var(--cel-radius-sm);
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-bold);
+    transform: translateY(-200%);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-skip-link:focus,
+.cel-skip-link[data-cel-state~='focus'] {
+    transform: none;
+    color: var(--cel-color-on-strong);
+}
+
+/* ---------- Layout ---------- */
+
+.cel-container {
+    max-width: var(--cel-width-content);
+    margin: 0 auto;
+    padding-left: var(--cel-gutter);
+    padding-right: var(--cel-gutter);
+}
+
+.cel-container--narrow {
+    max-width: var(--cel-width-narrow);
+}
+
+/* Logo per theme: two images, only one shown. */
+.cel-logo-dark,
+.cel-dark .cel-logo-light {
+    display: none !important;
+}
+
+.cel-dark .cel-logo-dark {
+    display: block !important;
+}
+
+/* ---------- Icons ---------- */
+
+.cel-icon {
+    display: inline-block;
+    flex: none;
+    width: var(--cel-icon-size);
+    height: var(--cel-icon-size);
+    vertical-align: middle;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--cel-icon-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.cel-icon--14 {
+    --cel-icon-size: 14px;
+}
+
+.cel-icon--16 {
+    --cel-icon-size: 16px;
+}
+
+.cel-icon--18 {
+    --cel-icon-size: 18px;
+}
+
+.cel-icon--20 {
+    --cel-icon-size: 20px;
+}
+
+.cel-icon--22 {
+    --cel-icon-size: 22px;
+}
+
+.cel-icon--26 {
+    --cel-icon-size: 26px;
+}
+
+.cel-icon--28 {
+    --cel-icon-size: 28px;
+}
+
+.cel-icon--56 {
+    --cel-icon-size: 56px;
+}
+
+/* Bold stroke: check marks and arrows of buttons. */
+.cel-icon--bold {
+    --cel-icon-stroke: 2.4;
+}
+
+/* ---------- Button ---------- */
+
+.cel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-space-2-5);
+    padding: 15px var(--cel-space-6-5);
+    border: 0;
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-action);
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-bold);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duration-fast) var(--cel-ease-standard),
+        box-shadow var(--cel-duration-fast) var(--cel-ease-standard),
+        transform var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-button:hover,
+.cel-button[data-cel-state~='hover'] {
+    background: var(--cel-color-action-hover);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-button--secondary {
+    padding: 13px var(--cel-space-6);
+    border: 2px solid var(--cel-color-primary);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+}
+
+.cel-button--secondary:hover,
+.cel-button--secondary[data-cel-state~='hover'] {
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary-hover);
+}
+
+/* Button with an icon after the text ("Voir la rubrique"): tighter padding. */
+.cel-button--icon {
+    padding: var(--cel-space-3) var(--cel-space-4-5);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* Hover and keyboard focus: the same slight lift. */
+.cel-button:hover,
+.cel-button:focus-visible,
+.cel-button[data-cel-state~='hover'],
+.cel-button[data-cel-state~='focus'] {
+    transform: translateY(-1px);
+    box-shadow: var(--cel-shadow-button);
+}
+
+.cel-button:disabled,
+.cel-button[aria-disabled='true'] {
+    border-color: var(--cel-color-line-strong);
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-text-muted);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+}
+
+/* ---------- Brand variants of the button and the badge ---------- */
+
+.cel-button--accent {
+    background: var(--cel-color-gold);
+    color: var(--cel-color-on-gold);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-button--accent:hover,
+.cel-button--accent[data-cel-state~='hover'] {
+    background: var(--cel-color-gold-hover);
+    color: var(--cel-color-on-gold);
+}
+
+.cel-button--on-strong {
+    background: transparent;
+    color: var(--cel-color-on-strong);
+    box-shadow: inset 0 0 0 1.5px var(--cel-color-on-strong-ring);
+}
+
+.cel-button--on-strong:hover,
+.cel-button--on-strong:focus-visible,
+.cel-button--on-strong[data-cel-state~='hover'] {
+    background: var(--cel-color-strong-soft);
+    color: var(--cel-color-on-strong);
+}
+
+/* ---------- Link ---------- */
+
+.cel-link {
+    color: var(--cel-color-primary);
+    text-underline-offset: 3px;
+}
+
+.cel-link:hover,
+.cel-link[data-cel-state~='hover'] {
+    color: var(--cel-color-primary-hover);
+}
+
+.cel-link--strong {
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-link--subtle {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cel-link--subtle:hover,
+.cel-link--subtle[data-cel-state~='hover'] {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-link--on-strong,
+.cel-link--on-strong:hover,
+.cel-link--on-strong[data-cel-state~='hover'] {
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-link--arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    font-weight: var(--cel-font-weight-extrabold);
+    text-decoration: none;
+}
+
+.cel-link--arrow .cel-icon {
+    transition: translate var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-link--arrow:hover .cel-icon,
+.cel-link--arrow:focus-visible .cel-icon,
+.cel-link--arrow[data-cel-state~='hover'] .cel-icon {
+    translate: 4px 0;
+}
+
+/* ---------- Badge ---------- */
+
+.cel-badge {
+    display: inline-block;
+    padding: 5px var(--cel-space-2-5);
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-12);
+    font-weight: var(--cel-font-weight-extrabold);
+    line-height: var(--cel-leading-body);
+    text-align: center;
+}
+
+.cel-badge--success {
+    background: var(--cel-color-success-background);
+    color: var(--cel-color-success-ink);
+}
+
+.cel-badge--warning {
+    background: var(--cel-color-warning-background);
+    color: var(--cel-color-warning-ink);
+}
+
+.cel-badge--error {
+    background: var(--cel-color-error-background);
+    color: var(--cel-color-error-ink);
+}
+
+.cel-badge--outline {
+    border: 1px solid var(--cel-color-line-strong);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-text);
+}
+
+/* Brand variant: automatic (a feature that runs by itself). */
+.cel-badge--auto {
+    padding: 1px 9px;
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-tint-green-3);
+    color: var(--cel-color-green-ink-3);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* ---------- Dot ---------- */
+
+.cel-dot {
+    display: inline-block;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: var(--cel-radius-4);
+    background: var(--cel-color-ochre);
+}
+
+.cel-dot--green {
+    background: var(--cel-color-green);
+}
+
+/* ---------- Pill ---------- */
+
+.cel-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-2-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    padding: 9px var(--cel-space-3-5);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+    text-decoration: none;
+}
+
+a.cel-pill {
+    transition:
+        transform var(--cel-duration-moderate) var(--cel-ease-standard),
+        box-shadow var(--cel-duration-moderate) var(--cel-ease-standard),
+        background-color var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+a.cel-pill:hover,
+a.cel-pill:focus-visible,
+a.cel-pill[data-cel-state~='hover'] {
+    transform: translateY(-2px);
+    box-shadow: var(--cel-shadow-pill);
+}
+
+.cel-pill__count {
+    padding: 1px var(--cel-space-2);
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-surface-hover);
+    font-size: var(--cel-text-13);
+}
+
+/* ---------- Lift on hover ---------- */
+
+.cel-lift {
+    transition:
+        transform var(--cel-duration-moderate) var(--cel-ease-standard),
+        box-shadow var(--cel-duration-moderate) var(--cel-ease-standard),
+        background-color var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+.cel-lift:hover,
+.cel-lift:focus-visible,
+.cel-lift:focus-within,
+.cel-lift[data-cel-state~='hover'] {
+    transform: translateY(-4px);
+    box-shadow: var(--cel-shadow-lift);
+}
+
+.cel-lift--soft:hover,
+.cel-lift--soft:focus-visible,
+.cel-lift--soft:focus-within,
+.cel-lift--soft[data-cel-state~='hover'] {
+    box-shadow: var(--cel-shadow-lift-soft);
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 640px) {
+    .cel-container {
+        padding-left: var(--cel-gutter-phone);
+        padding-right: var(--cel-gutter-phone);
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    :where(html:has(> body.cel-page)) {
+        scroll-behavior: auto;
+    }
+
+    .cel-button,
+    .cel-link--arrow .cel-icon,
+    .cel-lift,
+    a.cel-pill {
+        transition: none;
+    }
+
+    .cel-button:hover,
+    .cel-button:focus-visible,
+    .cel-button[data-cel-state],
+    .cel-lift:hover,
+    .cel-lift:focus-visible,
+    .cel-lift:focus-within,
+    .cel-lift[data-cel-state],
+    a.cel-pill:hover,
+    a.cel-pill:focus-visible,
+    a.cel-pill[data-cel-state] {
+        transform: none;
+    }
+
+    .cel-link--arrow:hover .cel-icon,
+    .cel-link--arrow:focus-visible .cel-icon,
+    .cel-link--arrow[data-cel-state] .cel-icon {
+        translate: none;
+    }
+}

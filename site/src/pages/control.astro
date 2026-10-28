@@ -1,9 +1,15 @@
 ---
-// Page de contrôle, non liée dans la navigation : en-tête, une section, le tarif et le pied de page de la landing,
-// écrits avec les seules classes du paquet (lib/patterns.js), à comparer à l'œil avec communeenligne.fr. Aucune
-// feuille du site : seulement le paquet.
+// Control page, not linked in the navigation: header (with the phone menu), a section, the pricing and the footer of
+// the landing, written with the classes of the package only (lib/patterns.js), to compare by eye with
+// communeenligne.fr. No stylesheet of the site: only the package.
 import '@communeenligne/design/index.css'
-import { ENTETE, SECTION, TARIF, PIED } from '../lib/patterns.js'
+import { HEADER, SECTION, PRICING, FOOTER } from '../lib/patterns.js'
+
+// In the footer, the theme links become the switch of js/theme.js.
+const footer = FOOTER
+    .replace('<div class="cel-theme" role="group"', '<div class="cel-theme" data-cel-theme role="group"')
+    .replace('<a href="#" class="cel-theme__option" aria-current="true">', '<a href="#" class="cel-theme__option" data-cel-theme-option="light" aria-current="true">')
+    .replace('<a href="#" class="cel-theme__option">', '<a href="#" class="cel-theme__option" data-cel-theme-option="dark">')
 ---
 <!doctype html>
 <html lang="fr">
@@ -18,12 +24,12 @@ import { ENTETE, SECTION, TARIF, PIED } from '../lib/patterns.js'
     <script is:inline type="module" src="/js/control.js"></script>
 </head>
 <body class="cel-page">
-    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
-    <Fragment set:html={ENTETE} />
+    <a class="cel-skip-link" href="#contenu">Aller au contenu</a>
+    <Fragment set:html={HEADER} />
     <main id="contenu" tabindex="-1">
         <Fragment set:html={SECTION} />
-        <Fragment set:html={TARIF} />
+        <Fragment set:html={PRICING} />
     </main>
-    <Fragment set:html={PIED.replace('<div class="cel-theme" role="group"', '<div class="cel-theme" data-cel-theme role="group"').replaceAll('href="#" class="cel-theme__option" aria-current="true">', 'href="#" class="cel-theme__option" data-cel-theme-option="clair" aria-current="true">').replace('href="#" class="cel-theme__option">', 'href="#" class="cel-theme__option" data-cel-theme-option="sombre">')} />
+    <Fragment set:html={footer} />
 </body>
 </html>

@@ -1,0 +1,36 @@
+/*
+ * @communeenligne/design, patterns: page header of an inner page (breadcrumb, title, lead).
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Page header ---------- */
+
+.cel-page-header {
+    border-bottom: 1px solid var(--cel-color-line);
+    background: var(--cel-color-background-muted);
+}
+
+.cel-page-header__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-4-5);
+    padding-top: var(--cel-space-7);
+    padding-bottom: var(--cel-space-12);
+}
+
+.cel-page-header__title {
+    max-width: 18em;
+    font-size: var(--cel-text-title-page);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    color: var(--cel-color-primary);
+    text-wrap: balance;
+}
+
+.cel-page-header__lead {
+    max-width: 38em;
+    font-size: var(--cel-text-lead);
+    color: var(--cel-color-text-2);
+}

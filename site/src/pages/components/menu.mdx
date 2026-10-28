@@ -1,0 +1,80 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Menu sur téléphone"
+description: "Sous le point de rupture des tablettes, un bouton « Menu » remplace la navigation et ouvre un panneau plein écran."
+---
+
+import Code from '../../components/Code.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Donner accès à toute la navigation sur un petit écran sans la tasser : en dessous de 860 px (`--cel-breakpoint-tablet`), la navigation principale et la navigation latérale disparaissent ; un bouton à trois traits ouvre un panneau plein écran qui les reprend. Au-dessus de 860 px, le menu est masqué.
+
+Ce site l'utilise : réduisez la fenêtre, ou ouvrez-le sur un téléphone. La [page de contrôle](/control/) le montre dans l'en-tête de la landing. Le panneau contient les rubriques et, pour la rubrique en cours, ses pages, rangées par famille.
+
+**Quand ne pas l'utiliser :** au-dessus du point de rupture des tablettes, où la navigation tient en entier, ou pour un simple choix d'options (prendre une [liste déroulante](/components/select/)).
+
+## Balisage
+
+Le bouton et le panneau sont dans le même bloc `data-cel-menu`. Les éléments qu'il remplace portent `cel-hide-below-tablet`.
+
+<Code code={`<nav class="cel-nav cel-hide-below-tablet" aria-label="Navigation principale">…</nav>
+
+<div class="cel-menu" data-cel-menu>
+    <button type="button" class="cel-menu__toggle" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+        <svg class="cel-icon cel-icon--20 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#bars-3"></use></svg>
+        <span aria-hidden="true">Menu</span>
+    </button>
+    <div class="cel-menu__panel" id="menu" aria-labelledby="menu-title">
+        <div class="cel-menu__top">
+            <p class="cel-menu__title" id="menu-title">Menu</p>
+            <button type="button" class="cel-menu__close">
+                <svg class="cel-icon cel-icon--20 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#x-mark"></use></svg>
+                Fermer le menu
+            </button>
+        </div>
+        <nav aria-label="Navigation principale">
+            <ul class="cel-menu__list">
+                <li><a class="cel-menu__link" href="/fonctionnalites/">Fonctionnalités</a></li>
+                <li>
+                    <a class="cel-menu__link" href="/guides/" aria-current="true">Guides</a>
+                    <ul class="cel-menu__sublist">
+                        <li><a href="/guides/publier-un-acte/" aria-current="page">Publier un acte</a></li>
+                        <li><a href="/guides/annoncer-une-fermeture/">Annoncer une fermeture</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="cel-menu__actions"><a class="cel-button cel-button--accent" href="/inscription/">J'inscris ma commune</a></div>
+    </div>
+</div>`} />
+
+<Code lang="js" code={`import { initMenu } from '@communeenligne/design/js/menu.js'
+
+initMenu()`} />
+
+- `.cel-menu__sublist` : les pages de la rubrique en cours. Pour les ranger par famille, un élément de liste par famille, avec son titre `.cel-menu__group` et sa propre `.cel-menu__sublist`, reliée par `aria-labelledby`.
+- `.cel-menu__actions` : l'action principale, après les liens.
+
+## Comportement
+
+- **Ouverture :** le bouton passe `aria-expanded` à `true` ; le panneau couvre l'écran, le focus va sur « Fermer le menu ». Le reste de la page devient inerte et ne défile plus (classe `cel-scroll-locked` sur `<html>`).
+- **Dans le panneau :** Tab et Maj+Tab tournent entre ses liens et ses boutons, sans en sortir.
+- **Fermeture :** Échap, le bouton « Fermer le menu » ou le choix d'une page. Le focus revient au bouton « Menu », sauf quand un lien mène à une autre page. Le panneau se ferme aussi quand la fenêtre repasse au-dessus de 860 px.
+- **Sans script :** le bouton reste masqué et le panneau s'affiche comme une liste en haut de la page, sous le logo : toute la navigation reste accessible.
+- **Animation :** le panneau apparaît en fondu court (`--cel-duration-moderate`) ; aucune animation avec `prefers-reduced-motion: reduce`.
+
+## Accessibilité
+
+- Le bouton a pour nom « Ouvrir le menu », qui contient son libellé visible « Menu » ; `aria-controls` le relie au panneau.
+- Le panneau prend `role="dialog"` et `aria-modal="true"` quand le script tourne ; il a pour nom son titre « Menu ».
+- La page en cours garde `aria-current="page"`, la rubrique en cours `aria-current="true"`.
+- Bouton et liens font 44 px de haut au moins.
+
+<Contrasts pairs={[['primary', 'surface'], ['text-strong', 'background'], ['text', 'background'], ['field-border', 'surface', 3], ['text-muted-2', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Le même contenu que la navigation qu\'il remplace, dans le même ordre.', 'L\'action principale dans <code>.cel-menu__actions</code>, après les liens.', '<code>cel-hide-below-tablet</code> sur chaque navigation remplacée.']} donts={['Un menu au-dessus de 860 px.', 'Un bouton sans libellé visible ni nom accessible.', 'Des pages qui n\'existent que dans le menu.']} />

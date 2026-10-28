@@ -1,13 +1,16 @@
 ---
-const { faire = [], eviter = [] } = Astro.props
+// Rules of use in two columns: what to do, what to avoid. Each rule may hold inline HTML (code, links).
+import Icon from './Icon.astro'
+
+const { dos = [], donts = [] } = Astro.props
 ---
-<div class="doc-regles">
-    <section class="doc-regles__colonne doc-regles__colonne--faire" aria-label="À faire">
-        <p class="doc-regles__titre"><svg class="cel-icone cel-icone--20 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#check" /></svg>À faire</p>
-        <ul>{faire.map((regle) => <li set:html={regle} />)}</ul>
+<div class="cel-dos-donts">
+    <section class="cel-dos-donts__column" aria-label="À faire">
+        <p class="cel-dos-donts__title"><Icon name="check" size="20" bold />À faire</p>
+        <ul>{dos.map((rule) => <li set:html={rule} />)}</ul>
     </section>
-    <section class="doc-regles__colonne doc-regles__colonne--eviter" aria-label="À éviter">
-        <p class="doc-regles__titre"><svg class="cel-icone cel-icone--20 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#x-mark" /></svg>À éviter</p>
-        <ul>{eviter.map((regle) => <li set:html={regle} />)}</ul>
+    <section class="cel-dos-donts__column cel-dos-donts__column--dont" aria-label="À éviter">
+        <p class="cel-dos-donts__title"><Icon name="x-mark" size="20" bold />À éviter</p>
+        <ul>{donts.map((rule) => <li set:html={rule} />)}</ul>
     </section>
 </div>

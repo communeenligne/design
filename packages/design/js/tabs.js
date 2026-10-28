@@ -1,73 +1,73 @@
-// Onglets (.cel-onglets, motif ARIA tablist). Sans script, les liens mènent aux panneaux affichés l'un sous l'autre.
-// Avec, chaque lien devient un onglet : un seul panneau affiché, annoncé poliment ; flèches gauche et droite, Début et
-// Fin ; l'onglet choisi est seul atteignable par la tabulation. L'ancre de l'adresse choisit l'onglet de départ.
+// Tabs (.cel-tabs, ARIA tablist pattern). Without script, the links lead to the panels shown one under the other.
+// With it, each link becomes a tab: a single panel shown, announced politely; left and right arrows, Home and End;
+// only the selected tab is reachable with Tab. The hash of the address picks the starting tab.
 //
-// Balisage : <div class="cel-onglets" data-cel-onglets>
-//   <ul class="cel-onglets__liste" aria-label="…"><li><a class="cel-onglets__onglet" href="#panneau-1">…</a></li>…</ul>
-//   <div class="cel-onglets__panneaux"><section class="cel-onglets__panneau" id="panneau-1">…</section>…</div>
+// Markup: <div class="cel-tabs" data-cel-tabs>
+//   <ul class="cel-tabs__list" aria-label="…"><li><a class="cel-tabs__tab" href="#panel-1">…</a></li>…</ul>
+//   <div class="cel-tabs__panels"><section class="cel-tabs__panel" id="panel-1">…</section>…</div>
 // </div>
 
-const reduit = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-export const initOnglets = (racine = document) => {
-    racine.querySelectorAll('[data-cel-onglets]').forEach((groupe) => {
-        const liste = groupe.querySelector('.cel-onglets__liste')
-        const conteneur = groupe.querySelector('.cel-onglets__panneaux')
-        const panneaux = [...groupe.querySelectorAll('.cel-onglets__panneau')]
-        const onglets = [...liste.querySelectorAll('a.cel-onglets__onglet')].map((lien) => {
-            const cible = decodeURIComponent(lien.hash.slice(1))
-            const onglet = document.createElement('button')
-            onglet.type = 'button'
-            onglet.className = lien.className
-            onglet.id = `onglet-${cible}`
-            onglet.setAttribute('role', 'tab')
-            onglet.setAttribute('aria-controls', cible)
-            onglet.replaceChildren(...lien.childNodes)
-            lien.parentElement.setAttribute('role', 'presentation')
-            lien.replaceWith(onglet)
+export const initTabs = (root = document) => {
+    root.querySelectorAll('[data-cel-tabs]').forEach((group) => {
+        const list = group.querySelector('.cel-tabs__list')
+        const container = group.querySelector('.cel-tabs__panels')
+        const panels = [...group.querySelectorAll('.cel-tabs__panel')]
+        const tabs = [...list.querySelectorAll('a.cel-tabs__tab')].map((link) => {
+            const target = decodeURIComponent(link.hash.slice(1))
+            const tab = document.createElement('button')
+            tab.type = 'button'
+            tab.className = link.className
+            tab.id = `tab-${target}`
+            tab.setAttribute('role', 'tab')
+            tab.setAttribute('aria-controls', target)
+            tab.replaceChildren(...link.childNodes)
+            link.parentElement.setAttribute('role', 'presentation')
+            link.replaceWith(tab)
 
-            return onglet
+            return tab
         })
 
-        const choisir = (rang, focus = false) => {
-            onglets.forEach((onglet, i) => {
-                onglet.setAttribute('aria-selected', String(i === rang))
-                onglet.tabIndex = i === rang ? 0 : -1
+        const select = (rank, focus = false) => {
+            tabs.forEach((tab, i) => {
+                tab.setAttribute('aria-selected', String(i === rank))
+                tab.tabIndex = i === rank ? 0 : -1
             })
-            panneaux.forEach((panneau, i) => {
-                panneau.hidden = i !== rang
+            panels.forEach((panel, i) => {
+                panel.hidden = i !== rank
             })
 
             if (focus) {
-                onglets[rang].focus()
-                onglets[rang].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduit() ? 'auto' : 'smooth' })
+                tabs[rank].focus()
+                tabs[rank].scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduced() ? 'auto' : 'smooth' })
             }
         }
 
-        liste.setAttribute('role', 'tablist')
-        panneaux.forEach((panneau) => {
-            panneau.setAttribute('role', 'tabpanel')
-            panneau.setAttribute('aria-labelledby', `onglet-${panneau.id}`)
-            panneau.tabIndex = 0
+        list.setAttribute('role', 'tablist')
+        panels.forEach((panel) => {
+            panel.setAttribute('role', 'tabpanel')
+            panel.setAttribute('aria-labelledby', `tab-${panel.id}`)
+            panel.tabIndex = 0
         })
-        groupe.classList.add('cel-onglets--actif')
+        group.classList.add('cel-tabs--active')
 
-        onglets.forEach((onglet, rang) => {
-            onglet.addEventListener('click', () => choisir(rang))
-            onglet.addEventListener('keydown', (evenement) => {
-                const dernier = onglets.length - 1
-                const cible = { ArrowRight: rang === dernier ? 0 : rang + 1, ArrowLeft: rang === 0 ? dernier : rang - 1, Home: 0, End: dernier }[evenement.key]
+        tabs.forEach((tab, rank) => {
+            tab.addEventListener('click', () => select(rank))
+            tab.addEventListener('keydown', (event) => {
+                const last = tabs.length - 1
+                const target = { ArrowRight: rank === last ? 0 : rank + 1, ArrowLeft: rank === 0 ? last : rank - 1, Home: 0, End: last }[event.key]
 
-                if (cible !== undefined) {
-                    evenement.preventDefault()
-                    choisir(cible, true)
+                if (target !== undefined) {
+                    event.preventDefault()
+                    select(target, true)
                 }
             })
         })
 
-        const depuisAncre = panneaux.findIndex((panneau) => `#${panneau.id}` === window.location.hash)
-        choisir(Math.max(depuisAncre, 0))
-        // Après le premier affichage : seuls les changements d'onglet sont annoncés.
-        conteneur?.setAttribute('aria-live', 'polite')
+        const fromHash = panels.findIndex((panel) => `#${panel.id}` === window.location.hash)
+        select(Math.max(fromHash, 0))
+        // After the first render: only tab changes are announced.
+        container?.setAttribute('aria-live', 'polite')
     })
 }

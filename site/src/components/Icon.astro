@@ -1,8 +1,8 @@
 ---
-// Icône de la planche du paquet (copiée dans /design/icons/sprite.svg). Décorative : masquée aux lecteurs d'écran.
-import { ICONES } from '../lib/version.js'
+// Icon of the package sprite (copied to /design/icons/sprite.svg). Decorative: hidden from screen readers.
+import { SPRITE } from '../lib/version.js'
 
-const { nom, taille, appuyee = false, class: classe = '' } = Astro.props
-const classes = ['cel-icone', taille && `cel-icone--${taille}`, appuyee && 'cel-icone--appuyee', classe].filter(Boolean).join(' ')
+const { name, size, bold = false, class: className = '' } = Astro.props
+const classes = ['cel-icon', size && `cel-icon--${size}`, bold && 'cel-icon--bold', className].filter(Boolean).join(' ')
 ---
-<svg class={classes} aria-hidden="true" focusable="false"><use href={`${ICONES}#${nom}`} /></svg>
+<svg class={classes} aria-hidden="true" focusable="false"><use href={`${SPRITE}#${name}`} /></svg>

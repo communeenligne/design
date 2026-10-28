@@ -10,30 +10,38 @@ import Code from '../../components/Code.astro'
 
 Le paquet est publié à chaque version comme une archive jointe à la publication GitHub (« release ») du dépôt `design`. Dans le `package.json` du projet :
 
-<Code langue="json" code={`{
+<Code lang="json" code={`{
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v1.0.0/communeenligne-design-1.0.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.0.0/communeenligne-design-2.0.0.tgz"
     }
 }`} />
 
 Puis `npm install`. La version est fixée par l'adresse : pour passer à une autre version, changer les deux numéros de l'adresse.
 
-### Pourquoi une archive plutôt que « github:organisation/design#v1.0.0 »
+### Pourquoi une archive plutôt que « github:organisation/design#v2.0.0 »
 
 Le paquet se trouve dans le sous-dossier `packages/design` du dépôt. npm sait installer un dépôt Git, mais seulement le `package.json` placé à sa racine : il n'a aucune syntaxe pour un sous-dossier (Yarn et pnpm en ont une, pas npm). L'archive jointe à la publication est produite par `npm pack` dans ce sous-dossier : elle contient exactement les fichiers publiés, s'installe sans Git (les images Docker `node:alpine` n'en ont pas), et ne change jamais une fois publiée.
 
 ## Charger les styles
 
-Sans Tailwind, un seul import charge les jetons, la police, les composants et les animations :
+Le paquet est rangé en trois parties, plus le thème Tailwind :
 
-<Code langue="css" code={`@import '@communeenligne/design';`} />
+- les **[fondamentaux](/foundations/)** (`foundations/`) : toutes les variables, nommées par rôle (couleurs en clair et en sombre, typographie, espacements, points de rupture, rayons, ombres, mouvement, focus, icônes), et la police Manrope ;
+- les **[composants](/components/)** (`components/`) : un fichier par famille, `base.css`, `forms.css`, `navigation.css`, `menu.css`, `content.css`, `landing.css`, `documentation.css` ;
+- les **[modèles](/patterns/)** (`patterns/`) : en-tête, pied de page, section, en-tête de page, page de fonctionnalité, page de documentation ;
+- `tailwind.css` : le thème Tailwind 4 branché sur les variables (voir [Avec ou sans Tailwind](/getting-started/tailwind/)).
 
-Ou fichier par fichier :
+Pour tout le design system (landing, centre d'aide), sans Tailwind, un seul import :
 
-<Code langue="css" code={`@import '@communeenligne/design/tokens.css';      /* variables, thèmes clair et sombre */
-@import '@communeenligne/design/fonts/fonts.css'; /* Manrope, hébergée avec le paquet */
-@import '@communeenligne/design/components.css';  /* classes cel- */
-@import '@communeenligne/design/motion.css';      /* animations, facultatif */`} />
+<Code lang="css" code={`@import '@communeenligne/design';`} />
+
+Ou partie par partie, pour ne prendre que ce qui sert :
+
+<Code lang="css" code={`@import '@communeenligne/design/foundations';           /* variables et police, obligatoires */
+@import '@communeenligne/design/components/base.css';   /* une famille de composants */
+@import '@communeenligne/design/components/forms.css';
+@import '@communeenligne/design/patterns';              /* tous les modèles */
+@import '@communeenligne/design/motion.css';            /* animations, facultatif */`} />
 
 Un outil de construction (Vite, Laravel Vite) copie les polices et réécrit leurs adresses. Sans outil, servir le dossier du paquet tel quel : les adresses des polices sont relatives à `fonts/fonts.css`.
 
@@ -48,7 +56,7 @@ Un outil de construction (Vite, Laravel Vite) copie les polices et réécrit leu
     <link rel="stylesheet" href="/build/app.css">
 </head>
 <body class="cel-page">
-    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+    <a class="cel-skip-link" href="#contenu">Aller au contenu</a>
     …
     <script type="module" src="/build/app.js"></script>
 </body>
@@ -59,29 +67,32 @@ Un outil de construction (Vite, Laravel Vite) copie les polices et réécrit leu
 
 ## Scripts
 
-Trois modules sans dépendance, à importer dans le script de la page :
+Quatre modules sans dépendance, à importer dans le script de la page :
 
-<Code langue="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
-import { initOnglets } from '@communeenligne/design/js/tabs.js'
-import { initMouvement } from '@communeenligne/design/js/motion.js'
+<Code lang="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
+import { initTabs } from '@communeenligne/design/js/tabs.js'
+import { initMenu } from '@communeenligne/design/js/menu.js'
+import { initMotion } from '@communeenligne/design/js/motion.js'
 
-initTheme()      // sélecteur de thème (.cel-theme)
-initOnglets()    // onglets (.cel-onglets)
-initMouvement()  // apparitions au défilement`} />
+initTheme()   // sélecteur de thème (.cel-theme)
+initTabs()    // onglets (.cel-tabs)
+initMenu()    // menu sur téléphone (.cel-menu)
+initMotion()  // apparitions au défilement`} />
 
-Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le sélecteur de thème est fait de liens que le serveur traite.
+Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le menu sur téléphone est une liste en haut de la page, le sélecteur de thème est fait de liens que le serveur traite.
 
 ## Fichiers du paquet
 
 | Fichier | Contenu |
 |---|---|
-| `index.css` | Tout : jetons, polices, composants, animations |
-| `tokens.css` | Variables `--cel-*`, thème clair sur `:root`, sombre sous `:root.cel-sombre` |
-| `components.css` | Composants et modèles, classes `cel-` |
+| `index.css` | Tout : fondamentaux, composants, modèles, animations |
+| `foundations/` | Les variables, un fichier par sujet (`colors.css`, clair sur `:root`, sombre sous `:root.cel-dark` ; `typography.css`, `spacing.css`, `breakpoints.css`, `radius.css`, `shadows.css`, `motion.css`, `focus.css`, `icons.css`) ; `index.css` importe aussi Manrope |
+| `components/` | Les composants, un fichier par famille ; `index.css` les importe tous |
+| `patterns/` | Les modèles de page ; `index.css` les importe tous |
 | `motion.css` | Animations discrètes (apparitions, fondus) |
 | `tailwind.css` | Thème Tailwind 4 (bloc `@theme`) branché sur les variables |
 | `fonts/` | Manrope 500 à 800, `fonts.css`, licence OFL |
-| `icons/` | 56 icônes SVG, planche `sprite.svg`, `icons.json`, licences |
+| `icons/` | Icônes SVG, planche `sprite.svg`, `icons.json`, licences |
 | `brand/` | Logo et icône de Commune en ligne (hors licence MIT) |
-| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `motion.js` |
-| `tools/tokens.mjs` | Lecture de `tokens.css` en Node (tests, documentation) |
+| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `menu.js`, `motion.js` |
+| `tools/tokens.mjs` | Lecture des variables en Node (tests, documentation) |

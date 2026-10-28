@@ -1,0 +1,55 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Accroche"
+description: "Le haut de l'accueil de la landing : grand titre, chapô, deux actions, points forts et un visuel à droite."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Dire en une phrase ce que propose Commune en ligne, et mener à l'inscription. Une seule accroche par page, tout en haut, sous l'en-tête.
+
+## Composition
+
+`.cel-hero` (fond clair) contient un `.cel-container.cel-hero__inner` : à gauche le texte (`__texte` : titre `h1`, chapô, actions, points forts), à droite `__visuel`, l'emplacement d'une capture ou d'une illustration. Les deux colonnes passent l'une sous l'autre quand la place manque. Les illustrations animées de la landing (téléphone, notifications) restent dans l'application.
+
+<Example title="Accroche de l'accueil" background="full" html={`
+    <section class="cel-hero" aria-labelledby="titre-accroche">
+        <div class="cel-container cel-hero__inner">
+            <div class="cel-hero__text">
+                <h1 id="titre-accroche" class="cel-hero__title">Le site de votre commune, simple à tenir à jour.</h1>
+                <p class="cel-hero__lead">Actualités, agenda, actes, horaires de la mairie : la secrétaire de mairie publie en quelques minutes, les habitants trouvent tout, sur téléphone comme sur ordinateur.</p>
+                <div class="cel-hero__actions">
+                    <a href="#" class="cel-button cel-button--accent">J'inscris ma commune</a>
+                    <a href="#" class="cel-button cel-button--secondary">Voir le tarif</a>
+                </div>
+                <ul class="cel-hero__points">
+                    <li><svg class="cel-icon cel-icon--18 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg>Hébergé en France</li>
+                    <li><svg class="cel-icon cel-icon--18 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg>Accessible (RGAA)</li>
+                    <li><svg class="cel-icon cel-icon--18 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#check"></use></svg>Sans engagement</li>
+                </ul>
+            </div>
+            <div class="cel-hero__visual">
+                <img src="/design/brand/icon.svg" alt="" width="160" height="160">
+            </div>
+        </div>
+    </section>
+`} />
+
+## Règles
+
+- Un titre court, qui dit le bénéfice ; jamais deux lignes de plus que nécessaire (`text-wrap: balance`).
+- Deux actions au plus : l'inscription (ocre), puis une secondaire.
+- Trois points forts au plus, chacun avec sa coche.
+
+## Accessibilité
+
+- Le titre est le `h1` de la page ; la section est nommée par lui (`aria-labelledby`).
+- Le visuel est décoratif (`alt=""`) ou porte un texte de remplacement s'il montre une information.
+
+<Contrasts pairs={[['primary', 'background-muted'], ['text', 'background-muted'], ['on-gold', 'gold'], ['primary', 'surface']]} />
+
+<DoDont dos={['Une seule action principale.', 'Un visuel qui montre le produit.']} donts={['Un carrousel d\'accroches.', 'Une vidéo qui démarre seule.']} />

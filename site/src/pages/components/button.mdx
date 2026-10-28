@@ -16,37 +16,39 @@ Le bouton porte l'action principale d'un écran ou d'une section : s'inscrire, e
 
 ## Variantes
 
-<Example titre="Principal, secondaire, ocre" html={`
-    <a href="#" class="cel-bouton">J'inscris ma commune</a>
-    <a href="#" class="cel-bouton cel-bouton--secondaire">Voir le tarif</a>
-    <a href="#" class="cel-bouton cel-bouton--ocre">Créer le site de ma commune</a>
+Quatre variantes : le bouton principal (couleur d'action), le secondaire (couleur principale), le bouton doré `.cel-button--accent` pour l'inscription, et le bouton sur surface forte `.cel-button--on-strong`. `.cel-button--icon` ajoute une icône.
+
+<Example title="Principal, secondaire, doré" html={`
+    <a href="#" class="cel-button">J'inscris ma commune</a>
+    <a href="#" class="cel-button cel-button--secondary">Voir le tarif</a>
+    <a href="#" class="cel-button cel-button--accent">Créer le site de ma commune</a>
 `} tailwind={`
-    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6.5 py-[15px] rounded-moyen bg-bouton text-sur-fort font-forte no-underline transition duration-200 hover:bg-bouton-survol hover:text-sur-fort hover:-translate-y-px hover:shadow-bouton">J'inscris ma commune</a>
-    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6 py-[13px] rounded-moyen border-2 border-texte-marine bg-surface text-texte-marine font-forte no-underline transition duration-200 hover:text-texte-marine-survol hover:-translate-y-px hover:shadow-bouton">Voir le tarif</a>
-    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6.5 py-[15px] rounded-moyen bg-or text-sur-or font-extra no-underline transition duration-200 hover:bg-or-survol hover:text-sur-or hover:-translate-y-px hover:shadow-bouton">Créer le site de ma commune</a>
+    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6.5 py-[15px] rounded-md bg-action text-on-strong font-weight-bold no-underline transition duration-200 hover:bg-action-hover hover:text-on-strong hover:-translate-y-px hover:shadow-action">J'inscris ma commune</a>
+    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6 py-[13px] rounded-md border-2 border-principale bg-surface text-principale font-weight-bold no-underline transition duration-200 hover:text-primary-hover hover:-translate-y-px hover:shadow-action">Voir le tarif</a>
+    <a href="#" class="inline-flex items-center justify-center gap-2.5 px-6.5 py-[15px] rounded-md bg-gold text-on-gold font-weight-extrabold no-underline transition duration-200 hover:bg-gold-hover hover:text-on-gold hover:-translate-y-px hover:shadow-action">Créer le site de ma commune</a>
 `} />
 
-<Example titre="Sur une surface forte" fond="fort" html={`
-    <a href="#" class="cel-bouton cel-bouton--ocre">J'inscris ma commune</a>
-    <a href="#" class="cel-bouton cel-bouton--sur-fort">Voir une démonstration</a>
+<Example title="Sur une surface forte" background="strong" html={`
+    <a href="#" class="cel-button cel-button--accent">J'inscris ma commune</a>
+    <a href="#" class="cel-button cel-button--on-strong">Voir une démonstration</a>
 `} />
 
-<Example titre="Avec une icône" html={`
-    <a href="#" class="cel-bouton cel-bouton--icone">
+<Example title="Avec une icône" html={`
+    <a href="#" class="cel-button cel-button--icon">
         Voir la rubrique
-        <svg class="cel-icone cel-icone--16 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg>
+        <svg class="cel-icon cel-icon--16 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg>
     </a>
 `} />
 
 ## États
 
-<Example titre="Repos, survol, focus visible, désactivé" note="Le survol et le focus sont forcés ici par data-cel-etat (réservé à la documentation) ; survolez ou atteignez les autres boutons au clavier pour les voir en vrai." html={`
-    <button type="button" class="cel-bouton">Repos</button>
-    <button type="button" class="cel-bouton" data-cel-etat="survol">Survol</button>
-    <button type="button" class="cel-bouton" data-cel-etat="focus">Focus visible</button>
-    <button type="button" class="cel-bouton" disabled>Désactivé</button>
-    <button type="button" class="cel-bouton cel-bouton--secondaire" data-cel-etat="survol">Secondaire, survol</button>
-    <button type="button" class="cel-bouton cel-bouton--ocre" data-cel-etat="focus">Ocre, focus</button>
+<Example title="Repos, survol, focus visible, désactivé" note="Le survol et le focus sont forcés ici par data-cel-state (réservé à la documentation) ; survolez ou atteignez les autres boutons au clavier pour les voir en vrai." html={`
+    <button type="button" class="cel-button">Repos</button>
+    <button type="button" class="cel-button" data-cel-state="hover">Survol</button>
+    <button type="button" class="cel-button" data-cel-state="focus">Focus visible</button>
+    <button type="button" class="cel-button" disabled>Désactivé</button>
+    <button type="button" class="cel-button cel-button--secondary" data-cel-state="hover">Secondaire, survol</button>
+    <button type="button" class="cel-button cel-button--accent" data-cel-state="focus">Ocre, focus</button>
 `} />
 
 Au survol et au focus, le bouton se soulève d'un pixel et prend une ombre (aucune ombre en sombre). Avec la réduction des animations, il ne bouge plus. Désactivé, il reste lisible mais terne, sans élévation ; préférer un bouton actif qui explique ce qui manque, le désactivé n'étant pas annoncé par tous les lecteurs d'écran.
@@ -55,19 +57,19 @@ Au survol et au focus, le bouton se soulève d'un pixel et prend une ombre (aucu
 
 - **Rôle :** `<button>` pour une action sur la page, `<a href>` pour aller à une autre page. Jamais un `<div>` cliquable.
 - **Clavier :** atteint par Tab ; Entrée active un lien, Entrée et Espace activent un bouton.
-- **Focus :** contour de 3 px décalé de 3 px, marine sur fond clair, or sur surface forte.
-- **Libellé :** un verbe, qui dit ce qui se passe (« Envoyer ma demande », pas « Valider »). Un bouton à icône seule a un texte masqué (`.cel-masque`).
+- **Focus :** contour de 3 px décalé de 3 px, dans la couleur de focus du thème (marine sur fond clair, or sur surface forte pour Commune en ligne). Voir [Focus visible](/foundations/focus/).
+- **Libellé :** un verbe, qui dit ce qui se passe (« Envoyer ma demande », pas « Valider »). Un bouton à icône seule a un texte masqué (`.cel-visually-hidden`).
 - **Désactivé :** `disabled` sur un `<button>`, `aria-disabled="true"` sur un lien (et pas de `href`).
 
-<Contrasts paires={[['sur-fort', 'bouton'], ['sur-fort', 'bouton-survol'], ['texte-marine', 'surface'], ['sur-or', 'or'], ['sur-or', 'or-survol'], ['bouton', 'fond-page', 3], ['texte-discret', 'surface-survol']]} />
+<Contrasts pairs={[['on-strong', 'action'], ['on-strong', 'action-hover'], ['primary', 'surface'], ['action', 'background', 3], ['text-muted', 'surface-hover'], ['on-gold', 'gold'], ['on-gold', 'gold-hover']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={[
+<DoDont dos={[
     'Un seul bouton principal par section ; le secondaire à côté, s\'il en faut un.',
     'Le bouton ocre pour l\'action commerciale principale (inscription), le principal marine pour le reste.',
     'Un libellé court, commençant par un verbe.',
-]} eviter={[
+]} donts={[
     'Deux boutons ocre côte à côte.',
     'Un bouton désactivé sans explication de ce qui manque.',
     'Un bouton qui ouvre une autre page sans que le libellé le dise.',

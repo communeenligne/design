@@ -1,0 +1,315 @@
+/*
+ * @communeenligne/design, foundations: colors, light and dark.
+ *
+ * Light values on :root, dark values under the cel-dark class set on <html>, never inferred from the system
+ * preference. Variables are named by role (primary, text, background, line…); each color keeps, as a comment, the name
+ * of the matching variable in resources/css/landing.css of the application (shown by the documentation site).
+ *
+ * A group "same in both themes" is not redefined in dark (colors set on a strong or gold surface). A variable that
+ * refers to another one (var()) follows it in dark. Shadow colors become transparent in dark (borders are enough).
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Brand (same in both themes) ---- */
+    --cel-color-navy: #1f3a5f; /* --primary */
+    --cel-color-navy-dark: #152a45; /* --primary-dark */
+    --cel-color-navy-soft: #284870; /* --primary-soft */
+    --cel-color-ochre: #e0a030; /* --accent */
+    --cel-color-gold: #f1c46b; /* --gold */
+    --cel-color-green: #2f7a4f; /* --green */
+    --cel-color-forest: #2f5d45; /* --forest */
+    --cel-color-on-dark: #d5dfeb; /* --on-dark */
+
+    /* ---- Text ---- */
+    --cel-color-text-strong: #18202b; /* --ink */
+    --cel-color-text: #374151; /* --text */
+    --cel-color-text-2: #3d4c5b; /* --text-2 */
+    --cel-color-text-3: #3d4a5c; /* --text-3 */
+    --cel-color-text-muted: #4b5563; /* --muted */
+    --cel-color-text-muted-2: #556270; /* --muted-2 */
+    --cel-color-text-muted-3: #5b6472; /* --muted-3 */
+    --cel-color-text-muted-4: #5b6774; /* --muted-4 */
+    --cel-color-text-muted-5: #4b5866; /* --muted-5 */
+    --cel-color-primary: #1f3a5f; /* --primary-text */
+    --cel-color-primary-hover: #152a45; /* --primary-text-hover */
+    --cel-color-text-green: #2f7a4f; /* --green-text */
+    --cel-color-text-forest: #2f5d45; /* --forest-text */
+    --cel-color-text-ochre: #8a5a0b; /* --ocre-text */
+    --cel-color-error: #a4262c; /* --error */
+    --cel-color-error-ink: #5f1015; /* --error-ink */
+
+    /* ---- Text on tints ---- */
+    --cel-color-ochre-title: #3d2805; /* --ocre-title */
+    --cel-color-ochre-ink: #4a3509; /* --ocre-ink */
+    --cel-color-ochre-ink-2: #5c3d06; /* --ocre-ink-2 */
+    --cel-color-warning-ink: #6b4a0e; /* --ocre-ink-3 */
+    --cel-color-ochre-icon: #b07a16; /* --ocre-icon */
+    --cel-color-blue-title: #142a45; /* --blue-title */
+    --cel-color-blue-text: #2b3f5a; /* --blue-text */
+    --cel-color-blue-ink: #1f4e86; /* --blue-ink */
+    --cel-color-green-title: #123a25; /* --green-title */
+    --cel-color-green-text: #24483a; /* --green-text-2 */
+    --cel-color-success-ink: #1e6542; /* --green-ink */
+    --cel-color-green-ink-2: #1e5e3c; /* --green-ink-2 */
+    --cel-color-green-ink-3: #1e5c38; /* --green-ink-3 */
+
+    /* ---- Surfaces ---- */
+    --cel-color-background: #ffffff; /* --page */
+    --cel-color-surface: #ffffff; /* --surface */
+    --cel-color-background-muted: #f4f6f9; /* --light */
+    --cel-color-surface-muted: #f3f6f9; /* --surface-muted */
+    --cel-color-surface-muted-2: #f2f6fa; /* --surface-muted-2 */
+    --cel-color-surface-hover: #e8eef5; /* --surface-hover */
+    --cel-color-surface-current: #eef2f7; /* --surface-current */
+    --cel-color-chrome: #e9edf2; /* --chrome */
+    --cel-color-segmented-background: #e6ebf0; /* --segmented */
+    --cel-color-dot: #c3cbd6; /* --dot */
+    --cel-color-ruler-start: #dde3ea; /* --ruler-start */
+    --cel-color-ruler-end: #b7c2ce; /* --ruler-end */
+    --cel-color-ruler-tick: #9aa5b1; /* --ruler-tick */
+
+    /* ---- Tints of callouts and illustrations ---- */
+    --cel-color-tint-ochre: #fff1d6; /* --tint-ocre */
+    --cel-color-tint-ochre-2: #fff6e5; /* --tint-ocre-2 */
+    --cel-color-tint-ochre-3: #fff4de; /* --tint-ocre-3 */
+    --cel-color-tint-ochre-4: #fff9ee; /* --tint-ocre-4 */
+    --cel-color-tint-ochre-5: #fdf6e7; /* --tint-ocre-5 */
+    --cel-color-warning-background: #fbefd5; /* --tint-sand */
+    --cel-color-tint-sand-light: #fbf3e2; /* --tint-sable */
+    --cel-color-tint-sand-image: #e4ddcf; /* --tint-sand-image */
+    --cel-color-tint-blue: #e3ecf7; /* --tint-blue */
+    --cel-color-tint-blue-2: #eaf0f7; /* --tint-blue-2 */
+    --cel-color-tint-sky: #eef3f8; /* --tint-ciel */
+    --cel-color-tint-green: #e7f2ea; /* --tint-green */
+    --cel-color-success-background: #e2f1ea; /* --tint-green-2 */
+    --cel-color-tint-green-3: #e3f1e8; /* --tint-green-3 */
+    --cel-color-tint-sage: #eef6ec; /* --tint-sauge */
+    --cel-color-tint-green-image: #d8e3da; /* --tint-green-image */
+    --cel-color-tint-lilac: #f3eef8; /* --tint-lilas */
+    --cel-color-error-background: #fdf0f0; /* --tint-red */
+
+    /* ---- Borders and lines (fields and interface elements: 3:1 at least) ---- */
+    --cel-color-line: #dce2ea; /* --line */
+    --cel-color-line-soft: #e3e7ed; /* --line-soft */
+    --cel-color-line-strong: #9aa6b5; /* --line-strong */
+    --cel-color-line-3: #c8d1db; /* --line-3 */
+    --cel-color-line-4: #d5dce4; /* --line-4 */
+    --cel-color-line-5: #e6ebf0; /* --line-5 */
+    --cel-color-line-6: #eef1f4; /* --line-6 */
+    --cel-color-field-border: #7a8696; /* --field-border */
+    --cel-color-field-line: #b8c2cf; /* --field-line */
+    --cel-color-focus-line: #4a6a8f; /* --focus-line */
+
+    /* ---- Strong surfaces (white text on them) ---- */
+    --cel-color-strong: #1f3a5f; /* --strong */
+    --cel-color-strong-deep: #152a45; /* --strong-deep */
+    --cel-color-strong-soft: #284870; /* --strong-soft */
+    --cel-color-action: #1f3a5f; /* --button */
+    --cel-color-action-hover: #152a45; /* --button-hover */
+    --cel-color-gold-hover: #f6d58e; /* --gold-hover */
+
+    /* ---- Shadow colors (transparent in dark) ---- */
+    --cel-color-shadow-ink-10: rgba(24, 32, 43, 0.1); /* --shadow-ink-10 */
+    --cel-color-shadow-ink-12: rgba(24, 32, 43, 0.12); /* --shadow-ink-12 */
+    --cel-color-shadow-ink-15: rgba(24, 32, 43, 0.15); /* --shadow-ink-15 */
+    --cel-color-shadow-navy-06: rgba(31, 58, 95, 0.06); /* --shadow-navy-06 */
+    --cel-color-shadow-navy-07: rgba(31, 58, 95, 0.07); /* --shadow-navy-07 */
+    --cel-color-shadow-navy-08: rgba(31, 58, 95, 0.08); /* --shadow-navy-08 */
+    --cel-color-shadow-navy-10: rgba(31, 58, 95, 0.1); /* --shadow-navy-10 */
+    --cel-color-shadow-navy-12: rgba(31, 58, 95, 0.12); /* --shadow-navy-12 */
+    --cel-color-shadow-navy-16: rgba(31, 58, 95, 0.16); /* --shadow-navy-16 */
+    --cel-color-shadow-navy-28: rgba(31, 58, 95, 0.28); /* --shadow-navy-28 */
+    --cel-color-shadow-deep-18: rgba(8, 20, 38, 0.18); /* --shadow-deep-18 */
+    --cel-color-shadow-deep-35: rgba(8, 20, 38, 0.35); /* --shadow-deep-35 */
+    --cel-color-shadow-black-08: rgba(0, 0, 0, 0.08); /* --shadow-black-08 */
+    --cel-color-shadow-black-20: rgba(0, 0, 0, 0.2); /* --shadow-black-20 */
+
+    /* ---- Pictograms (comparison marks, soft icons) ---- */
+    --cel-color-mark-good-text: #2e7d4f; /* --mark-good-text */
+    --cel-color-mark-mid-background: #e8dcc2; /* --mark-mid-bg */
+    --cel-color-mark-mid: #7a5310; /* --mark-mid */
+    --cel-color-mark-bad-background: #f1dada; /* --mark-bad-bg */
+    --cel-color-mark-bad: #9b2c2c; /* --mark-bad */
+    --cel-color-icon-soft: #4a6a8f; /* --icon-soft */
+
+    /* ---- On a strong or gold surface (same in both themes) ---- */
+    --cel-color-mark-good: #2e7d4f; /* --mark-good */
+    --cel-color-on-strong: #ffffff; /* --on-strong */
+    --cel-color-on-strong-soft: #c9d5e2; /* --on-strong-soft */
+    --cel-color-on-strong-2: #e6ecf3; /* --on-strong-2 */
+    --cel-color-on-strong-gold: #f2c77b; /* --on-strong-gold */
+    --cel-color-on-strong-green: #8fd3ae; /* --on-strong-green */
+    --cel-color-on-forest: #e3ece7; /* --on-forest */
+    --cel-color-on-strong-line: #4e6f99; /* --on-strong-line */
+    --cel-color-on-strong-divider-12: rgba(255, 255, 255, 0.12); /* --on-strong-divider-12 */
+    --cel-color-on-strong-divider-16: rgba(255, 255, 255, 0.16); /* --on-strong-divider-16 */
+    --cel-color-on-strong-divider-18: rgba(255, 255, 255, 0.18); /* --on-strong-divider-18 */
+    --cel-color-on-strong-ring: rgba(255, 255, 255, 0.6); /* --on-strong-ring */
+    --cel-color-on-gold: #18202b; /* --on-gold */
+    --cel-color-on-gold-navy: #1f3a5f; /* --on-gold-primary */
+    --cel-color-glow-gold: rgba(241, 196, 107, 0.16); /* --glow-gold */
+    --cel-color-glow-gold-0: rgba(241, 196, 107, 0); /* --glow-gold-0 */
+    --cel-color-pulse-green: rgba(47, 93, 69, 0.45); /* --pulse-green */
+    --cel-color-pulse-green-0: rgba(47, 93, 69, 0); /* --pulse-green-0 */
+
+    /* ---- Illustration scenes ---- */
+    --cel-color-scene-phone: #14202b; /* --color-scene-phone */
+    --cel-color-scene-text: #24323f; /* --color-scene-text */
+    --cel-color-scene-muted: #556270; /* --color-scene-muted */
+    --cel-color-scene-line: #e4e8ec; /* --color-scene-line */
+    --cel-color-scene-step: #dde3ea; /* --color-scene-step */
+    --cel-color-scene-navy: #1f3a5f; /* --color-scene-navy */
+    --cel-color-scene-blue: #1d5c82; /* --color-scene-blue */
+    --cel-color-scene-link: #1d5c82; /* --color-scene-link */
+    --cel-color-scene-green: #1e5c38; /* --color-scene-green */
+    --cel-color-scene-green-soft: #e3f1e8; /* --color-scene-green-soft */
+    --cel-color-scene-ochre: #6b4a0e; /* --color-scene-ochre */
+    --cel-color-scene-ochre-soft: #fbefd5; /* --color-scene-ochre-soft */
+    --cel-color-scene-grey: #6b7785; /* --color-scene-grey */
+    --cel-color-scene-photo: #d9e2d3; /* --color-scene-photo */
+    --cel-color-scene-picture: #ebd9bf; /* --color-scene-picture */
+    --cel-color-scene-card: #ffffff; /* --color-scene-card */
+
+    /* ---- Illustration scenes (same in both themes) ---- */
+    --cel-color-scene-yellow: #f2c14e; /* --color-scene-yellow */
+
+    color-scheme: light;
+}
+
+/* Dark theme: only colors change. */
+:root.cel-dark {
+    /* ---- Text ---- */
+    --cel-color-text-strong: #edf1f5;
+    --cel-color-text: #cdd5de;
+    --cel-color-text-2: #c6cfd9;
+    --cel-color-text-3: #c6cfd9;
+    --cel-color-text-muted: #a9b4c1;
+    --cel-color-text-muted-2: #a7b3c0;
+    --cel-color-text-muted-3: #a7b3c0;
+    --cel-color-text-muted-4: #a7b3c0;
+    --cel-color-text-muted-5: #b4bfcb;
+    --cel-color-primary: #a7c9ee;
+    --cel-color-primary-hover: #cfe1f6;
+    --cel-color-text-green: #7fd1a2;
+    --cel-color-text-forest: #8fd3ae;
+    --cel-color-text-ochre: #f1c46b;
+    --cel-color-error: #ff9a9a;
+    --cel-color-error-ink: #ffd3d3;
+
+    /* ---- Text on tints ---- */
+    --cel-color-ochre-title: #f6e2b8;
+    --cel-color-ochre-ink: #f1d59a;
+    --cel-color-ochre-ink-2: #f1d59a;
+    --cel-color-warning-ink: #f1d59a;
+    --cel-color-ochre-icon: #e8b04a;
+    --cel-color-blue-title: #d8e7f8;
+    --cel-color-blue-text: #bfd3ea;
+    --cel-color-blue-ink: #aecdf2;
+    --cel-color-green-title: #cdeedb;
+    --cel-color-green-text: #b3dcc4;
+    --cel-color-success-ink: #9fdcb7;
+    --cel-color-green-ink-2: #9fdcb7;
+    --cel-color-green-ink-3: #9fdcb7;
+
+    /* ---- Surfaces ---- */
+    --cel-color-background: #0f1620;
+    --cel-color-surface: #172230;
+    --cel-color-background-muted: #131c28;
+    --cel-color-surface-muted: #1b2735;
+    --cel-color-surface-muted-2: #1b2735;
+    --cel-color-surface-hover: #243346;
+    --cel-color-surface-current: #22324a;
+    --cel-color-chrome: #26354a;
+    --cel-color-segmented-background: #0f1620;
+    --cel-color-dot: #4a5a6e;
+    --cel-color-ruler-start: #2c3a4c;
+    --cel-color-ruler-end: #5a6b80;
+    --cel-color-ruler-tick: #7d8ca0;
+
+    /* ---- Tints of callouts and illustrations ---- */
+    --cel-color-tint-ochre: #33280f;
+    --cel-color-tint-ochre-2: #2e2511;
+    --cel-color-tint-ochre-3: #2b2312;
+    --cel-color-tint-ochre-4: #262012;
+    --cel-color-tint-ochre-5: #262012;
+    --cel-color-warning-background: #2e2611;
+    --cel-color-tint-sand-light: #2a2414;
+    --cel-color-tint-sand-image: #3a3426;
+    --cel-color-tint-blue: #172a42;
+    --cel-color-tint-blue-2: #131e2b;
+    --cel-color-tint-sky: #182838;
+    --cel-color-tint-green: #163023;
+    --cel-color-success-background: #15301f;
+    --cel-color-tint-green-3: #15301f;
+    --cel-color-tint-sage: #1a2c1d;
+    --cel-color-tint-green-image: #2b3b2f;
+    --cel-color-tint-lilac: #251f33;
+    --cel-color-error-background: #3a1618;
+
+    /* ---- Borders and lines (fields and interface elements: 3:1 at least) ---- */
+    --cel-color-line: #34445a;
+    --cel-color-line-soft: #2a394c;
+    --cel-color-line-strong: #6f8095;
+    --cel-color-line-3: #3c4c60;
+    --cel-color-line-4: #33435a;
+    --cel-color-line-5: #2b3a4d;
+    --cel-color-line-6: #2b3a4d;
+    --cel-color-field-border: #8392a6;
+    --cel-color-field-line: #55667b;
+    --cel-color-focus-line: #8fb3dc;
+
+    /* ---- Strong surfaces (white text on them) ---- */
+    --cel-color-strong: #24476f;
+    --cel-color-strong-deep: #0b1625;
+    --cel-color-strong-soft: #2f5684;
+    --cel-color-action: #33659a;
+    --cel-color-action-hover: #2a5788;
+    --cel-color-gold-hover: #f6d58e;
+
+    /* ---- Shadow colors (transparent in dark) ---- */
+    --cel-color-shadow-ink-10: transparent;
+    --cel-color-shadow-ink-12: transparent;
+    --cel-color-shadow-ink-15: transparent;
+    --cel-color-shadow-navy-06: transparent;
+    --cel-color-shadow-navy-07: transparent;
+    --cel-color-shadow-navy-08: transparent;
+    --cel-color-shadow-navy-10: transparent;
+    --cel-color-shadow-navy-12: transparent;
+    --cel-color-shadow-navy-16: transparent;
+    --cel-color-shadow-navy-28: transparent;
+    --cel-color-shadow-deep-18: transparent;
+    --cel-color-shadow-deep-35: transparent;
+    --cel-color-shadow-black-08: transparent;
+    --cel-color-shadow-black-20: transparent;
+
+    /* ---- Pictograms (comparison marks, soft icons) ---- */
+    --cel-color-mark-good-text: #7fd1a2;
+    --cel-color-mark-mid-background: #4a3d22;
+    --cel-color-mark-mid: #f1d59a;
+    --cel-color-mark-bad-background: #4a2224;
+    --cel-color-mark-bad: #ffadad;
+    --cel-color-icon-soft: #8fb3dc;
+
+    /* ---- Illustration scenes ---- */
+    --cel-color-scene-phone: #0b1118;
+    --cel-color-scene-text: #e3e9ef;
+    --cel-color-scene-muted: #a7b3c0;
+    --cel-color-scene-line: #34445a;
+    --cel-color-scene-step: #2c3a4c;
+    --cel-color-scene-navy: #a7c9ee;
+    --cel-color-scene-blue: #2c6a93;
+    --cel-color-scene-link: #8cc0e4;
+    --cel-color-scene-green: #8fd3ae;
+    --cel-color-scene-green-soft: #15301f;
+    --cel-color-scene-ochre: #f1d59a;
+    --cel-color-scene-ochre-soft: #33280f;
+    --cel-color-scene-grey: #8a97a6;
+    --cel-color-scene-photo: #2f3d33;
+    --cel-color-scene-picture: #3d3426;
+    --cel-color-scene-card: #1d2938;
+
+    color-scheme: dark;
+}

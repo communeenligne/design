@@ -7,30 +7,30 @@ description: "La brique des pages : conteneur, marges hautes et basses fluides, 
 import Example from '../../components/Example.astro'
 import Code from '../../components/Code.astro'
 import DoDont from '../../components/DoDont.astro'
-import { SECTION, FIN_DE_PAGE } from '../../lib/patterns.js'
+import { SECTION, PAGE_END } from '../../lib/patterns.js'
 
 ## Composition
 
-<Code code={`<section class="cel-section [cel-section--claire | cel-section--forte]" aria-labelledby="titre-x">
-    <div class="cel-conteneur cel-pile cel-pile--10">
+<Code code={`<section class="cel-section [cel-section--muted | cel-section--strong]" aria-labelledby="titre-x">
+    <div class="cel-container cel-stack cel-stack--10">
         <div class="cel-intro">
-            <h2 id="titre-x" class="cel-titre-section cel-titre-section--marine">Titre</h2>
-            <p class="cel-chapo">Une phrase qui dit ce que la section apporte.</p>
+            <h2 id="titre-x" class="cel-section-title cel-section-title--primary">Titre</h2>
+            <p class="cel-lead">Une phrase qui dit ce que la section apporte.</p>
         </div>
         …
     </div>
 </section>`} />
 
-- **Marges :** `--cel-espace-section`, de 56 à 88 px selon la largeur.
+- **Marges :** `--cel-space-section`, de 56 à 88 px selon la largeur.
 - **Fonds :** blanc (par défaut), clair (`--claire`), marine (`--forte`, texte blanc, focus or). Deux sections qui se suivent n'ont pas le même fond.
-- **Écarts :** `cel-pile--7` (28 px) pour une liste, `--10` (40 px) entre l'intro et un bloc.
+- **Écarts :** `cel-stack--7` (28 px) pour une liste, `--10` (40 px) entre l'intro et un bloc.
 
-<Example titre="Section claire : questions fréquentes" fond="plein" html={SECTION} />
+<Example title="Section claire : questions fréquentes" background="full" html={SECTION} />
 
-<Example titre="Section marine : fin de page" fond="plein" html={FIN_DE_PAGE} />
+<Example title="Section marine : fin de page" background="full" html={PAGE_END} />
 
 ## Accessibilité
 
 Chaque section a un titre `h2`, relié par `aria-labelledby` ; un seul `h1` par page.
 
-<DoDont faire={['Un titre court, un chapô d\'une phrase.', 'Alterner les fonds.']} eviter={['Deux sections marine à la suite.', 'Une section sans titre.']} />
+<DoDont dos={['Un titre court, un chapô d\'une phrase.', 'Alterner les fonds.']} donts={['Deux sections marine à la suite.', 'Une section sans titre.']} />

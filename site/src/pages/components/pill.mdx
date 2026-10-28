@@ -16,25 +16,25 @@ Une rangée de raccourcis vers les groupes d'une page (« Informer », « Démar
 
 ## Variantes
 
-<Example titre="Pastilles-liens avec compteur, pastille d'information, puces" html={`
-    <ul class="cel-pastilles">
-        <li><a href="#" class="cel-pastille">Informer <span class="cel-pastille__compteur">8</span></a></li>
-        <li><a href="#" class="cel-pastille">Démarches <span class="cel-pastille__compteur">5</span></a></li>
-        <li><a href="#" class="cel-pastille">Vie locale <span class="cel-pastille__compteur">6</span></a></li>
+<Example title="Pastilles-liens avec compteur, pastille d'information, puces" html={`
+    <ul class="cel-pills">
+        <li><a href="#" class="cel-pill">Informer <span class="cel-pill__count">8</span></a></li>
+        <li><a href="#" class="cel-pill">Démarches <span class="cel-pill__count">5</span></a></li>
+        <li><a href="#" class="cel-pill">Vie locale <span class="cel-pill__count">6</span></a></li>
     </ul>
-    <span class="cel-pastille"><svg class="cel-icone cel-icone--18" aria-hidden="true"><use href="/design/icons/sprite.svg#clock"></use></svg>10 minutes</span>
-    <span class="cel-pastille"><span class="cel-puce"></span>Mise en ligne en une semaine</span>
-    <span class="cel-pastille"><span class="cel-puce cel-puce--verte"></span>Hébergé en France</span>
+    <span class="cel-pill"><svg class="cel-icon cel-icon--18" aria-hidden="true"><use href="/design/icons/sprite.svg#clock"></use></svg>10 minutes</span>
+    <span class="cel-pill"><span class="cel-dot"></span>Mise en ligne en une semaine</span>
+    <span class="cel-pill"><span class="cel-dot cel-dot--green"></span>Hébergé en France</span>
 `} tailwind={`
-    <a href="#" class="inline-flex items-center gap-2 px-3.5 py-[9px] rounded-pilule border border-filet bg-surface text-texte-marine text-15 font-forte no-underline transition duration-250 hover:-translate-y-0.5 hover:shadow-pastille">Informer <span class="px-2 py-px rounded-pilule bg-surface-survol text-13">8</span></a>
+    <a href="#" class="inline-flex items-center gap-2 px-3.5 py-[9px] rounded-pill border border-line bg-surface text-primary text-15 font-weight-bold no-underline transition duration-250 hover:-translate-y-0.5 hover:shadow-pill">Informer <span class="px-2 py-px rounded-pill bg-surface-hover text-13">8</span></a>
 `} />
 
 ## États
 
-<Example titre="Repos, survol, focus visible" html={`
-    <a href="#" class="cel-pastille">Repos</a>
-    <a href="#" class="cel-pastille" data-cel-etat="survol">Survol</a>
-    <a href="#" class="cel-pastille" data-cel-etat="focus">Focus visible</a>
+<Example title="Repos, survol, focus visible" html={`
+    <a href="#" class="cel-pill">Repos</a>
+    <a href="#" class="cel-pill" data-cel-state="hover">Survol</a>
+    <a href="#" class="cel-pill" data-cel-state="focus">Focus visible</a>
 `} />
 
 Une pastille-lien se soulève de 2 px au survol et au focus, avec une ombre légère (aucune ombre en sombre).
@@ -45,8 +45,8 @@ Une pastille-lien se soulève de 2 px au survol et au focus, avec une ombre lég
 - **Clavier :** Tab ; focus de 3 px.
 - **Puce :** décorative, le texte qui suit porte le sens.
 
-<Contrasts paires={[['texte-marine', 'surface'], ['texte-marine', 'surface-survol']]} />
+<Contrasts pairs={[['primary', 'surface'], ['primary', 'surface-hover']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Des libellés courts et parallèles.', 'Le compteur pour aider à choisir.']} eviter={['Plus d\'une dizaine de pastilles d\'affilée.', 'Une pastille pour un état (prendre le badge).']} />
+<DoDont dos={['Des libellés courts et parallèles.', 'Le compteur pour aider à choisir.']} donts={['Plus d\'une dizaine de pastilles d\'affilée.', 'Une pastille pour un état (prendre le badge).']} />

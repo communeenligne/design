@@ -1,11 +1,12 @@
 /*
- * Feuille du site de documentation : le paquet, avec son thème Tailwind (pour rendre les versions Tailwind des
- * exemples), puis la mise en page propre au site (site.css), écrite avec les seules variables du paquet.
+ * Stylesheet of the documentation site: the package, with its Tailwind theme (to render the Tailwind versions of the
+ * examples), then the layout of the site itself (site.css), written with the variables of the package only.
  */
 
 @import 'tailwindcss/theme.css' layer(theme);
 @import '@communeenligne/design/tailwind.css';
-@import '@communeenligne/design/components.css';
+@import '@communeenligne/design/components';
+@import '@communeenligne/design/patterns';
 @import '@communeenligne/design/motion.css';
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 @source '../pages';

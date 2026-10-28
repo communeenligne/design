@@ -1,0 +1,45 @@
+/*
+ * @communeenligne/design, foundations: spacing and layout.
+ *
+ * Spacing scale (4 px step), content widths and side gutters.
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Spacing (1 step = 4 px, like Tailwind) ---- */
+    --cel-space-0-5: 2px;
+    --cel-space-1: 4px;
+    --cel-space-1-5: 6px;
+    --cel-space-2: 8px;
+    --cel-space-2-5: 10px;
+    --cel-space-3: 12px;
+    --cel-space-3-5: 14px;
+    --cel-space-4: 16px;
+    --cel-space-4-5: 18px;
+    --cel-space-5: 20px;
+    --cel-space-5-5: 22px;
+    --cel-space-6: 24px;
+    --cel-space-6-5: 26px;
+    --cel-space-7: 28px;
+    --cel-space-7-5: 30px;
+    --cel-space-8: 32px;
+    --cel-space-9: 36px;
+    --cel-space-10: 40px;
+    --cel-space-12: 48px;
+    --cel-space-13: 52px;
+    --cel-space-14: 56px;
+    --cel-space-16: 64px;
+    --cel-space-18: 72px;
+    --cel-space-20: 80px;
+    --cel-space-22: 88px;
+    --cel-space-section: clamp(56px, 8vw, 88px); /* --section-padding */
+
+    /* ---- Layout ---- */
+    --cel-width-content: 1200px; /* --wrap */
+    --cel-width-narrow: 880px; /* .wrap--narrow */
+    --cel-gutter: 24px; /* .wrap */
+    --cel-gutter-phone: 16px; /* .wrap, 640 px and below */
+    --cel-width-reading: 46em; /* .section-intro */
+}

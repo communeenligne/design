@@ -1,0 +1,573 @@
+/*
+ * @communeenligne/design, components, landing sections family: hero, feature cards, price grid (tiers), pricing
+ * block, references strip. Taken from the landing of communeenligne.fr.
+ *
+ * Renaming a class is a major version.
+ */
+
+/* ---------- Hero ---------- */
+
+.cel-hero {
+    background: var(--cel-color-background-muted);
+}
+
+.cel-hero__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-14);
+    padding-top: clamp(48px, 7vw, 72px);
+    padding-bottom: clamp(56px, 8vw, 80px);
+}
+
+.cel-hero__text {
+    flex: 1 1 460px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-5-5);
+}
+
+.cel-hero__title {
+    font-size: var(--cel-text-title-hero);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    color: var(--cel-color-primary);
+    text-wrap: balance;
+}
+
+.cel-hero__lead {
+    max-width: 34em;
+    font-size: var(--cel-text-lead);
+    line-height: var(--cel-leading-160);
+    color: var(--cel-color-text);
+}
+
+.cel-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-3);
+    margin-top: var(--cel-space-1-5);
+}
+
+.cel-hero__points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-2) var(--cel-space-6);
+    margin-top: var(--cel-space-2);
+    padding: 0;
+    list-style: none;
+    color: var(--cel-color-text);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-hero__points li {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+}
+
+/* Slot for the illustration or the screenshot, right of the text (below it on phones). */
+.cel-hero__visual {
+    flex: 1 1 480px;
+    min-width: 0;
+    position: relative;
+    padding: var(--cel-space-6) 0;
+}
+
+/* ---------- Feature cards ---------- */
+
+/* Three colored cards: three equal columns on large screens, a single column below (never one card stretched under
+   two others). */
+.cel-features {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cel-space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-feature {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+    height: 100%;
+    padding: var(--cel-space-7);
+    border-radius: var(--cel-radius-xl);
+    background: var(--cel-color-tint-blue);
+}
+
+.cel-feature__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-feature__title {
+    color: var(--cel-color-blue-title);
+    font-size: var(--cel-text-22);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-feature__text {
+    color: var(--cel-color-blue-text);
+}
+
+.cel-feature--ochre {
+    background: var(--cel-color-tint-ochre-3);
+}
+
+.cel-feature--ochre .cel-feature__icon {
+    background: var(--cel-color-ochre);
+    color: var(--cel-color-on-gold);
+}
+
+.cel-feature--ochre .cel-feature__title {
+    color: var(--cel-color-ochre-title);
+}
+
+.cel-feature--ochre .cel-feature__text {
+    color: var(--cel-color-ochre-ink);
+}
+
+.cel-feature--green {
+    background: var(--cel-color-success-background);
+}
+
+.cel-feature--green .cel-feature__icon {
+    background: var(--cel-color-green);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-feature--green .cel-feature__title {
+    color: var(--cel-color-green-title);
+}
+
+.cel-feature--green .cel-feature__text {
+    color: var(--cel-color-green-text);
+}
+
+/* ---------- Price grid (tiers) ---------- */
+
+/* One card per population tier; the one of the chosen municipality is lifted, on a strong background. */
+.cel-tiers {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--cel-space-3-5);
+    margin: 0;
+    padding: var(--cel-space-5) 0 0;
+    list-style: none;
+}
+
+.cel-tier {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1);
+    height: 100%;
+    padding: var(--cel-space-6-5) var(--cel-space-5-5);
+    border-radius: var(--cel-radius-18);
+    background: var(--cel-color-surface);
+    box-shadow: var(--cel-shadow-card);
+    transition:
+        translate var(--cel-duration-normal) var(--cel-ease-glide),
+        background-color var(--cel-duration-normal) var(--cel-ease-glide);
+}
+
+.cel-tier__label {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-tier__price {
+    margin-top: var(--cel-space-1-5);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-price-tier);
+    line-height: var(--cel-leading-100);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title);
+}
+
+.cel-tier__price--quote {
+    font-size: var(--cel-text-price-quote);
+}
+
+.cel-tier__subtitle {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+}
+
+.cel-tier__setup {
+    margin-top: var(--cel-space-2-5);
+    padding-top: var(--cel-space-2-5);
+    border-top: 1px solid var(--cel-color-line-6);
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-tier__link {
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-tier--selected {
+    translate: 0 -14px;
+    background: var(--cel-color-strong);
+    box-shadow: var(--cel-shadow-tier-selected);
+}
+
+.cel-tier--selected .cel-tier__label {
+    color: var(--cel-color-on-strong-gold);
+}
+
+.cel-tier--selected :is(.cel-tier__price, .cel-tier__setup, .cel-tier__link) {
+    color: var(--cel-color-on-strong);
+}
+
+.cel-tier--selected .cel-tier__subtitle {
+    color: var(--cel-color-on-strong-soft);
+}
+
+.cel-tier--selected .cel-tier__setup {
+    border-top-color: var(--cel-color-on-strong-divider-18);
+}
+
+/* ---------- Pricing block ---------- */
+
+/* A single block in two parts: price and tiers on a strong background, what is included on the right. */
+.cel-pricing {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    border-radius: var(--cel-radius-xl);
+    background: var(--cel-color-surface);
+    box-shadow: var(--cel-shadow-block);
+}
+
+.cel-pricing__main,
+.cel-pricing__side {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-5-5);
+    padding: clamp(24px, 4vw, 40px);
+}
+
+.cel-pricing__main {
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-pricing__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1);
+}
+
+.cel-pricing__from {
+    color: var(--cel-color-on-strong-soft);
+    font-size: var(--cel-text-15);
+}
+
+.cel-pricing__amount {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--cel-space-1) var(--cel-space-2-5);
+    color: var(--cel-color-on-strong-soft);
+    font-size: var(--cel-text-18);
+}
+
+.cel-pricing__amount strong {
+    color: var(--cel-color-on-strong);
+    font-size: var(--cel-text-price);
+    line-height: var(--cel-leading-100);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-figures);
+}
+
+.cel-pricing__monthly,
+.cel-pricing__setup {
+    color: var(--cel-color-on-strong-soft);
+}
+
+.cel-pricing__setup {
+    font-size: var(--cel-text-14);
+}
+
+.cel-pricing__tiers {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--cel-color-on-strong-divider-16);
+}
+
+.cel-pricing__tiers li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--cel-space-1) var(--cel-space-3);
+    padding: 11px 0;
+    border-top: 1px solid var(--cel-color-on-strong-divider-16);
+}
+
+.cel-pricing__tiers strong {
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-pricing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-3) var(--cel-space-5);
+    margin-top: var(--cel-space-1);
+}
+
+.cel-pricing__details,
+.cel-pricing__details:hover {
+    color: var(--cel-color-on-strong);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-pricing__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-18);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-pricing__terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-2) var(--cel-space-6);
+    margin-top: auto;
+    padding-top: var(--cel-space-4-5);
+    border-top: 1px solid var(--cel-color-line-5);
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+}
+
+/* ---------- References strip ---------- */
+
+/* A real scrolling container (finger, wheel, keyboard) with card snapping, faded edges. The automatic scrolling of
+   the landing (initMarquee) is not kept: the strip stays still until it is scrolled. Bounded one-column grid: the
+   track, wider than the screen, cannot widen the section. */
+.cel-references {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cel-space-7);
+    max-width: 100%;
+    overflow-x: clip;
+    background: var(--cel-color-tint-blue-2);
+}
+
+.cel-references__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--cel-space-4) var(--cel-space-10);
+}
+
+.cel-references__intro {
+    max-width: 40em;
+}
+
+/* The mask only reads opacity: currentColor is an opaque black there. */
+.cel-references__strip {
+    --cel-references-fade: 48px;
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--cel-space-6);
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, currentColor var(--cel-references-fade), currentColor calc(100% - var(--cel-references-fade)), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, currentColor var(--cel-references-fade), currentColor calc(100% - var(--cel-references-fade)), transparent 100%);
+}
+
+.cel-references__strip::-webkit-scrollbar {
+    display: none;
+}
+
+.cel-references__strip:focus-visible {
+    outline-offset: -3px;
+}
+
+/* Wider than the strip, the track scrolls; narrower, its automatic margins center it. */
+.cel-references__track {
+    display: flex;
+    gap: var(--cel-space-5);
+    width: max-content;
+    margin: 0 auto;
+    padding: var(--cel-space-1-5) var(--cel-space-6) var(--cel-space-3-5);
+    list-style: none;
+}
+
+.cel-references__item {
+    display: flex;
+    flex: none;
+    width: min(320px, calc(100vw - 56px));
+    scroll-snap-align: center;
+}
+
+/* Banner in the colors of the municipality: --cel-reference-color and --cel-reference-text, set by a class specific
+   to each municipality (never a style attribute), contrast checked by the project that sets them. */
+.cel-reference {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-18);
+    background: var(--cel-color-surface);
+    box-shadow: var(--cel-shadow-reference);
+}
+
+.cel-reference__banner {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-3-5);
+    padding: var(--cel-space-4) var(--cel-space-4-5);
+    background: var(--cel-reference-color, var(--cel-color-strong));
+    color: var(--cel-reference-text, var(--cel-color-on-strong));
+}
+
+.cel-reference__logo {
+    flex: none;
+    width: 44px;
+    height: auto;
+    max-height: 50px;
+    object-fit: contain;
+}
+
+.cel-reference__identity {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: var(--cel-leading-125);
+}
+
+.cel-reference__name {
+    font-size: var(--cel-text-19);
+    font-weight: var(--cel-font-weight-extrabold);
+    overflow-wrap: anywhere;
+}
+
+.cel-reference__meta {
+    margin-top: var(--cel-space-0-5);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-reference__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--cel-space-3);
+    padding: var(--cel-space-4-5);
+    color: var(--cel-color-text);
+    font-size: var(--cel-text-15);
+}
+
+.cel-reference__quote {
+    margin: 0;
+}
+
+.cel-reference__quote :is(blockquote, p) {
+    margin: 0;
+}
+
+.cel-reference__quote figcaption {
+    margin-top: var(--cel-space-1-5);
+    color: var(--cel-color-text-muted);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-reference__features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-reference__features li {
+    padding: 3px var(--cel-space-2-5);
+    border-radius: var(--cel-radius-pill);
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-text);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-reference__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-1-5);
+    align-self: flex-start;
+    margin-top: auto;
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-bold);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.cel-reference__link:hover {
+    color: var(--cel-color-primary-hover);
+    text-decoration: underline;
+}
+
+/* ---------- Large screens ---------- */
+
+@media (min-width: 960px) {
+    .cel-features {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 860px) {
+    .cel-pricing {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    /* Two tiers per row; the selected tier is no longer lifted (it would overlap the row above). */
+    .cel-tiers {
+        grid-auto-flow: row;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cel-tier--selected {
+        translate: none;
+    }
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 640px) {
+    .cel-tiers {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-tier {
+        transition: none;
+    }
+}

@@ -1,0 +1,14 @@
+/*
+ * @communeenligne/design, foundations: icons.
+ *
+ * Size and stroke of the icons of icons/ (24 × 24, stroke 1.5, inherited color).
+ *
+ * A group title is written "---- Group name ----": the documentation site and the tests read this file.
+ * Renaming a variable is a major version.
+ */
+
+:root {
+    /* ---- Icons ---- */
+    --cel-icon-size: 24px;
+    --cel-icon-stroke: 1.5;
+}

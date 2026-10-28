@@ -1,9 +1,10 @@
 /*
- * @communeenligne/design : tout le design system, sans Tailwind. Jetons, polices, composants, animations.
- * Poser la classe cel-page sur <body> pour les styles de base ; cel-sombre sur <html> pour le thème sombre.
+ * @communeenligne/design: the whole design system of Commune en ligne, without Tailwind. Foundations (variables and
+ * font), components, patterns, animations. Set the cel-page class on <body> for base styles; cel-dark on <html> for
+ * the dark theme.
  */
 
-@import './tokens.css';
-@import './fonts/fonts.css';
-@import './components.css';
+@import './foundations/index.css';
+@import './components/index.css';
+@import './patterns/index.css';
 @import './motion.css';

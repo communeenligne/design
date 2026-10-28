@@ -16,28 +16,28 @@ Filtrer une liste sur place, sur une section à fond marine : les fonctionnalit�
 
 ## Exemple
 
-<Example titre="Filtres sur fond marine" fond="fort" html={`
-    <div class="cel-pastilles" role="group" aria-label="Filtrer les fonctionnalités">
-        <button type="button" class="cel-filtre" aria-pressed="true">Tout</button>
-        <button type="button" class="cel-filtre" aria-pressed="false">Informer</button>
-        <button type="button" class="cel-filtre" aria-pressed="false">Démarches</button>
-        <button type="button" class="cel-filtre" aria-pressed="false">Vie locale</button>
+<Example title="Filtres sur fond marine" background="strong" html={`
+    <div class="cel-pills" role="group" aria-label="Filtrer les fonctionnalités">
+        <button type="button" class="cel-filter" aria-pressed="true">Tout</button>
+        <button type="button" class="cel-filter" aria-pressed="false">Informer</button>
+        <button type="button" class="cel-filter" aria-pressed="false">Démarches</button>
+        <button type="button" class="cel-filter" aria-pressed="false">Vie locale</button>
     </div>
 `} tailwind={`
     <div class="flex flex-wrap gap-2.5" role="group" aria-label="Filtrer les fonctionnalités">
-        <button type="button" class="min-h-11 px-4.5 py-2.5 rounded-pilule border border-sur-fort-filet bg-or text-sur-or text-15 font-forte" aria-pressed="true">Tout</button>
-        <button type="button" class="min-h-11 px-4.5 py-2.5 rounded-pilule border border-sur-fort-filet text-sur-fort text-15 font-forte hover:bg-fond-fort-doux" aria-pressed="false">Informer</button>
+        <button type="button" class="min-h-11 px-4.5 py-2.5 rounded-pill border border-on-strong-line bg-gold text-on-gold text-15 font-weight-bold" aria-pressed="true">Tout</button>
+        <button type="button" class="min-h-11 px-4.5 py-2.5 rounded-pill border border-on-strong-line text-on-strong text-15 font-weight-bold hover:bg-strong-soft" aria-pressed="false">Informer</button>
     </div>
 `} />
 
 ## États
 
-<Example titre="Repos, survol, focus visible, choisi" fond="fort" html={`
-    <div class="cel-pastilles" role="group" aria-label="États">
-        <button type="button" class="cel-filtre" aria-pressed="false">Repos</button>
-        <button type="button" class="cel-filtre" aria-pressed="false" data-cel-etat="survol">Survol</button>
-        <button type="button" class="cel-filtre" aria-pressed="false" data-cel-etat="focus">Focus</button>
-        <button type="button" class="cel-filtre" aria-pressed="true">Choisi</button>
+<Example title="Repos, survol, focus visible, choisi" background="strong" html={`
+    <div class="cel-pills" role="group" aria-label="États">
+        <button type="button" class="cel-filter" aria-pressed="false">Repos</button>
+        <button type="button" class="cel-filter" aria-pressed="false" data-cel-state="hover">Survol</button>
+        <button type="button" class="cel-filter" aria-pressed="false" data-cel-state="focus">Focus</button>
+        <button type="button" class="cel-filter" aria-pressed="true">Choisi</button>
     </div>
 `} />
 
@@ -46,10 +46,10 @@ Filtrer une liste sur place, sur une section à fond marine : les fonctionnalit�
 - **Rôle :** groupe nommé de boutons `aria-pressed`. Hauteur de 44 px au moins (cible tactile).
 - **Clavier :** Tab, Entrée ou Espace. Focus : or, sur fond marine.
 - **Résultat :** le nombre d'éléments affichés est annoncé (`aria-live="polite"`).
-- **Écart connu :** le contour d'un filtre non choisi (`--cel-couleur-sur-fort-filet`) n'atteint pas 3:1 sur le marine. Le filtre reste identifié par son texte blanc (WCAG 1.4.11 n'exige alors pas le contour) ; une couleur plus claire est proposée pour une prochaine version.
+- **Écart connu :** le contour d'un filtre non choisi (`--cel-color-on-strong-line`) n'atteint pas 3:1 sur le marine. Le filtre reste identifié par son texte blanc (WCAG 1.4.11 n'exige alors pas le contour) ; une couleur plus claire est proposée pour une prochaine version.
 
-<Contrasts paires={[['sur-fort', 'fond-fort'], ['sur-or', 'or'], ['sur-fort', 'fond-fort-doux'], ['sur-fort-filet', 'fond-fort', 3], ['cel-focus-couleur-sur-fort', 'fond-fort', 3]]} />
+<Contrasts pairs={[['on-strong', 'strong'], ['on-gold', 'gold'], ['on-strong', 'strong-soft'], ['on-strong-line', 'strong', 3], ['cel-focus-color-on-strong', 'strong', 3]]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Un filtre « Tout » choisi par défaut.', 'Le nombre de résultats après chaque changement.']} eviter={['Des filtres sur fond clair.', 'Des filtres qui rechargent la page sans le dire.']} />
+<DoDont dos={['Un filtre « Tout » choisi par défaut.', 'Le nombre de résultats après chaque changement.']} donts={['Des filtres sur fond clair.', 'Des filtres qui rechargent la page sans le dire.']} />

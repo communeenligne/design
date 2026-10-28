@@ -1,8 +1,13 @@
 # Design system de Commune en ligne
 
-Le paquet `@communeenligne/design` (jetons, police, icônes, composants CSS, thème Tailwind 4) et son site de
-documentation, https://design.communeenligne.fr. Utilisé par la landing et le panel (dépôt de l'application) et par le
-site d'aide.
+Le paquet `@communeenligne/design` et son site de documentation, https://design.communeenligne.fr. Un seul design
+system, celui de Commune en ligne : la landing, le centre d'aide, puis le panel. Les sites des communes ne l'utilisent
+pas : ils ont leurs propres thèmes, en Tailwind, dans l'application.
+
+Le paquet est rangé en trois parties : les fondamentaux (`foundations/`, toutes les variables, nommées par rôle :
+couleurs en clair et en sombre, typographie, espacements, rayons, ombres, mouvement, points de rupture), les composants
+(`components/`, une feuille par famille) et les modèles (`patterns/`, en-tête, pied de page, section, page de
+documentation…). S'y ajoutent un thème Tailwind 4 (`tailwind.css`), la police, les icônes, le logo et les scripts.
 
 ```
 packages/design/   le paquet @communeenligne/design
@@ -29,12 +34,12 @@ Chaque version est publiée comme une archive jointe à la publication GitHub (�
 ```json
 {
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v1.0.0/communeenligne-design-1.0.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.0.0/communeenligne-design-2.0.0.tgz"
     }
 }
 ```
 
-**Pourquoi pas `"github:<organisation>/design#v1.0.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
+**Pourquoi pas `"github:<organisation>/design#v2.0.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
 installer un dépôt Git, mais seulement le `package.json` placé à sa racine : il n'a aucune syntaxe pour un sous-dossier
 (Yarn et pnpm en ont une, npm non). Une archive produite par `npm pack` dans le sous-dossier contient exactement les
 fichiers publiés, s'installe sans Git (absent des images `node:alpine` de l'application), ne change jamais une fois
@@ -47,26 +52,28 @@ MIT).
 Sans Tailwind :
 
 ```css
-@import '@communeenligne/design';                   /* jetons, polices, composants, animations */
+@import '@communeenligne/design';   /* fondamentaux, composants, modèles, animations */
 ```
 
 Avec Tailwind 4 :
 
 ```css
 @import 'tailwindcss';
-@import '@communeenligne/design/tailwind.css';      /* jetons, polices, thème Tailwind */
-@import '@communeenligne/design/components.css';    /* facultatif : classes cel- */
+@import '@communeenligne/design/tailwind.css';   /* fondamentaux et thème Tailwind */
+@import '@communeenligne/design/components';     /* facultatif : composants, classes cel- */
+@import '@communeenligne/design/patterns';       /* facultatif : modèles */
 ```
 
-Puis `class="cel-page"` sur `<body>` pour les styles de base, et `class="cel-sombre"` sur `<html>` pour le thème
-sombre. Détails : https://design.communeenligne.fr/getting-started/installation/.
+Puis `class="cel-page"` sur `<body>` pour les styles de base, et `class="cel-dark"` sur `<html>` pour le thème
+sombre. Détails : https://design.communeenligne.fr/getting-started/installation/. Pour passer de 1.0.0 à 2.0.0 : la
+correspondance des noms dans `CHANGELOG.md`.
 
 ## Règles de version
 
 Numérotation sémantique, consignée dans `CHANGELOG.md` :
 
-- **majeure** : un nom de variable (`--cel-…`), de classe (`.cel-…`), de fichier exporté, d'attribut `data-cel-` ou de
-  fonction de script change ou disparaît. **Un nom qui change, c'est une version majeure**, même sans changement visible ;
+- **majeure** : un nom de variable (`--cel-…`), de classe (`.cel-…`), de fichier exporté, d'attribut `data-cel-` (ou
+  de l'une de ses valeurs) ou de fonction de script change ou disparaît. **Un nom qui change, c'est une version majeure**, même sans changement visible ;
 - **mineure** : un ajout, ou une valeur changée volontairement (une couleur ajustée) ;
 - **correctif** : une erreur corrigée sans changement voulu de l'apparence.
 
@@ -74,16 +81,24 @@ Numérotation sémantique, consignée dans `CHANGELOG.md` :
 
 1. Mettre à jour `version` dans `packages/design/package.json` et le titre de la version dans `CHANGELOG.md` (date).
 2. `docker compose run --rm node npm run check`.
-3. Commit, puis étiquette : `git tag v1.0.0 && git push origin main v1.0.0`.
+3. Commit, puis étiquette : `git tag v2.0.0 && git push origin main v2.0.0`.
 4. L'action « Release » vérifie que l'étiquette correspond à la version, lance les tests, construit l'archive
    (`npm pack -w @communeenligne/design`) et crée la publication GitHub avec l'archive jointe.
 
 ## Modifier le paquet
 
-- Les valeurs ne s'écrivent que dans `packages/design/tokens.css` (format des titres de groupe et des commentaires à
-  respecter : le site et les tests le lisent).
-- Après une modification des jetons ou des icônes : `npm run generate` (régénère `tailwind.css` et `icons/sprite.svg`).
-- `components.css` n'écrit aucune couleur : seulement des variables (vérifié par les tests).
+- Les valeurs ne s'écrivent que dans `packages/design/foundations/` : les couleurs dans `colors.css` (clair sur
+  `:root`, sombre sous `:root.cel-dark`), le reste dans le fichier de son sujet. Format des titres de groupe et des
+  commentaires à respecter : le site et les tests les lisent.
+- Les fondamentaux ne posent que des variables ; les composants et les modèles n'écrivent aucune couleur et n'emploient
+  que les variables des fondamentaux (vérifié par les tests).
+- Un composant va dans la feuille de sa famille (`components/base.css`, `forms.css`, `navigation.css`, `menu.css`,
+  `content.css`, `landing.css`, `documentation.css`), et sa page dans la même famille de la documentation.
+- Tout ce que le paquet expose est en anglais, préfixé `cel-` : classes, variables, attributs `data-cel-` et leurs
+  valeurs, fonctions, fichiers, commentaires. Un test échoue sur un mot français ou un accent. Les textes du site de
+  documentation restent en français.
+- Après une modification des variables ou des icônes : `npm run generate` (régénère `tailwind.css` et
+  `icons/sprite.svg`).
 
 ## Licences
 

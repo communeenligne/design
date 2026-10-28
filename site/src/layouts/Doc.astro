@@ -1,32 +1,39 @@
 ---
-// Gabarit de toutes les pages : en-tête (icône et mot-symbole « communeenligne », recherche en direct par Ctrl+K ou
-// ⌘K, rubriques), navigation latérale de la rubrique, fil d'Ariane, contenu, sommaire de la page à droite, bandeau des
-// licences, pied de page avec le choix du thème. Non référencé.
+// Template of every page (documentation page pattern of the package): header (icon and wordmark, live search by Ctrl+K
+// or ⌘K, sections, phone menu), side navigation of the section by family, breadcrumb, content, table of contents on
+// the right, licenses, footer with the theme switch. Not indexed.
+//
+// Below the tablet breakpoint, the sections and the side navigation carry cel-hide-below-tablet and give way to the
+// phone menu (cel-menu): the sections, and the pages of the current one. Without script, the menu is a list at the top
+// of the page.
 import '../styles/main.css'
 import Icon from '../components/Icon.astro'
-import { NOM, RUBRIQUES, filDAriane, rubriqueDe, voisines } from '../lib/navigation.js'
+import { SECTIONS, SITE_NAME, breadcrumbOf, groupsOf, neighboursOf, sectionOf } from '../lib/navigation.js'
 import { VERSION } from '../lib/version.js'
 
 const props = Astro.props.frontmatter ?? Astro.props
-const { title, description, plein = false } = props
+const { title, description, full = false } = props
 const headings = Astro.props.headings ?? props.headings ?? []
-const chemin = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`
-const rubrique = rubriqueDe(chemin)
-const etapes = filDAriane(chemin, title)
-const { precedente, suivante } = voisines(chemin)
-const sommaire = headings.filter((titre) => titre.depth === 2)
-const titrePage = chemin === '/' ? NOM : `${title} · ${NOM}`
-const lateral = rubrique && rubrique.pages.length > 0
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`
+const section = sectionOf(path)
+const steps = breadcrumbOf(path, title)
+const { previous, next } = neighboursOf(path)
+const toc = headings.filter((heading) => heading.depth === 2)
+const pageTitle = path === '/' ? SITE_NAME : `${title} · ${SITE_NAME}`
+const sidenav = section && section.pages.length > 0
+const groups = sidenav ? groupsOf(section) : []
+const current = (url) => (path === url ? 'page' : path.startsWith(url) ? 'true' : undefined)
+const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations/'].includes(s.url))
 ---
 <!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{titrePage}</title>
+    <title>{pageTitle}</title>
     {description && <meta name="description" content={description}>}
     <meta name="robots" content="noindex, nofollow">
-    {rubrique && <meta name="rubrique" content={rubrique.titre}>}
+    {section && <meta name="section" content={section.title}>}
     <meta name="theme-color" content="#1F3A5F">
     <link rel="icon" href="/design/brand/favicon.svg" type="image/svg+xml">
     <script is:inline src="/design/js/theme-boot.js"></script>
@@ -34,140 +41,171 @@ const lateral = rubrique && rubrique.pages.length > 0
     <script is:inline type="module" src="/js/site.js"></script>
 </head>
 <body class="cel-page">
-    <a class="cel-lien-evitement" href="#contenu">Aller au contenu</a>
+    <a class="cel-skip-link" href="#contenu">Aller au contenu</a>
 
-    <header class="doc-entete">
-        <div class="cel-conteneur doc-entete__haut">
-            <a href="/" class="doc-marque">
-                <img class="cel-logo-clair" src="/design/brand/icone.svg" alt="" width="36" height="36">
-                <img class="cel-logo-sombre" src="/design/brand/icone-fond-sombre.svg" alt="" width="36" height="36">
-                <span class="doc-marque__titre doc-mot-symbole"><strong>commune</strong>enligne</span>
+    <header class="cel-doc-header">
+        <div class="cel-container cel-doc-header__top">
+            <a href="/" class="cel-doc-header__brand">
+                <img class="cel-logo-light" src="/design/brand/icon.svg" alt="" width="36" height="36">
+                <img class="cel-logo-dark" src="/design/brand/icon-on-dark.svg" alt="" width="36" height="36">
+                <span class="cel-doc-header__name cel-wordmark"><strong>commune</strong>enligne</span>
             </a>
-            <button type="button" class="doc-recherche" data-recherche-ouvrir hidden aria-haspopup="dialog">
-                <Icon nom="magnifying-glass" taille="18" appuyee />
-                <span class="doc-recherche__texte">Rechercher</span>
-                <kbd class="doc-recherche__raccourci" data-raccourci>Ctrl K</kbd>
+            <button type="button" class="doc-search-button" data-search-open hidden aria-haspopup="dialog">
+                <Icon name="magnifying-glass" size="18" bold />
+                <span class="doc-search-button__label">Rechercher</span>
+                <kbd class="doc-search-button__shortcut" data-search-shortcut>Ctrl K</kbd>
             </button>
+            <div class="cel-menu" data-cel-menu>
+                <button type="button" class="cel-menu__toggle" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
+                    <Icon name="bars-3" size="20" bold />
+                    <span aria-hidden="true">Menu</span>
+                </button>
+                <div class="cel-menu__panel" id="menu" aria-labelledby="menu-title">
+                    <div class="cel-menu__top">
+                        <p class="cel-menu__title" id="menu-title">Menu</p>
+                        <button type="button" class="cel-menu__close"><Icon name="x-mark" size="20" bold />Fermer le menu</button>
+                    </div>
+                    <nav aria-label="Rubriques et pages">
+                        <ul class="cel-menu__list">
+                            {SECTIONS.map((s) => (
+                                <li>
+                                    <a class="cel-menu__link" href={s.url} aria-current={current(s.url)}>{s.title}</a>
+                                    {s === section && s.pages.length > 0 && (
+                                        <ul class="cel-menu__sublist">
+                                            <li><a href={s.url} aria-current={path === s.url ? 'page' : undefined}>Vue d'ensemble</a></li>
+                                            {groupsOf(s).map((group, rank) => {
+                                                const links = group.pages.map((page) => <li><a href={page.url} aria-current={path === page.url ? 'page' : undefined}>{page.title}</a></li>)
+
+                                                return group.name
+                                                    ? <li><p class="cel-menu__group" id={`menu-group-${rank}`}>{group.name}</p><ul class="cel-menu__sublist" aria-labelledby={`menu-group-${rank}`}>{links}</ul></li>
+                                                    : links
+                                            })}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-        <nav class="cel-conteneur cel-navigation doc-rubriques" aria-label="Rubriques">
-            <ul class="cel-navigation__liens">
-                {RUBRIQUES.map((r) => (
-                    <li><a href={r.url} aria-current={chemin === r.url ? 'page' : chemin.startsWith(r.url) ? 'true' : undefined}>{r.titre}</a></li>
-                ))}
+        <nav class="cel-container cel-nav cel-doc-header__sections cel-hide-below-tablet" aria-label="Rubriques">
+            <ul class="cel-nav__links">
+                {SECTIONS.map((s) => <li><a href={s.url} aria-current={current(s.url)}>{s.title}</a></li>)}
             </ul>
         </nav>
     </header>
 
-    <div class={`cel-conteneur doc-corps${lateral ? '' : ' doc-corps--sans-lateral'}${plein || sommaire.length === 0 ? ' doc-corps--sans-sommaire' : ''}`}>
-        {lateral && (
-            <nav class="doc-lateral" aria-labelledby="titre-lateral">
-                <details class="doc-lateral__plier" open>
-                    <summary class="doc-lateral__titre" id="titre-lateral">{rubrique.titre}</summary>
-                    <ul>
-                        <li><a href={rubrique.url} aria-current={chemin === rubrique.url ? 'page' : undefined}>Vue d'ensemble</a></li>
-                        {rubrique.pages.map((page) => (
-                            <li><a href={page.url} aria-current={chemin === page.url ? 'page' : undefined}>{page.titre}</a></li>
-                        ))}
-                    </ul>
-                </details>
+    <div class={`cel-container cel-doc-layout${sidenav ? '' : ' cel-doc-layout--no-sidenav'}${full || toc.length === 0 ? ' cel-doc-layout--no-toc' : ''}`}>
+        {sidenav && (
+            <nav class="cel-sidenav cel-hide-below-tablet" aria-labelledby="sidenav-title">
+                <p class="cel-sidenav__title" id="sidenav-title">{section.title}</p>
+                <ul>
+                    <li><a href={section.url} aria-current={path === section.url ? 'page' : undefined}>Vue d'ensemble</a></li>
+                </ul>
+                {groups.map((group) => (
+                    <>
+                        {group.name && <p class="cel-sidenav__group">{group.name}</p>}
+                        <ul>
+                            {group.pages.map((page) => <li><a href={page.url} aria-current={path === page.url ? 'page' : undefined}>{page.title}</a></li>)}
+                        </ul>
+                    </>
+                ))}
             </nav>
         )}
 
-        <main id="contenu" tabindex="-1" class="doc-principal">
-            {chemin !== '/' && (
-                <nav class="cel-fil-ariane" aria-label="Fil d'Ariane">
+        <main id="contenu" tabindex="-1" class="cel-doc-main">
+            {path !== '/' && (
+                <nav class="cel-breadcrumb" aria-label="Fil d'Ariane">
                     <ol>
-                        {etapes.map((etape, rang) => (
+                        {steps.map((step, rank) => (
                             <li>
-                                {rang === etapes.length - 1
-                                    ? <span aria-current="page">{etape.titre}</span>
-                                    : <><a href={etape.url}>{etape.titre}</a><span aria-hidden="true">›</span></>}
+                                {rank === steps.length - 1
+                                    ? <span aria-current="page">{step.title}</span>
+                                    : <><a href={step.url}>{step.title}</a><span aria-hidden="true">›</span></>}
                             </li>
                         ))}
                     </ol>
                 </nav>
             )}
-            {chemin === '/'
-                ? <h1 class="doc-titre doc-titre--accueil" data-cel-apparition="titre">Système de Design de <span class="doc-mot-symbole"><strong>commune</strong>enligne</span></h1>
-                : <h1 class="doc-titre" data-cel-apparition="titre">{title}</h1>}
-            {description && <p class="cel-chapo doc-chapo">{description}</p>}
+            {path === '/'
+                ? <h1 class="cel-doc-title doc-home-title" data-cel-reveal="title">Système de Design de <span class="cel-wordmark"><strong>commune</strong>enligne</span></h1>
+                : <h1 class="cel-doc-title" data-cel-reveal="title">{title}</h1>}
+            {description && <p class="cel-lead cel-doc-lead">{description}</p>}
 
-            <div class="doc-contenu">
+            <div class="cel-doc-content">
                 <slot />
             </div>
 
-            {(precedente || suivante) && (
-                <nav class="doc-voisines" aria-label="Pages voisines">
-                    {precedente && <a class="cel-carte doc-voisines__lien" href={precedente.url}><span class="doc-voisines__sens">Précédent</span>{precedente.titre}</a>}
-                    {suivante && <a class="cel-carte doc-voisines__lien doc-voisines__lien--suivant" href={suivante.url}><span class="doc-voisines__sens">Suivant</span>{suivante.titre}</a>}
+            {(previous || next) && (
+                <nav class="cel-pager" aria-label="Pages voisines">
+                    {previous && <a class="cel-card cel-pager__link" href={previous.url}><span class="cel-pager__direction">Précédent</span>{previous.title}</a>}
+                    {next && <a class="cel-card cel-pager__link cel-pager__link--next" href={next.url}><span class="cel-pager__direction">Suivant</span>{next.title}</a>}
                 </nav>
             )}
         </main>
 
-        {!plein && sommaire.length > 0 && (
-            <aside class="doc-sommaire">
-                <nav aria-labelledby="titre-sommaire">
-                    <p class="doc-sommaire__titre" id="titre-sommaire">Sur cette page</p>
+        {!full && toc.length > 0 && (
+            <aside class="cel-toc">
+                <nav aria-labelledby="toc-title">
+                    <p class="cel-toc__title" id="toc-title">Sur cette page</p>
                     <ul>
-                        {sommaire.map((titre) => <li><a href={`#${titre.slug}`}>{titre.text}</a></li>)}
+                        {toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}
                     </ul>
                 </nav>
             </aside>
         )}
     </div>
 
-    <p class="doc-licences">Code sous licence MIT · police Manrope sous licence OFL</p>
+    <p class="doc-licenses">Code sous licence MIT · police Manrope sous licence OFL</p>
 
-    <footer class="cel-pied">
-        <div class="cel-conteneur">
-            <div class="cel-pied__liens">
-                <div class="cel-pied__identite">
-                    <a href="/" class="cel-pied__marque"><img src="/design/brand/logo-fond-sombre.svg" alt="Commune en ligne, accueil du Système de Design" width="154" height="32" loading="lazy"></a>
-                    <p>Le Système de Design de communeenligne : landing, panel et aide en ligne. Version {VERSION}.</p>
+    <footer class="cel-footer">
+        <div class="cel-container">
+            <div class="cel-footer__links">
+                <div class="cel-footer__identity">
+                    <a href="/" class="cel-footer__brand"><img src="/design/brand/logo-on-dark.svg" alt="Commune en ligne, accueil du Système de Design" width="154" height="32" loading="lazy"></a>
+                    <p>Le Système de Design de communeenligne : landing, centre d'aide et panel. Version {VERSION}.</p>
                 </div>
-                {RUBRIQUES.filter((r) => r.pages.length > 0).slice(0, 2).map((r, rang) => (
-                    <nav class="cel-pied__colonne" aria-labelledby={`pied-${rang}`}>
-                        <p class="cel-pied__titre" id={`pied-${rang}`}>{r.titre}</p>
-                        <ul>{r.pages.map((page) => <li><a href={page.url}>{page.titre}</a></li>)}</ul>
+                {footerColumns.map((s, rank) => (
+                    <nav class="cel-footer__column" aria-labelledby={`footer-${rank}`}>
+                        <p class="cel-footer__title" id={`footer-${rank}`}>{s.title}</p>
+                        <ul>{s.pages.map((page) => <li><a href={page.url}>{page.title}</a></li>)}</ul>
                     </nav>
                 ))}
-                <nav class="cel-pied__colonne" aria-labelledby="pied-autres">
-                    <p class="cel-pied__titre" id="pied-autres">Et aussi</p>
+                <nav class="cel-footer__column" aria-labelledby="footer-more">
+                    <p class="cel-footer__title" id="footer-more">Et aussi</p>
                     <ul>
-                        <li><a href="/components/">Composants</a></li>
-                        <li><a href="/patterns/">Modèles</a></li>
-                        <li><a href="/accessibility/">Accessibilité</a></li>
-                        <li><a href="/changelog/">Journal des versions</a></li>
-                        <li><a href="https://communeenligne.fr/" class="cel-pied__plus">communeenligne.fr</a></li>
+                        {SECTIONS.filter((s) => !footerColumns.includes(s)).map((s) => <li><a href={s.url}>{s.title}</a></li>)}
+                        <li><a href="https://communeenligne.fr/" class="cel-footer__more">communeenligne.fr</a></li>
                     </ul>
                 </nav>
             </div>
-            <div class="cel-pied__bas">
-                <div class="cel-pied__meta">
-                    <p>© 2026 · <span class="cel-pied__mot-symbole"><strong>commune</strong>enligne</span></p>
+            <div class="cel-footer__bottom">
+                <div class="cel-footer__meta">
+                    <p>© 2026 · <span class="cel-footer__wordmark"><strong>commune</strong>enligne</span></p>
                 </div>
-                <div class="cel-theme" role="group" aria-labelledby="pied-theme" data-cel-theme hidden>
-                    <span id="pied-theme">Thème :</span>
+                <div class="cel-theme" role="group" aria-labelledby="footer-theme" data-cel-theme hidden>
+                    <span id="footer-theme">Thème :</span>
                     <span class="cel-theme__options">
-                        <button type="button" class="cel-theme__option" data-cel-theme-option="clair" aria-pressed="true"><Icon nom="sun" />Clair</button>
-                        <button type="button" class="cel-theme__option" data-cel-theme-option="sombre" aria-pressed="false"><Icon nom="moon" />Sombre</button>
+                        <button type="button" class="cel-theme__option" data-cel-theme-option="light" aria-pressed="true"><Icon name="sun" />Clair</button>
+                        <button type="button" class="cel-theme__option" data-cel-theme-option="dark" aria-pressed="false"><Icon name="moon" />Sombre</button>
                     </span>
                 </div>
             </div>
         </div>
     </footer>
-    <dialog class="doc-dialogue" aria-labelledby="titre-recherche" data-recherche>
-        <div class="doc-dialogue__entete">
-            <h2 class="cel-masque" id="titre-recherche">Rechercher dans le Système de Design</h2>
-            <Icon nom="magnifying-glass" taille="20" appuyee class="doc-dialogue__loupe" />
-            <label class="cel-masque" for="recherche-champ">Mots recherchés</label>
-            <input id="recherche-champ" class="doc-dialogue__champ" type="search" placeholder="Composant, variable, classe…" autocomplete="off" spellcheck="false"
-                   role="combobox" aria-expanded="false" aria-controls="recherche-resultats" aria-autocomplete="list" aria-describedby="recherche-etat">
-            <button type="button" class="doc-dialogue__fermer" data-recherche-fermer><kbd>Échap</kbd><span class="cel-masque">Fermer la recherche</span></button>
+    <dialog class="doc-search" aria-labelledby="search-title" data-search>
+        <div class="doc-search__header">
+            <h2 class="cel-visually-hidden" id="search-title">Rechercher dans le Système de Design</h2>
+            <Icon name="magnifying-glass" size="20" bold class="doc-search__icon" />
+            <label class="cel-visually-hidden" for="search-field">Mots recherchés</label>
+            <input id="search-field" class="doc-search__input" type="search" placeholder="Composant, variable, classe…" autocomplete="off" spellcheck="false"
+                   role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" aria-describedby="search-status">
+            <button type="button" class="doc-search__close" data-search-close><kbd>Échap</kbd><span class="cel-visually-hidden">Fermer la recherche</span></button>
         </div>
-        <p class="doc-dialogue__etat" id="recherche-etat" role="status" data-recherche-etat></p>
-        <ul class="doc-dialogue__resultats" id="recherche-resultats" role="listbox" aria-label="Résultats" data-recherche-resultats></ul>
-        <p class="doc-dialogue__aide"><kbd>↑</kbd> <kbd>↓</kbd> pour choisir, <kbd>Entrée</kbd> pour ouvrir, <kbd>Échap</kbd> pour fermer</p>
+        <p class="doc-search__status" id="search-status" role="status" data-search-status></p>
+        <ul class="doc-search__results" id="search-results" role="listbox" aria-label="Résultats" data-search-results></ul>
+        <p class="doc-search__help"><kbd>↑</kbd> <kbd>↓</kbd> pour choisir, <kbd>Entrée</kbd> pour ouvrir, <kbd>Échap</kbd> pour fermer</p>
     </dialog>
 </body>
 </html>

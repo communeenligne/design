@@ -1,0 +1,13 @@
+/*
+ * @communeenligne/design, components: every component, by family. Built on the foundations (foundations/index.css),
+ * which this file does not import: import it before, or use the package entry point (index.css), or Tailwind
+ * (tailwind.css imports the foundations).
+ */
+
+@import './base.css';
+@import './forms.css';
+@import './navigation.css';
+@import './menu.css';
+@import './content.css';
+@import './landing.css';
+@import './documentation.css';

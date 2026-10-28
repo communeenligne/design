@@ -16,30 +16,30 @@ Les questions fréquentes : le visiteur parcourt les questions et n'ouvre que ce
 
 ## Exemple
 
-<Example titre="Questions fréquentes" fond="clair" html={`
-    <div class="cel-questions">
-        <details class="cel-questions__element">
-            <summary class="cel-questions__question">Faut-il lancer un marché public ?</summary>
-            <div class="cel-questions__reponse"><p>Non : le montant reste sous le seuil de dispense de procédure.</p></div>
+<Example title="Questions fréquentes" background="muted" html={`
+    <div class="cel-faq">
+        <details class="cel-faq__item">
+            <summary class="cel-faq__question">Faut-il lancer un marché public ?</summary>
+            <div class="cel-faq__answer"><p>Non : le montant reste sous le seuil de dispense de procédure.</p></div>
         </details>
-        <details class="cel-questions__element" open>
-            <summary class="cel-questions__question">Pouvons-nous garder notre nom de domaine ?</summary>
-            <div class="cel-questions__reponse"><p>Oui. Nous vous guidons pour le rediriger vers votre nouveau site.</p><p>Le certificat de sécurité est créé automatiquement.</p></div>
+        <details class="cel-faq__item" open>
+            <summary class="cel-faq__question">Pouvons-nous garder notre nom de domaine ?</summary>
+            <div class="cel-faq__answer"><p>Oui. Nous vous guidons pour le rediriger vers votre nouveau site.</p><p>Le certificat de sécurité est créé automatiquement.</p></div>
         </details>
     </div>
 `} tailwind={`
-    <details class="px-6 py-5 rounded-12 border border-filet bg-surface">
-        <summary class="text-18 font-forte cursor-pointer list-none">Faut-il lancer un marché public ?</summary>
-        <div class="mt-3 text-texte"><p>Non : le montant reste sous le seuil de dispense de procédure.</p></div>
+    <details class="px-6 py-5 rounded-12 border border-line bg-surface">
+        <summary class="text-18 font-weight-bold cursor-pointer list-none">Faut-il lancer un marché public ?</summary>
+        <div class="mt-3 text-text"><p>Non : le montant reste sous le seuil de dispense de procédure.</p></div>
     </details>
 `} />
 
 ## États
 
-<Example titre="Question : focus visible, ouverte" fond="clair" html={`
-    <div class="cel-questions">
-        <details class="cel-questions__element"><summary class="cel-questions__question" data-cel-etat="focus">Focus visible</summary><div class="cel-questions__reponse"><p>Réponse.</p></div></details>
-        <details class="cel-questions__element" open><summary class="cel-questions__question">Ouverte</summary><div class="cel-questions__reponse"><p>La réponse arrive en fondu (pas avec la réduction des animations).</p></div></details>
+<Example title="Question : focus visible, ouverte" background="muted" html={`
+    <div class="cel-faq">
+        <details class="cel-faq__item"><summary class="cel-faq__question" data-cel-state="focus">Focus visible</summary><div class="cel-faq__answer"><p>Réponse.</p></div></details>
+        <details class="cel-faq__item" open><summary class="cel-faq__question">Ouverte</summary><div class="cel-faq__answer"><p>La réponse arrive en fondu (pas avec la réduction des animations).</p></div></details>
     </div>
 `} />
 
@@ -50,8 +50,8 @@ Les questions fréquentes : le visiteur parcourt les questions et n'ouvre que ce
 - **Recherche dans la page :** les navigateurs récents ouvrent la réponse qui contient le texte cherché.
 - **Question :** une vraie question, complète.
 
-<Contrasts paires={[['encre', 'surface'], ['texte', 'surface'], ['texte-marine', 'surface']]} />
+<Contrasts pairs={[['text-strong', 'surface'], ['text', 'surface'], ['primary', 'surface']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Des questions telles que les visiteurs les posent.', 'Des réponses courtes, avec un lien pour aller plus loin.']} eviter={['Une seule question dans un accordéon.', 'Imbriquer des accordéons.']} />
+<DoDont dos={['Des questions telles que les visiteurs les posent.', 'Des réponses courtes, avec un lien pour aller plus loin.']} donts={['Une seule question dans un accordéon.', 'Imbriquer des accordéons.']} />

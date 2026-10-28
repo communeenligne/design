@@ -16,29 +16,29 @@ Expliquer une marche à suivre courte : publier une actualité en trois étapes,
 
 ## Exemple
 
-<Example titre="Trois étapes" html={`
-    <ol class="cel-etapes">
-        <li class="cel-etapes__etape"><span class="cel-etapes__numero" aria-hidden="true">1</span><span>Dans le panel, ouvrez <strong>Contenus</strong>, puis <strong>Actualités</strong>.</span></li>
-        <li class="cel-etapes__etape"><span class="cel-etapes__numero" aria-hidden="true">2</span><span>Cliquez sur <strong>Nouvelle actualité</strong> et écrivez le texte.</span></li>
-        <li class="cel-etapes__etape"><span class="cel-etapes__numero" aria-hidden="true">3</span><span>Cliquez sur <strong>Publier</strong> : l'actualité est en ligne.</span></li>
+<Example title="Trois étapes" html={`
+    <ol class="cel-steps">
+        <li class="cel-steps__step"><span class="cel-steps__number" aria-hidden="true">1</span><span>Dans le panel, ouvrez <strong>Contenus</strong>, puis <strong>Actualités</strong>.</span></li>
+        <li class="cel-steps__step"><span class="cel-steps__number" aria-hidden="true">2</span><span>Cliquez sur <strong>Nouvelle actualité</strong> et écrivez le texte.</span></li>
+        <li class="cel-steps__step"><span class="cel-steps__number" aria-hidden="true">3</span><span>Cliquez sur <strong>Publier</strong> : l'actualité est en ligne.</span></li>
     </ol>
 `} tailwind={`
     <ol class="flex flex-col gap-4 list-none p-0 m-0">
-        <li class="flex items-start gap-4 text-17 text-texte"><span class="flex flex-none items-center justify-center size-7 rounded-full inset-ring-[1.5px] inset-ring-texte-marine text-texte-marine text-14 font-extra" aria-hidden="true">1</span><span class="pt-0.5">Dans le panel, ouvrez Contenus, puis Actualités.</span></li>
+        <li class="flex items-start gap-4 text-17 text-text"><span class="flex flex-none items-center justify-center size-7 rounded-full inset-ring-[1.5px] inset-ring-primary text-primary text-14 font-weight-extrabold" aria-hidden="true">1</span><span class="pt-0.5">Dans le panel, ouvrez Contenus, puis Actualités.</span></li>
     </ol>
 `} />
 
 ## États
 
-La liste n'est pas interactive. Quand elle s'affiche sur place (changement d'onglet), ses étapes peuvent arriver en cascade avec `.cel-cascade` et `data-cel-fondu` (voir [Mouvement](/foundations/motion/)).
+La liste n'est pas interactive. Quand elle s'affiche sur place (changement d'onglet), ses étapes peuvent arriver en cascade avec `.cel-stagger` et `data-cel-fade` (voir [Mouvement](/foundations/motion/)).
 
 ## Accessibilité
 
 - **Rôle :** liste ordonnée (`<ol>`) : le lecteur d'écran annonce lui-même le rang, le numéro visible est donc masqué (`aria-hidden`).
 - **Libellés :** ceux de l'interface, en gras, tels qu'ils sont écrits à l'écran.
 
-<Contrasts paires={[['texte', 'fond-page'], ['texte-marine', 'fond-page']]} />
+<Contrasts pairs={[['text', 'background'], ['primary', 'background']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Une action par étape, commençant par un verbe.']} eviter={['Des numéros écrits dans le texte en plus de la liste ordonnée.']} />
+<DoDont dos={['Une action par étape, commençant par un verbe.']} donts={['Des numéros écrits dans le texte en plus de la liste ordonnée.']} />

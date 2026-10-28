@@ -16,27 +16,27 @@ Le lien mène ailleurs : une autre page, une ancre, un document. Dans un texte, 
 
 ## Variantes
 
-<Example titre="Dans un texte, fort, discret, avec flèche" html={`
-    <p>Consultez le <a href="#" class="cel-lien">détail du tarif</a> avant de vous inscrire.</p>
-    <a href="#" class="cel-lien cel-lien--fort">Voir le centre d'aide</a>
-    <a href="#" class="cel-lien cel-lien--discret">Mentions légales</a>
-    <a href="#" class="cel-lien cel-lien--fleche">Toutes les fonctionnalités <svg class="cel-icone cel-icone--16 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></a>
+<Example title="Dans un texte, fort, discret, avec flèche" html={`
+    <p>Consultez le <a href="#" class="cel-link">détail du tarif</a> avant de vous inscrire.</p>
+    <a href="#" class="cel-link cel-link--strong">Voir le centre d'aide</a>
+    <a href="#" class="cel-link cel-link--subtle">Mentions légales</a>
+    <a href="#" class="cel-link cel-link--arrow">Toutes les fonctionnalités <svg class="cel-icon cel-icon--16 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></a>
 `} tailwind={`
-    <p>Consultez le <a href="#" class="text-texte-marine underline-offset-3 hover:text-texte-marine-survol">détail du tarif</a> avant de vous inscrire.</p>
-    <a href="#" class="text-texte-marine font-extra underline-offset-3 hover:text-texte-marine-survol">Voir le centre d'aide</a>
+    <p>Consultez le <a href="#" class="text-principale underline-offset-3 hover:text-primary-hover">détail du tarif</a> avant de vous inscrire.</p>
+    <a href="#" class="text-principale font-weight-extrabold underline-offset-3 hover:text-primary-hover">Voir le centre d'aide</a>
 `} />
 
-<Example titre="Sur une surface forte" fond="fort" html={`
-    <a href="#" class="cel-lien cel-lien--sur-fort">Voir le détail du tarif</a>
+<Example title="Sur une surface forte" background="strong" html={`
+    <a href="#" class="cel-link cel-link--on-strong">Voir le détail du tarif</a>
 `} />
 
 ## États
 
-<Example titre="Repos, survol, focus visible" html={`
-    <a href="#" class="cel-lien">Repos</a>
-    <a href="#" class="cel-lien" data-cel-etat="survol">Survol</a>
-    <a href="#" class="cel-lien" data-cel-etat="focus">Focus visible</a>
-    <a href="#" class="cel-lien cel-lien--fleche" data-cel-etat="survol">Flèche, survol <svg class="cel-icone cel-icone--16 cel-icone--appuyee" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></a>
+<Example title="Repos, survol, focus visible" html={`
+    <a href="#" class="cel-link">Repos</a>
+    <a href="#" class="cel-link" data-cel-state="hover">Survol</a>
+    <a href="#" class="cel-link" data-cel-state="focus">Focus visible</a>
+    <a href="#" class="cel-link cel-link--arrow" data-cel-state="hover">Flèche, survol <svg class="cel-icon cel-icon--16 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-right"></use></svg></a>
 `} />
 
 Au survol, le lien fonce. La flèche avance de 4 px (pas avec la réduction des animations). Sous `cel-page`, tous les liens prennent la couleur marine sans classe.
@@ -49,8 +49,8 @@ Au survol, le lien fonce. La flèche avance de 4 px (pas avec la réduction des 
 - **Libellé :** compréhensible hors de sa phrase (« le détail du tarif », pas « cliquez ici »). Un lien qui ouvre un fichier dit son format et son poids.
 - **Distinction :** dans un texte, le soulignement distingue le lien, pas seulement la couleur. Le lien discret n'est permis que dans une liste de liens (pied de page).
 
-<Contrasts paires={[['texte-marine', 'fond-page'], ['texte-marine-survol', 'fond-page'], ['texte-marine', 'fond-clair'], ['sur-fort', 'fond-fort']]} />
+<Contrasts pairs={[['primary', 'background'], ['primary-hover', 'background'], ['primary', 'background-muted'], ['on-strong', 'strong']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Un libellé qui dit où mène le lien.', 'Le lien avec flèche pour « voir tout » en fin de liste.']} eviter={['« Cliquez ici », « en savoir plus » seuls.', 'Un lien non souligné au milieu d\'un paragraphe.', 'Ouvrir un nouvel onglet sans le dire.']} />
+<DoDont dos={['Un libellé qui dit où mène le lien.', 'Le lien avec flèche pour « voir tout » en fin de liste.']} donts={['« Cliquez ici », « en savoir plus » seuls.', 'Un lien non souligné au milieu d\'un paragraphe.', 'Ouvrir un nouvel onglet sans le dire.']} />

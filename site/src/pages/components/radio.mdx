@@ -1,0 +1,62 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Bouton radio"
+description: "Un seul choix parmi deux à six options, toutes visibles : le bouton radio natif, redessiné."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Choisir une seule option parmi quelques-unes, toutes visibles d'un coup : un mode de contact, une tranche de population.
+
+**Quand ne pas l'utiliser :** au-delà de six options (prendre une [liste déroulante](/components/select/)), pour plusieurs choix (des [cases à cocher](/components/checkbox/)).
+
+## Variantes
+
+Même balisage que la case à cocher, `type="radio"` et un même `name` : `.cel-choice` pour chaque option, dans un `<fieldset class="cel-choice-group">`.
+
+<Example title="Groupe de boutons radio" html={`
+    <fieldset class="cel-choice-group">
+        <legend class="cel-choice-group__legend">Comment vous recontacter ?</legend>
+        <label class="cel-choice"><input type="radio" name="exemple-contact" checked> Par courriel</label>
+        <label class="cel-choice"><input type="radio" name="exemple-contact"> Par téléphone</label>
+        <label class="cel-choice"><input type="radio" name="exemple-contact"> Par courrier</label>
+    </fieldset>
+`} />
+
+<Example title="En ligne" html={`
+    <fieldset class="cel-choice-group cel-choice-group--inline">
+        <legend class="cel-choice-group__legend">Population</legend>
+        <label class="cel-choice"><input type="radio" name="exemple-population" checked> Moins de 500</label>
+        <label class="cel-choice"><input type="radio" name="exemple-population"> 500 à 999</label>
+        <label class="cel-choice"><input type="radio" name="exemple-population"> 1 000 et plus</label>
+    </fieldset>
+`} />
+
+## États
+
+<Example title="Focus visible, erreur, désactivé" html={`
+    <fieldset class="cel-choice-group" aria-invalid="true" aria-describedby="exemple-jour-erreur">
+        <legend class="cel-choice-group__legend">Jour du rendez-vous</legend>
+        <label class="cel-choice"><input type="radio" name="exemple-jour" data-cel-state="focus"> Mardi</label>
+        <label class="cel-choice"><input type="radio" name="exemple-jour"> Jeudi</label>
+        <label class="cel-choice"><input type="radio" name="exemple-jour" disabled> Samedi (complet)</label>
+        <span class="cel-field__error" id="exemple-jour-erreur">Choisissez un jour.</span>
+    </fieldset>
+`} />
+
+## Accessibilité
+
+- **Clavier :** Tab entre dans le groupe, les flèches changent le choix (comportement natif).
+- **Groupe :** `<fieldset>` et `<legend>` obligatoires ; un même `name` pour toutes les options.
+- **Erreur :** `aria-invalid="true"` sur le `<fieldset>` borde chaque option en rouge ; message relié.
+- **Point :** couleur principale sur la surface, bordure à 3:1.
+
+<Contrasts pairs={[['field-border', 'surface', 3], ['primary', 'surface', 3], ['text-strong', 'background'], ['error', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une option choisie par défaut quand l\'une est attendue.', 'Des options courtes, qui s\'excluent.']} donts={['Un seul bouton radio.', 'Des boutons radio pour une action immédiate.']} />

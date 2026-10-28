@@ -3,9 +3,9 @@
 Toutes les icônes sont au même format : 24 × 24, trait de 1,5, extrémités arrondies, couleur héritée
 (`currentColor`). La source de chacune est dans `icons.json`.
 
-## Heroicons (41 icônes)
+## Heroicons (42 icônes)
 
-Icônes « outline » de [Heroicons](https://heroicons.com) 2.2, renommées en français, attributs de trait ramenés sur la
+Icônes « outline » de [Heroicons](https://heroicons.com) 2.2, sous leur nom d’origine, attributs de trait ramenés sur la
 balise `<svg>`. Ce sont celles que la landing affiche par Filament (`svg('heroicon-o-…')`).
 
 ```

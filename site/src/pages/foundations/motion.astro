@@ -1,11 +1,25 @@
 ---
-// Durées et courbes lues dans tokens.css.
+// Durations and easing read in foundations/motion.css.
 import Doc from '../../layouts/Doc.astro'
 import Code from '../../components/Code.astro'
-import { jetons } from '../../lib/tokens.js'
+import { startingWith } from '../../lib/tokens.js'
 
-const durees = jetons.filter((jeton) => jeton.nom.startsWith('cel-duree-'))
-const courbes = jetons.filter((jeton) => jeton.nom.startsWith('cel-courbe-'))
+const durations = startingWith('cel-duration-', 'cel-delay-')
+const easings = startingWith('cel-ease-')
+// Use of each variable, in French (the comments of the package are in English).
+const USES = {
+    'cel-duration-xfast': 'fondu sortant',
+    'cel-duration-fast': 'survols, boutons',
+    'cel-duration-moderate': 'cartes soulevées, fondu entrant',
+    'cel-duration-normal': 'changement d\'état',
+    'cel-duration-steady': 'opacité des apparitions',
+    'cel-duration-slow': 'mouvement des apparitions',
+    'cel-delay-stagger': 'écart entre deux éléments qui apparaissent ensemble',
+    'cel-ease-standard': 'survols, fondus',
+    'cel-ease-out': 'apparitions, ouverture du menu',
+    'cel-ease-glide': 'repère qui glisse',
+    'cel-ease-bounce': 'élément choisi qui se soulève',
+}
 const headings = [
     { depth: 2, slug: 'regles', text: 'Règles' },
     { depth: 2, slug: 'durees', text: 'Durées' },
@@ -19,50 +33,50 @@ const headings = [
     <ul>
         <li>Seules l'opacité, <code>translate</code> et <code>scale</code> changent : aucun décalage de mise en page.</li>
         <li>De 150 à 400 ms, sans boucle. Jamais d'animation sur un message d'erreur, jamais de formulaire masqué.</li>
-        <li>Rien n'est masqué sans la classe <code>cel-anim</code>, posée par <code>js/motion-boot.js</code> seulement si le navigateur sait animer et que les animations ne sont pas réduites ; retirée si le script principal ne tourne pas dans les 3 secondes.</li>
+        <li>Rien n'est masqué sans la classe <code>cel-motion</code>, posée par <code>js/motion-boot.js</code> seulement si le navigateur sait animer et que les animations ne sont pas réduites ; retirée si le script principal ne tourne pas dans les 3 secondes.</li>
         <li><code>prefers-reduced-motion: reduce</code> : tout apparaît sans transition, les éléments ne bougent plus au survol.</li>
         <li>Le titre principal (<code>h1</code>) n'est jamais transparent.</li>
     </ul>
 
     <h2 id="durees">Durées</h2>
     <p>Survolez ou donnez le focus à une piste pour voir la durée.</p>
-    <ul class="doc-echelle">
-        {durees.map((jeton) => (
-            <li class={`doc-v-${jeton.nom}`}>
-                <span class="doc-echelle__nom">--{jeton.nom}<span>{jeton.clair}{jeton.note ? ` · ${jeton.note}` : ''}</span></span>
-                {jeton.nom === 'cel-retard-cascade' ? <span /> : <span class="doc-mouvement-piste" tabindex="0" aria-label={`Démonstration : ${jeton.clair}`}><span class="doc-mouvement" /></span>}
+    <ul class="doc-scale">
+        {durations.map((token) => (
+            <li class={`doc-v-${token.name}`}>
+                <span class="doc-scale__name">--{token.name}<span>{token.light}{USES[token.name] ? ` · ${USES[token.name]}` : ''}</span></span>
+                {token.name === 'cel-delay-stagger' ? <span /> : <span class="doc-motion-track" tabindex="0" aria-label={`Démonstration : ${token.light}`}><span class="doc-motion" /></span>}
             </li>
         ))}
     </ul>
 
     <h2 id="courbes">Courbes</h2>
-    <div class="cel-tableau-defilant"><table class="cel-tableau">
+    <div class="cel-table-scroll"><table class="cel-table">
         <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Usage</th></tr></thead>
-        <tbody>{courbes.map((j) => <tr><td><code>--{j.nom}</code></td><td><code>{j.clair}</code></td><td>{j.note ?? 'survols, fondus'}</td></tr>)}</tbody>
+        <tbody>{easings.map((token) => <tr><td><code>--{token.name}</code></td><td><code>{token.light}</code></td><td>{USES[token.name] ?? '—'}</td></tr>)}</tbody>
     </table></div>
 
     <h2 id="apparitions">Apparitions au défilement</h2>
-    <p>Un bloc portant <code>data-cel-apparition</code> apparaît une fois, à son entrée à l'écran ; ceux qui entrent ensemble arrivent en cascade (70 ms d'écart, 490 ms au plus). Valeurs : vide (monte de 16 px), <code>gauche</code>, <code>droite</code>, <code>echelle</code>, <code>glisse</code>, <code>titre</code> (jamais transparent), <code>remplissage</code> (les barres <code>data-cel-barre</code> s'allongent).</p>
-    <div class="doc-cartes">
-        <article class="cel-carte" data-cel-apparition><p class="cel-carte__titre">Monte</p><p class="cel-carte__resume">data-cel-apparition</p></article>
-        <article class="cel-carte" data-cel-apparition="gauche"><p class="cel-carte__titre">Depuis la gauche</p><p class="cel-carte__resume">data-cel-apparition="gauche"</p></article>
-        <article class="cel-carte" data-cel-apparition="echelle"><p class="cel-carte__titre">Grandit</p><p class="cel-carte__resume">data-cel-apparition="echelle"</p></article>
+    <p>Un bloc portant <code>data-cel-reveal</code> apparaît une fois, à son entrée à l'écran ; ceux qui entrent ensemble arrivent en cascade (70 ms d'écart, 490 ms au plus). Valeurs : vide (monte de 16 px), <code>left</code>, <code>right</code>, <code>scale</code>, <code>slide</code>, <code>title</code> (jamais transparent), <code>fill</code> (les barres <code>data-cel-bar</code> s'allongent).</p>
+    <div class="doc-cards">
+        <article class="cel-card" data-cel-reveal><p class="cel-card__title">Monte</p><p class="cel-card__summary">data-cel-reveal</p></article>
+        <article class="cel-card" data-cel-reveal="left"><p class="cel-card__title">Depuis la gauche</p><p class="cel-card__summary">data-cel-reveal="left"</p></article>
+        <article class="cel-card" data-cel-reveal="scale"><p class="cel-card__title">Grandit</p><p class="cel-card__summary">data-cel-reveal="scale"</p></article>
     </div>
-    <Code code={`<section data-cel-apparition>…</section>
+    <Code code={`<section data-cel-reveal>…</section>
 
 <script type="module">
-    import { initMouvement } from '/design/js/motion.js'
-    initMouvement()
+    import { initMotion } from '/design/js/motion.js'
+    initMotion()
 </script>`} />
 
     <h2 id="changements">Changements d'état</h2>
     <ul>
-        <li><code>.cel-choix-anime</code> : élément choisi qui se soulève et change de couleurs en douceur.</li>
-        <li><code>.cel-glisse</code> : repère qui glisse jusqu'à sa nouvelle place.</li>
-        <li><code>.cel-cascade[data-cel-fondu]</code> : parties d'une ligne qui arrivent l'une après l'autre.</li>
-        <li><code>fonduEntrant(element)</code>, <code>fonduSortant(element)</code>, <code>rafraichir(element)</code> : fondus courts de <code>js/motion.js</code>.</li>
-        <li><code>.cel-trace-coche</code> : coche de confirmation tracée une fois (chemin SVG avec <code>pathLength="1"</code>).</li>
-        <li><code>.cel-carte-mobile</code> : carte-lien qui se soulève, sa flèche <code>.cel-carte-mobile__fleche</code> avance.</li>
+        <li><code>.cel-animated-choice</code> : élément choisi qui se soulève et change de couleurs en douceur.</li>
+        <li><code>.cel-glide</code> : repère qui glisse jusqu'à sa nouvelle place.</li>
+        <li><code>.cel-stagger[data-cel-fade]</code> : parties d'une ligne qui arrivent l'une après l'autre.</li>
+        <li><code>fadeIn(element)</code>, <code>fadeOut(element)</code>, <code>refresh(element)</code> : fondus courts de <code>js/motion.js</code>.</li>
+        <li><code>.cel-draw-check</code> : coche de confirmation tracée une fois (chemin SVG avec <code>pathLength="1"</code>).</li>
+        <li><code>.cel-hover-card</code> : carte-lien qui se soulève, sa flèche <code>.cel-hover-card__arrow</code> avance.</li>
     </ul>
     <p>Les animations décoratives de l'accroche de la landing (téléphone qui flotte, texte tapé, pulsation) lui restent propres et ne sont pas dans le paquet.</p>
 </Doc>

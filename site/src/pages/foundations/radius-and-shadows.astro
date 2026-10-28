@@ -1,26 +1,40 @@
 ---
-// Page générée depuis tokens.css.
+// Page generated from foundations/radius.css and foundations/shadows.css.
 import Doc from '../../layouts/Doc.astro'
-import { jetons } from '../../lib/tokens.js'
+import { startingWith } from '../../lib/tokens.js'
 
-const rayons = jetons.filter((jeton) => jeton.nom.startsWith('cel-rayon-'))
-const ombres = jetons.filter((jeton) => jeton.nom.startsWith('cel-ombre-'))
-const headings = [{ depth: 2, slug: 'rayons', text: 'Rayons' }, { depth: 2, slug: 'ombres', text: 'Ombres' }]
+const NAMED = ['cel-radius-sm', 'cel-radius-md', 'cel-radius-lg', 'cel-radius-xl']
+const scale = startingWith('cel-radius-').filter((token) => !NAMED.includes(token.name))
+const named = startingWith('cel-radius-').filter((token) => NAMED.includes(token.name))
+const shadows = startingWith('cel-shadow-')
+const headings = [
+    { depth: 2, slug: 'echelle-des-rayons', text: 'Échelle des rayons' },
+    { depth: 2, slug: 'rayons-nommes', text: 'Rayons nommés' },
+    { depth: 2, slug: 'ombres', text: 'Ombres' },
+]
 ---
-<Doc title="Rayons et ombres" description="Les arrondis et les ombres du paquet. Page générée à partir de tokens.css." headings={headings}>
-    <h2 id="rayons">Rayons</h2>
-    <p>Les plus courants ont un nom : <code>--cel-rayon-petit</code> (8 px), <code>--cel-rayon-moyen</code> (10 px, boutons et champs), <code>--cel-rayon-grand</code> (14 px, cartes), <code>--cel-rayon-bloc</code> (20 px, bloc tarif). Les pastilles sont en <code>--cel-rayon-pilule</code>, les numéros en <code>--cel-rayon-cercle</code>.</p>
-    <ul class="doc-formes">
-        {rayons.map((jeton) => (
-            <li class={`doc-v-${jeton.nom}`}><span class="doc-boite doc-boite--rayon" aria-hidden="true"></span>--{jeton.nom}<span>{jeton.clair}</span></li>
+<Doc title="Rayons et ombres" description="L'échelle des rayons, les quatre rayons nommés et les ombres, transparentes en sombre. Page générée à partir de foundations/radius.css et foundations/shadows.css." headings={headings}>
+    <h2 id="echelle-des-rayons">Échelle des rayons</h2>
+    <p>Les arrondis de la landing, en px. Les pastilles sont en <code>--cel-radius-pill</code>, les numéros en <code>--cel-radius-circle</code>.</p>
+    <ul class="doc-shapes">
+        {scale.map((token) => (
+            <li class={`doc-v-${token.name}`}><span class="doc-box doc-box--radius" aria-hidden="true"></span>--{token.name}<span>{token.light}</span></li>
+        ))}
+    </ul>
+
+    <h2 id="rayons-nommes">Rayons nommés</h2>
+    <p>Les composants de base et les formulaires emploient ces quatre rayons plutôt que l'échelle : <code>--cel-radius-sm</code> (8 px, lien d'évitement ; la moitié pour les cases à cocher), <code>--cel-radius-md</code> (10 px, boutons, champs, badges, pagination), <code>--cel-radius-lg</code> (14 px, récapitulatif des erreurs, cartes), <code>--cel-radius-xl</code> (20 px, bloc tarif, cartes de fonctionnalités).</p>
+    <ul class="doc-shapes">
+        {named.map((token) => (
+            <li class={`doc-v-${token.name}`}><span class="doc-box doc-box--radius" aria-hidden="true"></span>--{token.name}<span>{token.light.replace('var(--', '').replace(')', '')}</span></li>
         ))}
     </ul>
 
     <h2 id="ombres">Ombres</h2>
-    <p>Discrètes, teintées de marine. <strong>Aucune ombre en thème sombre</strong> : leurs couleurs y deviennent transparentes, les bordures suffisent. Le commentaire donne la règle de la landing qui l'emploie.</p>
-    <ul class="doc-formes">
-        {ombres.map((jeton) => (
-            <li class={`doc-v-${jeton.nom}`}><span class="doc-boite doc-boite--ombre" aria-hidden="true"></span>--{jeton.nom}<span>{jeton.note}</span></li>
+    <p>Discrètes, teintées de marine. <strong>Aucune ombre en thème sombre</strong> : leurs couleurs y deviennent transparentes, les bordures suffisent. Sous chaque ombre, la règle de la landing qui l'emploie.</p>
+    <ul class="doc-shapes">
+        {shadows.map((token) => (
+            <li class={`doc-v-${token.name}`}><span class="doc-box doc-box--shadow" aria-hidden="true"></span>--{token.name}<span>{token.note ?? token.landing}</span></li>
         ))}
     </ul>
 </Doc>

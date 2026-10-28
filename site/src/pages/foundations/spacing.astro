@@ -1,42 +1,42 @@
 ---
-// Page générée depuis tokens.css.
+// Page generated from foundations/spacing.css.
 import Doc from '../../layouts/Doc.astro'
 import Code from '../../components/Code.astro'
-import { jetons } from '../../lib/tokens.js'
+import { inGroup, startingWith } from '../../lib/tokens.js'
 
-const espaces = jetons.filter((jeton) => jeton.nom.startsWith('cel-espace-'))
-const mise = jetons.filter((jeton) => jeton.groupe === 'Mise en page')
+const spaces = startingWith('cel-space-')
+const layout = inGroup('Layout')
 const headings = [
     { depth: 2, slug: 'echelle', text: 'Échelle' },
     { depth: 2, slug: 'mise-en-page', text: 'Mise en page' },
     { depth: 2, slug: 'utilisation', text: 'Utilisation' },
 ]
 ---
-<Doc title="Espacements" description="L'échelle des marges et des écarts, au pas de 4 px comme Tailwind, avec des demi-pas. Page générée à partir de tokens.css." headings={headings}>
+<Doc title="Espacements" description="L'échelle des marges et des écarts, au pas de 4 px comme Tailwind, avec des demi-pas. Page générée à partir de foundations/spacing.css." headings={headings}>
     <h2 id="echelle">Échelle</h2>
-    <p>Le numéro est le nombre de pas de 4 px : <code>--cel-espace-4</code> vaut 16 px, comme <code>p-4</code> avec Tailwind. Les demi-pas s'écrivent avec un tiret : <code>--cel-espace-2-5</code> vaut 10 px (<code>p-2.5</code>).</p>
-    <ul class="doc-echelle">
-        {espaces.map((jeton) => (
-            <li class={`doc-v-${jeton.nom}`}>
-                <span class="doc-echelle__nom">--{jeton.nom}<span>{jeton.clair}{jeton.note ? ` · ${jeton.note}` : ''}</span></span>
-                <span class="doc-barre" aria-hidden="true"></span>
+    <p>Le numéro est le nombre de pas de 4 px : <code>--cel-space-4</code> vaut 16 px, comme <code>p-4</code> avec Tailwind. Les demi-pas s'écrivent avec un tiret : <code>--cel-space-2-5</code> vaut 10 px (<code>p-2.5</code>).</p>
+    <ul class="doc-scale">
+        {spaces.map((token) => (
+            <li class={`doc-v-${token.name}`}>
+                <span class="doc-scale__name">--{token.name}<span>{token.light}{token.landing ? ` · ${token.landing}` : ''}</span></span>
+                <span class="doc-bar" aria-hidden="true"></span>
             </li>
         ))}
     </ul>
 
     <h2 id="mise-en-page">Mise en page</h2>
-    <div class="cel-tableau-defilant">
-        <table class="cel-tableau">
+    <div class="cel-table-scroll">
+        <table class="cel-table">
             <thead><tr><th scope="col">Variable</th><th scope="col">Valeur</th><th scope="col">Dans la landing</th></tr></thead>
-            <tbody>{mise.map((jeton) => <tr><td><code>--{jeton.nom}</code></td><td>{jeton.clair}</td><td>{jeton.landing ?? jeton.note}</td></tr>)}</tbody>
+            <tbody>{layout.map((token) => <tr><td><code>--{token.name}</code></td><td>{token.light}</td><td>{token.landing ?? '—'}</td></tr>)}</tbody>
         </table>
     </div>
 
     <h2 id="utilisation">Utilisation</h2>
-    <p>Les écarts entre blocs d'une section : <code>.cel-pile</code> (24 px), <code>--7</code>, <code>--9</code>, <code>--10</code>. Les marges hautes et basses d'une section : <code>--cel-espace-section</code>, de 56 à 88 px selon la largeur. Les valeurs impaires de la landing (1, 3, 5, 7, 9, 11, 13, 15, 19 px) restent écrites en px dans leurs règles : elles ne forment pas une échelle.</p>
-    <Code langue="css" code={`.liste-actions {
+    <p>Les écarts entre blocs d'une section : <code>.cel-stack</code> (24 px), <code>--7</code>, <code>--9</code>, <code>--10</code>. Les marges hautes et basses d'une section : <code>--cel-space-section</code>, de 56 à 88 px selon la largeur. Les valeurs impaires de la landing (1, 3, 5, 7, 9, 11, 13, 15, 19 px) restent écrites en px dans leurs règles : elles ne forment pas une échelle. Les arrondis sont sur la page <a href="/foundations/radius-and-shadows/">Rayons et ombres</a>.</p>
+    <Code lang="css" code={`.action-list {
     display: flex;
-    gap: var(--cel-espace-3);           /* 12 px */
-    padding-block: var(--cel-espace-section);
+    gap: var(--cel-space-3);           /* 12 px */
+    padding-block: var(--cel-space-section);
 }`} />
 </Doc>

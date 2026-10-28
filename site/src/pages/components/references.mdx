@@ -1,0 +1,71 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Bande des références"
+description: "« Elles ont choisi Commune en ligne » : une carte par commune, dans une bande qui défile au doigt, à la molette et au clavier."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Montrer les communes qui utilisent déjà Commune en ligne, avec leur blason, un mot du maire et les fonctionnalités qu'elles emploient.
+
+## Composition
+
+`.cel-references` (une section, fond bleu très pâle) : un en-tête (`__entete`, titre et intro), puis la bande `__bande`, un vrai conteneur défilant avec accroche des cartes et un fondu sur les bords. La piste `__piste` est centrée quand toutes les cartes tiennent. Chaque carte `.cel-reference` a un bandeau aux couleurs de la commune, un corps (citation, fonctionnalités) et un lien.
+
+Le défilement automatique de la landing (`initMarquee()` et son bouton pause) n'est pas dans le paquet : la bande reste immobile tant qu'on ne la fait pas défiler.
+
+Couleurs de la commune : `--cel-reference-color` (fond du bandeau) et `--cel-reference-text`, posées par une classe propre à la commune, jamais par un attribut `style` ; leur contraste (4,5:1) est vérifié par le projet qui les pose. Sans elles, le bandeau est marine.
+
+<Example title="Deux références" background="full" html={`
+    <section class="cel-section cel-references" aria-labelledby="titre-references">
+        <div class="cel-container cel-references__header">
+            <div class="cel-intro cel-references__intro">
+                <h2 id="titre-references" class="cel-section-title cel-section-title--primary">Elles ont choisi Commune en ligne</h2>
+            </div>
+        </div>
+        <div class="cel-references__strip" tabindex="0" role="region" aria-labelledby="titre-references">
+            <ul class="cel-references__track">
+                <li class="cel-references__item">
+                    <article class="cel-reference">
+                        <div class="cel-reference__banner">
+                            <img class="cel-reference__logo" src="/design/brand/icon-on-dark.svg" alt="" width="44" height="44">
+                            <div class="cel-reference__identity"><h3 class="cel-reference__name">Veckersviller</h3><p class="cel-reference__meta">Moselle · 480 habitants</p></div>
+                        </div>
+                        <div class="cel-reference__body">
+                            <figure class="cel-reference__quote"><blockquote><p>« La secrétaire publie les comptes rendus le soir même. »</p></blockquote><figcaption>Le maire</figcaption></figure>
+                            <ul class="cel-reference__features" aria-label="Fonctionnalités employées"><li>Actes</li><li>Agenda</li><li>Alertes</li></ul>
+                            <a href="#" class="cel-reference__link">Voir le site<svg class="cel-icon cel-icon--16" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-up-right"></use></svg></a>
+                        </div>
+                    </article>
+                </li>
+                <li class="cel-references__item">
+                    <article class="cel-reference">
+                        <div class="cel-reference__banner">
+                            <img class="cel-reference__logo" src="/design/brand/icon-on-dark.svg" alt="" width="44" height="44">
+                            <div class="cel-reference__identity"><h3 class="cel-reference__name">Saint-Exemple</h3><p class="cel-reference__meta">Cantal · 210 habitants</p></div>
+                        </div>
+                        <div class="cel-reference__body">
+                            <figure class="cel-reference__quote"><blockquote><p>« Les habitants trouvent enfin les horaires de la mairie. »</p></blockquote><figcaption>La secrétaire de mairie</figcaption></figure>
+                            <ul class="cel-reference__features" aria-label="Fonctionnalités employées"><li>Horaires</li><li>Actualités</li></ul>
+                            <a href="#" class="cel-reference__link">Voir le site<svg class="cel-icon cel-icon--16" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-up-right"></use></svg></a>
+                        </div>
+                    </article>
+                </li>
+            </ul>
+        </div>
+    </section>
+`} />
+
+## Accessibilité
+
+- La bande a un nom (`role="region"`, `aria-labelledby`) et est atteignable au clavier : les flèches la font défiler. Le focus est dessiné à l'intérieur.
+- Chaque carte est un `<article>` titré par le nom de la commune ; le blason est décoratif.
+- Aucun mouvement sans action de la personne.
+
+<Contrasts pairs={[['on-strong', 'strong'], ['text', 'surface'], ['text-muted', 'surface'], ['text', 'background-muted'], ['primary', 'surface'], ['primary', 'tint-blue-2']]} />
+
+<DoDont dos={['Des communes réelles, avec leur accord.', 'Une citation courte.']} donts={['Un défilement automatique sans bouton pause.', 'Des couleurs de commune posées en attribut style.']} />

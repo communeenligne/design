@@ -1,0 +1,335 @@
+/*
+ * @communeenligne/design, components, navigation family: main navigation links, breadcrumb, pagination, tabs, theme
+ * switch, and the phone menu (menu.css).
+ *
+ * Renaming a class is a major version.
+ */
+
+.cel-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-3) var(--cel-space-7);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-nav__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2) var(--cel-space-7);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-nav a {
+    color: var(--cel-color-text);
+    text-decoration: none;
+}
+
+.cel-nav a:hover {
+    color: var(--cel-color-primary);
+    text-decoration: underline;
+}
+
+/* Current page: underlined with an ochre line. */
+.cel-nav a[aria-current]:not(.cel-nav__action) {
+    color: var(--cel-color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--cel-color-ochre);
+}
+
+.cel-nav .cel-nav__action {
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-action);
+    color: var(--cel-color-on-strong);
+}
+
+.cel-nav .cel-nav__action:hover {
+    background: var(--cel-color-action-hover);
+    color: var(--cel-color-on-strong);
+    text-decoration: none;
+}
+
+/* Current page: the button stays filled, underlined with an ochre line. */
+.cel-nav .cel-nav__action[aria-current='page'] {
+    box-shadow: inset 0 -3px 0 var(--cel-color-ochre);
+}
+
+/* ---------- Breadcrumb ---------- */
+
+.cel-breadcrumb {
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-14);
+}
+
+.cel-breadcrumb ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1) var(--cel-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-breadcrumb li {
+    display: flex;
+    gap: var(--cel-space-2);
+}
+
+.cel-breadcrumb a {
+    color: var(--cel-color-primary);
+}
+
+.cel-breadcrumb a:hover {
+    color: var(--cel-color-primary-hover);
+}
+
+/* ---------- Pagination ---------- */
+
+/* Previous and next pages, and the numbers; the current page has aria-current="page" and is not a link. */
+.cel-pagination ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--cel-space-2);
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--cel-space-2) var(--cel-space-3-5);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+    text-decoration: none;
+    transition: background-color var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+a.cel-pagination__link:hover,
+.cel-pagination__link[data-cel-state~='hover'] {
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-primary);
+}
+
+.cel-pagination__link[aria-current='page'] {
+    border-color: var(--cel-color-primary);
+    background: var(--cel-color-primary);
+    color: var(--cel-color-surface);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-pagination__ellipsis {
+    padding: 0 var(--cel-space-1);
+    color: var(--cel-color-text-muted);
+}
+
+/* ---------- Tabs ---------- */
+
+/* Without script, panels follow each other, each with its title, and tabs are links to them; tabs.js adds
+   cel-tabs--active. The line is an inset shadow: the tab underline covers it without a negative margin, which
+   horizontal scrolling would cut. */
+.cel-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-7-5);
+}
+
+.cel-tabs__list {
+    display: flex;
+    gap: var(--cel-space-1) var(--cel-space-7-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    box-shadow: inset 0 -1px 0 var(--cel-color-line);
+}
+
+.cel-tabs__list li {
+    flex: none;
+}
+
+.cel-tabs__tab {
+    display: block;
+    padding: var(--cel-space-3) 0;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--cel-color-text-muted);
+    font: inherit;
+    font-size: var(--cel-text-16);
+    font-weight: var(--cel-font-weight-semibold);
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        color var(--cel-duration-fast) var(--cel-ease-standard),
+        border-color var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-tabs__tab:hover,
+.cel-tabs__tab[data-cel-state~='hover'] {
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+.cel-tabs__tab:focus-visible,
+.cel-tabs__tab[data-cel-state~='focus'] {
+    outline-offset: -3px;
+    border-radius: calc(var(--cel-radius-sm) / 2);
+}
+
+.cel-tabs__tab[aria-selected='true'] {
+    border-bottom-color: var(--cel-color-primary);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-tabs__panels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-10);
+}
+
+.cel-tabs__panel {
+    padding-top: var(--cel-space-1-5);
+}
+
+.cel-tabs:not(.cel-tabs--active) .cel-tabs__panel + .cel-tabs__panel {
+    padding-top: var(--cel-space-10);
+    border-top: 1px solid var(--cel-color-line);
+}
+
+.cel-tabs__panel-title {
+    margin-bottom: var(--cel-space-6);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-caps);
+    text-transform: uppercase;
+    color: var(--cel-color-text-muted);
+}
+
+.cel-tabs--active .cel-tabs__panel-title {
+    display: none;
+}
+
+/* ---------- Theme switch ---------- */
+
+/* Two pills in a capsule: links without script, buttons with it (theme.js). The current theme is a filled, bold
+   pill, not only another color. By default, on a strong surface (footer). */
+.cel-theme {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2-5);
+}
+
+.cel-theme__options {
+    display: inline-flex;
+    gap: var(--cel-space-0-5);
+    padding: 3px;
+    border: 1px solid var(--cel-color-on-strong-divider-18);
+    border-radius: var(--cel-radius-pill);
+}
+
+.cel-theme__option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-1-5);
+    min-height: 32px;
+    padding: var(--cel-space-1) var(--cel-space-3);
+    border: 0;
+    border-radius: var(--cel-radius-pill);
+    background: none;
+    color: var(--cel-color-on-dark);
+    font: inherit;
+    font-size: var(--cel-text-14);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color var(--cel-duration-fast) var(--cel-ease-standard),
+        color var(--cel-duration-fast) var(--cel-ease-standard);
+    --cel-icon-size: 16px;
+    --cel-icon-stroke: 2;
+}
+
+.cel-theme__option:hover,
+.cel-theme__option[data-cel-state~='hover'] {
+    background: var(--cel-color-on-strong-divider-12);
+    color: var(--cel-color-on-strong);
+    text-decoration: none;
+}
+
+.cel-theme__option[aria-current='true'],
+.cel-theme__option[aria-pressed='true'] {
+    background: var(--cel-color-on-strong);
+    color: var(--cel-color-on-gold-navy);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* On a light surface. */
+.cel-theme--on-light .cel-theme__options {
+    border-color: var(--cel-color-field-border);
+}
+
+.cel-theme--on-light .cel-theme__option {
+    color: var(--cel-color-text);
+}
+
+.cel-theme--on-light .cel-theme__option:hover,
+.cel-theme--on-light .cel-theme__option[data-cel-state~='hover'] {
+    background: var(--cel-color-surface-hover);
+    color: var(--cel-color-primary);
+}
+
+.cel-theme--on-light .cel-theme__option[aria-current='true'],
+.cel-theme--on-light .cel-theme__option[aria-pressed='true'] {
+    background: var(--cel-color-action);
+    color: var(--cel-color-on-strong);
+}
+
+/* ---------- Phone ---------- */
+
+@media (max-width: 640px) {
+    /* Links on one line, in the same order, then the main action, always visible. */
+    .cel-nav {
+        flex-direction: column;
+        gap: var(--cel-space-3);
+    }
+
+    .cel-nav__links {
+        justify-content: center;
+        gap: var(--cel-space-2) var(--cel-space-4);
+    }
+
+    /* On phones, only previous, next and the current page remain; the other numbers are hidden. */
+    .cel-pagination__number:not(:has([aria-current='page'])) {
+        display: none;
+    }
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    .cel-tabs__tab,
+    .cel-pagination__link,
+    .cel-theme__option {
+        transition: none;
+    }
+}

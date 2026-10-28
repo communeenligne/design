@@ -1,0 +1,61 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Pagination"
+description: "Les pages d'une longue liste (actualités, actes, comptes rendus) : précédente, suivante, numéros, page en cours."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Parcourir une liste découpée en pages, avec des adresses propres à chaque page (`?page=3`) : le retour arrière et les liens partagés marchent.
+
+**Quand ne pas l'utiliser :** pour une liste courte (tout afficher), pour des étapes d'un formulaire (ce ne sont pas des pages au choix).
+
+## Variantes
+
+Une `<nav class="cel-pagination">` nommée, une liste : la page en cours est un `<span aria-current="page">`, les autres des liens. Les numéros et les points de suspension portent `.cel-pagination__number` sur leur `<li>` : sur téléphone, seuls précédente, suivante et la page en cours restent.
+
+<Example title="Numéros et pages voisines" html={`
+    <nav class="cel-pagination" aria-label="Pagination des actualités">
+        <ul>
+            <li><a class="cel-pagination__link" href="#" rel="prev"><span aria-hidden="true">‹</span> Précédente</a></li>
+            <li class="cel-pagination__number"><a class="cel-pagination__link" href="#"><span class="cel-visually-hidden">Page </span>1</a></li>
+            <li class="cel-pagination__number"><span class="cel-pagination__ellipsis" aria-hidden="true">…</span></li>
+            <li class="cel-pagination__number"><a class="cel-pagination__link" href="#"><span class="cel-visually-hidden">Page </span>4</a></li>
+            <li class="cel-pagination__number"><span class="cel-pagination__link" aria-current="page"><span class="cel-visually-hidden">Page </span>5</span></li>
+            <li class="cel-pagination__number"><a class="cel-pagination__link" href="#"><span class="cel-visually-hidden">Page </span>6</a></li>
+            <li class="cel-pagination__number"><span class="cel-pagination__ellipsis" aria-hidden="true">…</span></li>
+            <li class="cel-pagination__number"><a class="cel-pagination__link" href="#"><span class="cel-visually-hidden">Page </span>12</a></li>
+            <li><a class="cel-pagination__link" href="#" rel="next">Suivante <span aria-hidden="true">›</span></a></li>
+        </ul>
+    </nav>
+`} />
+
+## États
+
+<Example title="Survol, focus visible, page en cours" html={`
+    <nav class="cel-pagination" aria-label="États de la pagination">
+        <ul>
+            <li><a class="cel-pagination__link" href="#" data-cel-state="hover">Survol</a></li>
+            <li><a class="cel-pagination__link" href="#" data-cel-state="focus">Focus</a></li>
+            <li><span class="cel-pagination__link" aria-current="page">En cours</span></li>
+        </ul>
+    </nav>
+`} />
+
+Sur la première page, « Précédente » n'est pas affichée (pas de lien désactivé) ; de même pour « Suivante » sur la dernière.
+
+## Accessibilité
+
+- **Repère :** `<nav aria-label>` qui dit quelle liste est paginée.
+- **Page en cours :** `aria-current="page"`, pas un lien ; elle est pleine, pas seulement d'une autre couleur.
+- **Nom des numéros :** « Page 4 » grâce au texte masqué ; zone cliquable de 44 × 44 px au moins.
+
+<Contrasts pairs={[['primary', 'surface'], ['primary', 'surface-hover'], ['surface', 'primary'], ['text-muted', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une adresse par page.', 'Le nombre total de pages visible (dernier numéro).']} donts={['Un défilement infini sans adresse.', 'Des liens Précédente et Suivante désactivés mais affichés.']} />

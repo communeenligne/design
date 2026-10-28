@@ -10,40 +10,41 @@ import Code from '../../components/Code.astro'
 
 Les composants sont des classes `cel-` en CSS pur. Les valeurs se lisent dans les variables :
 
-<Code langue="css" code={`@import '@communeenligne/design';
+<Code lang="css" code={`@import '@communeenligne/design';
 
 .ma-carte {
-    padding: var(--cel-espace-6);
-    border: 1px solid var(--cel-couleur-filet);
-    border-radius: var(--cel-rayon-grand);
-    background: var(--cel-couleur-surface);
-    color: var(--cel-couleur-texte);
+    padding: var(--cel-space-6);
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-lg);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-text);
 }`} />
 
 ## Avec Tailwind 4
 
-<Code langue="css" code={`@import 'tailwindcss';
-@import '@communeenligne/design/tailwind.css';   /* jetons, polices, thème Tailwind */
-@import '@communeenligne/design/components.css'; /* facultatif : classes cel- */`} />
+<Code lang="css" code={`@import 'tailwindcss';
+@import '@communeenligne/design/tailwind.css';   /* fondamentaux et thème Tailwind */
+@import '@communeenligne/design/components';     /* facultatif : composants, classes cel- */
+@import '@communeenligne/design/patterns';       /* facultatif : modèles */`} />
 
-`tailwind.css` est généré depuis `tokens.css` : chaque variable devient un utilitaire qui pointe vers elle (`@theme inline`). Le thème sombre s'applique donc sans variante `dark:` : `bg-surface` vaut la surface claire ou sombre selon la classe posée sur `<html>`.
+`tailwind.css` est généré depuis les fondamentaux : chaque variable devient un utilitaire qui pointe vers elle (`@theme inline`). Le thème sombre s'applique donc sans variante `dark:` : `bg-surface` vaut la surface claire ou sombre selon la classe posée sur `<html>`. Le nom de l'utilitaire est celui de la variable sans `--cel-` ni son préfixe de famille.
 
 | Variable du paquet | Utilitaires Tailwind |
 |---|---|
-| `--cel-couleur-texte-marine` | `text-texte-marine`, `bg-texte-marine`, `border-texte-marine` |
-| `--cel-couleur-surface` | `bg-surface` |
-| `--cel-taille-15` | `text-15` |
-| `--cel-taille-titre-section` | `text-titre-section` |
-| `--cel-graisse-extra` | `font-extra` |
-| `--cel-interligne-120` | `leading-120` |
-| `--cel-rayon-moyen` | `rounded-moyen` |
-| `--cel-ombre-bouton` | `shadow-bouton` |
-| `--cel-courbe-sortie` | `ease-sortie` |
-| `--cel-largeur-contenu` | `max-w-contenu` |
-| `--cel-espace-section` | `py-section` |
-| `--cel-rupture-telephone` | `telephone:` (640 px et plus), `max-telephone:` (moins de 640 px) |
+| `--cel-color-primary` | `text-primary`, `bg-primary`, `border-primary` |
+| `--cel-color-surface` | `bg-surface` |
+| `--cel-text-15` | `text-15` |
+| `--cel-text-title-section` | `text-title-section` |
+| `--cel-font-weight-extrabold` | `font-extrabold` |
+| `--cel-leading-120` | `leading-120` |
+| `--cel-radius-md` | `rounded-md` |
+| `--cel-shadow-button` | `shadow-button` |
+| `--cel-ease-out` | `ease-out` |
+| `--cel-width-content` | `max-w-content` |
+| `--cel-space-section` | `py-section` |
+| `--cel-breakpoint-phone` | `phone:` (640 px et plus), `max-phone:` (moins de 640 px) |
 
-Les espacements suivent le pas de Tailwind (4 px) : `p-4` vaut `--cel-espace-4` (16 px), `gap-2.5` vaut `--cel-espace-2-5` (10 px).
+Les espacements suivent le pas de Tailwind (4 px) : `p-4` vaut `--cel-space-4` (16 px), `gap-2.5` vaut `--cel-space-2-5` (10 px).
 
 ### Préflight
 

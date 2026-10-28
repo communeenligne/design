@@ -9,9 +9,9 @@ ne servent qu'aux sites et documents de Commune en ligne (landing, panel, aide e
 | Fichier | Usage |
 |---|---|
 | `logo.svg` | Logo horizontal sur fond clair |
-| `logo-fond-sombre.svg` | Logo sur fond bleu ou sombre (pied de page, thème sombre) |
-| `logo-noir.svg` | Version une couleur (impression, documents) |
-| `icone.svg`, `icone-fond-sombre.svg` | Icône seule |
+| `logo-on-dark.svg` | Logo sur fond bleu ou sombre (pied de page, thème sombre) |
+| `logo-black.svg` | Version une couleur (impression, documents) |
+| `icon.svg`, `icon-on-dark.svg` | Icône seule |
 | `favicon.svg` | Favicon vectoriel |
 
 Règles d'usage : garder autour du logo un espace libre au moins égal à la moitié de la hauteur de l'icône ; ne pas le

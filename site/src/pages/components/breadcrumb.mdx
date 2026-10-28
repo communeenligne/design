@@ -16,8 +16,8 @@ Sur une page intérieure (une fonctionnalité, un guide), dire où l'on est et p
 
 ## Exemple
 
-<Example titre="Fil d'Ariane" fond="clair" html={`
-    <nav class="cel-fil-ariane" aria-label="Fil d'Ariane">
+<Example title="Fil d'Ariane" background="muted" html={`
+    <nav class="cel-breadcrumb" aria-label="Fil d'Ariane">
         <ol>
             <li><a href="#">Accueil</a><span aria-hidden="true">›</span></li>
             <li><a href="#">Fonctionnalités</a><span aria-hidden="true">›</span></li>
@@ -25,9 +25,9 @@ Sur une page intérieure (une fonctionnalité, un guide), dire où l'on est et p
         </ol>
     </nav>
 `} tailwind={`
-    <nav class="text-14 text-texte-discret-2" aria-label="Fil d'Ariane">
+    <nav class="text-14 text-text-muted" aria-label="Fil d'Ariane">
         <ol class="flex flex-wrap gap-x-2 gap-y-1 list-none p-0 m-0">
-            <li class="flex gap-2"><a href="#" class="text-texte-marine">Accueil</a><span aria-hidden="true">›</span></li>
+            <li class="flex gap-2"><a href="#" class="text-principale">Accueil</a><span aria-hidden="true">›</span></li>
             <li class="flex gap-2"><span aria-current="page">Agenda</span></li>
         </ol>
     </nav>
@@ -35,10 +35,10 @@ Sur une page intérieure (une fonctionnalité, un guide), dire où l'on est et p
 
 ## États
 
-<Example titre="Lien : survol, focus visible" fond="clair" html={`
-    <nav class="cel-fil-ariane" aria-label="Exemple d'états">
+<Example title="Lien : survol, focus visible" background="muted" html={`
+    <nav class="cel-breadcrumb" aria-label="Exemple d'états">
         <ol>
-            <li><a href="#" data-cel-etat="focus">Focus visible</a><span aria-hidden="true">›</span></li>
+            <li><a href="#" data-cel-state="focus">Focus visible</a><span aria-hidden="true">›</span></li>
             <li><span aria-current="page">Page en cours</span></li>
         </ol>
     </nav>
@@ -51,8 +51,8 @@ Sur une page intérieure (une fonctionnalité, un guide), dire où l'on est et p
 - **Séparateur :** `›` masqué aux lecteurs d'écran.
 - **Données structurées :** mêmes étapes que le `BreadcrumbList` de la page, s'il y en a un.
 
-<Contrasts paires={[['texte-discret-2', 'fond-clair'], ['texte-marine', 'fond-clair']]} />
+<Contrasts pairs={[['text-muted', 'background-muted'], ['primary', 'background-muted'], ['primary', 'background']]} />
 
 ## À faire, à éviter
 
-<DoDont faire={['Les mêmes intitulés que les titres des pages.', 'Le fil sur une seule ligne quand c\'est possible ; il passe à la ligne sinon.']} eviter={['Un lien vers la page en cours.', 'Un fil qui ne suit pas l\'arborescence (historique de navigation).']} />
+<DoDont dos={['Les mêmes intitulés que les titres des pages.', 'Le fil sur une seule ligne quand c\'est possible ; il passe à la ligne sinon.']} donts={['Un lien vers la page en cours.', 'Un fil qui ne suit pas l\'arborescence (historique de navigation).']} />

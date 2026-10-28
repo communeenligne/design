@@ -1,28 +1,36 @@
 ---
-// Pages d'une rubrique en tuiles : un aperçu (le composant lui-même, ou l'icône de la page), le titre (seul lien, qui
-// couvre la tuile), le résumé.
+// Pages of a section as tiles, by family when the section has some: a preview (the component itself, or the icon of
+// the page), the title (the only link, which covers the tile), the summary.
 import Icon from './Icon.astro'
-import { APERCUS } from '../lib/previews.js'
+import { PREVIEWS } from '../lib/previews.js'
+import { groupsOf, slug } from '../lib/navigation.js'
 
-const { rubrique } = Astro.props
+const { section } = Astro.props
 ---
-<ul class="doc-tuiles">
-    {rubrique.pages.map((page) => {
-        const apercu = APERCUS[page.url]
+{groupsOf(section).map((group) => (
+    <>
+        {group.name && <h2 class="doc-group-title" id={slug(group.name)}>{group.name}</h2>}
+        <ul class="cel-tiles">
+            {group.pages.map((page) => {
+                const preview = PREVIEWS[page.url]
+                // Under a family title, the tile titles are one level below.
+                const Title = group.name ? 'h3' : 'h2'
 
-        return (
-            <li>
-                <article class="doc-tuile">
-                    {apercu
-                        ? <div class={`doc-tuile__apercu doc-tuile__apercu--${apercu.fond ?? 'clair'}${apercu.plein ? ' doc-tuile__apercu--plein' : ''}`} aria-hidden="true" inert set:html={apercu.html} />
-                        : <div class="doc-tuile__apercu doc-tuile__apercu--icone" aria-hidden="true"><span class="doc-tuile__pictogramme"><Icon nom={page.icone} taille="28" /></span></div>}
-                    <div class="doc-tuile__corps">
-                        <h2 class="doc-tuile__titre"><a class="doc-tuile__lien" href={page.url}>{page.titre}</a></h2>
-                        <p class="doc-tuile__resume">{page.description}</p>
-                    </div>
-                    <Icon nom="arrow-right" taille="18" appuyee class="doc-tuile__fleche" />
-                </article>
-            </li>
-        )
-    })}
-</ul>
+                return (
+                    <li>
+                        <article class="cel-tile">
+                            {preview
+                                ? <div class={`cel-tile__preview cel-tile__preview--${preview.background ?? 'muted'}${preview.full ? ' cel-tile__preview--full' : ''}`} aria-hidden="true" inert set:html={preview.html} />
+                                : <div class="cel-tile__preview cel-tile__preview--icon" aria-hidden="true"><span class="cel-tile__pictogram"><Icon name={page.icon ?? 'squares-2x2'} size="28" /></span></div>}
+                            <div class="cel-tile__body">
+                                <Title class="cel-tile__title"><a class="cel-tile__link" href={page.url}>{page.title}</a></Title>
+                                <p class="cel-tile__summary">{page.description}</p>
+                            </div>
+                            <Icon name="arrow-right" size="18" bold class="cel-tile__arrow" />
+                        </article>
+                    </li>
+                )
+            })}
+        </ul>
+    </>
+))}

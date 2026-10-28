@@ -1,0 +1,26 @@
+---
+layout: ../../layouts/Doc.astro
+title: "En-tête de page"
+description: "Le haut d'une page intérieure de la landing ou du centre d'aide : fil d'Ariane, titre, chapô, sur fond atténué."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { PAGE_HEADER } from '../../lib/patterns.js'
+
+## Composition
+
+Sous l'[en-tête](/patterns/header/) du site, sur fond atténué et fermé d'un filet : le [fil d'Ariane](/components/breadcrumb/), le titre de la page (`h1`, taille fluide `--cel-text-title-page`), puis le chapô. La [page de fonctionnalité](/patterns/feature-page/) y ajoute un badge, une durée, des actions et une capture.
+
+<Example title="En-tête d'une page de guides" background="full" html={PAGE_HEADER} />
+
+## Règles
+
+- Un seul `h1` par page : celui de l'en-tête de page.
+- Le titre tient en 18 em au plus, le chapô en 38 em : ils passent à la ligne d'eux-mêmes.
+- Le titre n'est jamais transparent pendant son apparition (`data-cel-reveal="title"`).
+
+<Contrasts pairs={[['primary', 'background-muted'], ['text-2', 'background-muted'], ['text-muted', 'background-muted']]} />
+
+<DoDont dos={['Un chapô d\'une ou deux phrases, qui dit ce que la page apporte.']} donts={['Un bouton dans l\'en-tête d\'une page qui n\'est pas une page de fonctionnalité.', 'Un titre en majuscules.']} />

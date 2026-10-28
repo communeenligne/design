@@ -1,19 +1,31 @@
-// Jetons du paquet pour les pages du site : lus dans tokens.css à la construction, jamais recopiés.
-import { contraste, lireJetons, resoudre, estHexa } from '@communeenligne/design/tools/tokens.mjs'
-import css from '@communeenligne/design/tokens.css?raw'
+// Variables of the package for the pages of the site: read at build time in the foundations (foundations/*.css),
+// never copied.
+import { contrast, isHex, readTokens, resolve } from '@communeenligne/design/tools/tokens.mjs'
+import colors from '@communeenligne/design/foundations/colors.css?raw'
+import typography from '@communeenligne/design/foundations/typography.css?raw'
+import spacing from '@communeenligne/design/foundations/spacing.css?raw'
+import breakpoints from '@communeenligne/design/foundations/breakpoints.css?raw'
+import radius from '@communeenligne/design/foundations/radius.css?raw'
+import shadows from '@communeenligne/design/foundations/shadows.css?raw'
+import motion from '@communeenligne/design/foundations/motion.css?raw'
+import focus from '@communeenligne/design/foundations/focus.css?raw'
+import icons from '@communeenligne/design/foundations/icons.css?raw'
 
-export const { jetons, groupes } = lireJetons(css)
-export { contraste, resoudre }
+export const { tokens, groups } = readTokens({ colors, typography, spacing, breakpoints, radius, shadows, motion, focus, icons })
+export { contrast, resolve }
+export { slug } from './navigation.js'
 
-export const slug = (texte) => texte.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+export const startingWith = (...prefixes) => tokens.filter((token) => prefixes.some((prefix) => token.name.startsWith(prefix)))
 
-export const groupesDe = (prefixe) => groupes
-    .map((groupe) => ({ ...groupe, jetons: groupe.jetons.filter((jeton) => jeton.nom.startsWith(prefixe)) }))
-    .filter((groupe) => groupe.jetons.length > 0)
+export const inGroup = (name) => tokens.filter((token) => token.group === name)
 
-export const valeur = (nom, theme = 'clair') => resoudre(jetons, nom, theme)
+export const groupsOf = (prefix) => groups
+    .map((group) => ({ ...group, tokens: group.tokens.filter((token) => token.name.startsWith(prefix)) }))
+    .filter((group) => group.tokens.length > 0)
 
-// Écart de couleur CIE76 (Lab) : sert à repérer les couleurs presque identiques.
+export const valueOf = (name, mode = 'light') => resolve(tokens, name, mode)
+
+// CIE76 color difference (Lab): finds colors that are almost the same.
 const lab = (hex) => {
     const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
     const f = (v) => (v > 0.008856 ? Math.cbrt(v) : 7.787 * v + 16 / 116)
@@ -22,20 +34,20 @@ const lab = (hex) => {
     return [116 * f(y) - 16, 500 * (f(x) - f(y)), 200 * (f(y) - f(z))]
 }
 
-export const ecart = (a, b) => Math.hypot(...lab(a).map((v, i) => v - lab(b)[i]))
+export const distance = (a, b) => Math.hypot(...lab(a).map((v, i) => v - lab(b)[i]))
 
-// Paires de couleurs à moins de 2,5 d'écart dans les deux thèmes (à peine discernables) : candidates à la fusion.
-export const quasiDoublons = (seuil = 2.5) => {
-    const couleurs = jetons.filter((j) => j.nom.startsWith('cel-couleur-') && estHexa(j.clair) && estHexa(j.sombre))
-    const paires = []
+// Pairs of colors less than 2.5 apart in both themes (hardly distinguishable): candidates for merging.
+export const nearDuplicates = (threshold = 2.5) => {
+    const colorTokens = tokens.filter((token) => token.name.startsWith('cel-color-') && isHex(token.light) && isHex(token.dark))
+    const pairs = []
 
-    couleurs.forEach((a, i) => couleurs.slice(i + 1).forEach((b) => {
-        const pire = Math.max(ecart(a.clair, b.clair), ecart(a.sombre, b.sombre))
+    colorTokens.forEach((a, i) => colorTokens.slice(i + 1).forEach((b) => {
+        const worst = Math.max(distance(a.light, b.light), distance(a.dark, b.dark))
 
-        if (pire < seuil) {
-            paires.push({ a, b, ecart: pire })
+        if (worst < threshold) {
+            pairs.push({ a, b, distance: worst })
         }
     }))
 
-    return paires.sort((x, y) => x.ecart - y.ecart)
+    return pairs.sort((x, y) => x.distance - y.distance)
 }

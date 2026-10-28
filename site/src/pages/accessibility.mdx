@@ -22,25 +22,25 @@ Les sites de Commune en ligne visent le niveau AA du RGAA 4.1 (WCAG 2.1 AA). Le 
 
 ## Test de contraste
 
-`npm test` lit `tokens.css` et vérifie, dans chaque thème, **251 paires** : chaque texte sur chaque fond de page, les textes sur leurs teintes, les surfaces fortes et dorées, les bordures d'interface et le focus, et toute règle de `components.css` qui pose à la fois un texte et un fond. Il vérifie aussi que chaque couleur a sa valeur sombre et que les ombres disparaissent en sombre. Il tourne à chaque modification (intégration continue).
+`npm test` lit les couleurs des fondamentaux et vérifie, en clair et en sombre, **305 paires** : les [couleurs de rôle](/foundations/colors/#roles) sur leurs fonds ; chaque texte de la palette sur chaque fond de page, les textes sur leurs teintes, les surfaces fortes et dorées, les bordures d'interface et le focus ; et toute règle des composants et des modèles qui pose à la fois un texte et un fond. Il vérifie aussi que chaque couleur a sa valeur sombre et que les ombres disparaissent en sombre. Il tourne à chaque modification (intégration continue).
 
-<Code langue="text" code={`clair : 251 paires vérifiées, 250 conformes
-sombre : 251 paires vérifiées, 249 conformes
-écart connu : --cel-couleur-sur-fort-filet sur --cel-couleur-fond-fort (clair 2,22:1, sombre 1,84:1)
-écart connu : --cel-couleur-bouton sur --cel-couleur-surface (sombre 2,65:1)`} />
+<Code lang="text" code={`clair : 305 paires vérifiées, 304 conformes
+sombre : 305 paires vérifiées, 303 conformes
+écart connu : --cel-color-on-strong-line sur --cel-color-strong (clair 2,22:1, sombre 1,84:1)
+écart connu : --cel-color-action sur --cel-color-surface (sombre 2,65:1)`} />
 
 ### Écarts connus
 
-Repris tels quels de la landing, que la version 1.0.0 reproduit à l'identique ; le test les liste à chaque exécution et échoue si un nouvel écart apparaît :
+Repris tels quels de la landing, que le paquet reproduit à l'identique ; le test les liste à chaque exécution et échoue si un nouvel écart apparaît :
 
-- **Contour du filtre non choisi sur fond marine** (2,22:1 en clair, 1,84:1 en sombre). Le filtre reste identifié par son texte blanc (WCAG 1.4.11 n'exige pas le contour quand le texte identifie le composant). Proposition : `#7d9cc4` pour `--cel-couleur-sur-fort-filet` (4,06:1 en clair, 3,37:1 en sombre).
-- **Bouton plein posé sur une carte, en sombre** (2,65:1 entre le bouton et la carte). Sur la page, 3:1 est atteint ; le bouton est identifié par son texte. Proposition : `#3d73ab` pour `--cel-couleur-bouton` en sombre (3,24:1 sur la carte, 4,95:1 pour le texte blanc).
+- **Contour du filtre non choisi sur fond marine** (2,22:1 en clair, 1,84:1 en sombre). Le filtre reste identifié par son texte blanc (WCAG 1.4.11 n'exige pas le contour quand le texte identifie le composant). Proposition : `#7d9cc4` pour `--cel-color-on-strong-line` (4,06:1 en clair, 3,37:1 en sombre).
+- **Bouton plein posé sur une carte, en sombre** (2,65:1 entre le bouton et la carte). Sur la page, 3:1 est atteint ; le bouton est identifié par son texte. Proposition : `#3d73ab` pour `--cel-color-action` en sombre (3,24:1 sur la carte, 4,95:1 pour le texte blanc).
 
-<Contrasts paires={[['sur-fort-filet', 'fond-fort', 3], ['bouton', 'surface', 3], ['bouton', 'fond-page', 3]]} />
+<Contrasts pairs={[['on-strong-line', 'strong', 3], ['action', 'surface', 3], ['action', 'background', 3]]} />
 
 ## Par composant
 
-Chaque page de composant a sa section Accessibilité : rôle, clavier, focus et le tableau de ses contrastes, calculé à la construction depuis `tokens.css`.
+Chaque page de composant a sa section Accessibilité : rôle, clavier, focus et le tableau de ses contrastes, calculé à la construction depuis les couleurs du paquet.
 
 ## Ce que le Système de Design ne garantit pas
 

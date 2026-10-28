@@ -1,0 +1,15 @@
+/*
+ * @communeenligne/design, foundations: every variable of the design system (colors in light and dark, typography,
+ * spacing, breakpoints, radius, shadows, motion, focus, icons) and the Manrope font. No class.
+ */
+
+@import '../fonts/fonts.css';
+@import './colors.css';
+@import './typography.css';
+@import './spacing.css';
+@import './breakpoints.css';
+@import './radius.css';
+@import './shadows.css';
+@import './motion.css';
+@import './focus.css';
+@import './icons.css';

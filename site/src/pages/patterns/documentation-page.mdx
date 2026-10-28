@@ -1,0 +1,55 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Page de documentation"
+description: "Le gabarit de ce site, à reprendre pour le centre d'aide : en-tête, navigation latérale par famille, contenu, sommaire, menu sur téléphone."
+---
+
+import Code from '../../components/Code.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## Composition
+
+Cette page en est l'exemple : toutes les pages de ce site sont faites de ce modèle (`patterns/documentation-page.css`).
+
+1. **En-tête** (`cel-doc-header`) : l'icône et le mot-symbole (`cel-wordmark`), la recherche, le [menu sur téléphone](/components/menu/), puis les rubriques (`cel-nav`).
+2. **Corps** (`cel-doc-layout`) sur trois colonnes : la navigation latérale (`cel-sidenav`), le contenu (`cel-doc-main`), le sommaire de la page (`cel-toc`). `cel-doc-layout--no-sidenav` et `--no-toc` retirent une colonne.
+3. **Contenu** : [fil d'Ariane](/components/breadcrumb/), titre (`cel-doc-title`), chapô (`cel-doc-lead`), texte (`cel-doc-content`), puis les pages précédente et suivante (`cel-pager`).
+4. Le [pied de page](/patterns/footer/).
+
+<Code code={`<header class="cel-doc-header">
+    <div class="cel-container cel-doc-header__top">
+        <a href="/" class="cel-doc-header__brand">…<span class="cel-doc-header__name cel-wordmark"><strong>commune</strong>enligne</span></a>
+        <div class="cel-menu" data-cel-menu>…</div>
+    </div>
+    <nav class="cel-container cel-nav cel-doc-header__sections cel-hide-below-tablet" aria-label="Rubriques">…</nav>
+</header>
+
+<div class="cel-container cel-doc-layout">
+    <nav class="cel-sidenav cel-hide-below-tablet" aria-labelledby="sidenav-title">
+        <p class="cel-sidenav__title" id="sidenav-title">Composants</p>
+        <p class="cel-sidenav__group">Base</p>
+        <ul><li><a href="/components/button/" aria-current="page">Bouton</a></li>…</ul>
+        <p class="cel-sidenav__group">Formulaires</p>
+        <ul>…</ul>
+    </nav>
+    <main id="contenu" tabindex="-1" class="cel-doc-main">
+        <nav class="cel-breadcrumb" aria-label="Fil d'Ariane">…</nav>
+        <h1 class="cel-doc-title">Bouton</h1>
+        <p class="cel-lead cel-doc-lead">…</p>
+        <div class="cel-doc-content">…</div>
+    </main>
+    <aside class="cel-toc">…</aside>
+</div>`} />
+
+## Comportement
+
+- **Navigation latérale :** les pages de la rubrique, rangées par famille quand il y en a (`cel-sidenav__group`), comme dans le code du paquet. Elle reste visible pendant le défilement.
+- **Sommaire :** les intertitres de niveau 2 de la page ; masqué sous 1 100 px.
+- **Sous 860 px :** les rubriques et la navigation latérale laissent la place au menu sur téléphone, qui reprend les rubriques et les pages de la rubrique en cours.
+
+## Accessibilité
+
+- Le lien d'évitement mène à `<main id="contenu" tabindex="-1">`.
+- Trois navigations nommées : « Rubriques », la rubrique en cours, « Sur cette page » ; `aria-current="page"` sur la page en cours, `"true"` sur sa rubrique.
+
+<DoDont dos={['Une page par composant, dans la même famille que dans le code.', 'Un intertitre de niveau 2 par partie : il nourrit le sommaire et la recherche.']} donts={['Une navigation latérale de plus de deux niveaux.', 'Un sommaire écrit à la main.']} />

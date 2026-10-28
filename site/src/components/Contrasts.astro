@@ -1,29 +1,29 @@
 ---
-// Contrastes d'un composant, calculés à la construction depuis tokens.css (jamais recopiés), dans les deux thèmes.
-// paires : [texte, fond, seuil], noms de couleur sans le préfixe cel-couleur-.
-import { contraste, jetons, resoudre } from '../lib/tokens.js'
+// Contrasts of a component, computed at build time from the foundations (never copied), in both themes.
+// pairs: [foreground, background, threshold], color names without the cel-color- prefix (or full names).
+import { contrast, tokens, resolve } from '../lib/tokens.js'
 
-const { paires = [] } = Astro.props
-const nom = (court) => (court.startsWith('cel-') ? court : `cel-couleur-${court}`)
-const lignes = paires.map(([texte, fond, seuil = 4.5]) => {
-    const [clair, sombre] = ['clair', 'sombre'].map((theme) => contraste(resoudre(jetons, nom(texte), theme), resoudre(jetons, nom(fond), theme)))
+const { pairs = [] } = Astro.props
+const fullName = (name) => (name.startsWith('cel-') ? name : `cel-color-${name}`)
+const rows = pairs.map(([foreground, background, threshold = 4.5]) => {
+    const [light, dark] = ['light', 'dark'].map((mode) => contrast(resolve(tokens, fullName(foreground), mode), resolve(tokens, fullName(background), mode)))
 
-    return { texte, fond, seuil, clair, sombre }
+    return { foreground, background, threshold, light, dark }
 })
-const format = (rapport) => `${rapport.toFixed(2).replace('.', ',')}:1`
+const format = (ratio) => `${ratio.toFixed(2).replace('.', ',')}:1`
 ---
-<div class="cel-tableau-defilant">
-    <table class="cel-tableau doc-contrastes">
-        <caption>Contrastes calculés depuis tokens.css</caption>
+<div class="cel-table-scroll">
+    <table class="cel-table doc-contrasts">
+        <caption>Contrastes calculés depuis les couleurs du paquet</caption>
         <thead><tr><th scope="col">Premier plan</th><th scope="col">Fond</th><th scope="col">Clair</th><th scope="col">Sombre</th><th scope="col">Seuil</th></tr></thead>
         <tbody>
-            {lignes.map((ligne) => (
+            {rows.map((row) => (
                 <tr>
-                    <td><code>--{nom(ligne.texte)}</code></td>
-                    <td><code>--{nom(ligne.fond)}</code></td>
-                    <td>{format(ligne.clair)} {ligne.clair >= ligne.seuil ? '✓' : '✗ écart connu'}</td>
-                    <td>{format(ligne.sombre)} {ligne.sombre >= ligne.seuil ? '✓' : '✗ écart connu'}</td>
-                    <td>{String(ligne.seuil).replace('.', ',')}:1</td>
+                    <td><code>--{fullName(row.foreground)}</code></td>
+                    <td><code>--{fullName(row.background)}</code></td>
+                    <td>{format(row.light)} {row.light >= row.threshold ? '✓' : '✗ écart connu'}</td>
+                    <td>{format(row.dark)} {row.dark >= row.threshold ? '✓' : '✗ écart connu'}</td>
+                    <td>{String(row.threshold).replace('.', ',')}:1</td>
                 </tr>
             ))}
         </tbody>

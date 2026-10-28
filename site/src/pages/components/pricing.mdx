@@ -1,0 +1,31 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Tarif"
+description: "Le bloc tarif de l'accueil : prix et tranches sur fond marine, ce qui est compris à droite."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import { PRICING } from '../../lib/patterns.js'
+
+## Composition
+
+Un seul bloc en deux parties (`cel-pricing`), posé sur le fond blanc, coins de 20 px. À gauche, sur fond marine : le prix de la première tranche (« à partir de »), le prix mensuel en dessous, chaque tranche sur une ligne (« Sur devis » pour la dernière), la mise en service, puis les actions. À droite : ce qui est compris ([liste cochée](/components/checklist/)) et les conditions. En dessous de 860 px, les deux parties s'empilent.
+
+<Example title="Section tarif de l'accueil (montants d'exemple)" background="full" html={PRICING} />
+
+## Règles
+
+- Aucun montant écrit en dur : la landing les lit dans ses réglages commerciaux ; ceux de cet exemple sont fictifs.
+- Prix annuel en principal, mensuel dessous, plus discret.
+- Une seule action ocre, « J'inscris ma commune ».
+
+## Accessibilité
+
+- La liste des tranches a un nom (`aria-label`).
+- Le focus est or sur la partie marine.
+
+<Contrasts pairs={[['on-strong', 'strong'], ['on-strong-soft', 'strong'], ['on-gold', 'gold'], ['primary', 'surface'], ['text-muted-2', 'surface'], ['cel-focus-color-on-strong', 'strong', 3]]} />
+
+<DoDont dos={['Le prix « à partir de » lisible en premier.', 'Les conditions (résiliation, facturation, TVA) sous la liste.']} donts={['Un prix barré ou une offre de lancement.', 'Recopier les montants au lieu de les lire dans les réglages.']} />
