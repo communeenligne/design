@@ -1,32 +1,54 @@
 ---
 layout: ../../layouts/Doc.astro
 title: "Page introuvable"
-description: "La page 404 d'une documentation : la bande d'en-tête compacte, une phrase, la recherche, les rubriques et le lien de retour."
+description: "La page 404 d'une documentation : une explication, la recherche préremplie, les liens de retour, puis des suggestions et les rubriques, la silhouette de village en filigrane."
 ---
 
 import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
 import DoDont from '../../components/DoDont.astro'
 import { NOT_FOUND } from '../../lib/help-center.js'
 
 ## À quoi il sert
 
-Remettre sur un chemin la personne arrivée par une adresse qui n'existe pas ou plus : chercher l'article, ouvrir sa rubrique, revenir à l'accueil. La [page introuvable de ce site](/404.html) suit ce modèle.
+Remettre sur un chemin la personne arrivée par une adresse qui n'existe pas ou plus : chercher l'article, ouvrir une suggestion ou une rubrique, revenir à l'accueil. La [page introuvable de ce site](/404.html) suit ce modèle.
 
 <p class="doc-demo-links"><a class="cel-button cel-button--secondary" href="/patterns/help-center/not-found/">Ouvrir la démonstration</a></p>
 
 ## Composition
 
-Sous l'en-tête de la documentation, dans `<main>` :
+Sous l'en-tête de la documentation, `<main class="cel-doc-not-found">`, sur le fond de la page :
 
-1. l'[en-tête d'accueil](/components/doc-hero/) `--compact` : « Erreur 404 » en surtitre, le titre (`h1`), une phrase, le rappel du raccourci de recherche ;
-2. une colonne `cel-doc-notice` : un bouton « Rechercher dans l'aide » qui ouvre la [palette](/components/search/) (`data-cel-search-open` ; sans script, un lien vers la page de recherche), les rubriques en [pastilles](/components/pill/) sous un titre `cel-doc-notice__title`, puis le lien de retour à l'accueil.
+1. la [silhouette de village](/components/illustration/) en filigrane, en bas (`__illustration`, couleur principale à 7 %) ;
+2. à gauche, `__main` : le surtitre `__eyebrow` (« Erreur 404 »), le titre `__title` (`h1`), l'explication `__lead`, le champ de recherche `__search`, puis les liens `__links` (retour à l'accueil, assistance) ;
+3. à droite, derrière un filet, `__aside` : « Vous cherchiez peut-être » (titre `__heading`, liste de [suggestions](#suggestions)), puis « Ou parcourez une rubrique » (les [rubriques en petit](/components/topics/#en-petit)).
 
-<Example title="Page introuvable du centre d'aide" background="full" html={NOT_FOUND.replace('<main id="contenu" tabindex="-1">', '<div>').replace(/<\/main>$/, '</div>')} />
+Deux colonnes à partir de 860 px ; en dessous, une seule, et le filet devient horizontal.
+
+<Example title="Page introuvable du centre d'aide" background="full" html={NOT_FOUND.replace('<main id="contenu" tabindex="-1" class="cel-doc-not-found">', '<div class="cel-doc-not-found">').replace(/<\/main>$/, '</div>')} />
+
+## Recherche
+
+Un formulaire `role="search"` qui mène à la page de recherche (`action`, champ `name="q"`) : il marche sans script. Le champ est fait du [champ de formulaire](/components/field/) et de la commande de la [recherche de commune](/components/combobox/) (`.cel-field.cel-combobox`, `__control`, `__icon`, `__input`), sans son script.
+
+- **Prérempli** par le serveur avec les mots de l'adresse demandée (`/aide/publier-deliberation` donne « publier deliberation ») ; sur un site statique, `data-cel-search-from-path` laisse `js/search.js` le faire, avec `queryFromPath()`, quand le champ est vide.
+- **Avec la palette :** `data-cel-search-form="<id de la palette>"` sur le formulaire ; Entrée ouvre alors la [palette de recherche](/components/search/) avec ces mots, et ses résultats.
+- **Aide** sous le champ (`cel-field__hint`), reliée par `aria-describedby`.
+
+## Suggestions
+
+`.cel-suggestions` (famille Documentation) : une courte liste de pages, chacune un lien `__link` fait du titre `__title` et de l'endroit où elle se trouve `__path`, séparées par un filet clair. Le serveur choisit les pages proches de l'adresse demandée ; ce site prend les premiers résultats de son index de recherche pour ces mots, et sinon ses pages les plus lues.
 
 ## Accessibilité
 
 - **Statut :** le serveur répond 404 ; le titre de la page (`<title>`) commence par « Page introuvable ».
 - **Pas de redirection automatique** vers l'accueil : la personne doit comprendre ce qui s'est passé.
-- **Recherche :** un vrai bouton qui dit ce qu'il fait ; le raccourci n'est qu'un rappel.
+- **Structure :** un `h1`, puis deux `h2` pour les suggestions et les rubriques, qui nomment leur liste (`aria-labelledby`).
+- **Recherche :** un repère `search`, un champ étiqueté (« Rechercher dans le centre d'aide », masqué à l'œil), qui marche sans script.
+- **Filigrane :** décoratif, assez pâle pour que rien ne gêne la lecture.
 
-<DoDont dos={['Dire que l\'adresse a peut-être changé.', 'La recherche en premier.']} donts={['Un message qui accuse (« Vous vous êtes trompé »).', 'Une page 404 sans l\'en-tête ni le pied de page du site.']} />
+<Contrasts pairs={[['text-muted-2', 'background'], ['primary', 'background'], ['text-2', 'background'], ['text-muted', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Dire que l\'adresse a peut-être changé.', 'La recherche en premier, déjà remplie.', 'Trois suggestions au plus.']} donts={['Un message qui accuse (« Vous vous êtes trompé »).', 'Une page 404 sans l\'en-tête ni le pied de page du site.']} />

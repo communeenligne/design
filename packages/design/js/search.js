@@ -33,10 +33,30 @@
 //
 // initSearch(document.querySelector('[data-cel-search]'), { search: indexSearch('/search-index.json') })
 // Options: minLength (1), delay before searching (0 ms; 200 for a server), shortcuts (true: Ctrl K, ⌘ K and /; false
-// for a second palette in the same page). Returns { open, close }.
+// for a second palette in the same page). Returns { open(from, query), close }: open() with a query fills the field
+// and searches at once.
+//
+// A search form of the page (page not found) can lead to the palette: <form action="/recherche/" role="search"
+// data-cel-search-form="search"> with a field name="q". Without script, it leads to the search page; with it, it opens
+// the palette with the words of its field. A field marked data-cel-search-from-path, left empty by the server, is
+// prefilled with the words of the address (queryFromPath).
 
 // Lowercase, without accents: "Délibération" and "deliberation" match. Each character keeps its place.
 export const fold = (text = '') => [...text].map((character) => character.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().slice(0, 1) || character).join('')
+
+// The words of the last part of an address: "/aide/publier-deliberation.html" gives "publier deliberation".
+export const queryFromPath = (path = '') => {
+    const last = path.split(/[?#]/)[0].split('/').filter(Boolean).at(-1) ?? ''
+    let text = last
+
+    try {
+        text = decodeURIComponent(last)
+    } catch {
+        // A malformed address: its raw text.
+    }
+
+    return text.replace(/\.[a-z0-9]+$/i, '').split(/[-_+.\s]+/).filter(Boolean).join(' ')
+}
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -318,13 +338,19 @@ export const initSearch = (dialog, { search, minLength = 1, delay = 0, shortcuts
 
     const triggers = () => [...document.querySelectorAll('[data-cel-search-open]')].filter((trigger) => !dialog.id || !trigger.dataset.celSearchOpen || trigger.dataset.celSearchOpen === dialog.id)
 
-    const open = (from = document.activeElement) => {
+    const open = (from = document.activeElement, query) => {
         if (dialog.open) {
             return
         }
 
         opener = from instanceof HTMLElement && from !== document.body ? from : triggers()[0] ?? null
         dialog.showModal()
+
+        if (typeof query === 'string') {
+            input.value = query
+            run()
+        }
+
         input.select()
         search.preload?.()
     }
@@ -352,6 +378,24 @@ export const initSearch = (dialog, { search, minLength = 1, delay = 0, shortcuts
             button.setAttribute('aria-controls', dialog.id)
         }
         button.addEventListener('click', () => open(button))
+    })
+
+    // Search forms of the page: they open the palette with their words instead of leaving the page.
+    document.querySelectorAll('[data-cel-search-form]').forEach((form) => {
+        if (dialog.id && form.dataset.celSearchForm && form.dataset.celSearchForm !== dialog.id) {
+            return
+        }
+
+        const field = form.querySelector('input[type="search"], input[name]')
+
+        if (field?.hasAttribute('data-cel-search-from-path') && !field.value) {
+            field.value = queryFromPath(window.location.pathname)
+        }
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault()
+            open(field ?? form, field?.value.trim() ?? '')
+        })
     })
 
     document.querySelectorAll('[data-cel-search-shortcut]').forEach((element) => {

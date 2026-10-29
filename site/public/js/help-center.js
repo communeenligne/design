@@ -8,6 +8,7 @@ import { initMotion } from '/design/js/motion.js'
 import { initToc } from '/design/js/toc.js'
 import { initFeedback } from '/design/js/feedback.js'
 import { initVideo } from '/design/js/video.js'
+import { initListFilter } from '/design/js/list-filter.js'
 import { endpointSearch, initSearch } from '/design/js/search.js'
 import { simulatedServer } from '/js/simulated-server.js'
 
@@ -16,6 +17,7 @@ initMenu()
 initMotion()
 initToc()
 initVideo()
+initListFilter()
 initFeedback(document, { onAnswer: async () => {} })
 
 initSearch(document.querySelector('#help-search'), {

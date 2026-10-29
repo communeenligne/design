@@ -1,0 +1,44 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Page des rubriques"
+description: "Toutes les rubriques du centre d'aide : fil d'Ariane, titre, nombre d'articles, filtre par rôle, puis chaque rubrique avec tous ses articles."
+---
+
+import Example from '../../components/Example.astro'
+import Code from '../../components/Code.astro'
+import DoDont from '../../components/DoDont.astro'
+import { TOPICS_PAGE } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Parcourir tout le centre d'aide d'un coup d'œil, rangé par usage, et ne garder que ce qui concerne son rôle à la mairie. Le lien « Rubriques » de l'en-tête et « Toutes les rubriques » de l'accueil y mènent.
+
+<p class="doc-demo-links"><a class="cel-button cel-button--secondary" href="/patterns/help-center/topics/">Ouvrir la démonstration</a></p>
+
+## Composition
+
+Sous l'en-tête du [centre d'aide](/patterns/help-center/), dans `<main>` :
+
+1. **En-tête de liste** `.cel-doc-intro` (modèle page de documentation), filet en dessous : le [fil d'Ariane](/components/breadcrumb/), puis `__row` : à gauche `__text` (le titre `__title`, `h1` ; la phrase `__lead` avec le nombre d'articles), à droite le [filtre par rôle](/components/list-filter/), aligné sur le bas du texte et renvoyé sous lui quand la place manque.
+2. **La liste** `.cel-doc-list` : les [rubriques détaillées](/components/topics/#détaillées), le message `__empty` quand le filtre ne garde rien, la zone d'annonce du filtre.
+
+<Example title="Page des rubriques (le filtre fonctionne)" background="full" html={TOPICS_PAGE.replace('<main id="contenu" tabindex="-1">', '<div>').replace(/<\/main>$/, '</div>').replaceAll('help-topics', 'example-page-topics')} />
+
+<details class="cel-example__code doc-pattern-code">
+    <summary>Code de la page</summary>
+    <Code code={TOPICS_PAGE} />
+</details>
+
+## Comportement
+
+- **Sans script :** le filtre reste masqué, toutes les rubriques s'affichent.
+- **Avec `initListFilter()` :** « Tous » est choisi ; un rôle garde les rubriques qui le portent (`data-cel-list-filter-tags`), annonce leur nombre, et affiche « Aucune rubrique pour ce rôle pour l'instant. » si aucune ne reste.
+- **Téléphone :** le filtre passe sous la phrase ; chaque rubrique met ses articles sous son en-tête, sur une colonne.
+
+## Accessibilité
+
+- **Titres :** le `h1` « Toutes les rubriques », puis un `h2` par rubrique.
+- **Repères :** `nav` « Fil d'Ariane », le groupe nommé « Filtrer par rôle », une liste nommée par rubrique.
+- **Annonce :** le nombre de rubriques gardées, dans une zone `role="status"`.
+
+<DoDont dos={['Le nombre total d\'articles dans la phrase d\'introduction.', 'Les rubriques dans le même ordre et les mêmes teintes que sur l\'accueil.']} donts={['Des rôles qui ne correspondent à aucune rubrique.', 'Une rubrique sans phrase pour dire ce qu\'elle contient.']} />

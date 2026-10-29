@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Doc.astro
 title: "Accès rapides"
-description: "Une rangée de liens vers les gestes les plus fréquents : pictogramme teinté, titre, phrase et durée, en colonnes séparées par des filets."
+description: "Des liens vers les gestes les plus fréquents : pictogramme teinté, titre, phrase et durée, sur trois colonnes séparées par des filets."
 ---
 
 import Example from '../../components/Example.astro'
@@ -25,7 +25,7 @@ Mener en un clic aux tâches que les mairies cherchent le plus, sur l'accueil du
 
 ## Comportement
 
-- **Quatre colonnes** à partir de 960 px, séparées par des filets verticaux, un filet sous chaque ligne ;
+- **Trois colonnes** à partir de 960 px (six accès : deux rangées), séparées par des filets verticaux, un filet sous chaque rangée ;
 - **deux** entre 640 et 960 px ; **une** sur téléphone, sans filet vertical ;
 - **survol et focus :** le pictogramme monte de 2 px, le titre se souligne, la flèche avance (pas avec `prefers-reduced-motion`).
 
@@ -35,8 +35,8 @@ Mener en un clic aux tâches que les mairies cherchent le plus, sur l'accueil du
 - **Focus :** le contour suit le lien, toute la cellule.
 - **Pictogramme et flèche :** décoratifs.
 
-<Contrasts pairs={[['primary', 'background-muted'], ['text-2', 'background-muted'], ['soft-lilac-ink', 'soft-lilac'], ['soft-red-ink', 'soft-red'], ['soft-green-ink', 'soft-green'], ['soft-ochre-ink', 'soft-ochre']]} />
+<Contrasts pairs={[['primary', 'background-muted'], ['text-2', 'background-muted'], ['soft-lilac-ink', 'soft-lilac'], ['soft-red-ink', 'soft-red'], ['soft-green-ink', 'soft-green'], ['soft-ochre-ink', 'soft-ochre'], ['soft-blue-ink', 'soft-blue'], ['soft-sky-ink', 'soft-sky']]} />
 
 ## À faire, à éviter
 
-<DoDont dos={['Quatre accès, choisis d\'après les recherches et les questions à l\'assistance.', 'Un titre qui commence par un verbe.']} donts={['Plus de huit accès : ce n\'est plus rapide.', 'Le même article en accès rapide et en premier pas.']} />
+<DoDont dos={['Six accès (ou trois), choisis d\'après les recherches et les questions à l\'assistance.', 'Un titre qui commence par un verbe.']} donts={['Plus de neuf accès : ce n\'est plus rapide.', 'Le même article en accès rapide et en premier pas.']} />

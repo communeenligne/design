@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Doc.astro
 title: "Centre d'aide"
-description: "L'accueil, avec ou sans vidéo, et un article du centre d'aide de Commune en ligne, faits des classes, des scripts et des fichiers du paquet seuls."
+description: "L'accueil, avec ou sans vidéo, un article, la page des rubriques et la page introuvable du centre d'aide de Commune en ligne, faits des classes, des scripts et des fichiers du paquet seuls."
 ---
 
 import Example from '../../components/Example.astro'
@@ -11,15 +11,18 @@ import { ARTICLE, FIRST_STEPS_BLOCK, HEADER, HOME, PALETTE, SUPPORT, TOPICS_LIST
 
 ## Démonstrations
 
-Des pages qui ne chargent que le paquet (`@communeenligne/design/index.css` et ses scripts), aucune feuille de ce site : elles reproduisent les maquettes de l'accueil et d'un article.
+Des pages qui ne chargent que le paquet (`@communeenligne/design/index.css` et ses scripts), aucune feuille de ce site : elles reproduisent les maquettes de l'accueil, d'un article, de la page des rubriques et de la page introuvable.
 
 <p class="doc-demo-links">
     <a class="cel-button" href="/patterns/help-center/home/">Accueil avec vidéo</a>
     <a class="cel-button cel-button--secondary" href="/patterns/help-center/home-without-video/">Accueil sans vidéo</a>
     <a class="cel-button cel-button--secondary" href="/patterns/help-center/article/">Article</a>
+    <a class="cel-button cel-button--secondary" href="/patterns/help-center/topics/">Page des rubriques</a>
+    <a class="cel-button cel-button--secondary" href="/patterns/help-center/not-found/">Page introuvable</a>
+    <a class="cel-button cel-button--secondary" href="/patterns/help-center/in-progress/">Page en cours de création</a>
 </p>
 
-La recherche y passe par l'adaptateur `endpointSearch` de la [palette](/components/search/), comme le ferait un centre d'aide rendu par un serveur ; ce site étant statique, le serveur est simulé dans la page. Les deux autres modèles ont leur page : [page en cours de création](/patterns/page-in-progress/) et [page introuvable](/patterns/not-found/).
+La recherche y passe par l'adaptateur `endpointSearch` de la [palette](/components/search/), comme le ferait un centre d'aide rendu par un serveur ; ce site étant statique, le serveur est simulé dans la page. Les trois autres modèles ont leur page : [page des rubriques](/patterns/topics-page/), [page en cours de création](/patterns/page-in-progress/) et [page introuvable](/patterns/not-found/).
 
 ## En-tête
 
@@ -30,7 +33,7 @@ Le modèle [page de documentation](/patterns/documentation-page/#pour-le-centre-
 ## Accueil
 
 1. **[En-tête d'accueil](/components/doc-hero/)** : le texte et le rappel du raccourci de recherche, la [vidéo de présentation](/components/video/) à droite ; sans vidéo, une seule colonne. La [silhouette de village](/components/illustration/) en filigrane.
-2. **Bandes** `cel-doc-band`, chacune avec un `cel-container` : les [accès rapides](/components/quick-links/) (`--muted`, en-tête `cel-doc-band__header`), les [premiers pas](/components/first-steps/), les [rubriques](/components/topics/) (`--large`, titre `cel-doc-band__title`), les [façons d'être aidé](/components/support/).
+2. **Bandes** `cel-doc-band`, chacune avec un `cel-container` : les six [accès rapides](/components/quick-links/) sur trois colonnes (`--muted`, en-tête `cel-doc-band__header`), les [premiers pas](/components/first-steps/), les [rubriques](/components/topics/) (`--large`, titre `cel-doc-band__title`), les [façons d'être aidé](/components/support/).
 3. Le [pied de page](/patterns/footer/) et son choix du thème.
 
 <Example title="Bandes sous les accès rapides" background="full" html={`
@@ -73,16 +76,18 @@ import { initMenu } from '@communeenligne/design/js/menu.js'
 import { initToc } from '@communeenligne/design/js/toc.js'
 import { initVideo } from '@communeenligne/design/js/video.js'
 import { initFeedback } from '@communeenligne/design/js/feedback.js'
+import { initListFilter } from '@communeenligne/design/js/list-filter.js'
 import { endpointSearch, initSearch } from '@communeenligne/design/js/search.js'
 
 initTheme({ cookie: 'cel_theme', storage: false })
 initMenu()
 initToc()          // sommaire : la partie lue
 initVideo()        // aperçu et bouton de lecture
+initListFilter()   // page des rubriques : filtre par rôle
 initFeedback()     // « Cette page vous a-t-elle aidé ? » envoyé à l'action du formulaire
 initSearch(document.querySelector('#help-search'), { search: endpointSearch('/aide/recherche'), delay: 200 })`} />
 
-Tout fonctionne sans script : le menu devient une liste, le déclencheur un lien vers la page de recherche, la vidéo garde les commandes du navigateur, l'avis est un formulaire, le sommaire une liste de liens.
+Tout fonctionne sans script : le menu devient une liste, le déclencheur et le champ de la page introuvable mènent à la page de recherche, le filtre par rôle reste masqué (toutes les rubriques s'affichent), la vidéo garde les commandes du navigateur, l'avis est un formulaire, le sommaire une liste de liens.
 
 ## Accessibilité
 

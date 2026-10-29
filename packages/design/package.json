@@ -1,6 +1,6 @@
 {
     "name": "@communeenligne/design",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "Design system de Commune en ligne : fondamentaux (variables, clair et sombre), composants, modèles, polices, icônes, thème Tailwind 4.",
     "license": "MIT",
     "type": "module",

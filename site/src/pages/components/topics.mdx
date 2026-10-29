@@ -1,20 +1,23 @@
 ---
 layout: ../../layouts/Doc.astro
 title: "Rubriques"
-description: "Les rubriques d'un centre d'aide en colonnes séparées par des filets : pictogramme teinté, titre, quelques articles, lien vers la rubrique."
+description: "Les rubriques d'un centre d'aide, en trois formats : en colonnes sur l'accueil, une par ligne avec tous leurs articles sur la page des rubriques, en petits liens sur la page introuvable."
 ---
 
 import Example from '../../components/Example.astro'
 import Contrasts from '../../components/Contrasts.astro'
 import DoDont from '../../components/DoDont.astro'
+import { TOPICS, TOPICS_SMALL, topicsDetailed } from '../../lib/help-center.js'
 
 ## À quoi il sert
 
-Donner, sur l'accueil du [centre d'aide](/patterns/help-center/), une vue de tout ce qu'il contient : chaque rubrique, ses articles les plus lus, et le lien vers les autres.
+Donner une vue de tout ce que contient le [centre d'aide](/patterns/help-center/) : sur l'accueil, chaque rubrique, ses articles les plus lus et le lien vers les autres ; sur la [page des rubriques](/patterns/topics-page/), tous les articles ; sur la [page introuvable](/patterns/not-found/), un lien par rubrique.
 
 **Quand ne pas l'utiliser :** pour les pages d'une rubrique de ce site (prendre les [tuiles](/components/tiles/)) ; pour un parcours dans l'ordre (prendre les [premiers pas](/components/first-steps/)).
 
-## Exemple
+## Compact
+
+Le format de l'accueil.
 
 <Example title="Trois rubriques" html={`
     <ul class="cel-topics">
@@ -61,18 +64,32 @@ Donner, sur l'accueil du [centre d'aide](/patterns/help-center/), une vue de tou
 
 `.cel-topics` est une liste ; chaque rubrique `.cel-topic` a un filet au-dessus, un en-tête `__header` (un [pictogramme](/components/pictogram/) `--small` dans une teinte douce, puis le titre `__title` en lien), la liste `__articles` et le lien `__more`, alignés sur le titre. Au survol de la rubrique, le pictogramme monte de 2 px (pas avec `prefers-reduced-motion`).
 
-## Comportement
-
 Trois colonnes à partir de 960 px, deux entre 640 et 960 px, une sur téléphone. L'écart entre les colonnes est de 48 px ; les filets séparent les lignes.
+
+## Détaillées
+
+`.cel-topics--detailed` : une rubrique par ligne, séparées par des filets. À gauche, dans `__header`, le grand [pictogramme](/components/pictogram/) teinté puis `__body` : le titre `__title` en lien, la phrase `__summary`, le nombre d'articles `__count` (un texte, pas un lien : le titre mène déjà à la rubrique). À droite, `__articles` : tous les articles sur deux colonnes, chacun avec une petite flèche (`arrow-right`) qui avance au survol. Le titre est un `h2` sur la page des rubriques, dont c'est la liste principale.
+
+<Example title="Deux rubriques détaillées" html={topicsDetailed(TOPICS.slice(2, 4), 'example-topics')} />
+
+Sous 640 px, les articles passent sous l'en-tête, sur une seule colonne. Chaque rubrique peut porter `data-cel-list-filter-tags` pour le [filtre par rôle](/components/list-filter/).
+
+## En petit
+
+`.cel-topics--small` : un lien `__link` par rubrique, le pictogramme `--xsmall` puis le titre, sur deux colonnes (une sur téléphone), sans filet. Pour proposer de parcourir les rubriques là où la place manque.
+
+<Example title="Rubriques en petit" html={TOPICS_SMALL} />
 
 ## Accessibilité
 
 - **Structure :** une liste de rubriques, chacune un titre `h3` (sous le `h2` « Les rubriques »), puis une liste d'articles.
 - **Lien vers la rubrique :** « Les 8 articles » est complété d'un texte masqué, « de la rubrique « Mettre le site en ligne » », pour qu'il ait un sens hors de son contexte (liste des liens d'un lecteur d'écran).
 - **Pictogramme :** décoratif (`aria-hidden`).
+- **Détaillées :** chaque liste d'articles est nommée (« Articles de la rubrique « Publier » ») ; la flèche est décorative.
+- **En petit :** le nom du lien est le titre de la rubrique ; la liste est nommée par le titre qui la précède (`aria-labelledby`).
 
 <Contrasts pairs={[['primary', 'background'], ['text-2', 'background'], ['soft-ochre-ink', 'soft-ochre'], ['soft-blue-ink', 'soft-blue'], ['soft-lilac-ink', 'soft-lilac']]} />
 
 ## À faire, à éviter
 
-<DoDont dos={['Trois articles par rubrique, les plus lus.', 'Une teinte différente par rubrique voisine.']} donts={['Une rubrique sans lien vers tous ses articles.', 'Plus de neuf rubriques sur l\'accueil.']} />
+<DoDont dos={['Trois articles par rubrique sur l\'accueil, les plus lus ; tous sur la page des rubriques.', 'La même teinte pour une rubrique dans les trois formats.']} donts={['Une rubrique sans lien vers tous ses articles.', 'Plus de neuf rubriques sur l\'accueil.']} />

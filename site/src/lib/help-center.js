@@ -1,19 +1,24 @@
-// Markup of the help center, after the mockups of the home and of an article (AideAccueil, AideArticle), with the
-// classes of the package only. Written once for the pattern pages (code and examples) and for the demonstration pages
+// Markup of the help center, after the mockups of the home, of an article, of the page of the topics and of the page
+// not found (AideAccueil, AideArticle, AideRubriques, Aide404), with the classes of the package only. Written once for the pattern pages (code and examples) and for the demonstration pages
 // (/patterns/help-center/…/), which load the package and nothing else.
 
 import { searchPalette, searchTrigger } from './search.js'
 
 const icon = (name, classes = '') => `<svg class="cel-icon${classes ? ` ${classes}` : ''}" aria-hidden="true"><use href="/design/icons/sprite.svg#${name}"></use></svg>`
 
+// Each topic: its tint, its sentence, all its articles, the roles it is meant for (tags of the list filter).
 export const TOPICS = [
-    { title: 'Mettre le site en ligne', icon: 'home-modern', tint: 'ochre', count: 8, articles: ['La mise en route, étape par étape', 'Raccorder votre nom de domaine', 'Choisir l\'apparence du site'] },
-    { title: 'Publier', icon: 'newspaper', tint: 'blue', count: 12, articles: ['Publier une actualité', 'Annoncer une alerte', 'Ajouter un événement à l\'agenda'] },
-    { title: 'Les actes de la commune', icon: 'document-check', tint: 'lilac', count: 6, articles: ['Publier une délibération', 'Publier un arrêté', 'Corriger un acte déjà publié'] },
-    { title: 'Les habitants', icon: 'chat-bubble-left-right', tint: 'green', count: 9, articles: ['Répondre à un message', 'Traiter un signalement', 'Envoyer la lettre d\'information'] },
-    { title: 'Le conseil municipal', icon: 'user-group', tint: 'sky', count: 5, articles: ['Annoncer une séance', 'Publier le compte rendu', 'Présenter l\'équipe municipale'] },
-    { title: 'Administration du site', icon: 'shield-check', tint: 'red', count: 10, articles: ['Donner accès à une personne', 'Activer la double authentification', 'Exporter les données de la commune'] },
+    { title: 'Mettre le site en ligne', icon: 'home-modern', tint: 'ochre', roles: ['office', 'mayor'], summary: 'La mise en route, le nom de domaine, l\'apparence et la page d\'accueil.', articles: ['La mise en route, étape par étape', 'Raccorder votre nom de domaine', 'Choisir l\'apparence du site', 'Composer la page d\'accueil', 'Le menu et le pied de page'] },
+    { title: 'Publier', icon: 'newspaper', tint: 'blue', roles: ['office', 'councillors'], summary: 'Actualités, alertes, agenda, photos, lettre d\'information et bulletin.', articles: ['Publier une actualité', 'Annoncer une alerte', 'Ajouter un événement à l\'agenda', 'Envoyer la lettre d\'information', 'Créer un album photo'] },
+    { title: 'Les actes de la commune', icon: 'document-check', tint: 'lilac', roles: ['office', 'mayor'], summary: 'Délibérations, arrêtés, procès-verbaux : publier, classer, corriger.', articles: ['Les types de documents', 'Publier une délibération', 'Publier un arrêté', 'Corriger un acte déjà publié'] },
+    { title: 'Les habitants', icon: 'chat-bubble-left-right', tint: 'green', roles: ['office'], summary: 'Messages, signalements, propositions pour l\'annuaire et pour l\'agenda.', articles: ['Répondre à un message', 'Traiter un signalement', 'Valider une proposition d\'événement', 'Gérer les abonnés de la lettre'] },
+    { title: 'Le conseil municipal', icon: 'user-group', tint: 'sky', roles: ['mayor', 'councillors'], summary: 'Séances, comptes rendus et présentation de l\'équipe municipale.', articles: ['Annoncer une séance', 'Publier le compte rendu', 'Présenter l\'équipe municipale'] },
+    { title: 'Administration du site', icon: 'shield-check', tint: 'red', roles: ['mayor'], summary: 'Comptes, sécurité, adresses du site et données de la commune.', articles: ['Donner accès à une personne', 'Activer la double authentification', 'Les politiques de sécurité', 'Exporter les données de la commune', 'Mettre le site en maintenance'] },
 ]
+
+export const ARTICLE_COUNT = TOPICS.reduce((total, topic) => total + topic.articles.length, 0)
+
+const ROLES = [['', 'Tous'], ['mayor', 'Maire'], ['office', 'Secrétariat'], ['councillors', 'Élus']]
 
 const FIRST_STEPS = [['Mettre votre site en ligne', '15 minutes'], ['Publier une première actualité', '2 minutes'], ['Inviter le secrétariat et les élus', '3 minutes']]
 
@@ -22,9 +27,13 @@ export const QUICK_LINKS = [
     { title: 'Annoncer une coupure d\'eau', text: 'Une alerte en haut du site, qui disparaît toute seule.', duration: '1 minute', icon: 'exclamation-triangle', tint: 'red' },
     { title: 'Donner accès à un adjoint', text: 'Une invitation par courriel, avec le bon rôle.', duration: '1 minute', icon: 'user-group', tint: 'green' },
     { title: 'Changer les horaires de la mairie', text: 'Horaires d\'été, congés, jours fériés.', duration: '2 minutes', icon: 'clock', tint: 'ochre' },
+    { title: 'Publier une actualité', text: 'Un titre, une image, et c\'est en ligne.', duration: '2 minutes', icon: 'newspaper', tint: 'blue' },
+    { title: 'Répondre à un signalement', text: 'Changer son état : l\'habitant est prévenu.', duration: '2 minutes', icon: 'chat-bubble-left-right', tint: 'sky' },
 ]
 
-const NAV = [['Rubriques', '/patterns/help-center/home/#rubriques'], ['Vidéos', '#'], ['Contacter l\'assistance', '#']]
+const TOPICS_URL = '/patterns/help-center/topics/'
+
+const NAV = [['Rubriques', TOPICS_URL], ['Vidéos', '#'], ['Contacter l\'assistance', '#']]
 
 const BRAND = `<a href="#" class="cel-doc-header__brand">
             <img class="cel-logo-light" src="/design/brand/icon.svg" alt="" width="36" height="36">
@@ -71,7 +80,7 @@ export const PALETTE = searchPalette({
     id: SEARCH_ID,
     title: 'Rechercher dans le centre d\'aide',
     placeholder: 'Par exemple : publier une délibération',
-    empty: 'Essayez un autre mot, ou <a href="/patterns/help-center/home/#rubriques">parcourez les rubriques</a>.',
+    empty: `Essayez un autre mot, ou <a href="${TOPICS_URL}">parcourez les rubriques</a>.`,
 })
 
 const hint = `<p class="cel-doc-hero__hint" hidden data-cel-search-hint>Une question précise ? <kbd class="cel-kbd cel-kbd--on-strong" data-cel-search-shortcut>Ctrl K</kbd> pour chercher.</p>`
@@ -133,7 +142,7 @@ export const QUICK_LINKS_BAND = `<section class="cel-doc-band cel-doc-band--mute
                 <h2 class="cel-doc-band__title" id="quick-title">Accès rapides</h2>
                 <p class="cel-doc-band__lead">Les gestes les plus fréquents en mairie, expliqués pas à pas.</p>
             </div>
-            <a class="cel-link cel-link--strong" href="/patterns/help-center/home/#rubriques">Toutes les rubriques</a>
+            <a class="cel-link cel-link--strong" href="${TOPICS_URL}">Toutes les rubriques</a>
         </div>
         ${QUICK_LINKS_LIST.replaceAll('\n', '\n        ')}
     </div>
@@ -153,20 +162,55 @@ ${FIRST_STEPS.map(([title, duration], rank) => `        <li class="cel-first-ste
     </ol>
 </div>`
 
-const topic = ({ title, icon: name, tint, count, articles }) => `    <li class="cel-topic">
+// Compact (home): the first three articles and the link to all of them.
+const topic = ({ title, icon: name, tint, articles }) => `    <li class="cel-topic">
         <div class="cel-topic__header">
             <span class="cel-pictogram cel-pictogram--small cel-pictogram--${tint}" aria-hidden="true">${icon(name, 'cel-icon--22')}</span>
             <h3 class="cel-topic__title"><a href="#">${title}</a></h3>
         </div>
         <ul class="cel-topic__articles">
-${articles.map((article) => `            <li><a href="#">${article}</a></li>`).join('\n')}
+${articles.slice(0, 3).map((article) => `            <li><a href="#">${article}</a></li>`).join('\n')}
         </ul>
-        <a class="cel-topic__more" href="#">Les ${count} articles<span class="cel-visually-hidden"> de la rubrique « ${title} »</span></a>
+        <a class="cel-topic__more" href="#">Les ${articles.length} articles<span class="cel-visually-hidden"> de la rubrique « ${title} »</span></a>
     </li>`
 
 export const TOPICS_LIST = `<ul class="cel-topics">
 ${TOPICS.map(topic).join('\n')}
 </ul>`
+
+// Detailed (page of the topics): the sentence, the number, every article; tagged for the list filter.
+const detailedTopic = ({ title, icon: name, tint, roles, summary, articles }) => `    <li class="cel-topic" data-cel-list-filter-tags="${roles.join(' ')}">
+        <div class="cel-topic__header">
+            <span class="cel-pictogram cel-pictogram--${tint}" aria-hidden="true">${icon(name, 'cel-icon--26')}</span>
+            <div class="cel-topic__body">
+                <h2 class="cel-topic__title"><a href="#">${title}</a></h2>
+                <p class="cel-topic__summary">${summary}</p>
+                <p class="cel-topic__count">${articles.length} articles</p>
+            </div>
+        </div>
+        <ul class="cel-topic__articles" aria-label="Articles de la rubrique « ${title} »">
+${articles.map((article) => `            <li><a href="#">${article}${icon('arrow-right')}</a></li>`).join('\n')}
+        </ul>
+    </li>`
+
+export const topicsDetailed = (topics = TOPICS, id = 'help-topics') => `<ul class="cel-topics cel-topics--detailed" id="${id}">
+${topics.map(detailedTopic).join('\n')}
+</ul>`
+
+export const TOPICS_DETAILED = topicsDetailed()
+
+// Small (page not found): a link per topic.
+export const TOPICS_SMALL = `<ul class="cel-topics cel-topics--small">
+${TOPICS.map(({ title, icon: name, tint }) => `    <li class="cel-topic"><a class="cel-topic__link" href="#"><span class="cel-pictogram cel-pictogram--xsmall cel-pictogram--${tint}" aria-hidden="true">${icon(name)}</span>${title}</a></li>`).join('\n')}
+</ul>`
+
+// Role filter: the segmented control, hidden without script (js/list-filter.js shows it).
+export const roleFilter = (id = 'help-topics') => `<div class="cel-segmented" role="group" aria-label="Filtrer par rôle" hidden data-cel-list-filter="${id}"
+        data-cel-message-none="Aucune rubrique pour ce rôle." data-cel-message-one="1 rubrique affichée" data-cel-message-many="# rubriques affichées">
+${ROLES.map(([value, label], rank) => `    <button type="button" class="cel-segmented__option" aria-pressed="${rank === 0}" data-cel-list-filter-value="${value}">${label}</button>`).join('\n')}
+</div>`
+
+export const ROLE_FILTER = roleFilter()
 
 export const SUPPORT = `<ul class="cel-support">
     <li class="cel-support__option">
@@ -405,26 +449,68 @@ export const IN_PROGRESS = `<main id="contenu" tabindex="-1">
     </div>
 </main>`
 
-export const NOT_FOUND = `<main id="contenu" tabindex="-1">
-    <section class="cel-doc-hero cel-doc-hero--compact" aria-labelledby="not-found-title">
-        <span class="cel-doc-hero__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
-        <div class="cel-container cel-doc-hero__inner">
-            <div class="cel-doc-hero__text">
-                <p class="cel-doc-hero__eyebrow">Erreur 404</p>
-                <h1 class="cel-doc-hero__title" id="not-found-title">Cette page de l'aide n'existe pas, ou plus</h1>
-                <p class="cel-doc-hero__lead">L'adresse a peut-être changé. Cherchez l'article, ou ouvrez sa rubrique.</p>
-                ${indent(hint, 16)}
+// Page not found (Aide404): the server prefills the field with the words of the address asked (here, as if it had
+// been /aide/publier-deliberation) and picks the suggestions.
+const SUGGESTIONS = [['Publier une délibération', 'Les actes de la commune'], ['Corriger un acte déjà publié', 'Les actes de la commune'], ['Publier un arrêté', 'Les actes de la commune']]
+
+export const notFound = ({ query = '', suggestions = SUGGESTIONS } = {}) => `<main id="contenu" tabindex="-1" class="cel-doc-not-found">
+    <span class="cel-doc-not-found__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
+    <div class="cel-container cel-doc-not-found__inner">
+        <div class="cel-doc-not-found__main">
+            <p class="cel-doc-not-found__eyebrow">Erreur 404</p>
+            <h1 class="cel-doc-not-found__title">Cet article n'existe pas, ou il a changé de place.</h1>
+            <p class="cel-doc-not-found__lead">Le lien est peut-être ancien, ou l'article a été renommé. Cherchez-le directement :</p>
+            <form class="cel-doc-not-found__search" action="/search/" method="get" role="search" data-cel-search-form="${SEARCH_ID}">
+                <div class="cel-field cel-combobox">
+                    <label class="cel-visually-hidden" for="not-found-query">Rechercher dans le centre d'aide</label>
+                    <div class="cel-combobox__control">
+                        ${icon('magnifying-glass', 'cel-combobox__icon')}
+                        <input class="cel-combobox__input" id="not-found-query" type="search" name="q" value="${query}" autocomplete="off" aria-describedby="not-found-query-hint" data-cel-search-from-path>
+                    </div>
+                    <p class="cel-field__hint" id="not-found-query-hint">La recherche est préremplie avec les mots de l'adresse demandée.</p>
+                </div>
+            </form>
+            <ul class="cel-doc-not-found__links">
+                <li><a href="/patterns/help-center/home/">Retour à l'accueil du centre d'aide</a></li>
+                <li><a href="#">Contacter l'assistance</a></li>
+            </ul>
+        </div>
+        <div class="cel-doc-not-found__aside">
+            <h2 class="cel-doc-not-found__heading" id="not-found-suggestions">Vous cherchiez peut-être</h2>
+            <ul class="cel-suggestions" aria-labelledby="not-found-suggestions">
+${suggestions.map(([title, path]) => `                <li><a class="cel-suggestions__link" href="#"><span class="cel-suggestions__title">${title}</span><span class="cel-suggestions__path">${path}</span></a></li>`).join('\n')}
+            </ul>
+            <h2 class="cel-doc-not-found__heading" id="not-found-topics">Ou parcourez une rubrique</h2>
+            ${indent(TOPICS_SMALL.replace('<ul class="cel-topics cel-topics--small">', '<ul class="cel-topics cel-topics--small" aria-labelledby="not-found-topics">'), 12)}
+        </div>
+    </div>
+</main>`
+
+export const NOT_FOUND = notFound({ query: 'publier deliberation' })
+
+// ---------- Page of the topics ----------
+
+export const TOPICS_PAGE = `<main id="contenu" tabindex="-1">
+    <div class="cel-doc-intro">
+        <div class="cel-container cel-doc-intro__inner">
+            <nav class="cel-breadcrumb" aria-label="Fil d'Ariane">
+                <ol>
+                    <li><a href="/patterns/help-center/home/">Centre d'aide</a><span aria-hidden="true">›</span></li>
+                    <li><span aria-current="page">Rubriques</span></li>
+                </ol>
+            </nav>
+            <div class="cel-doc-intro__row">
+                <div class="cel-doc-intro__text">
+                    <h1 class="cel-doc-intro__title">Toutes les rubriques</h1>
+                    <p class="cel-doc-intro__lead">${ARTICLE_COUNT} articles, rangés par usage. Filtrez selon votre rôle à la mairie.</p>
+                </div>
+                ${indent(ROLE_FILTER, 16)}
             </div>
         </div>
-    </section>
-    <div class="cel-container cel-doc-notice">
-        <p><a class="cel-button" href="/search/" data-cel-search-open="${SEARCH_ID}">${icon('magnifying-glass', 'cel-icon--20 cel-icon--bold')}Rechercher dans l'aide</a></p>
-        <nav aria-labelledby="not-found-topics">
-            <h2 class="cel-doc-notice__title" id="not-found-topics">Les rubriques</h2>
-            <ul class="cel-pills">
-${TOPICS.map((t) => `                <li><a class="cel-pill" href="#">${t.title}</a></li>`).join('\n')}
-            </ul>
-        </nav>
-        <p><a class="cel-link cel-link--arrow cel-link--back" href="#">${icon('arrow-left', 'cel-icon--16 cel-icon--bold')}Revenir à l'accueil de l'aide</a></p>
+    </div>
+    <div class="cel-container cel-doc-list">
+        ${indent(TOPICS_DETAILED, 8)}
+        <p class="cel-doc-list__empty" hidden data-cel-list-filter-empty="help-topics">Aucune rubrique pour ce rôle pour l'instant.</p>
+        <p class="cel-visually-hidden" role="status" data-cel-list-filter-status="help-topics"></p>
     </div>
 </main>`

@@ -2,8 +2,8 @@
 // Template of every page (documentation page pattern of the package): header (icon and wordmark, search palette of
 // the package by its trigger, Ctrl K, ⌘ K or /, sections, phone menu), side navigation of the section by family, breadcrumb, content, table of contents on
 // the right (the part being read marked by js/toc.js), previous and next pages, licenses, footer with the theme
-// switch. Not indexed. With a "hero" slot (page not found), the notice page pattern instead: the compact home header,
-// then the content in a single column.
+// switch. Not indexed. With a "main" slot (page not found), the page gives its own <main> instead of the side
+// navigation, the content and the table of contents.
 //
 // Below the tablet breakpoint, the sections and the side navigation carry cel-hide-below-tablet and give way to the
 // phone menu (cel-menu): the sections, and the pages of the current one. Without script, the menu is a list at the top
@@ -26,7 +26,7 @@ const pageTitle = path === '/' ? SITE_NAME : `${title} · ${SITE_NAME}`
 const sidenav = section && section.pages.length > 0
 const groups = sidenav ? groupsOf(section) : []
 const current = (url) => (path === url ? 'page' : path.startsWith(url) ? 'true' : undefined)
-const notice = Astro.slots.has('hero')
+const bare = Astro.slots.has('main')
 const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations/'].includes(s.url))
 ---
 <!doctype html>
@@ -96,14 +96,9 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
         </nav>
     </header>
 
-    {notice && (
-        <main id="contenu" tabindex="-1">
-            <slot name="hero" />
-            <div class="cel-container cel-doc-notice"><slot /></div>
-        </main>
-    )}
+    {bare && <slot name="main" />}
 
-    {!notice && <div class={`cel-container cel-doc-layout${sidenav ? '' : ' cel-doc-layout--no-sidenav'}${full || toc.length === 0 ? ' cel-doc-layout--no-toc' : ''}`}>
+    {!bare && <div class={`cel-container cel-doc-layout${sidenav ? '' : ' cel-doc-layout--no-sidenav'}${full || toc.length === 0 ? ' cel-doc-layout--no-toc' : ''}`}>
         {sidenav && (
             <nav class="cel-sidenav cel-hide-below-tablet" aria-labelledby="sidenav-title">
                 <p class="cel-sidenav__title" id="sidenav-title">{section.title}</p>

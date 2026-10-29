@@ -34,12 +34,12 @@ Chaque version est publiée comme une archive jointe à la publication GitHub (�
 ```json
 {
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.2.0/communeenligne-design-2.2.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.3.0/communeenligne-design-2.3.0.tgz"
     }
 }
 ```
 
-**Pourquoi pas `"github:<organisation>/design#v2.2.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
+**Pourquoi pas `"github:<organisation>/design#v2.3.0"`.** Le paquet est dans le sous-dossier `packages/design`. npm sait
 installer un dépôt Git, mais seulement le `package.json` placé à sa racine : il n'a aucune syntaxe pour un sous-dossier
 (Yarn et pnpm en ont une, npm non). Une archive produite par `npm pack` dans le sous-dossier contient exactement les
 fichiers publiés, s'installe sans Git (absent des images `node:alpine` de l'application), ne change jamais une fois
@@ -86,7 +86,7 @@ Numérotation sémantique, consignée dans `CHANGELOG.md` :
 
 1. Mettre à jour `version` dans `packages/design/package.json` et le titre de la version dans `CHANGELOG.md` (date).
 2. `docker compose run --rm node npm run check`.
-3. Commit, puis étiquette : `git tag v2.2.0 && git push origin main v2.2.0`.
+3. Commit, puis étiquette : `git tag v2.3.0 && git push origin main v2.3.0`.
 4. L'action « Release » vérifie que l'étiquette correspond à la version, lance les tests, construit l'archive
    (`npm pack -w @communeenligne/design`) et crée la publication GitHub avec l'archive jointe.
 
