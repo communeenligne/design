@@ -2,8 +2,8 @@
  * @communeenligne/design, patterns: documentation page, for the documentation site and the help center. Header
  * (brand and wordmark, product name, sections, phone menu), side navigation grouped by family or by topic, breadcrumb,
  * title and lead, written content, table of contents on the right with a link to the matching screen of the panel;
- * bands of a documentation home; notice page (page in progress, page not found). The previous and next pages
- * (.cel-pager) are a component of the documentation family.
+ * bands of a documentation home; header of a list page (page of the topics, with its filter); notice page (page in
+ * progress); page not found. The previous and next pages (.cel-pager) are a component of the documentation family.
  *
  * Below the tablet breakpoint, the sections and the side navigation give way to the phone menu (cel-menu): they carry
  * the cel-hide-below-tablet class.
@@ -392,6 +392,173 @@
     font-weight: var(--cel-font-weight-extrabold);
 }
 
+/* ---------- Header of a list page: page of the topics ---------- */
+
+/* Breadcrumb, then on one line the title and its sentence (__text) and, on the right, a control that acts on the list
+   below (__aside: the list filter). A line under the band. */
+.cel-doc-intro {
+    border-bottom: 1px solid var(--cel-color-line);
+}
+
+.cel-doc-intro__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+    padding-top: var(--cel-space-7);
+    padding-bottom: var(--cel-space-10);
+}
+
+.cel-doc-intro__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--cel-space-4) var(--cel-space-8);
+}
+
+.cel-doc-intro__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2);
+    max-width: 38em;
+}
+
+.cel-doc-intro__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-title-section);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    text-wrap: balance;
+}
+
+.cel-doc-intro__lead {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-17);
+}
+
+/* The list under the header: the detailed topics, the message when the filter keeps nothing. */
+.cel-doc-list {
+    padding-top: var(--cel-space-3);
+    padding-bottom: var(--cel-space-16);
+}
+
+.cel-doc-list__empty {
+    padding: var(--cel-space-10) 0;
+    color: var(--cel-color-text-muted-2);
+}
+
+.cel-doc-list__empty[hidden] {
+    display: none;
+}
+
+/* ---------- Page not found ---------- */
+
+/* On the page background, two columns: on the left (__main) the eyebrow "Erreur 404", the title, the explanation, a
+   search field that the server can prefill, the links back and to the support team; on the right (__aside), behind a
+   line, "Vous cherchiez peut-être" (.cel-suggestions) and "Ou parcourez une rubrique" (.cel-topics--small). The village
+   silhouette as a watermark at the bottom, in the primary color. One column below the tablet breakpoint. */
+.cel-doc-not-found {
+    position: relative;
+    overflow-x: clip;
+}
+
+.cel-doc-not-found__illustration {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: var(--cel-color-primary);
+    opacity: 0.07;
+    --cel-illustration-height: 140px;
+}
+
+.cel-doc-not-found__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--cel-space-16);
+    align-items: start;
+    padding-top: var(--cel-space-18);
+    padding-bottom: 200px;
+}
+
+.cel-doc-not-found__main {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--cel-space-4-5);
+}
+
+.cel-doc-not-found__eyebrow {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-doc-not-found__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-title-form);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    text-wrap: balance;
+}
+
+.cel-doc-not-found__lead {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-18);
+}
+
+/* The search field (.cel-field and the control of .cel-combobox, without its script): a form that leads to the search
+   page; with js/search.js (data-cel-search-form), it opens the palette with the words of the field. */
+.cel-doc-not-found__search {
+    width: 100%;
+    max-width: 520px;
+}
+
+.cel-doc-not-found__search input.cel-combobox__input {
+    padding-top: var(--cel-space-3-5);
+    padding-bottom: var(--cel-space-3-5);
+    border-radius: var(--cel-radius-12);
+    font-size: var(--cel-text-17);
+    box-shadow: var(--cel-shadow-reference);
+}
+
+.cel-doc-not-found__search .cel-combobox__icon {
+    color: var(--cel-color-primary);
+    --cel-icon-size: 20px;
+    --cel-icon-stroke: 2.2;
+}
+
+.cel-doc-not-found__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-2-5) var(--cel-space-5-5);
+    margin: var(--cel-space-2) 0 0;
+    padding: 0;
+    font-weight: var(--cel-font-weight-bold);
+    list-style: none;
+}
+
+.cel-doc-not-found__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-3-5);
+    padding-left: var(--cel-space-10);
+    border-left: 1px solid var(--cel-color-line);
+}
+
+.cel-doc-not-found__heading {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-doc-not-found__aside > * + .cel-doc-not-found__heading {
+    margin-top: var(--cel-space-3-5);
+}
+
 /* ---------- Medium and small screens ---------- */
 
 @media (width < 1100px) {
@@ -432,6 +599,21 @@
         grid-template-columns: minmax(0, 1fr);
         gap: var(--cel-space-6);
         padding-top: var(--cel-space-6);
+    }
+
+    /* Page not found: the suggestions under the search, behind a horizontal line. */
+    .cel-doc-not-found__inner {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--cel-space-10);
+        padding-top: var(--cel-space-12);
+        padding-bottom: 160px;
+    }
+
+    .cel-doc-not-found__aside {
+        padding-top: var(--cel-space-8);
+        padding-left: 0;
+        border-top: 1px solid var(--cel-color-line);
+        border-left: 0;
     }
 }
 

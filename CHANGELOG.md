@@ -3,6 +3,37 @@
 Toutes les versions de `@communeenligne/design`. Numérotation sémantique : un nom de variable, de classe, de fichier
 exporté ou de fonction qui change, c'est une version majeure.
 
+## 2.3.0 (29/10/2026)
+
+La page des rubriques et la page introuvable du centre d'aide, d'après leurs maquettes (AideRubriques, Aide404).
+Version mineure : rien n'est renommé ni retiré.
+
+### Ajouté
+
+- Pictogramme : troisième taille `.cel-pictogram--xsmall` (32 px). Les trois tailles : 56 px (par défaut), 44 px
+  (`--small`), 32 px (`--xsmall`).
+- Rubriques : format détaillé `.cel-topics--detailed` (une rubrique par ligne, tous ses articles sur deux colonnes
+  avec une flèche, `__body`, `__summary`, `__count`) et format petit `.cel-topics--small` (`__link`, pictogramme
+  `--xsmall`).
+- Suggestions `.cel-suggestions` (`__link`, `__title`, `__path`).
+- Filtre par rôle : script `js/list-filter.js`, `initListFilter(root, { onChange })`, `matchesFilter()` ; attributs
+  `data-cel-list-filter`, `-value`, `-tags`, `-empty`, `-status`, messages `data-cel-message-none`, `-one`, `-many`.
+  Il s'appuie sur le contrôle segmenté, `.cel-segmented[hidden]` le masque sans script.
+- Palette de recherche : `open(from, query)` remplit le champ et cherche ; formulaire relié `data-cel-search-form` ;
+  champ prérempli d'après l'adresse `data-cel-search-from-path` ; fonction `queryFromPath()`.
+- Modèle page de documentation : en-tête d'une page de liste `.cel-doc-intro` (`__inner`, `__row`, `__text`,
+  `__title`, `__lead`), liste `.cel-doc-list` (`__empty`), page introuvable `.cel-doc-not-found` (`__illustration`,
+  `__inner`, `__main`, `__eyebrow`, `__title`, `__lead`, `__search`, `__links`, `__aside`, `__heading`).
+- Tests : fonctions des scripts (`fold`, `queryFromPath`, `matchesFilter`, `indexSearch`) ; `.cel-doc-not-found` coupe
+  ce qui dépasse en largeur.
+- Documentation : Filtre par rôle, Page des rubriques, rubriques détaillées et en petit, trois tailles de pastille ;
+  démonstrations de la page des rubriques et de la page introuvable.
+
+### Changé
+
+- Accès rapides : trois colonnes à partir de 960 px (quatre avant), deux, puis une.
+- Site de documentation : la page introuvable suit le nouveau modèle (champ prérempli, suggestions tirées de l'index).
+
 ## 2.2.0 (29/10/2026)
 
 Les composants du centre d'aide, d'après les maquettes de l'accueil et d'un article, et une palette de recherche

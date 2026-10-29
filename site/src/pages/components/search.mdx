@@ -32,10 +32,11 @@ ${demoPalette}`} />
 
 ## Composition
 
-- **Déclencheur** `.cel-search-trigger` : la loupe, `__label` (« Rechercher »), le raccourci `<kbd class="cel-kbd" data-cel-search-shortcut>`. Sans script, c'est un lien vers la page de recherche du site (ici, [la liste de toutes les pages](/search/)) ; le script en fait un bouton (`aria-haspopup="dialog"`, `aria-keyshortcuts`) et écrit « ⌘ K » sur un Mac. Son attribut `data-cel-search-open` donne l'`id` de la fenêtre. Tout élément qui porte cet attribut l'ouvre aussi (le bouton « Rechercher dans l'aide » de la [page introuvable](/patterns/not-found/)).
+- **Déclencheur** `.cel-search-trigger` : la loupe, `__label` (« Rechercher »), le raccourci `<kbd class="cel-kbd" data-cel-search-shortcut>`. Sans script, c'est un lien vers la page de recherche du site (ici, [la liste de toutes les pages](/search/)) ; le script en fait un bouton (`aria-haspopup="dialog"`, `aria-keyshortcuts`) et écrit « ⌘ K » sur un Mac. Son attribut `data-cel-search-open` donne l'`id` de la fenêtre. Tout élément qui porte cet attribut l'ouvre aussi.
 - **Fenêtre** `<dialog class="cel-search" data-cel-search>` : un titre masqué, `__header` (loupe, champ `__input`, bouton « Échap » `__close`), la ligne d'état `__status` (`role="status"`), l'état vide `__empty` (`hidden`, la question recopiée dans `data-cel-search-query`), la liste `__results`, la ligne d'aide `__help`.
 - **Résultat** (écrit par le script) : `__result`, son lien, le chemin `__path` (rubrique), le titre `__title`, l'extrait `__excerpt` ; les mots cherchés y sont dans `<mark class="cel-search__mark">`.
 - **Touche** `.cel-kbd` (et `--on-strong` sur la surface forte) : un raccourci écrit dans le texte.
+- **Formulaire relié** `data-cel-search-form="<id>"` : un formulaire de recherche de la page (celui de la [page introuvable](/patterns/not-found/#recherche)) ; sans script, il mène à la page de recherche ; avec, Entrée ouvre la palette avec les mots du champ. Un champ `data-cel-search-from-path` laissé vide est prérempli avec les mots de l'adresse (`queryFromPath()`).
 - **Messages :** sur la fenêtre, `data-cel-message-none` (`#` : la question), `-one`, `-many` (`#` : le nombre), `-loading`, `-error`.
 
 <details class="cel-example__code doc-pattern-code">
@@ -45,7 +46,7 @@ ${demoPalette}`} />
 
 ## Script et adaptateurs
 
-<Code lang="js" code={`import { endpointSearch, indexSearch, initSearch } from '@communeenligne/design/js/search.js'
+<Code lang="js" code={`import { endpointSearch, indexSearch, initSearch, queryFromPath } from '@communeenligne/design/js/search.js'
 
 // Site statique : un index JSON, chargé à la première ouverture, cherché dans la page.
 initSearch(document.querySelector('#search'), {
@@ -66,7 +67,7 @@ Le composant ne sait rien de la source : il reçoit une fonction `search(query, 
 - **`indexSearch(url, { limit = 12, fallbackSection })`** charge une fois l'index `{ entries: [{ url, title, section, page, summary, words }] }` (à la première ouverture), puis cherche dans la page : chaque mot doit figurer dans l'entrée, sans tenir compte des accents ni des majuscules ; un mot dans le titre compte plus, au début du titre plus encore. L'extrait est le résumé, sinon le passage autour du premier mot. Ce site produit son index à la construction (`/search-index.json` : une entrée par page et par intertitre).
 - **`endpointSearch(url, { param = 'q', headers, request })`** envoie `GET url?q=…` avec `Accept: application/json` et lit `[…]` ou `{ results: […] }`. Une réponse en erreur affiche le message `-error`. `request` remplace `fetch` (en-têtes d'une session, serveur simulé comme ci-dessus).
 
-Options de `initSearch()` : `minLength` (1), `delay` (0 ms ; 200 pour un serveur), `shortcuts` (`true` ; `false` pour une seconde palette dans la page). Elle rend `{ open, close }`.
+Options de `initSearch()` : `minLength` (1), `delay` (0 ms ; 200 pour un serveur), `shortcuts` (`true` ; `false` pour une seconde palette dans la page). Elle rend `{ open(from, query), close }` : `open()` avec une question remplit le champ et cherche aussitôt.
 
 ## Clavier
 

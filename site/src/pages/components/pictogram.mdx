@@ -1,7 +1,7 @@
 ---
 layout: ../../layouts/Doc.astro
 title: "Pictogramme et teintes douces"
-description: "Une icône sur une pastille arrondie : neutre et cerclée, ou posée sur l'une des sept teintes douces."
+description: "Une icône sur une pastille arrondie, en trois tailles : neutre et cerclée, ou posée sur l'une des sept teintes douces."
 ---
 
 import Example from '../../components/Example.astro'
@@ -16,11 +16,26 @@ Donner un repère visuel à une rubrique, une famille de pages ou une section : 
 
 ## Tailles
 
-`.cel-pictogram` mesure 56 px ; `--small`, 44 px. L'icône garde sa taille propre (`cel-icon--22` ou `--26`).
+Trois tailles, chacune avec la taille d'icône qui lui va :
 
-<Example title="Neutre, cerclé" html={`
+| Taille | Classe | Pastille | Icône | Emploi |
+| --- | --- | --- | --- | --- |
+| Grande | `cel-pictogram` | 56 px, rayon 14 | `cel-icon--26` | [accès rapides](/components/quick-links/), [rubriques détaillées](/components/topics/#détaillées) |
+| Moyenne | `cel-pictogram--small` | 44 px, rayon 12 | `cel-icon--22` | [rubriques](/components/topics/) de l'accueil |
+| Petite | `cel-pictogram--xsmall` | 32 px, rayon 10 | 16 px (posée par le lien) ou `cel-icon--16` | [rubriques en petit](/components/topics/#en-petit), à côté d'un lien court |
+
+<Example title="Neutre, cerclé, dans les trois tailles" html={`
     <span class="cel-pictogram" aria-hidden="true"><svg class="cel-icon cel-icon--26" aria-hidden="true"><use href="/design/icons/sprite.svg#book-open"></use></svg></span>
     <span class="cel-pictogram cel-pictogram--small" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#book-open"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--xsmall" aria-hidden="true"><svg class="cel-icon cel-icon--16" aria-hidden="true"><use href="/design/icons/sprite.svg#book-open"></use></svg></span>
+`} />
+
+<Example title="Teinte lilas, dans les trois tailles" html={`
+    <span class="cel-pictogram cel-pictogram--lilac" aria-hidden="true"><svg class="cel-icon cel-icon--26" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--lilac" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--xsmall cel-pictogram--lilac" aria-hidden="true"><svg class="cel-icon cel-icon--16" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+`} tailwind={`
+    <span class="flex size-8 items-center justify-center rounded-10 bg-soft-lilac text-soft-lilac-ink" aria-hidden="true"><svg class="size-4 fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
 `} />
 
 ## Teintes douces

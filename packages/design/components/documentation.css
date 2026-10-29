@@ -2,8 +2,9 @@
  * @communeenligne/design, components, documentation family: code block with its copy button, live example (rendering,
  * HTML code, Tailwind version), do and don't columns, tiles of a section index, pictogram and its soft tints,
  * illustration, keyboard key, search palette and its trigger (js/search.js); for the help center: home header with or
- * without video, presentation video (js/video.js), quick links, first steps, topics, ways to get help, article meta,
- * feedback, previous and next pages. Used by the documentation site and the help center.
+ * without video, presentation video (js/video.js), quick links, first steps, topics (compact, detailed, small), ways to
+ * get help, suggestions, article meta, feedback, previous and next pages. The list filter (js/list-filter.js) uses the segmented
+ * control of the forms family. Used by the documentation site and the help center.
  *
  * Renaming a class is a major version.
  */
@@ -287,6 +288,13 @@
     border-radius: var(--cel-radius-12);
 }
 
+/* Third size, beside a short link (topics in a small list): 32 px, with an icon of 16 px. */
+.cel-pictogram--xsmall {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--cel-radius-10);
+}
+
 .cel-tile__body {
     display: flex;
     flex-direction: column;
@@ -496,11 +504,11 @@
 /* ---------- Quick links ---------- */
 
 /* The most frequent tasks, each a link that covers its cell: a tinted pictogram (.cel-pictogram and a tint), a title,
-   a short sentence, a short indication (duration) with an arrow. Four columns separated by vertical lines, two below
-   the desktop breakpoint, one on a phone. */
+   a short sentence, a short indication (duration) with an arrow. Three columns separated by vertical lines (six links:
+   two rows), two below the desktop breakpoint, one on a phone. */
 .cel-quick-links {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin: 0;
     padding: 0;
     border-top: 1px solid var(--cel-color-line-4);
@@ -513,15 +521,15 @@
     border-bottom: 1px solid var(--cel-color-line-4);
 }
 
-.cel-quick-links > li:not(:nth-child(4n + 1)) {
+.cel-quick-links > li:not(:nth-child(3n + 1)) {
     border-left: 1px solid var(--cel-color-line-4);
 }
 
-.cel-quick-links > li:nth-child(4n + 1) {
+.cel-quick-links > li:nth-child(3n + 1) {
     padding-left: 0;
 }
 
-.cel-quick-links > li:nth-child(4n) {
+.cel-quick-links > li:nth-child(3n) {
     padding-right: 0;
 }
 
@@ -678,8 +686,13 @@
 
 /* ---------- Topics ---------- */
 
-/* The topics of a help center in columns separated by lines: a tinted pictogram (.cel-pictogram--small and a tint),
-   the title (a link), a few articles, a link to the whole topic. */
+/* The topics of a help center, in three formats.
+   - Compact (home): columns separated by lines; a tinted pictogram (.cel-pictogram--small and a tint), the title (a
+     link), a few articles, a link to the whole topic (__more).
+   - --detailed (page of the topics): one topic per row, separated by lines; on the left the large pictogram, the title,
+     a sentence (__summary) and the number of articles (__count), grouped in __body; on the right all its articles on
+     two columns, each with a small arrow.
+   - --small (page not found): two columns of links (__link), each a .cel-pictogram--xsmall and the title. */
 .cel-topics {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -760,6 +773,165 @@
     color: var(--cel-color-primary);
     font-size: var(--cel-text-14);
     font-weight: var(--cel-font-weight-bold);
+}
+
+/* Detailed: the topic is a row of two columns. */
+.cel-topics--detailed {
+    display: block;
+}
+
+.cel-topics--detailed .cel-topic {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+    gap: var(--cel-space-5) var(--cel-space-14);
+    padding: var(--cel-space-8) 0;
+    border-top: 0;
+    border-bottom: 1px solid var(--cel-color-line);
+}
+
+.cel-topics--detailed .cel-topic__header {
+    align-items: flex-start;
+    gap: var(--cel-space-4-5);
+}
+
+.cel-topic__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+}
+
+.cel-topics--detailed .cel-topic__title {
+    font-size: var(--cel-text-22);
+    line-height: var(--cel-leading-125);
+}
+
+.cel-topic__summary {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
+.cel-topic__count {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-topics--detailed .cel-topic__articles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--cel-space-8);
+    margin-left: 0;
+    font-size: var(--cel-text-16);
+}
+
+.cel-topics--detailed .cel-topic__articles li {
+    border-top: 1px solid var(--cel-color-line-soft);
+}
+
+.cel-topics--detailed .cel-topic__articles a {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--cel-space-2-5);
+    padding: var(--cel-space-2-5) 0;
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-semibold);
+}
+
+.cel-topics--detailed .cel-topic__articles .cel-icon {
+    flex: none;
+    margin-top: 5px;
+    color: var(--cel-color-line-strong);
+    --cel-icon-size: 14px;
+    --cel-icon-stroke: 2.4;
+    transition: translate var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-topics--detailed .cel-topic__articles a:hover .cel-icon {
+    color: var(--cel-color-primary);
+    translate: 3px 0;
+}
+
+/* Small: links in two columns, no line. */
+.cel-topics--small {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--cel-space-2-5) var(--cel-space-5);
+}
+
+.cel-topics--small .cel-topic {
+    padding: 0;
+    border-top: 0;
+}
+
+.cel-topic__link {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-2-5);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+    line-height: var(--cel-leading-130);
+    text-decoration: none;
+}
+
+.cel-topic__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-topic__link .cel-pictogram {
+    transition: transform var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+.cel-topic__link:hover .cel-pictogram {
+    transform: translateY(-2px);
+}
+
+.cel-topic__link .cel-pictogram .cel-icon {
+    --cel-icon-size: 16px;
+}
+
+/* Hidden by the list filter (js/list-filter.js). */
+.cel-topic[hidden] {
+    display: none;
+}
+
+/* ---------- Suggestions ---------- */
+
+/* A short list of pages that may be the one sought (page not found, related articles): the title, then where it is,
+   each separated by a light line. */
+.cel-suggestions {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-suggestions > li {
+    border-bottom: 1px solid var(--cel-color-line-soft);
+}
+
+.cel-suggestions__link {
+    display: flex;
+    flex-direction: column;
+    padding: var(--cel-space-3) 0;
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+.cel-suggestions__title {
+    font-size: var(--cel-text-16);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-suggestions__link:hover .cel-suggestions__title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-suggestions__path {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
 }
 
 /* ---------- Support: ways to get help ---------- */
@@ -1289,6 +1461,10 @@
         gap: var(--cel-space-10);
     }
 
+    .cel-topics--detailed .cel-topic {
+        gap: var(--cel-space-5) var(--cel-space-8);
+    }
+
     /* Quick links: two columns. */
     .cel-quick-links {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1381,6 +1557,20 @@
         grid-template-columns: minmax(0, 1fr);
     }
 
+    /* Detailed topics: the articles under the header, on a single column. */
+    .cel-topics--detailed .cel-topic,
+    .cel-topics--detailed .cel-topic__articles {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cel-topics--detailed .cel-topic {
+        padding: var(--cel-space-6) 0;
+    }
+
+    .cel-topics--small {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     .cel-quick-links > li:nth-child(n) {
         padding: var(--cel-space-5) 0;
         border-left: 0;
@@ -1414,11 +1604,14 @@
     .cel-topic__header .cel-pictogram,
     .cel-quick-link .cel-pictogram,
     .cel-quick-link__meta .cel-icon,
+    .cel-topics--detailed .cel-topic__articles .cel-icon,
+    .cel-topic__link .cel-pictogram,
     .cel-video__play {
         transition: none;
     }
 
     .cel-topic:hover .cel-pictogram,
+    .cel-topic__link:hover .cel-pictogram,
     .cel-quick-link:hover .cel-pictogram,
     .cel-quick-link:focus-visible .cel-pictogram {
         transform: none;
@@ -1426,6 +1619,7 @@
 
     .cel-quick-link:hover .cel-quick-link__meta .cel-icon,
     .cel-quick-link:focus-visible .cel-quick-link__meta .cel-icon,
+    .cel-topics--detailed .cel-topic__articles a:hover .cel-icon,
     .cel-video__play:hover {
         translate: none;
         scale: none;

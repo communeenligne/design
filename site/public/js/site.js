@@ -1,5 +1,5 @@
-// Script of the documentation site: theme, tabs, phone menu, animations, combobox, table of contents and feedback of
-// the package, search palette of the package on the index of the site, copy buttons, demonstrations.
+// Script of the documentation site: theme, tabs, phone menu, animations, combobox, table of contents, feedback and
+// list filter of the package, search palette of the package on the index of the site, copy buttons, demonstrations.
 
 import { initTheme } from '/design/js/theme.js'
 import { initTabs } from '/design/js/tabs.js'
@@ -8,8 +8,9 @@ import { initMarquee, initMotion, initSmoothAnchors } from '/design/js/motion.js
 import { initCombobox } from '/design/js/combobox.js'
 import { initToc } from '/design/js/toc.js'
 import { initFeedback } from '/design/js/feedback.js'
-import { endpointSearch, indexSearch, initSearch } from '/design/js/search.js'
+import { endpointSearch, indexSearch, initSearch, queryFromPath } from '/design/js/search.js'
 import { initVideo } from '/design/js/video.js'
+import { initListFilter } from '/design/js/list-filter.js'
 import { simulatedServer } from '/js/simulated-server.js'
 
 initTheme()
@@ -20,6 +21,7 @@ initSmoothAnchors()
 initMarquee()
 initToc()
 initVideo()
+initListFilter()
 // Demonstration of the feedback: nothing is sent (no server behind the site).
 initFeedback(document, { onAnswer: async () => {} })
 
@@ -95,7 +97,38 @@ document.querySelectorAll('.cel-code').forEach((block) => {
 
 // ---------- Search palette of the package: the static index of the site (/search-index.json) ----------
 
-initSearch(document.querySelector('#search'), { search: indexSearch('/search-index.json', { fallbackSection: 'Accueil' }) })
+const siteSearch = indexSearch('/search-index.json', { fallbackSection: 'Accueil' })
+
+initSearch(document.querySelector('#search'), { search: siteSearch })
+
+// Page not found: the first results of the index for the words of the address replace the pages most read.
+const suggestions = document.querySelector('[data-doc-suggestions]')
+const lostWords = suggestions ? queryFromPath(window.location.pathname) : ''
+
+if (lostWords) {
+    siteSearch(lostWords).then((results) => {
+        if (results.length === 0) {
+            return
+        }
+
+        suggestions.replaceChildren(...results.slice(0, 3).map((result) => {
+            const item = document.createElement('li')
+            const link = document.createElement('a')
+            const title = document.createElement('span')
+            const path = document.createElement('span')
+            link.className = 'cel-suggestions__link'
+            link.href = result.url
+            title.className = 'cel-suggestions__title'
+            title.textContent = result.title
+            path.className = 'cel-suggestions__path'
+            path.textContent = result.section
+            link.append(title, path)
+            item.append(link)
+
+            return item
+        }))
+    }).catch(() => {})
+}
 
 // Demonstration of the endpoint adapter (page of the palette): a second palette, without shortcuts, on a simulated
 // server.

@@ -124,7 +124,7 @@ test('each block that scrolls in width is positioned, each full-width band clips
     }
 
     // The start of an offset reveal (left, right, slide) must not widen the page.
-    for (const [sheet, band] of [['components/landing.css', '.cel-hero'], ['components/landing.css', '.cel-references'], ['patterns/section.css', '.cel-section'], ['patterns/page-header.css', '.cel-page-header'], ['components/documentation.css', '.cel-doc-hero']]) {
+    for (const [sheet, band] of [['components/landing.css', '.cel-hero'], ['components/landing.css', '.cel-references'], ['patterns/section.css', '.cel-section'], ['patterns/page-header.css', '.cel-page-header'], ['components/documentation.css', '.cel-doc-hero'], ['patterns/documentation-page.css', '.cel-doc-not-found']]) {
         const rule = withoutComments(sheet).match(new RegExp(`\\n\\${band} \\{([^}]*)\\}`))?.[1] ?? ''
 
         if (!/overflow-x:\s*clip/.test(rule)) {

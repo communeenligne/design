@@ -10,7 +10,7 @@ import DoDont from '../../components/DoDont.astro'
 
 ## À quoi il sert
 
-Habiller une grande bande, comme l'[en-tête d'accueil](/components/doc-hero/) du centre d'aide, d'un motif discret qui rappelle la commune : maisons, mairie, clocher. Elle ne porte aucune information.
+Habiller une grande bande, comme l'[en-tête d'accueil](/components/doc-hero/) du centre d'aide (sur fond foncé) ou la [page introuvable](/patterns/not-found/) (sur fond clair), d'un motif discret qui rappelle la commune : maisons, mairie, clocher. Elle ne porte aucune information.
 
 ## Le fichier
 
@@ -24,7 +24,7 @@ Habiller une grande bande, comme l'[en-tête d'accueil](/components/doc-hero/) d
     <span class="cel-illustration cel-illustration--village doc-illustration-watermark" aria-hidden="true"></span>
 `} />
 
-<Example title="Sur la page : couleur principale, marine en clair, bleu clair en sombre" html={`
+<Example title="Sur la page, comme la page introuvable : couleur principale, marine en clair, bleu clair en sombre" html={`
     <span class="cel-illustration cel-illustration--village doc-illustration-primary" aria-hidden="true"></span>
 `} />
 
@@ -39,7 +39,7 @@ En `<img>`, le fichier s'affiche en noir : `currentColor` n'y a pas de couleur �
 ## Accessibilité
 
 - **Décorative :** un élément vide, `aria-hidden="true"`. Pas de texte de remplacement à écrire.
-- **Contraste :** la silhouette n'a pas de contraste à tenir ; posée derrière du texte, elle reste assez pâle (14 % en filigrane) pour ne pas gêner sa lecture.
+- **Contraste :** la silhouette n'a pas de contraste à tenir ; posée derrière du texte, elle reste assez pâle (14 % sur la surface forte, 7 % sur la page) pour ne pas gêner sa lecture.
 
 ## À faire, à éviter
 

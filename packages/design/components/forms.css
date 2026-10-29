@@ -360,6 +360,11 @@
     background: var(--cel-color-segmented-background);
 }
 
+/* Hidden until its script shows it (list filter, js/list-filter.js). */
+.cel-segmented[hidden] {
+    display: none;
+}
+
 .cel-segmented__option {
     padding: var(--cel-space-2) var(--cel-space-3-5);
     border: 0;

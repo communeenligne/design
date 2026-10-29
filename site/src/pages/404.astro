@@ -1,27 +1,48 @@
 ---
-// Page not found: the "page not found" pattern of the package (compact home header, search, sections, link back).
+// Page not found: the "page not found" pattern of the package. The field is prefilled by js/search.js with the words
+// of the address asked (data-cel-search-from-path) and opens the palette; the suggestions are the pages most read,
+// replaced by site.js with the first results of the search index for those words.
 import Doc from '../layouts/Doc.astro'
 import Icon from '../components/Icon.astro'
 import { SECTIONS } from '../lib/navigation.js'
+
+const TINTS = ['ochre', 'blue', 'lilac', 'green', 'sky', 'red', 'slate']
+const sections = SECTIONS.filter((section) => section.pages.length > 0 || section.url === '/accessibility/')
+const suggestions = [['Installation', '/getting-started/installation/', 'Prise en main'], ['Couleurs', '/foundations/colors/', 'Fondamentaux'], ['Palette de recherche', '/components/search/', 'Composants']]
 ---
-<Doc title="Page introuvable" description="Cette page n'existe pas, ou plus.">
-    <section slot="hero" class="cel-doc-hero cel-doc-hero--compact" aria-labelledby="not-found-title">
-        <span class="cel-doc-hero__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
-        <div class="cel-container cel-doc-hero__inner">
-            <div class="cel-doc-hero__text">
-                <p class="cel-doc-hero__eyebrow">Erreur 404</p>
-                <h1 class="cel-doc-hero__title" id="not-found-title">Cette page n'existe pas, ou plus</h1>
-                <p class="cel-doc-hero__lead">L'adresse a peut-être changé. Cherchez la page, ou ouvrez sa rubrique.</p>
-                <p class="cel-doc-hero__hint" hidden data-cel-search-hint><kbd class="cel-kbd cel-kbd--on-strong" data-cel-search-shortcut>Ctrl K</kbd> ou <kbd class="cel-kbd cel-kbd--on-strong">/</kbd> pour chercher.</p>
+<Doc title="Page introuvable" description="Cette page n'existe pas, ou elle a changé de place.">
+    <main slot="main" id="contenu" tabindex="-1" class="cel-doc-not-found">
+        <span class="cel-doc-not-found__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
+        <div class="cel-container cel-doc-not-found__inner">
+            <div class="cel-doc-not-found__main">
+                <p class="cel-doc-not-found__eyebrow">Erreur 404</p>
+                <h1 class="cel-doc-not-found__title">Cette page n'existe pas, ou elle a changé de place.</h1>
+                <p class="cel-doc-not-found__lead">Le lien est peut-être ancien, ou la page a été renommée. Cherchez-la directement :</p>
+                <form class="cel-doc-not-found__search" action="/search/" method="get" role="search" data-cel-search-form="search">
+                    <div class="cel-field cel-combobox">
+                        <label class="cel-visually-hidden" for="not-found-query">Rechercher dans le Système de Design</label>
+                        <div class="cel-combobox__control">
+                            <Icon name="magnifying-glass" class="cel-combobox__icon" />
+                            <input class="cel-combobox__input" id="not-found-query" type="search" name="q" autocomplete="off" aria-describedby="not-found-query-hint" data-cel-search-from-path>
+                        </div>
+                        <p class="cel-field__hint" id="not-found-query-hint">Avec JavaScript, la recherche est préremplie avec les mots de l'adresse demandée.</p>
+                    </div>
+                </form>
+                <ul class="cel-doc-not-found__links">
+                    <li><a href="/">Retour à l'accueil</a></li>
+                    <li><a href="/search/">Toutes les pages</a></li>
+                </ul>
+            </div>
+            <div class="cel-doc-not-found__aside">
+                <h2 class="cel-doc-not-found__heading" id="not-found-suggestions">Vous cherchiez peut-être</h2>
+                <ul class="cel-suggestions" aria-labelledby="not-found-suggestions" data-doc-suggestions>
+                    {suggestions.map(([title, url, path]) => <li><a class="cel-suggestions__link" href={url}><span class="cel-suggestions__title">{title}</span><span class="cel-suggestions__path">{path}</span></a></li>)}
+                </ul>
+                <h2 class="cel-doc-not-found__heading" id="not-found-sections">Ou parcourez une rubrique</h2>
+                <ul class="cel-topics cel-topics--small" aria-labelledby="not-found-sections">
+                    {sections.map((section, rank) => <li class="cel-topic"><a class="cel-topic__link" href={section.url}><span class={`cel-pictogram cel-pictogram--xsmall cel-pictogram--${TINTS[rank % TINTS.length]}`} aria-hidden="true"><Icon name={section.icon} /></span>{section.title}</a></li>)}
+                </ul>
             </div>
         </div>
-    </section>
-    <p><a class="cel-button" href="/search/" data-cel-search-open="search"><Icon name="magnifying-glass" size="20" bold />Rechercher</a></p>
-    <nav aria-labelledby="not-found-sections">
-        <h2 class="cel-doc-notice__title" id="not-found-sections">Les rubriques</h2>
-        <ul class="cel-pills">
-            {SECTIONS.map((section) => <li><a class="cel-pill" href={section.url}>{section.title}</a></li>)}
-        </ul>
-    </nav>
-    <p><a class="cel-link cel-link--arrow cel-link--back" href="/"><Icon name="arrow-left" size="16" bold />Revenir à l'accueil</a></p>
+    </main>
 </Doc>

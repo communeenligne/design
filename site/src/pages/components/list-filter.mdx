@@ -1,0 +1,60 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Filtre par rôle"
+description: "Le contrôle segmenté qui garde, dans une liste, les éléments d'un rôle (maire, secrétariat, élus), avec un message quand rien ne correspond."
+---
+
+import Example from '../../components/Example.astro'
+import Code from '../../components/Code.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { TOPICS, roleFilter, topicsDetailed } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Réduire une longue liste à ce qui concerne la personne : sur la [page des rubriques](/patterns/topics-page/) du centre d'aide, les rubriques utiles au maire, au secrétariat ou aux élus.
+
+**Quand ne pas l'utiliser :** pour chercher un mot (prendre la [palette de recherche](/components/search/)) ; pour changer une présentation sans retirer d'éléments (le [contrôle segmenté](/components/segmented-control/) seul).
+
+## Exemple
+
+<Example title="Filtrer trois rubriques (essayez « Élus » : aucune ne correspond)" html={`
+    ${roleFilter('example-filter')}
+    ${topicsDetailed(TOPICS.slice(2, 5).map((topic) => ({ ...topic, roles: topic.roles.filter((role) => role !== 'councillors') })), 'example-filter')}
+    <p class="cel-doc-list__empty" hidden data-cel-list-filter-empty="example-filter">Aucune rubrique pour ce rôle pour l'instant.</p>
+    <p class="cel-visually-hidden" role="status" data-cel-list-filter-status="example-filter"></p>
+`} />
+
+## Composition
+
+Pas de nouvelle classe : le groupe est le [contrôle segmenté](/components/segmented-control/) du paquet (`.cel-segmented`, ou les [filtres](/components/filter/) `.cel-filter` sur la surface forte) ; le script `js/list-filter.js` le relie à la liste.
+
+- **Le groupe** `data-cel-list-filter="<id de la liste>"`, `role="group"`, nommé (`aria-label`), `hidden` ; les messages annoncés : `data-cel-message-none`, `-one`, `-many` (`#` : le nombre).
+- **Les boutons** `data-cel-list-filter-value` : la valeur gardée, `""` pour tout ; `aria-pressed="true"` sur le choix de départ.
+- **Les éléments** de la liste `data-cel-list-filter-tags="mayor office"` : les valeurs qu'ils portent, séparées par des espaces. Un élément sans attribut est toujours affiché.
+- **Le message** visible `data-cel-list-filter-empty="<id>"` (`hidden`), affiché quand rien ne correspond ; dans le centre d'aide, `.cel-doc-list__empty`.
+- **La zone d'annonce** `data-cel-list-filter-status="<id>"`, `role="status"`, masquée à l'œil (`cel-visually-hidden`).
+
+## Comportement
+
+<Code lang="js" code={`import { initListFilter } from '@communeenligne/design/js/list-filter.js'
+
+initListFilter()   // tous les groupes data-cel-list-filter de la page
+initListFilter(document, { onChange: (value, count) => history.replaceState(null, '', value ? \`?role=\${value}\` : '?') })`} />
+
+- **Sans script,** le groupe reste masqué et toute la liste s'affiche : rien n'est perdu.
+- **Avec,** le groupe apparaît ; un bouton choisi passe à `aria-pressed="true"` (les autres à `false`), les éléments qui ne portent pas la valeur reçoivent `hidden`, le message s'affiche si rien ne reste.
+- `onChange(value, count)` : pour garder le choix dans l'adresse, ou le compter.
+
+## Accessibilité
+
+- **Rôle :** un groupe nommé de boutons `aria-pressed` ; Tab de bouton en bouton, Entrée ou Espace. Le choix en cours se voit autrement que par la couleur (pastille claire, ombre).
+- **Annonce :** après chaque choix, la zone `role="status"` dit le nombre d'éléments gardés (« 3 rubriques affichées ») ou « Aucune rubrique pour ce rôle. » ; rien n'est annoncé au chargement.
+- **Focus :** il reste sur le bouton choisi ; la liste ne bouge pas sous lui.
+- **Message visible :** quand rien ne correspond, une phrase le dit à l'écran aussi, à la place de la liste vide.
+
+<Contrasts pairs={[['text-muted-5', 'segmented-background'], ['primary', 'surface'], ['text-muted-2', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['« Tous » en premier, choisi au départ.', 'Des rôles que les personnes se reconnaissent : maire, secrétariat, élus.']} donts={['Un filtre qui masque la seule réponse sans le dire.', 'Plus de quatre choix : prendre une liste déroulante.']} />
