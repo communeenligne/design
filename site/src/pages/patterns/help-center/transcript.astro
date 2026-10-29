@@ -1,0 +1,19 @@
+---
+import HelpCenterPage from '../../../components/HelpCenterPage.astro'
+import { FOOTER, HEADER, PALETTE } from '../../../lib/help-center.js'
+---
+<HelpCenterPage title="Transcription de la vidéo de présentation">
+    <Fragment set:html={HEADER} />
+    <main id="contenu" tabindex="-1" class="cel-container cel-doc-notice">
+        <h1 class="cel-doc-title">Transcription de la vidéo de présentation</h1>
+        <div class="cel-prose">
+            <p>Bienvenue dans l'administration de votre site. À gauche, le menu : Actualités, Agenda, Documents officiels, Habitants, Réglages.</p>
+            <p>Pour publier, ouvrez une rubrique et cliquez sur « Ajouter » : un titre, un texte, une image, puis « Publier ». La page est aussitôt en ligne.</p>
+            <p>Les messages et les signalements des habitants arrivent dans « Habitants ». Changez leur état : l'habitant est prévenu par courriel.</p>
+            <p>Dans « Réglages », donnez accès au secrétariat et aux élus, chacun avec son rôle. Une question ? Le centre d'aide a une réponse pour chaque geste.</p>
+        </div>
+        <p><a class="cel-link cel-link--arrow cel-link--back" href="/patterns/help-center/home/"><svg class="cel-icon cel-icon--16 cel-icon--bold" aria-hidden="true"><use href="/design/icons/sprite.svg#arrow-left"></use></svg>Revenir à l'accueil de l'aide</a></p>
+    </main>
+    <Fragment set:html={FOOTER} />
+    <Fragment set:html={PALETTE} />
+</HelpCenterPage>

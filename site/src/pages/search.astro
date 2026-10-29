@@ -1,0 +1,14 @@
+---
+// Search page: where the trigger of the palette leads without script. The site is static, so it lists every page by
+// section; with script, the palette opens instead.
+import Doc from '../layouts/Doc.astro'
+import { SECTIONS } from '../lib/navigation.js'
+---
+<Doc title="Rechercher" description="Toutes les pages du Système de Design, par rubrique. Avec JavaScript, Ctrl K (⌘ K sur Mac) ou / ouvre la recherche." full>
+    {SECTIONS.map((section) => (
+        <>
+            <h2 id={section.url.replaceAll('/', '') || 'accueil'}><a href={section.url}>{section.title}</a></h2>
+            {section.pages.length > 0 && <ul>{section.pages.map((page) => <li><a href={page.url}>{page.title}</a> : {page.description}</li>)}</ul>}
+        </>
+    ))}
+</Doc>

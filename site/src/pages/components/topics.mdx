@@ -1,0 +1,78 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Rubriques"
+description: "Les rubriques d'un centre d'aide en colonnes séparées par des filets : pictogramme teinté, titre, quelques articles, lien vers la rubrique."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Donner, sur l'accueil du [centre d'aide](/patterns/help-center/), une vue de tout ce qu'il contient : chaque rubrique, ses articles les plus lus, et le lien vers les autres.
+
+**Quand ne pas l'utiliser :** pour les pages d'une rubrique de ce site (prendre les [tuiles](/components/tiles/)) ; pour un parcours dans l'ordre (prendre les [premiers pas](/components/first-steps/)).
+
+## Exemple
+
+<Example title="Trois rubriques" html={`
+    <ul class="cel-topics">
+        <li class="cel-topic">
+            <div class="cel-topic__header">
+                <span class="cel-pictogram cel-pictogram--small cel-pictogram--ochre" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#home-modern"></use></svg></span>
+                <h3 class="cel-topic__title"><a href="#">Mettre le site en ligne</a></h3>
+            </div>
+            <ul class="cel-topic__articles">
+                <li><a href="#">La mise en route, étape par étape</a></li>
+                <li><a href="#">Raccorder votre nom de domaine</a></li>
+                <li><a href="#">Choisir l'apparence du site</a></li>
+            </ul>
+            <a class="cel-topic__more" href="#">Les 8 articles<span class="cel-visually-hidden"> de la rubrique « Mettre le site en ligne »</span></a>
+        </li>
+        <li class="cel-topic">
+            <div class="cel-topic__header">
+                <span class="cel-pictogram cel-pictogram--small cel-pictogram--blue" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#newspaper"></use></svg></span>
+                <h3 class="cel-topic__title"><a href="#">Publier</a></h3>
+            </div>
+            <ul class="cel-topic__articles">
+                <li><a href="#">Publier une actualité</a></li>
+                <li><a href="#">Annoncer une alerte</a></li>
+                <li><a href="#">Ajouter un événement à l'agenda</a></li>
+            </ul>
+            <a class="cel-topic__more" href="#">Les 12 articles<span class="cel-visually-hidden"> de la rubrique « Publier »</span></a>
+        </li>
+        <li class="cel-topic">
+            <div class="cel-topic__header">
+                <span class="cel-pictogram cel-pictogram--small cel-pictogram--lilac" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+                <h3 class="cel-topic__title"><a href="#">Les actes de la commune</a></h3>
+            </div>
+            <ul class="cel-topic__articles">
+                <li><a href="#">Publier une délibération</a></li>
+                <li><a href="#">Publier un arrêté</a></li>
+                <li><a href="#">Corriger un acte déjà publié</a></li>
+            </ul>
+            <a class="cel-topic__more" href="#">Les 6 articles<span class="cel-visually-hidden"> de la rubrique « Les actes de la commune »</span></a>
+        </li>
+    </ul>
+`} />
+
+## Composition
+
+`.cel-topics` est une liste ; chaque rubrique `.cel-topic` a un filet au-dessus, un en-tête `__header` (un [pictogramme](/components/pictogram/) `--small` dans une teinte douce, puis le titre `__title` en lien), la liste `__articles` et le lien `__more`, alignés sur le titre. Au survol de la rubrique, le pictogramme monte de 2 px (pas avec `prefers-reduced-motion`).
+
+## Comportement
+
+Trois colonnes à partir de 960 px, deux entre 640 et 960 px, une sur téléphone. L'écart entre les colonnes est de 48 px ; les filets séparent les lignes.
+
+## Accessibilité
+
+- **Structure :** une liste de rubriques, chacune un titre `h3` (sous le `h2` « Les rubriques »), puis une liste d'articles.
+- **Lien vers la rubrique :** « Les 8 articles » est complété d'un texte masqué, « de la rubrique « Mettre le site en ligne » », pour qu'il ait un sens hors de son contexte (liste des liens d'un lecteur d'écran).
+- **Pictogramme :** décoratif (`aria-hidden`).
+
+<Contrasts pairs={[['primary', 'background'], ['text-2', 'background'], ['soft-ochre-ink', 'soft-ochre'], ['soft-blue-ink', 'soft-blue'], ['soft-lilac-ink', 'soft-lilac']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Trois articles par rubrique, les plus lus.', 'Une teinte différente par rubrique voisine.']} donts={['Une rubrique sans lien vers tous ses articles.', 'Plus de neuf rubriques sur l\'accueil.']} />

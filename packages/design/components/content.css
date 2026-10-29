@@ -311,6 +311,44 @@
     color: var(--cel-color-primary);
 }
 
+/* In the text of an article: a line on the left, a light background, a short title ("À savoir", "Attention").
+   --note: something good to know; --caution: a risk (an action that cannot be undone). */
+.cel-callout--note,
+.cel-callout--caution {
+    gap: var(--cel-space-3);
+    padding: var(--cel-space-3-5) var(--cel-space-4-5);
+    border: 0;
+    border-left: 3px solid var(--cel-color-primary);
+    border-radius: 0;
+    font-size: var(--cel-text-15);
+}
+
+.cel-callout--note {
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-text-2);
+}
+
+.cel-callout--caution {
+    border-left-color: var(--cel-color-error);
+    background: var(--cel-color-error-background);
+    color: var(--cel-color-text);
+}
+
+.cel-callout--note .cel-callout__body,
+.cel-callout--caution .cel-callout__body {
+    gap: var(--cel-space-1);
+    color: inherit;
+}
+
+.cel-callout--note .cel-callout__title,
+.cel-callout--caution .cel-callout__title {
+    font-size: var(--cel-text-15);
+}
+
+.cel-callout--caution :is(.cel-callout__title, .cel-callout__icon) {
+    color: var(--cel-color-error);
+}
+
 /* ---------- Banner ---------- */
 
 .cel-banner {
@@ -476,6 +514,35 @@
     padding-top: var(--cel-space-0-5);
 }
 
+/* A step with more than a sentence: the text, then a screenshot (__figure). */
+.cel-steps__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    min-width: 0;
+}
+
+.cel-steps__figure {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-10);
+    background: var(--cel-color-background-muted);
+}
+
+.cel-steps__figure img {
+    width: 100%;
+    height: auto;
+}
+
+.cel-steps__figure figcaption {
+    padding: var(--cel-space-2) var(--cel-space-3);
+    border-top: 1px solid var(--cel-color-line);
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
+}
+
 .cel-steps__number {
     display: flex;
     flex: none;
@@ -523,6 +590,42 @@
 
 .cel-faq__answer p + p {
     margin-top: var(--cel-space-2-5);
+}
+
+/* Flat: lines between the questions, a + that becomes a − (in the text of an article). */
+.cel-faq--flat {
+    gap: 0;
+    border-top: 1px solid var(--cel-color-line);
+}
+
+.cel-faq--flat .cel-faq__item {
+    padding: var(--cel-space-3-5) 0;
+    border: 0;
+    border-bottom: 1px solid var(--cel-color-line);
+    border-radius: 0;
+    background: transparent;
+}
+
+.cel-faq--flat .cel-faq__question {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--cel-space-3);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-16);
+}
+
+.cel-faq--flat .cel-faq__question::after {
+    content: '+';
+    flex: none;
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-faq--flat .cel-faq__item[open] .cel-faq__question::after {
+    content: '\2212';
+}
+
+.cel-faq--flat .cel-faq__answer {
+    font-size: var(--cel-text-16);
 }
 
 /* ---------- Below the desktop breakpoint ---------- */

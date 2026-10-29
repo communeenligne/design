@@ -13,7 +13,7 @@ Les sites de Commune en ligne visent le niveau AA du RGAA 4.1 (WCAG 2.1 AA). Le 
 
 - **Contrastes :** 4,5:1 pour le texte, 3:1 pour les bordures des champs, les éléments d'interface, les icônes porteuses de sens et le focus, dans les deux thèmes.
 - **Focus visible :** contour de 3 px, décalé de 3 px, marine sur fond clair, or sur surface forte. Jamais retiré sans remplacement.
-- **Clavier :** tout est atteignable et utilisable au clavier, dans l'ordre de lecture ; les onglets suivent le motif ARIA (flèches, Début, Fin).
+- **Clavier :** tout est atteignable et utilisable au clavier, dans l'ordre de lecture ; les onglets suivent le motif ARIA (flèches, Début, Fin), la palette de recherche et la recherche de commune le motif combobox.
 - **Sans script :** chaque composant fonctionne sans JavaScript (onglets en liens, thème par le serveur, questions en `details`).
 - **Mouvement :** animations courtes, jamais en boucle, coupées par `prefers-reduced-motion`.
 - **Sens :** jamais porté par la seule couleur (badge écrit, onglet en gras et souligné, repères de formes différentes).
@@ -22,10 +22,10 @@ Les sites de Commune en ligne visent le niveau AA du RGAA 4.1 (WCAG 2.1 AA). Le 
 
 ## Test de contraste
 
-`npm test` lit les couleurs des fondamentaux et vérifie, en clair et en sombre, **305 paires** : les [couleurs de rôle](/foundations/colors/#roles) sur leurs fonds ; chaque texte de la palette sur chaque fond de page, les textes sur leurs teintes, les surfaces fortes et dorées, les bordures d'interface et le focus ; et toute règle des composants et des modèles qui pose à la fois un texte et un fond. Il vérifie aussi que chaque couleur a sa valeur sombre et que les ombres disparaissent en sombre. Il tourne à chaque modification (intégration continue).
+`npm test` lit les couleurs des fondamentaux et vérifie, en clair et en sombre, **340 paires** : les [couleurs de rôle](/foundations/colors/#roles) sur leurs fonds ; chaque texte de la palette sur chaque fond de page, les textes sur leurs teintes, les pictogrammes sur leurs sept teintes douces, les surfaces fortes et dorées, les bordures d'interface et le focus ; et toute règle des composants et des modèles qui pose à la fois un texte et un fond. Il vérifie aussi que chaque couleur a sa valeur sombre et que les ombres disparaissent en sombre. Il tourne à chaque modification (intégration continue).
 
-<Code lang="text" code={`clair : 305 paires vérifiées, 304 conformes
-sombre : 305 paires vérifiées, 303 conformes
+<Code lang="text" code={`clair : 340 paires vérifiées, 339 conformes
+sombre : 340 paires vérifiées, 338 conformes
 écart connu : --cel-color-on-strong-line sur --cel-color-strong (clair 2,22:1, sombre 1,84:1)
 écart connu : --cel-color-action sur --cel-color-surface (sombre 2,65:1)`} />
 

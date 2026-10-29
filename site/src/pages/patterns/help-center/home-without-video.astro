@@ -1,0 +1,10 @@
+---
+import HelpCenterPage from '../../../components/HelpCenterPage.astro'
+import { FOOTER, HEADER, HOME_WITHOUT_VIDEO, PALETTE } from '../../../lib/help-center.js'
+---
+<HelpCenterPage title="Accueil sans vidéo">
+    <Fragment set:html={HEADER} />
+    <main id="contenu" tabindex="-1"><Fragment set:html={HOME_WITHOUT_VIDEO} /></main>
+    <Fragment set:html={FOOTER} />
+    <Fragment set:html={PALETTE} />
+</HelpCenterPage>

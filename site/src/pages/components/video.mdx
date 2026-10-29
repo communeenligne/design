@@ -1,0 +1,53 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Vidéo"
+description: "Le lecteur de présentation : image d'aperçu, grand bouton de lecture qui dit la durée, puis le lecteur du navigateur, sous-titré, et sa transcription."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+import { VIDEO } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Montrer en une ou deux minutes ce qu'un article ou l'accueil explique par écrit : la vidéo complète le texte, elle ne le remplace pas. Dans l'[en-tête d'accueil](/components/doc-hero/) et dans un article.
+
+## Exemple
+
+<Example title="Dans un article (essayez au clavier : Tab jusqu'au bouton, puis Entrée)" note="Extrait de démonstration de 4 secondes, sous-titré." html={`${VIDEO}
+    <p id="transcription">Transcription : dans votre administration, ouvrez « Documents officiels », puis « Ajouter un document ». Choisissez « Délibération », déposez le PDF, puis cliquez sur « Publier ».</p>
+`} />
+
+## Composition
+
+`<figure class="cel-video" data-cel-video>` :
+
+1. `__frame`, le cadre 16:9 (coins de 16 px) ;
+2. `<video class="cel-video__player" controls preload="none" poster>` : le lecteur du navigateur, un `<source>` du même domaine, les sous-titres `<track kind="captions" srclang="fr" default>` au format WebVTT ;
+3. `__play`, le grand bouton de lecture, et `__duration`, la durée affichée, tous deux `hidden` ;
+4. `<figcaption class="cel-video__caption">` : le titre `__title` s'il y a lieu, « Sous-titrée », le lien « Lire la transcription ».
+
+## Comportement
+
+<Code lang="js" code={`import { initVideo } from '@communeenligne/design/js/video.js'
+
+initVideo()   // chaque [data-cel-video]`} />
+
+- **Sans script :** le lecteur et ses commandes, directement.
+- **Avec :** les commandes attendent derrière l'aperçu ; le bouton et la durée apparaissent. Le bouton lance la vidéo, rend ses commandes au lecteur (lecture, volume, sous-titres, plein écran) et lui donne le focus.
+- **Jamais de lecture automatique**, rien de téléchargé avant le clic (`preload="none"`), aucun service extérieur : le fichier est servi par le même domaine que la page.
+
+## Accessibilité
+
+- **Bouton :** un vrai `<button>`, nommé par `aria-label` avec la durée et les sous-titres (« Lire la vidéo de présentation (2 minutes, sous-titrée) ») ; la durée visible « 2:00 » est masquée aux lecteurs d'écran, qui l'ont déjà.
+- **Clavier :** Tab atteint le bouton, Entrée ou Espace lance la vidéo ; le focus passe au lecteur, dont les commandes natives sont utilisables au clavier.
+- **Sous-titres et transcription :** obligatoires dès qu'on parle ; la transcription est un lien de la légende (RGAA 4.1, critères 4.1 à 4.3).
+- **Mouvement :** le bouton grossit légèrement au survol, pas avec `prefers-reduced-motion`.
+
+<Contrasts pairs={[['on-strong', 'strong'], ['cel-focus-color-on-strong', 'strong', 3], ['text-muted-2', 'background'], ['primary', 'background'], ['on-strong-soft', 'strong']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['La durée dans le nom du bouton et à l\'écran.', 'Une image d\'aperçu qui montre l\'écran dont on parle.']} donts={['Une vidéo sans sous-titres ni transcription.', 'Un lecteur d\'une plateforme qui suit les visiteurs.']} />

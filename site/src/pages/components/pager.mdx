@@ -1,0 +1,48 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Pages précédente et suivante"
+description: "En bas d'un article, les deux pages voisines de la rubrique : le sens au-dessus, le titre en dessous."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { PAGER } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Lire une rubrique dans l'ordre sans revenir à la navigation. Ce site l'emploie en bas de chaque page (dans des [cartes](/components/card/)) ; le centre d'aide en bas de chaque article.
+
+**Quand ne pas l'utiliser :** pour une longue liste découpée en pages (prendre la [pagination](/components/pagination/)).
+
+## Variantes
+
+<Example title="Liens simples (centre d'aide)" html={PAGER} />
+
+<Example title="En cartes, avec .cel-card (ce site)" html={`
+    <nav class="cel-pager" aria-label="Pages voisines">
+        <a class="cel-card cel-pager__link" href="#" rel="prev"><span class="cel-pager__direction">Précédent</span><span class="cel-pager__title">Vidéo</span></a>
+        <a class="cel-card cel-pager__link cel-pager__link--next" href="#" rel="next"><span class="cel-pager__direction">Suivant</span><span class="cel-pager__title">Avis sur la page</span></a>
+    </nav>
+`} />
+
+<Example title="Première page : le suivant seul, toujours à droite" html={`
+    <nav class="cel-pager" aria-label="Articles voisins">
+        <a class="cel-pager__link cel-pager__link--next" href="#" rel="next"><span class="cel-pager__direction">Suivant</span><span class="cel-pager__title">Publier un arrêté</span></a>
+    </nav>
+`} />
+
+## Comportement
+
+Deux colonnes ; le suivant `--next` va toujours dans la seconde, aligné à droite, même seul. Sur téléphone, l'un sous l'autre. Au survol, le titre `__title` se souligne.
+
+## Accessibilité
+
+- **Navigation nommée :** `<nav aria-label="Articles voisins">`, distincte des autres navigations de la page.
+- **Nom des liens :** le sens puis le titre (« Suivant Publier un arrêté ») ; `rel="prev"` et `rel="next"`.
+
+<Contrasts pairs={[['primary', 'background'], ['text-muted-2', 'background'], ['primary', 'surface']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Les pages voisines de la même rubrique, dans l\'ordre de la navigation.']} donts={['Un lien « Suivant » sans titre.', 'Des flèches seules, sans texte.']} />

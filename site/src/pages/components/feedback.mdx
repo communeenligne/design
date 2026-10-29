@@ -1,0 +1,56 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Avis sur la page"
+description: "« Cette page vous a-t-elle aidé ? » : une question, deux boutons, puis un remerciement annoncé aux lecteurs d'écran."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+import { FEEDBACK } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Savoir quels articles du centre d'aide ne répondent pas, en un clic, à la fin de chaque article, avant les [pages précédente et suivante](/components/pager/).
+
+## Exemple
+
+<Example title="Essayez « Oui » ou « Non » (rien n'est envoyé)" html={FEEDBACK} />
+
+<Example title="Après la réponse « Non » (rendu statique)" html={`
+    <div class="cel-feedback">
+        <p class="cel-feedback__question">Cette page vous a-t-elle aidé ?</p>
+        <div class="cel-feedback__result"><p>Merci. Une question reste sans réponse ? <a href="#">Écrire à l'assistance</a></p></div>
+    </div>
+`} />
+
+## Composition
+
+Un `<form class="cel-feedback">` : la question `__question`, le groupe `__answers` de deux boutons `__answer` (`name="helpful"`, valeurs `yes` et `no`), la zone de réponse `__result`, qui contient un message masqué par réponse (`data-cel-feedback-message="yes"` ou `"no"`). Le message du « Non » peut mener à l'assistance.
+
+## Script
+
+<Code lang="js" code={`import { initFeedback } from '@communeenligne/design/js/feedback.js'
+
+initFeedback(document, {
+    // Par défaut : le formulaire est envoyé en POST à son action, avec fetch.
+    onAnswer: async (value, form) => {
+        await fetch('/aide/avis', { method: 'POST', body: new FormData(form) })
+    },
+})`} />
+
+- **Sans script :** les boutons envoient le formulaire ; le serveur enregistre la réponse et rend la page avec le message.
+- **Avec :** la réponse part sans quitter la page ; les boutons disparaissent, le message de la réponse apparaît. Un échec d'envoi n'empêche pas le remerciement.
+
+## Accessibilité
+
+- **Groupe :** les deux boutons sont un `role="group"` nommé par la question (`aria-labelledby`) : « Oui » et « Non » ont un sens hors de leur contexte.
+- **Après la réponse :** la zone `__result` est une région `role="status"`, présente dès le chargement (une région vivante doit exister avant que son contenu change) : le message est annoncé. Elle reçoit aussi le focus (`tabindex="-1"`), puisque le bouton qui l'avait a disparu.
+- **Cibles :** 36 px de haut, 64 px de large au moins.
+
+<Contrasts pairs={[['text-strong', 'background'], ['primary', 'surface'], ['primary', 'surface-hover'], ['field-border', 'surface', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une seule question, deux réponses.', 'Après « Non », un moyen d\'obtenir de l\'aide.']} donts={['Une note sur cinq étoiles.', 'Un champ de commentaire obligatoire.']} />

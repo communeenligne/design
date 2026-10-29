@@ -115,6 +115,20 @@
     --color-mark-bad-background: var(--cel-color-mark-bad-background);
     --color-mark-bad: var(--cel-color-mark-bad);
     --color-icon-soft: var(--cel-color-icon-soft);
+    --color-soft-ochre: var(--cel-color-soft-ochre);
+    --color-soft-ochre-ink: var(--cel-color-soft-ochre-ink);
+    --color-soft-blue: var(--cel-color-soft-blue);
+    --color-soft-blue-ink: var(--cel-color-soft-blue-ink);
+    --color-soft-lilac: var(--cel-color-soft-lilac);
+    --color-soft-lilac-ink: var(--cel-color-soft-lilac-ink);
+    --color-soft-green: var(--cel-color-soft-green);
+    --color-soft-green-ink: var(--cel-color-soft-green-ink);
+    --color-soft-sky: var(--cel-color-soft-sky);
+    --color-soft-sky-ink: var(--cel-color-soft-sky-ink);
+    --color-soft-red: var(--cel-color-soft-red);
+    --color-soft-red-ink: var(--cel-color-soft-red-ink);
+    --color-soft-slate: var(--cel-color-soft-slate);
+    --color-soft-slate-ink: var(--cel-color-soft-slate-ink);
     --color-mark-good: var(--cel-color-mark-good);
     --color-on-strong: var(--cel-color-on-strong);
     --color-on-strong-soft: var(--cel-color-on-strong-soft);
@@ -127,6 +141,7 @@
     --color-on-strong-divider-16: var(--cel-color-on-strong-divider-16);
     --color-on-strong-divider-18: var(--cel-color-on-strong-divider-18);
     --color-on-strong-ring: var(--cel-color-on-strong-ring);
+    --color-scrim: var(--cel-color-scrim);
     --color-on-gold: var(--cel-color-on-gold);
     --color-on-gold-navy: var(--cel-color-on-gold-navy);
     --color-glow-gold: var(--cel-color-glow-gold);

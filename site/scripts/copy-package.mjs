@@ -11,7 +11,7 @@ const target = fileURLToPath(new URL('../public/design/', import.meta.url))
 
 rmSync(target, { recursive: true, force: true })
 
-for (const folder of ['icons', 'brand', 'js']) {
+for (const folder of ['icons', 'illustrations', 'brand', 'js']) {
     cpSync(`${pkg}/${folder}`, `${target}${folder}`, { recursive: true })
 }
 

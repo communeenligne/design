@@ -135,6 +135,22 @@
     --cel-color-mark-bad: #9b2c2c; /* --mark-bad */
     --cel-color-icon-soft: #4a6a8f; /* --icon-soft */
 
+    /* ---- Soft tints (pictogram pastilles: background, then pictogram) ---- */
+    --cel-color-soft-ochre: #fbf3e2; /* help center: topic pastille */
+    --cel-color-soft-ochre-ink: #8a5a0b; /* help center: topic pictogram */
+    --cel-color-soft-blue: #eef3f8;
+    --cel-color-soft-blue-ink: #1f3a5f;
+    --cel-color-soft-lilac: #f3eef8;
+    --cel-color-soft-lilac-ink: #5b3a86;
+    --cel-color-soft-green: #e3f1e8;
+    --cel-color-soft-green-ink: #1e5c38;
+    --cel-color-soft-sky: #eaf2f7;
+    --cel-color-soft-sky-ink: #144563;
+    --cel-color-soft-red: #fdecec;
+    --cel-color-soft-red-ink: #9b1c1c;
+    --cel-color-soft-slate: #eef1f4;
+    --cel-color-soft-slate-ink: #3d4c5b;
+
     /* ---- On a strong or gold surface (same in both themes) ---- */
     --cel-color-mark-good: #2e7d4f; /* --mark-good */
     --cel-color-on-strong: #ffffff; /* --on-strong */
@@ -148,6 +164,7 @@
     --cel-color-on-strong-divider-16: rgba(255, 255, 255, 0.16); /* --on-strong-divider-16 */
     --cel-color-on-strong-divider-18: rgba(255, 255, 255, 0.18); /* --on-strong-divider-18 */
     --cel-color-on-strong-ring: rgba(255, 255, 255, 0.6); /* --on-strong-ring */
+    --cel-color-scrim: rgba(8, 20, 38, 0.72); /* behind white text on a picture (duration of a video) */
     --cel-color-on-gold: #18202b; /* --on-gold */
     --cel-color-on-gold-navy: #1f3a5f; /* --on-gold-primary */
     --cel-color-glow-gold: rgba(241, 196, 107, 0.16); /* --glow-gold */
@@ -292,6 +309,22 @@
     --cel-color-mark-bad-background: #4a2224;
     --cel-color-mark-bad: #ffadad;
     --cel-color-icon-soft: #8fb3dc;
+
+    /* ---- Soft tints (pictogram pastilles: background, then pictogram) ---- */
+    --cel-color-soft-ochre: #33280f;
+    --cel-color-soft-ochre-ink: #f1c46b;
+    --cel-color-soft-blue: #1b2c44;
+    --cel-color-soft-blue-ink: #a7c9ee;
+    --cel-color-soft-lilac: #2a2238;
+    --cel-color-soft-lilac-ink: #cdb8ef;
+    --cel-color-soft-green: #15301f;
+    --cel-color-soft-green-ink: #8fd3ae;
+    --cel-color-soft-sky: #122e3d;
+    --cel-color-soft-sky-ink: #8cc8e8;
+    --cel-color-soft-red: #3a1a1c;
+    --cel-color-soft-red-ink: #ffadad;
+    --cel-color-soft-slate: #1f2a37;
+    --cel-color-soft-slate-ink: #c6cfd9;
 
     /* ---- Illustration scenes ---- */
     --cel-color-scene-phone: #0b1118;

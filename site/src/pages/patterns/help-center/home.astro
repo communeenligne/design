@@ -1,0 +1,10 @@
+---
+import HelpCenterPage from '../../../components/HelpCenterPage.astro'
+import { PALETTE, FOOTER, HEADER, HOME } from '../../../lib/help-center.js'
+---
+<HelpCenterPage title="Accueil">
+    <Fragment set:html={HEADER} />
+    <main id="contenu" tabindex="-1"><Fragment set:html={HOME} /></main>
+    <Fragment set:html={FOOTER} />
+    <Fragment set:html={PALETTE} />
+</HelpCenterPage>

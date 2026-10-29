@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Page en cours de création"
+description: "Un article annoncé mais pas encore écrit : la bande d'en-tête compacte, une phrase, deux façons d'être aidé, le lien de retour."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import { IN_PROGRESS } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Répondre quand même à la personne qui ouvre un article prévu mais pas encore rédigé (lien d'une rubrique, d'un écran de l'administration) : elle sait où elle est, ce qui se passe, et comment obtenir de l'aide tout de suite.
+
+<p class="doc-demo-links"><a class="cel-button cel-button--secondary" href="/patterns/help-center/in-progress/">Ouvrir la démonstration</a></p>
+
+## Composition
+
+Sous l'en-tête du centre d'aide, dans `<main>` :
+
+1. l'[en-tête d'accueil](/components/doc-hero/) `--compact` : la rubrique en surtitre, le titre prévu de l'article (`h1`), une phrase ;
+2. une colonne `cel-doc-notice` (`cel-container`) : les [façons d'être aidé](/components/support/), puis le lien de retour vers la rubrique (`cel-link--arrow cel-link--back`, icône `arrow-left`).
+
+<Example title="Page en cours de création" background="full" html={IN_PROGRESS.replace('<main id="contenu" tabindex="-1">', '<div>').replace(/<\/main>$/, '</div>')} />
+
+## Accessibilité
+
+- **Titre :** le titre de l'article prévu, pas « Page en construction » : l'onglet et l'historique gardent un nom utile.
+- **Statut :** le serveur répond 200, pas 404 : l'adresse est bonne.
+- **Retour :** un lien qui dit où il mène (« Revenir à la rubrique « Les habitants » »).
+
+<DoDont dos={['La rubrique en surtitre, le vrai titre de l\'article.', 'Le délai de réponse de l\'assistance.']} donts={['Une date de publication promise.', 'Une illustration « travaux en cours ».']} />

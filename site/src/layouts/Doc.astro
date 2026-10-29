@@ -1,7 +1,9 @@
 ---
-// Template of every page (documentation page pattern of the package): header (icon and wordmark, live search by Ctrl+K
-// or ⌘K, sections, phone menu), side navigation of the section by family, breadcrumb, content, table of contents on
-// the right, licenses, footer with the theme switch. Not indexed.
+// Template of every page (documentation page pattern of the package): header (icon and wordmark, search palette of
+// the package by its trigger, Ctrl K, ⌘ K or /, sections, phone menu), side navigation of the section by family, breadcrumb, content, table of contents on
+// the right (the part being read marked by js/toc.js), previous and next pages, licenses, footer with the theme
+// switch. Not indexed. With a "hero" slot (page not found), the notice page pattern instead: the compact home header,
+// then the content in a single column.
 //
 // Below the tablet breakpoint, the sections and the side navigation carry cel-hide-below-tablet and give way to the
 // phone menu (cel-menu): the sections, and the pages of the current one. Without script, the menu is a list at the top
@@ -10,6 +12,7 @@ import '../styles/main.css'
 import Icon from '../components/Icon.astro'
 import { SECTIONS, SITE_NAME, breadcrumbOf, groupsOf, neighboursOf, sectionOf } from '../lib/navigation.js'
 import { VERSION } from '../lib/version.js'
+import { searchPalette, searchTrigger } from '../lib/search.js'
 
 const props = Astro.props.frontmatter ?? Astro.props
 const { title, description, full = false } = props
@@ -23,6 +26,7 @@ const pageTitle = path === '/' ? SITE_NAME : `${title} · ${SITE_NAME}`
 const sidenav = section && section.pages.length > 0
 const groups = sidenav ? groupsOf(section) : []
 const current = (url) => (path === url ? 'page' : path.startsWith(url) ? 'true' : undefined)
+const notice = Astro.slots.has('hero')
 const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations/'].includes(s.url))
 ---
 <!doctype html>
@@ -50,11 +54,7 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
                 <img class="cel-logo-dark" src="/design/brand/icon-on-dark.svg" alt="" width="36" height="36">
                 <span class="cel-doc-header__name cel-wordmark"><strong>commune</strong>enligne</span>
             </a>
-            <button type="button" class="doc-search-button" data-search-open hidden aria-haspopup="dialog">
-                <Icon name="magnifying-glass" size="18" bold />
-                <span class="doc-search-button__label">Rechercher</span>
-                <kbd class="doc-search-button__shortcut" data-search-shortcut>Ctrl K</kbd>
-            </button>
+            <Fragment set:html={searchTrigger({ name: 'Rechercher dans le Système de Design' })} />
             <div class="cel-menu" data-cel-menu>
                 <button type="button" class="cel-menu__toggle" aria-expanded="false" aria-controls="menu" aria-label="Ouvrir le menu">
                     <Icon name="bars-3" size="20" bold />
@@ -96,7 +96,14 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
         </nav>
     </header>
 
-    <div class={`cel-container cel-doc-layout${sidenav ? '' : ' cel-doc-layout--no-sidenav'}${full || toc.length === 0 ? ' cel-doc-layout--no-toc' : ''}`}>
+    {notice && (
+        <main id="contenu" tabindex="-1">
+            <slot name="hero" />
+            <div class="cel-container cel-doc-notice"><slot /></div>
+        </main>
+    )}
+
+    {!notice && <div class={`cel-container cel-doc-layout${sidenav ? '' : ' cel-doc-layout--no-sidenav'}${full || toc.length === 0 ? ' cel-doc-layout--no-toc' : ''}`}>
         {sidenav && (
             <nav class="cel-sidenav cel-hide-below-tablet" aria-labelledby="sidenav-title">
                 <p class="cel-sidenav__title" id="sidenav-title">{section.title}</p>
@@ -139,14 +146,14 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
 
             {(previous || next) && (
                 <nav class="cel-pager" aria-label="Pages voisines">
-                    {previous && <a class="cel-card cel-pager__link" href={previous.url}><span class="cel-pager__direction">Précédent</span>{previous.title}</a>}
-                    {next && <a class="cel-card cel-pager__link cel-pager__link--next" href={next.url}><span class="cel-pager__direction">Suivant</span>{next.title}</a>}
+                    {previous && <a class="cel-card cel-pager__link" href={previous.url} rel="prev"><span class="cel-pager__direction">Précédent</span><span class="cel-pager__title">{previous.title}</span></a>}
+                    {next && <a class="cel-card cel-pager__link cel-pager__link--next" href={next.url} rel="next"><span class="cel-pager__direction">Suivant</span><span class="cel-pager__title">{next.title}</span></a>}
                 </nav>
             )}
         </main>
 
         {!full && toc.length > 0 && (
-            <aside class="cel-toc">
+            <aside class="cel-toc" data-cel-toc>
                 <nav aria-labelledby="toc-title">
                     <p class="cel-toc__title" id="toc-title">Sur cette page</p>
                     <ul>
@@ -155,7 +162,7 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
                 </nav>
             </aside>
         )}
-    </div>
+    </div>}
 
     <p class="doc-licenses">Code sous licence MIT · police Manrope sous licence OFL</p>
 
@@ -194,18 +201,6 @@ const footerColumns = SECTIONS.filter((s) => ['/getting-started/', '/foundations
             </div>
         </div>
     </footer>
-    <dialog class="doc-search" aria-labelledby="search-title" data-search>
-        <div class="doc-search__header">
-            <h2 class="cel-visually-hidden" id="search-title">Rechercher dans le Système de Design</h2>
-            <Icon name="magnifying-glass" size="20" bold class="doc-search__icon" />
-            <label class="cel-visually-hidden" for="search-field">Mots recherchés</label>
-            <input id="search-field" class="doc-search__input" type="search" placeholder="Composant, variable, classe…" autocomplete="off" spellcheck="false"
-                   role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list" aria-describedby="search-status">
-            <button type="button" class="doc-search__close" data-search-close><kbd>Échap</kbd><span class="cel-visually-hidden">Fermer la recherche</span></button>
-        </div>
-        <p class="doc-search__status" id="search-status" role="status" data-search-status></p>
-        <ul class="doc-search__results" id="search-results" role="listbox" aria-label="Résultats" data-search-results></ul>
-        <p class="doc-search__help"><kbd>↑</kbd> <kbd>↓</kbd> pour choisir, <kbd>Entrée</kbd> pour ouvrir, <kbd>Échap</kbd> pour fermer</p>
-    </dialog>
+    <Fragment set:html={searchPalette({ title: 'Rechercher dans le Système de Design', placeholder: 'Composant, variable, classe…' })} />
 </body>
 </html>

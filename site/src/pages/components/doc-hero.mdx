@@ -1,0 +1,65 @@
+---
+layout: ../../layouts/Doc.astro
+title: "En-tête d'accueil"
+description: "La bande pleine largeur de l'accueil d'une documentation : texte et rappel du raccourci de recherche d'un côté, vidéo de présentation de l'autre ; sur une colonne sans vidéo."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { HERO, HERO_WITHOUT_VIDEO } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Ouvrir l'accueil du [centre d'aide](/patterns/help-center/) : dire ce qu'on y trouve, montrer le produit en deux minutes, rappeler qu'une [recherche](/components/search/) est à un raccourci. La forme `--compact` sert aux pages [en cours de création](/patterns/page-in-progress/) et [introuvable](/patterns/not-found/).
+
+**Quand ne pas l'utiliser :** sur la landing (prendre l'[accroche](/components/hero/)), ni en haut d'un article (prendre le titre de la [page de documentation](/patterns/documentation-page/)).
+
+## Avec vidéo
+
+Deux colonnes : le texte `__text` (un peu plus étroit) et `__media`, qui contient le [lecteur vidéo](/components/video/). Sous 960 px, la vidéo passe sous le texte.
+
+<Example title="Accueil du centre d'aide, avec la vidéo de présentation" background="full" html={HERO} />
+
+## Sans vidéo
+
+Le même balisage sans `__media` : la bande passe d'elle-même sur une seule colonne (`:has()`), sans espace vide ; le texte garde sa largeur de lecture.
+
+<Example title="Sans vidéo" background="full" html={HERO_WITHOUT_VIDEO.replaceAll('help-title', 'help-title-2')} />
+
+<Example title="--compact : titre et marges plus petits" background="full" html={`
+    <section class="cel-doc-hero cel-doc-hero--compact" aria-labelledby="exemple-compact">
+        <span class="cel-doc-hero__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
+        <div class="cel-container cel-doc-hero__inner">
+            <div class="cel-doc-hero__text">
+                <p class="cel-doc-hero__eyebrow">Les habitants</p>
+                <h1 class="cel-doc-hero__title" id="exemple-compact">Traiter un signalement</h1>
+                <p class="cel-doc-hero__lead">Cet article est en cours de création. En attendant, l'assistance répond à vos questions.</p>
+            </div>
+        </div>
+    </section>
+`} />
+
+## Composition
+
+Une `<section class="cel-doc-hero">` sur la surface forte, qui coupe ce qui dépasse en largeur :
+
+1. `__illustration` : l'emplacement de l'[illustration en filigrane](/components/illustration/), en bas de la bande, à 14 % d'opacité ;
+2. `__inner` (avec `cel-container`) : la grille ;
+3. `__text` : le surtitre doré `__eyebrow`, le titre `h1` `__title`, la phrase `__lead`, et `__hint`, la ligne « Une question précise ? <kbd>Ctrl K</kbd> pour chercher. » ;
+4. `__media`, facultatif : une [vidéo](/components/video/).
+
+La ligne `__hint` porte `hidden` et `data-cel-search-hint` : le script de la [palette](/components/search/) l'affiche, et écrit « ⌘ K » sur un Mac. Sans script, le raccourci ne marche pas : la ligne reste masquée.
+
+## Accessibilité
+
+- **Structure :** `<section aria-labelledby>` nommée par son titre, le seul `h1` de la page.
+- **Raccourci :** une aide, jamais le seul chemin : le déclencheur de l'en-tête reste visible.
+- **Focus :** doré sur la bande (bouton de lecture, lien de la transcription).
+- **Illustration :** `aria-hidden="true"`.
+
+<Contrasts pairs={[['on-strong', 'strong'], ['on-strong-gold', 'strong'], ['on-strong-soft', 'strong'], ['cel-focus-color-on-strong', 'strong', 3]]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une vidéo de deux minutes au plus, sous-titrée, avec sa transcription.', 'Sans vidéo prête, la bande sur une colonne plutôt qu\'une image fixe.']} donts={['Une vidéo qui démarre seule.', 'Un texte posé sur la silhouette.']} />

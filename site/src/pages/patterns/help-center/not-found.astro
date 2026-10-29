@@ -1,0 +1,10 @@
+---
+import HelpCenterPage from '../../../components/HelpCenterPage.astro'
+import { PALETTE, FOOTER, HEADER, NOT_FOUND } from '../../../lib/help-center.js'
+---
+<HelpCenterPage title="Page introuvable">
+    <Fragment set:html={HEADER} />
+    <Fragment set:html={NOT_FOUND} />
+    <Fragment set:html={FOOTER} />
+    <Fragment set:html={PALETTE} />
+</HelpCenterPage>

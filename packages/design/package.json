@@ -1,6 +1,6 @@
 {
     "name": "@communeenligne/design",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "Design system de Commune en ligne : fondamentaux (variables, clair et sombre), composants, modèles, polices, icônes, thème Tailwind 4.",
     "license": "MIT",
     "type": "module",
@@ -16,6 +16,7 @@
         "tailwind.css",
         "fonts",
         "icons",
+        "illustrations",
         "brand",
         "js",
         "tools",
@@ -43,6 +44,7 @@
         "./icons/sprite.svg": "./icons/sprite.svg",
         "./icons/icons.json": "./icons/icons.json",
         "./icons/*": "./icons/*",
+        "./illustrations/*": "./illustrations/*",
         "./brand/*": "./brand/*",
         "./js/*": "./js/*",
         "./tools/tokens.mjs": "./tools/tokens.mjs",

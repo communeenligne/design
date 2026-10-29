@@ -1,0 +1,47 @@
+---
+layout: ../../layouts/Doc.astro
+title: "En-tête d'article"
+description: "Sous le titre d'un article d'aide : la durée de la tâche, le public concerné et la date de la dernière mise à jour."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { META } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Dire, avant de lire, si l'article concerne la personne et combien de temps la tâche prend, et montrer qu'il est à jour.
+
+## Exemple
+
+<Example title="Durée, public, date de mise à jour" html={`
+    <div class="cel-stack">
+        <h1 class="cel-doc-title">Publier une délibération</h1>
+        ${META}
+    </div>
+`} />
+
+<Example title="Sans icônes" html={`
+    <ul class="cel-doc-meta">
+        <li><span class="cel-visually-hidden">Durée : </span>2 minutes</li>
+        <li>Pour : maire, secrétariat</li>
+        <li>Mis à jour le <time datetime="2026-10-24">24 octobre 2026</time></li>
+    </ul>
+`} />
+
+## Composition
+
+`.cel-doc-meta` est une liste, posée entre le titre (`cel-doc-title`) et le chapô (`cel-doc-lead`) de la [page de documentation](/patterns/documentation-page/). Chaque élément peut commencer par une icône de 16 px (`clock`, `user-group`, `calendar-days`) ; les éléments vont à la ligne quand la place manque.
+
+## Accessibilité
+
+- **Durée :** « 2 minutes » seul est ambigu à l'oreille : un texte masqué « Durée : » le précède.
+- **Date :** dans `<time datetime="AAAA-MM-JJ">`, écrite en toutes lettres.
+- **Icônes :** décoratives ; le texte dit tout.
+
+<Contrasts pairs={[['text-muted-2', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['La date de la dernière modification réelle du contenu.', 'Le public en mots du métier : maire, secrétariat, élus.']} donts={['Une durée de lecture : c\'est la durée de la tâche qui compte.', 'Plus de trois informations.']} />

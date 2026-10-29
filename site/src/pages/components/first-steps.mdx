@@ -1,0 +1,41 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Premiers pas"
+description: "Un parcours numéroté : trois à cinq étapes reliées par un trait, chacune avec son titre en lien et sa durée."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { FIRST_STEPS_BLOCK } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Montrer à une commune qui arrive par où commencer : quelques articles à lire dans l'ordre, avec le temps que chacun demande. Sur l'accueil du [centre d'aide](/patterns/help-center/), sous l'[en-tête d'accueil](/components/doc-hero/).
+
+**Quand ne pas l'utiliser :** pour les étapes d'une même tâche dans un article (prendre les [étapes numérotées](/components/steps/)) ; pour une liste sans ordre (prendre les [rubriques](/components/topics/)).
+
+## Exemple
+
+<Example title="Premiers pas du centre d'aide" html={FIRST_STEPS_BLOCK} />
+
+## Composition
+
+`.cel-first-steps` : une introduction `__intro` (titre `__title`, phrase `__summary`) à gauche, la liste ordonnée `__list` à droite. Chaque étape `__step` a son numéro `__number` (masqué aux lecteurs d'écran), son lien `__link` et sa durée `__duration`. Le trait qui relie les numéros est dessiné par la liste, derrière eux ; le fond de la page autour de chaque numéro le coupe.
+
+## Comportement
+
+- **De 860 px :** l'introduction à gauche (220 px), les étapes en ligne, autant de colonnes que d'étapes.
+- **Sous 860 px :** l'introduction au-dessus, les étapes l'une sous l'autre ; le trait devient vertical, à gauche des numéros.
+
+## Accessibilité
+
+- **Rôle :** une liste ordonnée (`<ol>`) nommée par le titre (`aria-labelledby`) : le lecteur d'écran annonce « liste, 3 éléments » et le rang, le numéro visible est donc masqué.
+- **Liens :** le titre de l'étape est le seul lien, il dit où il mène.
+- **Trait :** décoratif, dessiné en CSS.
+
+<Contrasts pairs={[['surface', 'primary'], ['primary', 'background'], ['text-muted-2', 'background'], ['text-2', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Trois à cinq étapes, chacune un article qui existe.', 'Une durée réaliste, en minutes.']} donts={['Un parcours de plus de cinq étapes : faire un guide.', 'Une étape sans lien.']} />

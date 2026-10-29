@@ -1,6 +1,27 @@
 ---
+// Page not found: the "page not found" pattern of the package (compact home header, search, sections, link back).
 import Doc from '../layouts/Doc.astro'
+import Icon from '../components/Icon.astro'
+import { SECTIONS } from '../lib/navigation.js'
 ---
-<Doc title="Page introuvable" description="Cette page n'existe pas, ou plus." full>
-    <p><a class="cel-button" href="/">Revenir à l'accueil</a> <a class="cel-button cel-button--secondary" href="/components/">Voir les composants</a></p>
+<Doc title="Page introuvable" description="Cette page n'existe pas, ou plus.">
+    <section slot="hero" class="cel-doc-hero cel-doc-hero--compact" aria-labelledby="not-found-title">
+        <span class="cel-doc-hero__illustration cel-illustration cel-illustration--village" aria-hidden="true"></span>
+        <div class="cel-container cel-doc-hero__inner">
+            <div class="cel-doc-hero__text">
+                <p class="cel-doc-hero__eyebrow">Erreur 404</p>
+                <h1 class="cel-doc-hero__title" id="not-found-title">Cette page n'existe pas, ou plus</h1>
+                <p class="cel-doc-hero__lead">L'adresse a peut-être changé. Cherchez la page, ou ouvrez sa rubrique.</p>
+                <p class="cel-doc-hero__hint" hidden data-cel-search-hint><kbd class="cel-kbd cel-kbd--on-strong" data-cel-search-shortcut>Ctrl K</kbd> ou <kbd class="cel-kbd cel-kbd--on-strong">/</kbd> pour chercher.</p>
+            </div>
+        </div>
+    </section>
+    <p><a class="cel-button" href="/search/" data-cel-search-open="search"><Icon name="magnifying-glass" size="20" bold />Rechercher</a></p>
+    <nav aria-labelledby="not-found-sections">
+        <h2 class="cel-doc-notice__title" id="not-found-sections">Les rubriques</h2>
+        <ul class="cel-pills">
+            {SECTIONS.map((section) => <li><a class="cel-pill" href={section.url}>{section.title}</a></li>)}
+        </ul>
+    </nav>
+    <p><a class="cel-link cel-link--arrow cel-link--back" href="/"><Icon name="arrow-left" size="16" bold />Revenir à l'accueil</a></p>
 </Doc>

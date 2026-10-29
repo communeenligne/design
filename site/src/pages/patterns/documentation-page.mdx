@@ -6,14 +6,16 @@ description: "Le gabarit de ce site, à reprendre pour le centre d'aide : en-tê
 
 import Code from '../../components/Code.astro'
 import DoDont from '../../components/DoDont.astro'
+import Example from '../../components/Example.astro'
+import { SIDENAV, TOC } from '../../lib/help-center.js'
 
 ## Composition
 
 Cette page en est l'exemple : toutes les pages de ce site sont faites de ce modèle (`patterns/documentation-page.css`).
 
-1. **En-tête** (`cel-doc-header`) : l'icône et le mot-symbole (`cel-wordmark`), la recherche, le [menu sur téléphone](/components/menu/), puis les rubriques (`cel-nav`).
+1. **En-tête** (`cel-doc-header`) : l'icône et le mot-symbole (`cel-wordmark`), le déclencheur de la [palette de recherche](/components/search/), le [menu sur téléphone](/components/menu/), puis les rubriques (`cel-nav`).
 2. **Corps** (`cel-doc-layout`) sur trois colonnes : la navigation latérale (`cel-sidenav`), le contenu (`cel-doc-main`), le sommaire de la page (`cel-toc`). `cel-doc-layout--no-sidenav` et `--no-toc` retirent une colonne.
-3. **Contenu** : [fil d'Ariane](/components/breadcrumb/), titre (`cel-doc-title`), chapô (`cel-doc-lead`), texte (`cel-doc-content`), puis les pages précédente et suivante (`cel-pager`).
+3. **Contenu** : [fil d'Ariane](/components/breadcrumb/), titre (`cel-doc-title`), chapô (`cel-doc-lead`), texte (`cel-doc-content`), puis les [pages précédente et suivante](/components/pager/) (`cel-pager`).
 4. Le [pied de page](/patterns/footer/).
 
 <Code code={`<header class="cel-doc-header">
@@ -38,18 +40,33 @@ Cette page en est l'exemple : toutes les pages de ce site sont faites de ce mod�
         <p class="cel-lead cel-doc-lead">…</p>
         <div class="cel-doc-content">…</div>
     </main>
-    <aside class="cel-toc">…</aside>
+    <aside class="cel-toc" data-cel-toc>…</aside>
 </div>`} />
+
+## Pour le centre d'aide
+
+Le même modèle sert au [centre d'aide](/patterns/help-center/), avec ces compléments :
+
+- **En-tête sur une ligne :** `cel-doc-header__product` donne le nom de la section après le mot-symbole, derrière un filet (« Centre d'aide ») ; `cel-doc-header__actions` rassemble à droite les liens `cel-nav` (avec `cel-hide-below-tablet`) et le déclencheur de la [palette de recherche](/components/search/). Sous 640 px, le déclencheur passe sur sa propre ligne, pleine largeur. Ce site garde ses rubriques sur une seconde ligne et son déclencheur dans la première.
+- **Navigation latérale à deux niveaux :** une liste dans la liste. La rubrique ouverte porte `aria-current="true"` (en gras), l'article en cours `aria-current="page"`.
+- **Sommaire :** la partie lue est marquée par `js/toc.js` (`aria-current="location"`, filet marine) ; `cel-toc__related` ajoute, sous le sommaire, l'écran de l'administration où faire la tâche.
+
+<Example title="Navigation latérale à deux niveaux, et sommaire avec le lien vers l'administration" html={`${SIDENAV.replace(' cel-hide-below-tablet', '')}
+${TOC.replace('<aside class="cel-toc" data-cel-toc>', '<aside class="cel-toc">').replace('<li><a href="#steps">', '<li><a href="#steps" aria-current="location">').replaceAll('href="#', 'href="/patterns/help-center/article/#')}`} />
+
+<Code lang="js" code={`import { initToc } from '@communeenligne/design/js/toc.js'
+
+initToc()   // chaque [data-cel-toc] : aria-current="location" sur le lien de la partie lue`} />
 
 ## Comportement
 
 - **Navigation latérale :** les pages de la rubrique, rangées par famille quand il y en a (`cel-sidenav__group`), comme dans le code du paquet. Elle reste visible pendant le défilement.
-- **Sommaire :** les intertitres de niveau 2 de la page ; masqué sous 1 100 px.
+- **Sommaire :** les intertitres de niveau 2 de la page ; masqué sous 1 100 px. Avec `js/toc.js`, la partie lue est marquée.
 - **Sous 860 px :** les rubriques et la navigation latérale laissent la place au menu sur téléphone, qui reprend les rubriques et les pages de la rubrique en cours.
 
 ## Accessibilité
 
 - Le lien d'évitement mène à `<main id="contenu" tabindex="-1">`.
-- Trois navigations nommées : « Rubriques », la rubrique en cours, « Sur cette page » ; `aria-current="page"` sur la page en cours, `"true"` sur sa rubrique.
+- Trois navigations nommées : « Rubriques », la rubrique en cours, « Sur cette page » ; `aria-current="page"` sur la page en cours, `"true"` sur sa rubrique, `"location"` sur la partie lue dans le sommaire.
 
 <DoDont dos={['Une page par composant, dans la même famille que dans le code.', 'Un intertitre de niveau 2 par partie : il nourrit le sommaire et la recherche.']} donts={['Une navigation latérale de plus de deux niveaux.', 'Un sommaire écrit à la main.']} />

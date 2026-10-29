@@ -34,6 +34,25 @@ Les questions fréquentes : le visiteur parcourt les questions et n'ouvre que ce
     </details>
 `} />
 
+## À plat
+
+`--flat` : sans cadres, des filets entre les questions et un « + » qui devient « − » à l'ouverture. Pour le texte d'un article, où des cartes pèseraient trop.
+
+<Example title="--flat" html={`
+    <div class="cel-faq cel-faq--flat">
+        <details class="cel-faq__item">
+            <summary class="cel-faq__question">Faut-il publier toutes les délibérations ?</summary>
+            <p class="cel-faq__answer">Toutes celles qui ont un caractère réglementaire, et celles que le conseil choisit de rendre publiques.</p>
+        </details>
+        <details class="cel-faq__item">
+            <summary class="cel-faq__question">Comment retirer une délibération publiée par erreur ?</summary>
+            <p class="cel-faq__answer">Ouvrez-la dans « Documents officiels », puis cliquez sur « Retirer ».</p>
+        </details>
+    </div>
+`} />
+
+Le signe est dessiné en CSS (`::after`) : l'état ouvert ou fermé, lui, est annoncé par `<details>`.
+
 ## États
 
 <Example title="Question : focus visible, ouverte" background="muted" html={`

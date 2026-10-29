@@ -1,0 +1,93 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Centre d'aide"
+description: "L'accueil, avec ou sans vidéo, et un article du centre d'aide de Commune en ligne, faits des classes, des scripts et des fichiers du paquet seuls."
+---
+
+import Example from '../../components/Example.astro'
+import Code from '../../components/Code.astro'
+import DoDont from '../../components/DoDont.astro'
+import { ARTICLE, FIRST_STEPS_BLOCK, HEADER, HOME, PALETTE, SUPPORT, TOPICS_LIST } from '../../lib/help-center.js'
+
+## Démonstrations
+
+Des pages qui ne chargent que le paquet (`@communeenligne/design/index.css` et ses scripts), aucune feuille de ce site : elles reproduisent les maquettes de l'accueil et d'un article.
+
+<p class="doc-demo-links">
+    <a class="cel-button" href="/patterns/help-center/home/">Accueil avec vidéo</a>
+    <a class="cel-button cel-button--secondary" href="/patterns/help-center/home-without-video/">Accueil sans vidéo</a>
+    <a class="cel-button cel-button--secondary" href="/patterns/help-center/article/">Article</a>
+</p>
+
+La recherche y passe par l'adaptateur `endpointSearch` de la [palette](/components/search/), comme le ferait un centre d'aide rendu par un serveur ; ce site étant statique, le serveur est simulé dans la page. Les deux autres modèles ont leur page : [page en cours de création](/patterns/page-in-progress/) et [page introuvable](/patterns/not-found/).
+
+## En-tête
+
+Le modèle [page de documentation](/patterns/documentation-page/#pour-le-centre-daide) sur une seule ligne : le logo, le nom de la section (`cel-doc-header__product`, « Centre d'aide »), puis à droite `cel-doc-header__actions` : les liens (`cel-nav`) et le déclencheur de la [palette de recherche](/components/search/). Sous 860 px, les liens laissent la place au [menu sur téléphone](/components/menu/) ; sous 640 px, le déclencheur passe sur sa propre ligne, pleine largeur. La fenêtre de la palette est à la fin de `<body>`.
+
+<Example title="En-tête du centre d'aide" background="full" html={HEADER} />
+
+## Accueil
+
+1. **[En-tête d'accueil](/components/doc-hero/)** : le texte et le rappel du raccourci de recherche, la [vidéo de présentation](/components/video/) à droite ; sans vidéo, une seule colonne. La [silhouette de village](/components/illustration/) en filigrane.
+2. **Bandes** `cel-doc-band`, chacune avec un `cel-container` : les [accès rapides](/components/quick-links/) (`--muted`, en-tête `cel-doc-band__header`), les [premiers pas](/components/first-steps/), les [rubriques](/components/topics/) (`--large`, titre `cel-doc-band__title`), les [façons d'être aidé](/components/support/).
+3. Le [pied de page](/patterns/footer/) et son choix du thème.
+
+<Example title="Bandes sous les accès rapides" background="full" html={`
+    <section class="cel-doc-band" aria-labelledby="first-steps-title">
+        <div class="cel-container">${FIRST_STEPS_BLOCK}</div>
+    </section>
+    <section class="cel-doc-band" aria-labelledby="exemple-rubriques">
+        <div class="cel-container">
+            <h2 class="cel-doc-band__title" id="exemple-rubriques">Les rubriques</h2>
+            ${TOPICS_LIST}
+        </div>
+    </section>
+    <section class="cel-doc-band" aria-label="Obtenir de l'aide">
+        <div class="cel-container">${SUPPORT}</div>
+    </section>
+`} />
+
+<details class="cel-example__code doc-pattern-code">
+    <summary>Code de l'accueil</summary>
+    <Code code={`${HEADER}\n<main id="contenu" tabindex="-1">\n${HOME}\n</main>\n<footer class="cel-footer">…</footer>\n${PALETTE}`} />
+</details>
+
+## Article
+
+Le modèle [page de documentation](/patterns/documentation-page/), sur trois colonnes :
+
+1. **Navigation latérale** : les rubriques ; la rubrique ouverte (`aria-current="true"`) montre ses articles, l'article en cours porte `aria-current="page"`.
+2. **Contenu** : [fil d'Ariane](/components/breadcrumb/), titre, [en-tête d'article](/components/article-meta/), chapô ; puis le texte : [encarts](/components/callout/#dans-un-article) « À savoir » et « Attention », [étapes](/components/steps/#avec-une-capture) avec une capture, [vidéo](/components/video/), [questions](/components/faq/#à-plat) à plat ; enfin l'[avis sur la page](/components/feedback/) et les [pages précédente et suivante](/components/pager/).
+3. **Sommaire** : les parties de l'article, celle qu'on lit marquée par `js/toc.js`, et le lien « Dans votre administration » (`cel-toc__related`).
+
+<details class="cel-example__code doc-pattern-code">
+    <summary>Code de l'article</summary>
+    <Code code={`${HEADER}\n${ARTICLE}\n<footer class="cel-footer">…</footer>\n${PALETTE}`} />
+</details>
+
+## Scripts
+
+<Code lang="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
+import { initMenu } from '@communeenligne/design/js/menu.js'
+import { initToc } from '@communeenligne/design/js/toc.js'
+import { initVideo } from '@communeenligne/design/js/video.js'
+import { initFeedback } from '@communeenligne/design/js/feedback.js'
+import { endpointSearch, initSearch } from '@communeenligne/design/js/search.js'
+
+initTheme({ cookie: 'cel_theme', storage: false })
+initMenu()
+initToc()          // sommaire : la partie lue
+initVideo()        // aperçu et bouton de lecture
+initFeedback()     // « Cette page vous a-t-elle aidé ? » envoyé à l'action du formulaire
+initSearch(document.querySelector('#help-search'), { search: endpointSearch('/aide/recherche'), delay: 200 })`} />
+
+Tout fonctionne sans script : le menu devient une liste, le déclencheur un lien vers la page de recherche, la vidéo garde les commandes du navigateur, l'avis est un formulaire, le sommaire une liste de liens.
+
+## Accessibilité
+
+- **Titres :** un seul `h1` (le titre de l'accueil, celui de l'article) ; `h2` pour les bandes et les parties, `h3` pour les rubriques.
+- **Repères :** `header`, `nav` nommées (« Centre d'aide », « Rubriques », « Fil d'Ariane », « Sur cette page », « Articles voisins »), `main` cible du lien d'évitement, `footer` ; la palette est une fenêtre modale nommée.
+- **Images :** la capture d'écran d'une étape a un texte de remplacement qui dit ce qu'elle montre ; l'illustration et les pictogrammes sont décoratifs ; les vidéos sont sous-titrées et transcrites.
+
+<DoDont dos={['Le même en-tête et le même pied de page sur l\'accueil et les articles.', 'Les libellés exacts de l\'administration, en gras ou entre guillemets.']} donts={['Une vidéo sans l\'article écrit.', 'Une capture d\'écran qui porte seule une information.']} />

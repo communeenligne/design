@@ -1,0 +1,46 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Illustration en filigrane"
+description: "La silhouette de village fournie par le paquet : décorative, posée en masque, elle prend la couleur de son bloc et suit le thème."
+---
+
+import Example from '../../components/Example.astro'
+import Code from '../../components/Code.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Habiller une grande bande, comme l'[en-tête d'accueil](/components/doc-hero/) du centre d'aide, d'un motif discret qui rappelle la commune : maisons, mairie, clocher. Elle ne porte aucune information.
+
+## Le fichier
+
+`illustrations/village.svg` (1 440 × 160) : une seule forme, remplie en `currentColor`. Le fichier est publié avec le paquet (`@communeenligne/design/illustrations/village.svg`) ; un test vérifie qu'il n'a ni couleur propre, ni texte, ni image.
+
+## Utilisation
+
+`.cel-illustration` dessine le fichier en masque (`mask-image`) sur sa propre couleur de texte : la silhouette prend la couleur de son bloc, et donc suit le thème clair et sombre sans rien écrire. `--village` choisit le fichier. Elle couvre sa boîte depuis le bas, centrée et rognée sur les côtés ; sa hauteur est de 150 px, ou celle de la variable `--cel-illustration-height`.
+
+<Example title="Sur la surface forte, en filigrane (14 %)" background="strong" html={`
+    <span class="cel-illustration cel-illustration--village doc-illustration-watermark" aria-hidden="true"></span>
+`} />
+
+<Example title="Sur la page : couleur principale, marine en clair, bleu clair en sombre" html={`
+    <span class="cel-illustration cel-illustration--village doc-illustration-primary" aria-hidden="true"></span>
+`} />
+
+<Code lang="css" code={`.mon-bandeau .cel-illustration {
+    color: var(--cel-color-primary);   /* la couleur de la silhouette */
+    opacity: 0.2;
+    --cel-illustration-height: 120px;
+}`} />
+
+En `<img>`, le fichier s'affiche en noir : `currentColor` n'y a pas de couleur à suivre. Copié dans une page en SVG en ligne, il prend la couleur du texte comme une icône.
+
+## Accessibilité
+
+- **Décorative :** un élément vide, `aria-hidden="true"`. Pas de texte de remplacement à écrire.
+- **Contraste :** la silhouette n'a pas de contraste à tenir ; posée derrière du texte, elle reste assez pâle (14 % en filigrane) pour ne pas gêner sa lecture.
+
+## À faire, à éviter
+
+<DoDont dos={['Une seule illustration par page, en bas d\'une grande bande.', 'Une opacité faible quand du texte passe dessus.']} donts={['L\'illustration pour dire quelque chose.', 'Une couleur écrite en dur : elle ne suivrait plus le thème.']} />

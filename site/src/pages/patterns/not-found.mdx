@@ -1,0 +1,32 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Page introuvable"
+description: "La page 404 d'une documentation : la bande d'en-tête compacte, une phrase, la recherche, les rubriques et le lien de retour."
+---
+
+import Example from '../../components/Example.astro'
+import DoDont from '../../components/DoDont.astro'
+import { NOT_FOUND } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Remettre sur un chemin la personne arrivée par une adresse qui n'existe pas ou plus : chercher l'article, ouvrir sa rubrique, revenir à l'accueil. La [page introuvable de ce site](/404.html) suit ce modèle.
+
+<p class="doc-demo-links"><a class="cel-button cel-button--secondary" href="/patterns/help-center/not-found/">Ouvrir la démonstration</a></p>
+
+## Composition
+
+Sous l'en-tête de la documentation, dans `<main>` :
+
+1. l'[en-tête d'accueil](/components/doc-hero/) `--compact` : « Erreur 404 » en surtitre, le titre (`h1`), une phrase, le rappel du raccourci de recherche ;
+2. une colonne `cel-doc-notice` : un bouton « Rechercher dans l'aide » qui ouvre la [palette](/components/search/) (`data-cel-search-open` ; sans script, un lien vers la page de recherche), les rubriques en [pastilles](/components/pill/) sous un titre `cel-doc-notice__title`, puis le lien de retour à l'accueil.
+
+<Example title="Page introuvable du centre d'aide" background="full" html={NOT_FOUND.replace('<main id="contenu" tabindex="-1">', '<div>').replace(/<\/main>$/, '</div>')} />
+
+## Accessibilité
+
+- **Statut :** le serveur répond 404 ; le titre de la page (`<title>`) commence par « Page introuvable ».
+- **Pas de redirection automatique** vers l'accueil : la personne doit comprendre ce qui s'est passé.
+- **Recherche :** un vrai bouton qui dit ce qu'il fait ; le raccourci n'est qu'un rappel.
+
+<DoDont dos={['Dire que l\'adresse a peut-être changé.', 'La recherche en premier.']} donts={['Un message qui accuse (« Vous vous êtes trompé »).', 'Une page 404 sans l\'en-tête ni le pied de page du site.']} />

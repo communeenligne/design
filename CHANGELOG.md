@@ -3,6 +3,68 @@
 Toutes les versions de `@communeenligne/design`. Numérotation sémantique : un nom de variable, de classe, de fichier
 exporté ou de fonction qui change, c'est une version majeure.
 
+## 2.2.0 (29/10/2026)
+
+Les composants du centre d'aide, d'après les maquettes de l'accueil et d'un article, et une palette de recherche
+réutilisable par tout site qui utilise le paquet. Version mineure : rien n'est renommé ni retiré.
+
+### Ajouté
+
+- Palette de recherche (famille Documentation) : déclencheur `.cel-search-trigger` (`__label`, raccourci), fenêtre
+  `.cel-search` (`__header`, `__icon`, `__input`, `__close`, `__status`, `__empty`, `__results`, `__result`, `__path`,
+  `__title`, `__excerpt`, `__mark`, `__help`, états `cel-search--loading` et `cel-search--enhanced`), touche
+  `.cel-kbd` (`--on-strong`). Script `js/search.js` : `initSearch(dialog, { search, minLength, delay, shortcuts })`,
+  motif combobox de l'ARIA avec liste, `aria-activedescendant`, flèches, Entrée, Échap, Ctrl K (⌘ K sur Mac, détecté)
+  et `/` hors des champs de saisie, focus gardé dans la fenêtre puis rendu au déclencheur, nombre de résultats annoncé,
+  états vide, chargement et erreur, mots cherchés mis en évidence. Deux adaptateurs : `indexSearch(url)` (index
+  statique cherché dans la page) et `endpointSearch(url, { param, headers, request })` (adresse JSON interrogée à
+  chaque question). Attributs `data-cel-search`, `data-cel-search-open`, `-input`, `-results`, `-status`, `-empty`,
+  `-query`, `-close`, `-shortcut`, `-hint`, messages `data-cel-message-none`, `-one`, `-many`, `-loading`, `-error`.
+  Fonction `fold()` (minuscules, sans accents). Sans script, le déclencheur est un lien vers une page de recherche.
+- En-tête d'accueil `.cel-doc-hero` : `__illustration`, `__inner`, `__text`, `__eyebrow`, `__title`, `__lead`,
+  `__hint` (rappel du raccourci, affiché par le script de la palette), `__media` (vidéo) ; deux colonnes avec
+  `__media`, une seule sans ; `--compact`.
+- Vidéo `.cel-video` : `__frame`, `__player`, `__play`, `__duration`, `__caption`, `__title` ; script `js/video.js`,
+  `initVideo()` (aperçu, grand bouton de lecture dont le nom donne la durée, puis le lecteur du navigateur et le focus).
+  Attributs `data-cel-video`, `data-cel-video-play`, `data-cel-video-duration`.
+- Accès rapides `.cel-quick-links`, `.cel-quick-link` (`__body`, `__title`, `__text`, `__meta`) : quatre colonnes, deux,
+  puis une. Premiers pas `.cel-first-steps` (`__intro`, `__title`, `__summary`, `__list`, `__step`, `__number`,
+  `__link`, `__duration`). Rubriques `.cel-topics`, `.cel-topic` (`__header`, `__title`, `__articles`, `__more`).
+  Façons d'être aidé `.cel-support` (`__option`, `__title`). En-tête d'article `.cel-doc-meta`. Avis sur la page
+  `.cel-feedback` (`__question`, `__answers`, `__answer`, `__result`), script `js/feedback.js`, `initFeedback()`,
+  attributs `data-cel-feedback`, `-answers`, `-result`, `-message`. Sommaire : `js/toc.js`, `initToc()`
+  (`aria-current="location"` sur la partie lue, attribut `data-cel-toc`), `.cel-toc__related` (« Dans votre
+  administration »).
+- Illustration `illustrations/village.svg` (silhouette de village en `currentColor`, export `./illustrations/*`),
+  affichée en masque par `.cel-illustration` et `--village` : elle prend la couleur de son bloc et suit le thème.
+  Hauteur réglable par `--cel-illustration-height`.
+- Couleurs : sept teintes douces pour les pastilles, `--cel-color-soft-ochre`, `-blue`, `-lilac`, `-green`, `-sky`,
+  `-red`, `-slate` et leur `-ink`, en clair et en sombre (4,5:1 au moins, vérifié par le test) ; `--cel-color-scrim`
+  (voile derrière un texte blanc posé sur une image). Pictogramme : `.cel-pictogram--ochre`, `--blue`, `--lilac`,
+  `--green`, `--sky`, `--red`, `--slate`. Espacement `--cel-space-11` (44 px). Icône `arrow-left`.
+- Modèle page de documentation : nom de la section `.cel-doc-header__product`, liens et déclencheur à droite
+  `.cel-doc-header__actions`, navigation latérale à deux niveaux (`aria-current="true"` sur la rubrique ouverte),
+  bandes d'un accueil `.cel-doc-band` (`--muted`, `--large`, `__header`, `__title`, `__lead`), page d'avis
+  `.cel-doc-notice` (`__title`) pour les pages en cours de création et introuvables.
+- Compléments : encarts `.cel-callout--note` et `--caution` ; étape avec capture `.cel-steps__body`,
+  `.cel-steps__figure` ; questions à plat `.cel-faq--flat` ; lien de retour `.cel-link--back`.
+- Tests : les sept teintes douces et les encarts dans les deux thèmes ; chaque illustration est une forme en
+  `currentColor` employée par sa classe ; `.cel-doc-hero` coupe ce qui dépasse en largeur.
+- Documentation : une page par composant (palette de recherche avec ses deux adaptateurs, pictogramme et teintes,
+  illustration, en-tête d'accueil, accès rapides, premiers pas, rubriques, façons d'être aidé, en-tête d'article,
+  vidéo, avis sur la page, pages précédente et suivante), modèles Centre d'aide (accueil avec et sans vidéo, article,
+  démonstrations faites du paquet seul), Page en cours de création, Page introuvable.
+
+### Changé
+
+- Pages précédente et suivante `.cel-pager` : des liens simples par défaut (la carte reste possible avec
+  `.cel-card`), titre `__title` souligné au survol ; la règle passe du modèle `patterns/documentation-page.css` au
+  composant `components/documentation.css` (même famille, mêmes noms).
+- Sommaire : un filet clair devant chaque lien.
+- Site de documentation : la palette du paquet remplace sa recherche (même index, même classement, même raccourci,
+  plus `/`, les termes mis en évidence et une page de recherche sans script), le sommaire marque la partie lue, la
+  page introuvable suit le nouveau modèle, les rubriques de l'accueil prennent les teintes douces.
+
 ## 2.1.0 (28/10/2026)
 
 Ce que la landing avait dû ajouter elle-même (`resources/css/landing/provisional.css`) entre dans le paquet. Version

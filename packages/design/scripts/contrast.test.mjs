@@ -49,6 +49,13 @@ add(['on-strong'], ['action', 'action-hover', 'forest', 'green', 'mark-good'], 4
 add(['on-gold', 'on-gold-navy'], ['gold', 'ochre', 'gold-hover'], 4.5, 'text')
 add(['primary', 'text-strong'], ['surface-hover', 'surface-current', 'chrome'], 4.5, 'text')
 add(['on-forest'], ['forest'], 4.5, 'text')
+// Soft tints: the pictogram on its pastille (text level, so that the ink may also write a word).
+for (const tint of ['ochre', 'blue', 'lilac', 'green', 'sky', 'red', 'slate']) {
+    add([`soft-${tint}-ink`], [`soft-${tint}`], 4.5, 'pictogram on its soft tint')
+}
+// Help center: caution callout, eyebrow of the home header.
+add(['error', 'text'], ['error-background'], 4.5, 'caution callout')
+add(['text-2'], ['background-muted'], 4.5, 'note callout')
 add(['text-muted-5'], ['segmented-background'], 4.5, 'text')
 add(['text'], ['tint-blue-2'], 4.5, 'text')
 // Borders of fields and interface elements, icons that carry meaning.

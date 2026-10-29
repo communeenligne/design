@@ -10,6 +10,11 @@
     "license": "MIT, Tailwind Labs"
   },
   {
+    "name": "arrow-left",
+    "source": "Commune en ligne, mirror of arrow-right (help center: back link)",
+    "license": "MIT, Commune en ligne"
+  },
+  {
     "name": "arrow-right",
     "source": "Landing de Commune en ligne (feature-tile.blade.php, help-topics.blade.php)",
     "license": "MIT, Commune en ligne"

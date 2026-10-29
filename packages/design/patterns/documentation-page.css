@@ -1,7 +1,9 @@
 /*
  * @communeenligne/design, patterns: documentation page, for the documentation site and the help center. Header
- * (brand and wordmark, sections, phone menu), side navigation grouped by family, breadcrumb, title and lead, written
- * content, table of contents on the right, previous and next pages.
+ * (brand and wordmark, product name, sections, phone menu), side navigation grouped by family or by topic, breadcrumb,
+ * title and lead, written content, table of contents on the right with a link to the matching screen of the panel;
+ * bands of a documentation home; notice page (page in progress, page not found). The previous and next pages
+ * (.cel-pager) are a component of the documentation family.
  *
  * Below the tablet breakpoint, the sections and the side navigation give way to the phone menu (cel-menu): they carry
  * the cel-hide-below-tablet class.
@@ -59,6 +61,29 @@
 .cel-doc-header__sections {
     padding-top: var(--cel-space-1);
     padding-bottom: var(--cel-space-3-5);
+}
+
+/* Name of the product after the wordmark ("Aide"), behind a line. */
+.cel-doc-header__product {
+    padding-left: var(--cel-space-3);
+    border-left: 1px solid var(--cel-color-line);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* Links and the search trigger in the top bar itself (help center: a single line), pushed to the right. */
+.cel-doc-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-3) var(--cel-space-6);
+    margin-left: auto;
+}
+
+.cel-doc-header__actions .cel-nav__links {
+    gap: var(--cel-space-2) var(--cel-space-5-5);
+    font-size: var(--cel-text-14);
 }
 
 /* Without script, the menu panel is a list under the top bar: it takes the whole width. */
@@ -146,6 +171,17 @@
     color: var(--cel-color-primary);
 }
 
+/* Second level: the articles of the open topic, under its link (aria-current="true"). */
+.cel-sidenav ul ul {
+    margin: var(--cel-space-0-5) 0 var(--cel-space-2);
+    padding-left: var(--cel-space-3);
+}
+
+.cel-sidenav a[aria-current='true'] {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
 .cel-sidenav a[aria-current='page'] {
     border-left-color: var(--cel-color-ochre);
     background: var(--cel-color-surface-current);
@@ -156,8 +192,35 @@
 .cel-toc a {
     padding-top: var(--cel-space-1);
     padding-bottom: var(--cel-space-1);
+    border-left-color: var(--cel-color-line-soft);
     color: var(--cel-color-text-muted);
     font-size: var(--cel-text-14);
+}
+
+/* Part of the page being read (js/toc.js): a primary line, bold. */
+.cel-toc a[aria-current='location'] {
+    border-left-color: var(--cel-color-primary);
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+/* Under the table of contents: where to do it in the panel ("Dans votre administration : Documents officiels"). */
+.cel-toc__related {
+    margin-top: var(--cel-space-5);
+    padding-top: var(--cel-space-3-5);
+    border-top: 1px solid var(--cel-color-line-soft);
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-14);
+}
+
+.cel-toc .cel-toc__related a {
+    display: inline;
+    padding: 0;
+    border: 0;
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-bold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .cel-doc-main {
@@ -260,28 +323,73 @@
     background: var(--cel-color-background-muted);
 }
 
-.cel-pager {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--cel-space-4);
-    margin-top: var(--cel-space-10);
+/* ---------- Bands of a documentation home ---------- */
+
+/* Full-width bands under the home header (first steps, topics, ways to get help), separated by a line. */
+.cel-doc-band {
+    padding-top: var(--cel-space-11);
+    padding-bottom: var(--cel-space-11);
+    border-top: 1px solid var(--cel-color-line);
 }
 
-.cel-pager__link {
+.cel-doc-hero + .cel-doc-band {
+    border-top: 0;
+}
+
+.cel-doc-band--large {
+    padding-top: var(--cel-space-14);
+    padding-bottom: var(--cel-space-14);
+}
+
+.cel-doc-band--muted {
+    background: var(--cel-color-background-muted);
+}
+
+/* Title, sentence and a link on the right ("Toutes les rubriques"). */
+.cel-doc-band__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--cel-space-2-5) var(--cel-space-8);
+    margin-bottom: var(--cel-space-7);
+}
+
+.cel-doc-band__header .cel-doc-band__title {
+    margin-bottom: var(--cel-space-1-5);
+}
+
+.cel-doc-band__lead {
+    color: var(--cel-color-text-2);
+}
+
+.cel-doc-band__title {
+    margin-bottom: var(--cel-space-5);
     color: var(--cel-color-primary);
+    font-size: var(--cel-text-24);
+    line-height: var(--cel-leading-120);
     font-weight: var(--cel-font-weight-extrabold);
-    text-decoration: none;
+    letter-spacing: var(--cel-tracking-title);
 }
 
-.cel-pager__link--next {
-    grid-column: 2;
-    text-align: right;
+/* ---------- Notice page: page in progress, page not found ---------- */
+
+/* Under a compact home header (.cel-doc-hero--compact): a column with the ways to get help or a few links, then the
+   link back. */
+.cel-doc-notice {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-8);
+    max-width: var(--cel-width-narrow);
+    padding-top: var(--cel-space-12);
+    padding-bottom: var(--cel-space-16);
 }
 
-.cel-pager__direction {
-    color: var(--cel-color-text-muted-2);
-    font-size: var(--cel-text-13);
-    font-weight: var(--cel-font-weight-bold);
+.cel-doc-notice__title {
+    margin-bottom: var(--cel-space-4);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-20);
+    font-weight: var(--cel-font-weight-extrabold);
 }
 
 /* ---------- Medium and small screens ---------- */
@@ -303,6 +411,22 @@
 }
 
 @media (width < 860px) {
+    /* Logo, search trigger and menu button on one line: the trigger shrinks. */
+    .cel-doc-header__top {
+        column-gap: var(--cel-space-4);
+    }
+
+    .cel-doc-header__actions {
+        flex: 1 1 0;
+        justify-content: flex-end;
+        min-width: 0;
+    }
+
+    .cel-doc-header__top .cel-search-trigger {
+        flex: 0 1 260px;
+        min-width: 0;
+    }
+
     .cel-doc-layout,
     .cel-doc-layout--no-toc {
         grid-template-columns: minmax(0, 1fr);
@@ -322,17 +446,29 @@
         flex-basis: 100%;
     }
 
+    .cel-doc-header__actions {
+        margin-left: 0;
+    }
+
+    /* With a section name, the icon and the name stand for the brand: the wordmark would push the menu button to
+       another line. */
+    .cel-doc-header__brand:has(.cel-doc-header__product) .cel-doc-header__name {
+        display: none;
+    }
+
+    .cel-doc-header__product {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .cel-doc-header__top .cel-search-trigger {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
     .cel-doc-content > table {
         position: relative;
         display: block;
         overflow-x: auto;
-    }
-
-    .cel-pager {
-        grid-template-columns: 1fr;
-    }
-
-    .cel-pager__link--next {
-        grid-column: 1;
     }
 }

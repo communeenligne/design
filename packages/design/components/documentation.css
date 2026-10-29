@@ -1,7 +1,9 @@
 /*
  * @communeenligne/design, components, documentation family: code block with its copy button, live example (rendering,
- * HTML code, Tailwind version), do and don't columns, tiles of a section index, pictogram. Used by the documentation
- * site and the help center.
+ * HTML code, Tailwind version), do and don't columns, tiles of a section index, pictogram and its soft tints,
+ * illustration, keyboard key, search palette and its trigger (js/search.js); for the help center: home header with or
+ * without video, presentation video (js/video.js), quick links, first steps, topics, ways to get help, article meta,
+ * feedback, previous and next pages. Used by the documentation site and the help center.
  *
  * Renaming a class is a major version.
  */
@@ -335,11 +337,1072 @@
     translate: 4px 0;
 }
 
+/* Soft tints of a pictogram (topics of a help center, sections of a home page): a tinted pastille, no outline. */
+.cel-pictogram--ochre {
+    background: var(--cel-color-soft-ochre);
+    color: var(--cel-color-soft-ochre-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--blue {
+    background: var(--cel-color-soft-blue);
+    color: var(--cel-color-soft-blue-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--lilac {
+    background: var(--cel-color-soft-lilac);
+    color: var(--cel-color-soft-lilac-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--green {
+    background: var(--cel-color-soft-green);
+    color: var(--cel-color-soft-green-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--sky {
+    background: var(--cel-color-soft-sky);
+    color: var(--cel-color-soft-sky-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--red {
+    background: var(--cel-color-soft-red);
+    color: var(--cel-color-soft-red-ink);
+    box-shadow: none;
+}
+
+.cel-pictogram--slate {
+    background: var(--cel-color-soft-slate);
+    color: var(--cel-color-soft-slate-ink);
+    box-shadow: none;
+}
+
+/* ---------- Illustration ---------- */
+
+/* A decorative shape of illustrations/, drawn as a mask: it takes the text color of its container (currentColor), so
+   it follows the theme. Covers its box from the bottom, centered, like preserveAspectRatio="xMidYMax slice". */
+.cel-illustration {
+    display: block;
+    width: 100%;
+    height: var(--cel-illustration-height, 150px);
+    background-color: currentColor;
+    pointer-events: none;
+    -webkit-mask: var(--cel-illustration-image) center bottom / cover no-repeat;
+    mask: var(--cel-illustration-image) center bottom / cover no-repeat;
+}
+
+.cel-illustration--village {
+    --cel-illustration-image: url('../illustrations/village.svg');
+}
+
+/* ---------- Documentation home header ---------- */
+
+/* Full-width band on the strong surface. On the left __text: eyebrow, title, lead, a line that recalls the search
+   shortcut (__hint, shown by js/search.js); on the right __media: a presentation video (.cel-video). Without __media,
+   a single column, without empty space. A decorative illustration as a watermark (__illustration). --compact: smaller
+   title and padding (page in progress, page not found). */
+.cel-doc-hero {
+    position: relative;
+    overflow-x: clip;
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-doc-hero__illustration {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: var(--cel-color-on-strong);
+    opacity: 0.14;
+}
+
+.cel-doc-hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--cel-space-14);
+    align-items: center;
+    padding-top: var(--cel-space-16);
+    padding-bottom: var(--cel-space-22);
+}
+
+.cel-doc-hero__inner:has(> .cel-doc-hero__media) {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.cel-doc-hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--cel-space-4-5);
+    max-width: var(--cel-width-reading);
+}
+
+.cel-doc-hero__eyebrow {
+    color: var(--cel-color-on-strong-gold);
+    font-size: var(--cel-text-15);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-doc-hero__title {
+    font-size: var(--cel-text-title-form);
+    line-height: var(--cel-leading-110);
+    font-weight: var(--cel-font-weight-extrabold);
+    letter-spacing: var(--cel-tracking-title-large);
+    text-wrap: balance;
+}
+
+.cel-doc-hero__lead {
+    color: var(--cel-color-on-strong-soft);
+    font-size: var(--cel-text-18);
+}
+
+.cel-doc-hero__hint {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2-5);
+    margin-top: var(--cel-space-1);
+    color: var(--cel-color-on-strong-soft);
+    font-size: var(--cel-text-15);
+}
+
+.cel-doc-hero__hint[hidden] {
+    display: none;
+}
+
+.cel-doc-hero__media {
+    margin: 0;
+}
+
+.cel-doc-hero--compact .cel-doc-hero__inner {
+    padding-top: var(--cel-space-14);
+    padding-bottom: var(--cel-space-18);
+}
+
+.cel-doc-hero--compact .cel-doc-hero__text {
+    gap: var(--cel-space-4);
+}
+
+.cel-doc-hero--compact .cel-doc-hero__title {
+    font-size: var(--cel-text-title-section);
+}
+
+/* ---------- Quick links ---------- */
+
+/* The most frequent tasks, each a link that covers its cell: a tinted pictogram (.cel-pictogram and a tint), a title,
+   a short sentence, a short indication (duration) with an arrow. Four columns separated by vertical lines, two below
+   the desktop breakpoint, one on a phone. */
+.cel-quick-links {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--cel-color-line-4);
+    list-style: none;
+}
+
+.cel-quick-links > li {
+    display: flex;
+    padding: var(--cel-space-7);
+    border-bottom: 1px solid var(--cel-color-line-4);
+}
+
+.cel-quick-links > li:not(:nth-child(4n + 1)) {
+    border-left: 1px solid var(--cel-color-line-4);
+}
+
+.cel-quick-links > li:nth-child(4n + 1) {
+    padding-left: 0;
+}
+
+.cel-quick-links > li:nth-child(4n) {
+    padding-right: 0;
+}
+
+.cel-quick-link {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--cel-space-4-5);
+    color: var(--cel-color-text-2);
+    text-decoration: none;
+}
+
+.cel-quick-link .cel-pictogram {
+    transition: transform var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+.cel-quick-link:hover .cel-pictogram,
+.cel-quick-link:focus-visible .cel-pictogram {
+    transform: translateY(-2px);
+}
+
+.cel-quick-link__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1);
+}
+
+.cel-quick-link__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-19);
+    line-height: var(--cel-leading-125);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-quick-link:hover .cel-quick-link__title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-quick-link__text {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
+.cel-quick-link__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2);
+    margin-top: var(--cel-space-1);
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-quick-link__meta .cel-icon {
+    --cel-icon-size: 14px;
+    --cel-icon-stroke: 2.4;
+    transition: translate var(--cel-duration-fast) var(--cel-ease-standard);
+}
+
+.cel-quick-link:hover .cel-quick-link__meta .cel-icon,
+.cel-quick-link:focus-visible .cel-quick-link__meta .cel-icon {
+    translate: 4px 0;
+}
+
+/* ---------- First steps: numbered path ---------- */
+
+/* An introduction (title, sentence) beside a numbered path: steps joined by a line, each with a title (a link) and a
+   duration. Three to five steps in a row; one under the other below the tablet breakpoint. */
+.cel-first-steps {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--cel-space-8);
+    align-items: start;
+}
+
+.cel-first-steps__intro {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+}
+
+.cel-first-steps__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-20);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-first-steps__summary {
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-15);
+}
+
+.cel-first-steps__list {
+    position: relative;
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: var(--cel-space-7);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* The line that joins the numbers, behind them. */
+.cel-first-steps__list::before {
+    content: '';
+    position: absolute;
+    top: 17px;
+    right: 18px;
+    left: 18px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cel-color-primary), var(--cel-color-line-strong));
+}
+
+.cel-first-steps__step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2);
+}
+
+/* The page background around the number cuts the line. */
+.cel-first-steps__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--cel-radius-circle);
+    background: var(--cel-color-primary);
+    color: var(--cel-color-surface);
+    font-weight: var(--cel-font-weight-extrabold);
+    box-shadow: 0 0 0 5px var(--cel-color-background);
+}
+
+.cel-first-steps__link {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-16);
+    font-weight: var(--cel-font-weight-extrabold);
+    line-height: var(--cel-leading-130);
+    text-decoration: none;
+}
+
+.cel-first-steps__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-first-steps__duration {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+}
+
+/* ---------- Topics ---------- */
+
+/* The topics of a help center in columns separated by lines: a tinted pictogram (.cel-pictogram--small and a tint),
+   the title (a link), a few articles, a link to the whole topic. */
+.cel-topics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--cel-space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-topic {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    padding: var(--cel-space-6-5) 0;
+    border-top: 1px solid var(--cel-color-line);
+}
+
+.cel-topic__header {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-3-5);
+}
+
+.cel-topic__header .cel-pictogram {
+    transition: transform var(--cel-duration-moderate) var(--cel-ease-standard);
+}
+
+.cel-topic:hover .cel-pictogram {
+    transform: translateY(-2px);
+}
+
+.cel-topic__title {
+    font-size: var(--cel-text-18);
+    line-height: var(--cel-leading-130);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-topic__title a {
+    color: var(--cel-color-primary);
+    text-decoration: none;
+}
+
+.cel-topic__title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Aligned on the title: the width of the pictogram and the gap. */
+.cel-topic__articles,
+.cel-topic__more {
+    margin-left: calc(44px + var(--cel-space-3-5));
+}
+
+.cel-topic__articles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+    font-size: var(--cel-text-15);
+    list-style: none;
+}
+
+.cel-topic__articles a {
+    color: var(--cel-color-text-2);
+    text-decoration: none;
+}
+
+.cel-topic__articles a:hover {
+    color: var(--cel-color-primary);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-topic__more {
+    align-self: flex-start;
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* ---------- Support: ways to get help ---------- */
+
+/* Two or three ways to get help (write to the support team, book a session), in columns separated by lines. */
+.cel-support {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: var(--cel-space-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cel-support__option {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-1-5);
+}
+
+.cel-support__option + .cel-support__option {
+    padding-left: var(--cel-space-12);
+    border-left: 1px solid var(--cel-color-line);
+}
+
+.cel-support__title {
+    color: var(--cel-color-primary);
+    font-size: var(--cel-text-18);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-support__option p {
+    color: var(--cel-color-text-2);
+}
+
+/* ---------- Article meta ---------- */
+
+/* Under the title of an article: reading time, audience, date of the last update. */
+.cel-doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1) var(--cel-space-4);
+    margin: 0;
+    padding: 0;
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+    list-style: none;
+}
+
+.cel-doc-meta li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-1-5);
+}
+
+.cel-doc-meta .cel-icon {
+    --cel-icon-size: 16px;
+}
+
+/* ---------- Video ---------- */
+
+/* The native player in a 16:9 frame (__frame), WebVTT captions in <track>, never autoplay, never an outside service.
+   With js/video.js, the controls wait behind a preview: the poster, a large play button (__play, whose accessible name
+   gives the duration) and the duration (__duration); the button starts the player with its controls. Without script,
+   the player and its controls. Under the frame, a caption (__caption): title, captions, link to the transcript. */
+.cel-video {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-2-5);
+    margin: 0;
+}
+
+.cel-video__frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-strong-deep);
+}
+
+.cel-video__player {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cel-video__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 78px;
+    height: 78px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--cel-radius-circle);
+    background: var(--cel-color-strong);
+    color: var(--cel-color-on-strong);
+    box-shadow: 0 0 0 10px var(--cel-color-on-strong-divider-18), var(--cel-shadow-lift);
+    cursor: pointer;
+    translate: -50% -50%;
+    transition: scale var(--cel-duration-fast) var(--cel-ease-standard);
+    --cel-focus-color: var(--cel-focus-color-on-strong);
+}
+
+.cel-video__play:hover {
+    scale: 1.06;
+}
+
+.cel-video__play .cel-icon {
+    margin-left: 3px;
+    fill: currentColor;
+    --cel-icon-size: 26px;
+}
+
+.cel-video__duration {
+    position: absolute;
+    right: var(--cel-space-3-5);
+    bottom: var(--cel-space-3);
+    padding: var(--cel-space-0-5) var(--cel-space-2);
+    border-radius: var(--cel-radius-6);
+    background: var(--cel-color-scrim);
+    color: var(--cel-color-on-strong);
+    font-size: var(--cel-text-13);
+    font-weight: var(--cel-font-weight-bold);
+    pointer-events: none;
+}
+
+.cel-video__play[hidden],
+.cel-video__duration[hidden] {
+    display: none;
+}
+
+.cel-video__caption {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1) var(--cel-space-4);
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-14);
+}
+
+.cel-video__caption a {
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-video__title {
+    color: var(--cel-color-text-strong);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* In the home header: on the strong surface. */
+.cel-doc-hero .cel-video__frame {
+    box-shadow: var(--cel-shadow-lift);
+}
+
+.cel-doc-hero .cel-video__caption {
+    color: var(--cel-color-on-strong-soft);
+}
+
+.cel-doc-hero .cel-video__caption a,
+.cel-doc-hero .cel-video__title {
+    color: var(--cel-color-on-strong);
+}
+
+/* ---------- Keyboard key ---------- */
+
+/* A key or a shortcut written in the text ("Ctrl K", "Entrée"). --on-strong: on the strong surface. */
+.cel-kbd {
+    display: inline-block;
+    padding: 1px var(--cel-space-1-5);
+    border-radius: var(--cel-radius-5);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-text-2);
+    font-family: var(--cel-font-body);
+    font-size: var(--cel-text-12);
+    font-weight: var(--cel-font-weight-bold);
+    line-height: var(--cel-leading-150);
+    white-space: nowrap;
+    box-shadow: inset 0 0 0 1px var(--cel-color-line-3);
+}
+
+.cel-kbd--on-strong {
+    padding: var(--cel-space-0-5) var(--cel-space-2);
+    border-radius: var(--cel-radius-6);
+    background: var(--cel-color-on-strong-divider-12);
+    color: var(--cel-color-on-strong);
+    font-size: var(--cel-text-13);
+    box-shadow: inset 0 0 0 1px var(--cel-color-on-strong-divider-18);
+}
+
+/* ---------- Search palette ---------- */
+
+/* Trigger of the header: a discreet field with a magnifying glass, "Rechercher" and the shortcut. Without script, a
+   link to the search page of the site; js/search.js makes it a button that opens the palette. */
+.cel-search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cel-space-2-5);
+    width: 260px;
+    max-width: 100%;
+    min-height: 40px;
+    padding: var(--cel-space-2) var(--cel-space-2-5) var(--cel-space-2) var(--cel-space-3);
+    border: 0;
+    border-radius: var(--cel-radius-md);
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-text-muted-2);
+    font: inherit;
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-semibold);
+    text-decoration: none;
+    box-shadow: inset 0 0 0 1px var(--cel-color-line);
+    cursor: pointer;
+}
+
+.cel-search-trigger:hover {
+    color: var(--cel-color-primary);
+    box-shadow: inset 0 0 0 1px var(--cel-color-primary);
+}
+
+.cel-search-trigger .cel-icon {
+    --cel-icon-size: 16px;
+    --cel-icon-stroke: 2;
+}
+
+.cel-search-trigger__label {
+    flex: 1;
+    text-align: left;
+}
+
+/* The palette: a modal <dialog>, its field (ARIA combobox), the results (listbox), a status line read by screen
+   readers, an empty state, a help line. */
+.cel-search {
+    width: min(680px, calc(100vw - var(--cel-space-8)));
+    max-height: min(640px, calc(100vh - var(--cel-space-20)));
+    margin: var(--cel-space-16) auto auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--cel-color-line);
+    border-radius: var(--cel-radius-16);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-text-strong);
+    box-shadow: var(--cel-shadow-preview);
+}
+
+.cel-search[open] {
+    display: flex;
+    flex-direction: column;
+    animation: cel-search-in var(--cel-duration-moderate) var(--cel-ease-out);
+}
+
+.cel-search::backdrop {
+    background: var(--cel-color-strong-deep);
+    opacity: 0.6;
+}
+
+.cel-search[open]::backdrop {
+    animation: cel-search-backdrop var(--cel-duration-moderate) var(--cel-ease-out);
+}
+
+@keyframes cel-search-in {
+    from {
+        opacity: 0;
+        transform: translateY(-8px) scale(0.98);
+    }
+}
+
+@keyframes cel-search-backdrop {
+    from {
+        opacity: 0;
+    }
+}
+
+.cel-search__header {
+    display: flex;
+    align-items: center;
+    gap: var(--cel-space-3);
+    padding: var(--cel-space-3) var(--cel-space-4);
+    border-bottom: 1px solid var(--cel-color-line);
+}
+
+.cel-search__header:focus-within {
+    box-shadow: inset 0 -2px 0 var(--cel-color-primary);
+}
+
+.cel-search__icon {
+    color: var(--cel-color-primary);
+}
+
+/* Loading: the magnifying glass pulses. */
+.cel-search--loading .cel-search__icon {
+    animation: cel-search-pulse var(--cel-duration-pulse) var(--cel-ease-standard) infinite;
+}
+
+@keyframes cel-search-pulse {
+    50% {
+        opacity: 0.35;
+    }
+}
+
+.cel-search__input {
+    flex: 1;
+    min-width: 0;
+    padding: var(--cel-space-2) 0;
+    border: 0;
+    background: transparent;
+    color: var(--cel-color-text-strong);
+    font: inherit;
+    font-size: var(--cel-text-18);
+}
+
+.cel-search__input:focus-visible {
+    outline: none;
+}
+
+.cel-search__input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.cel-search__close {
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.cel-search__status {
+    padding: var(--cel-space-2-5) var(--cel-space-4) 0;
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-13);
+}
+
+.cel-search__status:empty {
+    display: none;
+}
+
+.cel-search__empty {
+    padding: var(--cel-space-6) var(--cel-space-4) var(--cel-space-8);
+    color: var(--cel-color-text-2);
+    text-align: center;
+}
+
+.cel-search__empty[hidden] {
+    display: none;
+}
+
+.cel-search__empty strong {
+    display: block;
+    margin-bottom: var(--cel-space-1);
+    color: var(--cel-color-text-strong);
+}
+
+.cel-search__results {
+    flex: 1;
+    margin: 0;
+    padding: var(--cel-space-2);
+    overflow-y: auto;
+    list-style: none;
+}
+
+.cel-search__results:empty {
+    display: none;
+}
+
+.cel-search__result a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cel-space-0-5);
+    padding: var(--cel-space-2-5) var(--cel-space-3);
+    border-left: 3px solid transparent;
+    border-radius: var(--cel-radius-8);
+    color: var(--cel-color-text);
+    text-decoration: none;
+}
+
+/* Active result: a line as well as the background, never the color alone. */
+.cel-search__result[aria-selected='true'] a {
+    border-left-color: var(--cel-color-ochre);
+    background: var(--cel-color-surface-current);
+}
+
+.cel-search__path {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-12);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-search__title {
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+}
+
+.cel-search__excerpt {
+    overflow: hidden;
+    color: var(--cel-color-text-2);
+    font-size: var(--cel-text-14);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* The searched words, in the title and the excerpt. */
+.cel-search__mark {
+    border-radius: var(--cel-radius-2);
+    background: var(--cel-color-tint-ochre);
+    color: var(--cel-color-text-strong);
+}
+
+.cel-search__help {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cel-space-1) var(--cel-space-4);
+    padding: var(--cel-space-2-5) var(--cel-space-4);
+    border-top: 1px solid var(--cel-color-line);
+    background: var(--cel-color-background-muted);
+    color: var(--cel-color-text-muted);
+    font-size: var(--cel-text-13);
+}
+
+/* ---------- Feedback: was this page helpful? ---------- */
+
+/* A question and two buttons (js/feedback.js). Without script, a form that the server reads. With it, the answer is
+   sent by the project, the buttons give way to the matching message, announced by its live region. */
+.cel-feedback {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--cel-space-2-5) var(--cel-space-4);
+    padding: var(--cel-space-4-5) 0;
+    border-top: 1px solid var(--cel-color-line);
+    border-bottom: 1px solid var(--cel-color-line);
+}
+
+.cel-feedback__question {
+    color: var(--cel-color-text-strong);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+.cel-feedback__answers {
+    display: flex;
+    gap: var(--cel-space-2-5);
+}
+
+.cel-feedback__answer {
+    min-width: 64px;
+    min-height: 36px;
+    padding: var(--cel-space-1-5) var(--cel-space-3-5);
+    border: 1px solid var(--cel-color-field-border);
+    border-radius: var(--cel-radius-8);
+    background: var(--cel-color-surface);
+    color: var(--cel-color-primary);
+    font: inherit;
+    font-size: var(--cel-text-14);
+    font-weight: var(--cel-font-weight-bold);
+    cursor: pointer;
+}
+
+.cel-feedback__answer:hover {
+    background: var(--cel-color-surface-hover);
+}
+
+.cel-feedback__answers[hidden] {
+    display: none;
+}
+
+/* Always in the page, even empty: a live region must exist before its content changes. */
+.cel-feedback__result {
+    color: var(--cel-color-text);
+}
+
+.cel-feedback__result [hidden] {
+    display: none;
+}
+
+.cel-feedback__result:focus {
+    outline: none;
+}
+
+/* ---------- Previous and next pages ---------- */
+
+/* At the bottom of an article: the previous and next pages of the topic, the direction above the title. Plain links
+   by default; with .cel-card, a card each (documentation site). */
+.cel-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--cel-space-4);
+    margin-top: var(--cel-space-10);
+}
+
+.cel-pager__link {
+    display: flex;
+    flex-direction: column;
+    color: var(--cel-color-primary);
+    font-weight: var(--cel-font-weight-extrabold);
+    text-decoration: none;
+}
+
+.cel-pager__link:hover .cel-pager__title {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.cel-pager__link--next {
+    grid-column: 2;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.cel-pager__direction {
+    color: var(--cel-color-text-muted-2);
+    font-size: var(--cel-text-13);
+    font-weight: var(--cel-font-weight-bold);
+}
+
+/* ---------- Below the desktop breakpoint ---------- */
+
+@media (width < 960px) {
+    .cel-topics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Home header: the video under the text. */
+    .cel-doc-hero__inner:has(> .cel-doc-hero__media) {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--cel-space-10);
+    }
+
+    /* Quick links: two columns. */
+    .cel-quick-links {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cel-quick-links > li:nth-child(n) {
+        padding: var(--cel-space-6);
+        border-left: 1px solid var(--cel-color-line-4);
+    }
+
+    .cel-quick-links > li:nth-child(2n + 1) {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .cel-quick-links > li:nth-child(2n) {
+        padding-right: 0;
+    }
+}
+
+/* ---------- Below the tablet breakpoint ---------- */
+
+/* The path and the ways to get help go one under the other; the line of the path becomes vertical. */
+@media (width < 860px) {
+    .cel-first-steps {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--cel-space-5);
+    }
+
+    .cel-first-steps__list {
+        grid-auto-flow: row;
+        gap: var(--cel-space-5);
+    }
+
+    .cel-first-steps__list::before {
+        top: 18px;
+        right: auto;
+        bottom: 18px;
+        left: 17px;
+        width: 2px;
+        height: auto;
+        background: linear-gradient(180deg, var(--cel-color-primary), var(--cel-color-line-strong));
+    }
+
+    .cel-first-steps__step {
+        display: grid;
+        grid-template-columns: 36px minmax(0, 1fr);
+        gap: var(--cel-space-0-5) var(--cel-space-4);
+        align-items: center;
+    }
+
+    .cel-first-steps__number {
+        grid-row: span 2;
+        align-self: start;
+    }
+
+    .cel-support {
+        grid-auto-flow: row;
+        gap: var(--cel-space-6);
+    }
+
+    .cel-support__option + .cel-support__option {
+        padding-top: var(--cel-space-6);
+        padding-left: 0;
+        border-top: 1px solid var(--cel-color-line);
+        border-left: 0;
+    }
+}
+
 /* ---------- Phone ---------- */
 
 @media (width < 640px) {
     .cel-example__preview {
         padding: var(--cel-space-5) var(--cel-space-4);
+    }
+
+    /* No shortcut on a phone keyboard; the palette takes almost the whole width. */
+    .cel-search-trigger .cel-kbd,
+    .cel-doc-hero__hint:not([hidden]) {
+        display: none;
+    }
+
+    .cel-search {
+        width: calc(100vw - var(--cel-space-4));
+        margin-top: var(--cel-space-4);
+    }
+
+    .cel-topics,
+    .cel-quick-links {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cel-quick-links > li:nth-child(n) {
+        padding: var(--cel-space-5) 0;
+        border-left: 0;
+    }
+
+    .cel-doc-hero__inner {
+        padding-top: var(--cel-space-12);
+        padding-bottom: var(--cel-space-18);
+    }
+
+    .cel-video__play {
+        width: 64px;
+        height: 64px;
+        box-shadow: 0 0 0 8px var(--cel-color-on-strong-divider-18), var(--cel-shadow-lift);
+    }
+
+    .cel-pager {
+        grid-template-columns: 1fr;
+    }
+
+    .cel-pager__link--next {
+        grid-column: 1;
     }
 }
 
@@ -347,8 +1410,31 @@
 
 @media (prefers-reduced-motion: reduce) {
     .cel-tile,
-    .cel-tile__arrow {
+    .cel-tile__arrow,
+    .cel-topic__header .cel-pictogram,
+    .cel-quick-link .cel-pictogram,
+    .cel-quick-link__meta .cel-icon,
+    .cel-video__play {
         transition: none;
+    }
+
+    .cel-topic:hover .cel-pictogram,
+    .cel-quick-link:hover .cel-pictogram,
+    .cel-quick-link:focus-visible .cel-pictogram {
+        transform: none;
+    }
+
+    .cel-quick-link:hover .cel-quick-link__meta .cel-icon,
+    .cel-quick-link:focus-visible .cel-quick-link__meta .cel-icon,
+    .cel-video__play:hover {
+        translate: none;
+        scale: none;
+    }
+
+    .cel-search[open],
+    .cel-search[open]::backdrop,
+    .cel-search--loading .cel-search__icon {
+        animation: none;
     }
 
     .cel-tile:hover,

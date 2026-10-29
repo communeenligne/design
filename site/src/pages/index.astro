@@ -12,6 +12,8 @@ const others = SECTIONS.filter((section) => section.pages.length === 0)
 const VISIBLE = 8
 const components = SECTIONS.find((section) => section.url === '/components/').pages.length
 const patterns = SECTIONS.find((section) => section.url === '/patterns/').pages.length
+// Soft tint of the pictogram of each section (Pictogram and soft tints).
+const TINTS = { '/getting-started/': 'ochre', '/foundations/': 'blue', '/components/': 'green', '/patterns/': 'lilac', '/accessibility/': 'sky', '/changelog/': 'slate' }
 const anchor = (section) => `section-${section.url.replaceAll('/', '')}`
 const PRINCIPLES = [
     ['swatch', 'Une seule source', 'Les valeurs vivent dans les fondamentaux (foundations/) ; les pages des couleurs, de la typographie et des espacements en sont générées et ne peuvent pas diverger du paquet.'],
@@ -41,7 +43,7 @@ const PRINCIPLES = [
                 {main.map((section) => (
                     <section class="doc-section" aria-labelledby={anchor(section)}>
                         <div class="doc-section__header">
-                            <span class="cel-pictogram" aria-hidden="true"><Icon name={section.icon} size="26" /></span>
+                            <span class={`cel-pictogram cel-pictogram--${TINTS[section.url]}`} aria-hidden="true"><Icon name={section.icon} size="26" /></span>
                             <div>
                                 <h3 class="doc-section__title" id={anchor(section)}><a href={section.url}>{section.title}</a></h3>
                                 <p class="doc-section__count">{section.pages.length} pages</p>
@@ -59,7 +61,7 @@ const PRINCIPLES = [
                 {others.map((section) => (
                     <li>
                         <article class="doc-shortcut">
-                            <span class="cel-pictogram cel-pictogram--small" aria-hidden="true"><Icon name={section.icon} size="22" /></span>
+                            <span class={`cel-pictogram cel-pictogram--small cel-pictogram--${TINTS[section.url]}`} aria-hidden="true"><Icon name={section.icon} size="22" /></span>
                             <div class="doc-shortcut__text">
                                 <h3 class="doc-shortcut__title"><a class="cel-tile__link" href={section.url}>{section.title}</a></h3>
                                 <p class="doc-shortcut__summary">{section.description}</p>

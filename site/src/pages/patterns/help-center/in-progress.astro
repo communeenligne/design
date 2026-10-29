@@ -1,0 +1,10 @@
+---
+import HelpCenterPage from '../../../components/HelpCenterPage.astro'
+import { PALETTE, FOOTER, HEADER, IN_PROGRESS } from '../../../lib/help-center.js'
+---
+<HelpCenterPage title="Page en cours de création">
+    <Fragment set:html={HEADER} />
+    <Fragment set:html={IN_PROGRESS} />
+    <Fragment set:html={FOOTER} />
+    <Fragment set:html={PALETTE} />
+</HelpCenterPage>

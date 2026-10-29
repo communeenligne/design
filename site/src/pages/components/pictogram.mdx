@@ -1,0 +1,53 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Pictogramme et teintes douces"
+description: "Une icône sur une pastille arrondie : neutre et cerclée, ou posée sur l'une des sept teintes douces."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+
+## À quoi il sert
+
+Donner un repère visuel à une rubrique, une famille de pages ou une section : les [rubriques](/components/topics/) du centre d'aide, les rubriques de l'accueil de ce site. Le pictogramme est toujours décoratif : le titre qui le suit porte le sens.
+
+**Quand ne pas l'utiliser :** pour un état (prendre le [badge](/components/badge/)), ni pour une icône dans un bouton ou un lien.
+
+## Tailles
+
+`.cel-pictogram` mesure 56 px ; `--small`, 44 px. L'icône garde sa taille propre (`cel-icon--22` ou `--26`).
+
+<Example title="Neutre, cerclé" html={`
+    <span class="cel-pictogram" aria-hidden="true"><svg class="cel-icon cel-icon--26" aria-hidden="true"><use href="/design/icons/sprite.svg#book-open"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#book-open"></use></svg></span>
+`} />
+
+## Teintes douces
+
+Sept teintes, chacune faite de deux variables : le fond de la pastille `--cel-color-soft-<teinte>` et la couleur de l'icône `--cel-color-soft-<teinte>-ink`. La modification `cel-pictogram--<teinte>` pose les deux et retire le cercle. En sombre, le fond devient une teinte profonde et l'icône s'éclaircit : rien à écrire de plus.
+
+<Example title="Les sept teintes, sur une pastille de 44 px" html={`
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--ochre" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#home-modern"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--blue" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#newspaper"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--lilac" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#document-check"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--green" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#chat-bubble-left-right"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--sky" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#user-group"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--red" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#shield-check"></use></svg></span>
+    <span class="cel-pictogram cel-pictogram--small cel-pictogram--slate" aria-hidden="true"><svg class="cel-icon cel-icon--22" aria-hidden="true"><use href="/design/icons/sprite.svg#squares-2x2"></use></svg></span>
+`} tailwind={`
+    <span class="flex size-11 items-center justify-center rounded-12 bg-soft-ochre text-soft-ochre-ink" aria-hidden="true"><svg class="size-[22px] fill-none stroke-current stroke-[1.5] [stroke-linecap:round] [stroke-linejoin:round]" aria-hidden="true"><use href="/design/icons/sprite.svg#home-modern"></use></svg></span>
+`} />
+
+Ochre, bleu, lilas, vert, ciel, rouge, ardoise : la teinte distingue des rubriques voisines, elle ne dit rien d'un état. Le rouge n'annonce pas une erreur ; l'ardoise sert aux rubriques « Autres ». Les valeurs sont dans [Couleurs](/foundations/colors/), groupe « Soft tints ».
+
+## Accessibilité
+
+- **Décoratif :** `aria-hidden="true"` sur la pastille ; le titre voisin dit de quoi il s'agit.
+- **Contrastes :** l'icône atteint 4,5:1 sur sa pastille dans les deux thèmes (3:1 suffirait pour une icône), pour qu'un mot puisse aussi s'y écrire. Le test du paquet vérifie les sept paires.
+
+<Contrasts pairs={[['soft-ochre-ink', 'soft-ochre'], ['soft-blue-ink', 'soft-blue'], ['soft-lilac-ink', 'soft-lilac'], ['soft-green-ink', 'soft-green'], ['soft-sky-ink', 'soft-sky'], ['soft-red-ink', 'soft-red'], ['soft-slate-ink', 'soft-slate']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Une teinte par rubrique, la même partout où la rubrique apparaît.', 'Des icônes de la même famille, au même trait.']} donts={['La teinte seule pour distinguer deux éléments, sans titre.', 'Le rouge pour signaler une erreur : prendre le badge ou l\'encart.']} />

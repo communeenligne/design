@@ -124,7 +124,7 @@ test('each block that scrolls in width is positioned, each full-width band clips
     }
 
     // The start of an offset reveal (left, right, slide) must not widen the page.
-    for (const [sheet, band] of [['components/landing.css', '.cel-hero'], ['components/landing.css', '.cel-references'], ['patterns/section.css', '.cel-section'], ['patterns/page-header.css', '.cel-page-header']]) {
+    for (const [sheet, band] of [['components/landing.css', '.cel-hero'], ['components/landing.css', '.cel-references'], ['patterns/section.css', '.cel-section'], ['patterns/page-header.css', '.cel-page-header'], ['components/documentation.css', '.cel-doc-hero']]) {
         const rule = withoutComments(sheet).match(new RegExp(`\\n\\${band} \\{([^}]*)\\}`))?.[1] ?? ''
 
         if (!/overflow-x:\s*clip/.test(rule)) {
@@ -292,6 +292,22 @@ test('the icon sheet is up to date and each icon has its source', () => {
 
     const manifest = JSON.parse(read('icons/icons.json')).map((icon) => icon.name).sort()
     assert.deepEqual(manifest, icons().map((file) => file.slice(0, -4)).sort())
+})
+
+test('each illustration is a decorative shape in currentColor, used through a cel-illustration class', () => {
+    const illustrations = published.filter((file) => file.startsWith('illustrations/') && file.endsWith('.svg'))
+    const sheet = withoutComments('components/documentation.css')
+
+    assert.ok(illustrations.length > 0)
+
+    for (const file of illustrations) {
+        const svg = read(file)
+        const name = file.slice('illustrations/'.length, -4)
+
+        assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"[^>]* viewBox="[^"]+" fill="currentColor" aria-hidden="true">/, `${file}: viewBox, fill="currentColor", aria-hidden`)
+        assert.doesNotMatch(svg.replace(/fill="currentColor"/, ''), /(fill|stroke)="(?!none")|style=|<(script|image|text)\b/, `${file}: a single shape in currentColor`)
+        assert.ok(sheet.includes(`.cel-illustration--${name} {`) && sheet.includes(`url('../illustrations/${name}.svg')`), `${file}: no .cel-illustration--${name}`)
+    }
 })
 
 test('published fonts have their license', () => {

@@ -12,7 +12,7 @@ Le paquet est publié à chaque version comme une archive jointe à la publicati
 
 <Code lang="json" code={`{
     "dependencies": {
-        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.1.0/communeenligne-design-2.1.0.tgz"
+        "@communeenligne/design": "https://github.com/<organisation>/design/releases/download/v2.2.0/communeenligne-design-2.2.0.tgz"
     }
 }`} />
 
@@ -71,13 +71,17 @@ Un outil de construction (Vite, Laravel Vite) copie les polices et réécrit leu
 
 ## Scripts
 
-Cinq modules sans dépendance extérieure, à importer dans le script de la page :
+Neuf modules sans dépendance extérieure, à importer dans le script de la page :
 
 <Code lang="js" code={`import { initTheme } from '@communeenligne/design/js/theme.js'
 import { initTabs } from '@communeenligne/design/js/tabs.js'
 import { initMenu } from '@communeenligne/design/js/menu.js'
 import { initMotion, initSmoothAnchors, initMarquee } from '@communeenligne/design/js/motion.js'
 import { initCombobox } from '@communeenligne/design/js/combobox.js'
+import { initSearch, indexSearch, endpointSearch } from '@communeenligne/design/js/search.js'
+import { initVideo } from '@communeenligne/design/js/video.js'
+import { initToc } from '@communeenligne/design/js/toc.js'
+import { initFeedback } from '@communeenligne/design/js/feedback.js'
 
 initTheme()            // sélecteur de thème (.cel-theme) ; { cookie: 'cel_theme', storage: false } avec un serveur
 initTabs()             // onglets (.cel-tabs)
@@ -85,9 +89,13 @@ initMenu()             // menu sur téléphone (.cel-menu)
 initMotion()           // apparitions au défilement, entrée des écrans
 initSmoothAnchors()    // liens d'ancre data-cel-smooth-anchor
 initMarquee()          // bande des références qui défile
-initCombobox(element, { search })   // recherche de commune (.cel-combobox)`} />
+initCombobox(element, { search })   // recherche de commune (.cel-combobox)
+initSearch(dialog, { search: indexSearch('/search-index.json') })   // palette de recherche (.cel-search)
+initVideo()            // vidéo : aperçu et bouton de lecture (.cel-video)
+initToc()              // sommaire : la partie lue (.cel-toc)
+initFeedback()         // « Cette page vous a-t-elle aidé ? » (.cel-feedback)`} />
 
-Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le menu sur téléphone est une liste en haut de la page, le sélecteur de thème est fait de liens que le serveur traite, la recherche de commune est un champ texte, la bande des références se fait défiler à la main.
+Sans script, chaque composant reste utilisable : les onglets s'affichent l'un sous l'autre, le menu sur téléphone est une liste en haut de la page, le sélecteur de thème est fait de liens que le serveur traite, la recherche de commune est un champ texte, la bande des références se fait défiler à la main, le déclencheur de la palette mène à la page de recherche, la vidéo garde les commandes du navigateur, l'avis sur la page est un formulaire.
 
 ## Valeurs hors du CSS
 
@@ -117,6 +125,7 @@ $themeColor = $tokens['colors']['strong']['light'];`} />
 | `tailwind.css` | Thème Tailwind 4 (bloc `@theme`) branché sur les variables |
 | `fonts/` | Manrope 500 à 800, `fonts.css`, licence OFL |
 | `icons/` | Icônes SVG, planche `sprite.svg`, `icons.json`, licences |
+| `illustrations/` | Illustrations décoratives en `currentColor` (`village.svg`), affichées par `.cel-illustration` |
 | `brand/` | Logo et icône de Commune en ligne (hors licence MIT) |
-| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `menu.js`, `motion.js`, `combobox.js` |
+| `js/` | Amorces du thème et des animations, modules `theme.js`, `tabs.js`, `menu.js`, `motion.js`, `combobox.js`, `search.js`, `video.js`, `toc.js`, `feedback.js` |
 | `tools/tokens.mjs` | Lecture des variables en Node (tests, documentation) |

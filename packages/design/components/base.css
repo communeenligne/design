@@ -77,7 +77,8 @@
 :where(.cel-button, .cel-link, .cel-field :is(input, select, textarea), .cel-choice input, .cel-tabs__tab,
     .cel-breadcrumb a, .cel-pagination__link, .cel-theme__option, .cel-segmented__option, .cel-filter, .cel-pill,
     .cel-faq__question, .cel-comparison, .cel-references__strip, .cel-menu__toggle, .cel-menu__close,
-    .cel-menu__panel a):focus-visible,
+    .cel-menu__panel a, .cel-feedback__answer, .cel-pager__link, .cel-search-trigger, .cel-quick-link,
+    .cel-video__play):focus-visible,
 [data-cel-state~='focus'] {
     outline: var(--cel-focus-width) solid var(--cel-focus-color);
     outline-offset: var(--cel-focus-offset);
@@ -343,6 +344,13 @@
 .cel-link--arrow:focus-visible .cel-icon,
 .cel-link--arrow[data-cel-state~='hover'] .cel-icon {
     translate: 4px 0;
+}
+
+/* Link back (arrow-left icon before the text): the arrow moves back. */
+.cel-link--back:hover .cel-icon,
+.cel-link--back:focus-visible .cel-icon,
+.cel-link--back[data-cel-state~='hover'] .cel-icon {
+    translate: -4px 0;
 }
 
 /* ---------- Badge ---------- */

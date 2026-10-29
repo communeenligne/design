@@ -28,6 +28,28 @@ Expliquer une marche à suivre courte : publier une actualité en trois étapes,
     </ol>
 `} />
 
+## Avec une capture
+
+Une étape qui demande plus qu'une phrase : le texte et la capture d'écran dans `__body`, la capture dans `<figure class="cel-steps__figure">`, avec une légende `<figcaption>` s'il y a lieu.
+
+<Example title="Une étape avec sa capture" html={`
+    <ol class="cel-steps">
+        <li class="cel-steps__step">
+            <span class="cel-steps__number" aria-hidden="true">1</span>
+            <div class="cel-steps__body">
+                <p>Dans votre administration, ouvrez <strong>Documents officiels</strong>, puis cliquez sur <strong>Ajouter un document</strong>.</p>
+                <figure class="cel-steps__figure">
+                    <img src="/images/help-center/add-document.svg" alt="L'écran « Documents officiels » : le bouton « Ajouter un document » est en haut à droite, au-dessus de la liste des documents." width="640" height="300" loading="lazy">
+                    <figcaption>L'écran « Documents officiels » de l'administration.</figcaption>
+                </figure>
+            </div>
+        </li>
+        <li class="cel-steps__step"><span class="cel-steps__number" aria-hidden="true">2</span><span>Choisissez le type <strong>Délibération</strong>, puis déposez le PDF.</span></li>
+    </ol>
+`} />
+
+La capture a un texte de remplacement qui dit ce qu'elle montre ; elle ne porte jamais seule une information que le texte de l'étape ne donne pas.
+
 ## États
 
 La liste n'est pas interactive. Quand elle s'affiche sur place (changement d'onglet), ses étapes peuvent arriver en cascade avec `.cel-stagger` et `data-cel-fade` (voir [Mouvement](/foundations/motion/)).

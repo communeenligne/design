@@ -1,0 +1,39 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Façons d'être aidé"
+description: "Deux ou trois moyens d'obtenir de l'aide, en colonnes séparées par un filet : un titre en question, une phrase qui dit comment."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { SUPPORT } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Dire, en bas de l'accueil du [centre d'aide](/patterns/help-center/) ou sur une [page en cours de création](/patterns/page-in-progress/), ce que la personne peut faire quand l'aide écrite ne suffit pas : écrire à l'assistance, demander une prise en main.
+
+**Quand ne pas l'utiliser :** pour une action d'inscription ou de vente (prendre la [bande d'appel](/components/cta-band/)).
+
+## Exemple
+
+<Example title="Deux façons d'être aidé" html={SUPPORT} />
+
+## Composition
+
+`.cel-support` est une liste ; chaque `__option` a un titre `__title` et une phrase. Un lien peut y figurer, dans la phrase. Les colonnes ont la même largeur ; un filet vertical les sépare.
+
+## Comportement
+
+Côte à côte à partir de 860 px ; en dessous, l'une sous l'autre, le filet devenant horizontal.
+
+## Accessibilité
+
+- **Titres :** de vrais titres (`h2` sous un `h1`, `h3` sous un `h2`), qui posent la question à laquelle l'option répond.
+- **Pas de lien vague :** la phrase dit où aller (« depuis votre administration, rubrique « Assistance » »).
+
+<Contrasts pairs={[['primary', 'background'], ['text-2', 'background']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Le délai de réponse et ce qui est compris dans l\'abonnement.', 'Deux options, trois au plus.']} donts={['Un numéro de téléphone sans les horaires.', 'Une option qui renvoie vers la page où l\'on se trouve.']} />

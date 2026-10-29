@@ -1,0 +1,89 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Palette de recherche"
+description: "La recherche rapide d'un site : un déclencheur discret dans l'en-tête, Ctrl K ou /, une fenêtre avec les résultats au clavier. Source des résultats branchable."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import Code from '../../components/Code.astro'
+import { searchPalette, searchTrigger } from '../../lib/search.js'
+
+export const demoTrigger = searchTrigger({ id: 'demo-search', href: '/search/', label: 'Rechercher dans l\'aide', name: 'Rechercher dans le centre d\'aide (démonstration)' }).replace(' data-cel-search-shortcut>Ctrl K', '>Démo')
+export const demoPalette = searchPalette({ id: 'demo-search', title: 'Rechercher dans le centre d\'aide (démonstration)', placeholder: 'Par exemple : délibération, accès, panne' })
+
+## À quoi il sert
+
+Trouver une page en quelques lettres, sans quitter celle où l'on est : ce site l'emploie (le champ « Rechercher » de l'en-tête), le [centre d'aide](/patterns/help-center/) aussi. Tout site qui utilise le paquet peut la reprendre, avec sa propre source de résultats.
+
+**Quand ne pas l'utiliser :** pour choisir une valeur dans un formulaire (prendre la [recherche de commune](/components/combobox/)).
+
+## Démonstrations
+
+**Index statique** (`indexSearch`) : la palette de ce site, sur l'index de ses pages. Ouvrez-la par le déclencheur de l'en-tête, par <kbd class="cel-kbd" data-cel-search-shortcut>Ctrl K</kbd>, par <kbd class="cel-kbd">/</kbd>, ou par ce déclencheur :
+
+<Example title="Déclencheur, dans l'en-tête de ce site (essayez « bouton », « couleur sombre »)" html={searchTrigger({ name: 'Rechercher dans le Système de Design' })} />
+
+**Adresse JSON** (`endpointSearch`) : une seconde palette, sans raccourci, qui interroge un serveur. Ce site étant statique, le serveur est simulé dans la page : il répond en 300 ms (l'état de chargement se voit) avec les articles du centre d'aide de démonstration, et échoue si la question contient « panne » (l'état d'erreur).
+
+<Example title="Adresse JSON (essayez « publier », « adjoint », « zzz », « panne »)" html={`${demoTrigger}
+${demoPalette}`} />
+
+## Composition
+
+- **Déclencheur** `.cel-search-trigger` : la loupe, `__label` (« Rechercher »), le raccourci `<kbd class="cel-kbd" data-cel-search-shortcut>`. Sans script, c'est un lien vers la page de recherche du site (ici, [la liste de toutes les pages](/search/)) ; le script en fait un bouton (`aria-haspopup="dialog"`, `aria-keyshortcuts`) et écrit « ⌘ K » sur un Mac. Son attribut `data-cel-search-open` donne l'`id` de la fenêtre. Tout élément qui porte cet attribut l'ouvre aussi (le bouton « Rechercher dans l'aide » de la [page introuvable](/patterns/not-found/)).
+- **Fenêtre** `<dialog class="cel-search" data-cel-search>` : un titre masqué, `__header` (loupe, champ `__input`, bouton « Échap » `__close`), la ligne d'état `__status` (`role="status"`), l'état vide `__empty` (`hidden`, la question recopiée dans `data-cel-search-query`), la liste `__results`, la ligne d'aide `__help`.
+- **Résultat** (écrit par le script) : `__result`, son lien, le chemin `__path` (rubrique), le titre `__title`, l'extrait `__excerpt` ; les mots cherchés y sont dans `<mark class="cel-search__mark">`.
+- **Touche** `.cel-kbd` (et `--on-strong` sur la surface forte) : un raccourci écrit dans le texte.
+- **Messages :** sur la fenêtre, `data-cel-message-none` (`#` : la question), `-one`, `-many` (`#` : le nombre), `-loading`, `-error`.
+
+<details class="cel-example__code doc-pattern-code">
+    <summary>Code de la fenêtre</summary>
+    <Code code={searchPalette({ title: 'Rechercher dans le centre d\'aide', placeholder: 'Par exemple : publier une délibération' })} />
+</details>
+
+## Script et adaptateurs
+
+<Code lang="js" code={`import { endpointSearch, indexSearch, initSearch } from '@communeenligne/design/js/search.js'
+
+// Site statique : un index JSON, chargé à la première ouverture, cherché dans la page.
+initSearch(document.querySelector('#search'), {
+    search: indexSearch('/search-index.json'),
+})
+
+// Site rendu par un serveur : chaque question part à l'adresse, 200 ms après la dernière frappe.
+initSearch(document.querySelector('#search'), {
+    search: endpointSearch('/aide/recherche'),   // GET /aide/recherche?q=…
+    delay: 200,
+})
+
+// Ou toute fonction qui rend les résultats d'une question.
+initSearch(dialog, { search: async (query, { signal }) => [{ url, title, section, excerpt }] })`} />
+
+Le composant ne sait rien de la source : il reçoit une fonction `search(query, { signal })` qui rend une liste de `{ url, title, section, excerpt }`. `signal` annule la question précédente à chaque frappe.
+
+- **`indexSearch(url, { limit = 12, fallbackSection })`** charge une fois l'index `{ entries: [{ url, title, section, page, summary, words }] }` (à la première ouverture), puis cherche dans la page : chaque mot doit figurer dans l'entrée, sans tenir compte des accents ni des majuscules ; un mot dans le titre compte plus, au début du titre plus encore. L'extrait est le résumé, sinon le passage autour du premier mot. Ce site produit son index à la construction (`/search-index.json` : une entrée par page et par intertitre).
+- **`endpointSearch(url, { param = 'q', headers, request })`** envoie `GET url?q=…` avec `Accept: application/json` et lit `[…]` ou `{ results: […] }`. Une réponse en erreur affiche le message `-error`. `request` remplace `fetch` (en-têtes d'une session, serveur simulé comme ci-dessus).
+
+Options de `initSearch()` : `minLength` (1), `delay` (0 ms ; 200 pour un serveur), `shortcuts` (`true` ; `false` pour une seconde palette dans la page). Elle rend `{ open, close }`.
+
+## Clavier
+
+- **Ouvrir :** le déclencheur, <kbd class="cel-kbd">Ctrl K</kbd> (<kbd class="cel-kbd">⌘ K</kbd> sur Mac) ou <kbd class="cel-kbd">/</kbd>, sauf quand le focus est déjà dans un champ de saisie (on y tape une barre oblique).
+- **Dans la fenêtre :** <kbd class="cel-kbd">↓</kbd> <kbd class="cel-kbd">↑</kbd> changent de résultat (en boucle), <kbd class="cel-kbd">Entrée</kbd> ouvre le résultat actif, <kbd class="cel-kbd">Échap</kbd>, <kbd class="cel-kbd">Ctrl K</kbd>, le bouton « Échap » ou un clic hors du cadre ferment.
+
+## Accessibilité
+
+- **Motif :** combobox de l'ARIA avec liste. Le champ garde le focus (`role="combobox"`, `aria-expanded`, `aria-controls`, `aria-autocomplete="list"`) ; `aria-activedescendant` désigne le résultat actif (`role="option"`, `aria-selected`) dans la `role="listbox"`.
+- **Annonces :** la ligne d'état (`role="status"`) dit « Recherche en cours… », puis le nombre de résultats ou « Aucun résultat » ; elle décrit aussi le champ (`aria-describedby`).
+- **Fenêtre modale :** `<dialog>` ouvert par `showModal()` : le reste de la page est inerte, le focus reste dans la fenêtre ; à la fermeture, il revient au déclencheur.
+- **Résultat actif :** un filet ocre et un fond, jamais la couleur seule.
+- **Mouvement :** la fenêtre et son fond apparaissent en fondu, la loupe pulse pendant le chargement ; rien de cela avec `prefers-reduced-motion`.
+- **Déclencheur :** son contour est discret (1 px, `--cel-color-line`) ; il est identifié par son texte « Rechercher » et la loupe (WCAG 1.4.11 n'exige pas le contraste du contour quand le texte identifie la commande). Sur téléphone, le raccourci est masqué.
+
+<Contrasts pairs={[['text-muted-2', 'background-muted'], ['primary', 'background-muted'], ['text-2', 'surface'], ['primary', 'surface-current'], ['text-strong', 'tint-ochre'], ['text-muted', 'background-muted']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Un déclencheur visible dans l\'en-tête de chaque page, en plus du raccourci.', 'Une page de recherche classique pour les visiteurs sans JavaScript.']} donts={['Le raccourci comme seul chemin vers la recherche.', 'Des résultats qui ouvrent la page dans un nouvel onglet.']} />

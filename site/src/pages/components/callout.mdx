@@ -42,6 +42,32 @@ Mettre à part une précision que le lecteur ne doit pas manquer : une obligatio
     </div>
 `} />
 
+## Dans un article
+
+Dans le texte d'un article d'aide, deux formes plus légères : un filet à gauche, un fond clair, un titre court. `--note` (« À savoir ») pour une précision utile, `--caution` (« Attention ») pour un risque : une action qu'on ne peut pas défaire. L'icône `__icon` reste facultative.
+
+<Example title="--note et --caution" html={`
+    <div class="cel-stack">
+        <div class="cel-callout cel-callout--note" role="note">
+            <div class="cel-callout__body">
+                <p class="cel-callout__title">À savoir</p>
+                <p>Préparez le PDF signé avant de commencer. Les documents de plus de 20 Mo ne sont pas acceptés.</p>
+            </div>
+        </div>
+        <div class="cel-callout cel-callout--caution" role="note">
+            <svg class="cel-icon cel-icon--20 cel-callout__icon" aria-hidden="true"><use href="/design/icons/sprite.svg#exclamation-triangle"></use></svg>
+            <div class="cel-callout__body">
+                <p class="cel-callout__title">Attention</p>
+                <p>Une délibération publiée ne peut plus être modifiée. En cas d'erreur, publiez une nouvelle version et retirez l'ancienne.</p>
+            </div>
+        </div>
+    </div>
+`} />
+
+`role="note"` annonce l'encart comme une remarque mise à part. Le mot « Attention » dit le risque : le rouge ne le dit jamais seul.
+
+<Contrasts pairs={[['text-2', 'background-muted'], ['primary', 'background-muted'], ['text', 'error-background'], ['error', 'error-background'], ['error', 'background', 3]]} />
+
 ## États
 
 L'encart n'est pas interactif. Un lien qu'il contient suit les états du [lien](/components/link/).

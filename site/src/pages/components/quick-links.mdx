@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/Doc.astro
+title: "Accès rapides"
+description: "Une rangée de liens vers les gestes les plus fréquents : pictogramme teinté, titre, phrase et durée, en colonnes séparées par des filets."
+---
+
+import Example from '../../components/Example.astro'
+import Contrasts from '../../components/Contrasts.astro'
+import DoDont from '../../components/DoDont.astro'
+import { QUICK_LINKS_BAND } from '../../lib/help-center.js'
+
+## À quoi il sert
+
+Mener en un clic aux tâches que les mairies cherchent le plus, sur l'accueil du [centre d'aide](/patterns/help-center/), juste sous l'[en-tête d'accueil](/components/doc-hero/).
+
+**Quand ne pas l'utiliser :** pour toutes les rubriques (prendre les [rubriques](/components/topics/)) ; pour un parcours dans l'ordre (prendre les [premiers pas](/components/first-steps/)).
+
+## Exemple
+
+<Example title="Accès rapides, dans leur bande" background="full" html={QUICK_LINKS_BAND} />
+
+## Composition
+
+`.cel-quick-links` est une liste ; chaque élément contient un seul lien `.cel-quick-link`, qui couvre la cellule : un [pictogramme](/components/pictogram/) dans une teinte douce, puis `__body` : le titre `__title`, la phrase `__text`, l'indication `__meta` (une durée) suivie d'une flèche. Dans le [centre d'aide](/patterns/help-center/), la liste est dans une bande `cel-doc-band--muted` avec son en-tête `cel-doc-band__header` (titre, phrase, lien « Toutes les rubriques »).
+
+## Comportement
+
+- **Quatre colonnes** à partir de 960 px, séparées par des filets verticaux, un filet sous chaque ligne ;
+- **deux** entre 640 et 960 px ; **une** sur téléphone, sans filet vertical ;
+- **survol et focus :** le pictogramme monte de 2 px, le titre se souligne, la flèche avance (pas avec `prefers-reduced-motion`).
+
+## Accessibilité
+
+- **Un lien par cellule**, dont le nom est tout son texte : le titre d'abord, puis la phrase et la durée.
+- **Focus :** le contour suit le lien, toute la cellule.
+- **Pictogramme et flèche :** décoratifs.
+
+<Contrasts pairs={[['primary', 'background-muted'], ['text-2', 'background-muted'], ['soft-lilac-ink', 'soft-lilac'], ['soft-red-ink', 'soft-red'], ['soft-green-ink', 'soft-green'], ['soft-ochre-ink', 'soft-ochre']]} />
+
+## À faire, à éviter
+
+<DoDont dos={['Quatre accès, choisis d\'après les recherches et les questions à l\'assistance.', 'Un titre qui commence par un verbe.']} donts={['Plus de huit accès : ce n\'est plus rapide.', 'Le même article en accès rapide et en premier pas.']} />
